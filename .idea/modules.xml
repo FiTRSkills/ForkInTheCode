@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/forkinthecode.iml" filepath="$PROJECT_DIR$/.idea/forkinthecode.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ForkInTheCode.iml" filepath="$PROJECT_DIR$/.idea/ForkInTheCode.iml" />
     </modules>
   </component>
 </project>
