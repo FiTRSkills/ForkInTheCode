@@ -5,7 +5,7 @@ import React from 'react';
 import express from 'express';
 import ReactDOMServer from 'react-dom/server';
 
-import App from '../src/App';
+import App from './src/App';
 
 const PORT = process.env.PORT || 3006;
 const app = express();
@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
         return res.send(
             data.replace('<div id="root"></div>', `<div id="root">${app}</div>`)
         );
-    });
+    })
 });
 
 app.use(express.static('./build'));
