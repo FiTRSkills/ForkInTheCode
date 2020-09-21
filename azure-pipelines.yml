@@ -1,0 +1,83 @@
+# lets understand what is happening her. 
+# also, go here for in depth information - https://docs.microsoft.com/en-us/azure/devops/pipelines/?view=azure-devops
+
+# Trigger
+# This is the trigger for the entire Pipeline to start doing whatever it is doing here
+# I have linked this to the master branch of the repository so whenever a change is detected on the master branch
+# the azure pipeline will start doing its thing
+# this can be customized for all kid of triggers
+# more details - https://docs.microsoft.com/en-us/azure/devops/pipelines/build/triggers
+trigger:
+- master
+
+# These are the agents that will be used to do the pipeline thing. 
+# as far as react is concerned, this wont change for the time being. 
+# so keep it as it is.
+pool:
+  vmImage: 'ubuntu-latest'
+
+# these are the many many steps that the pipeline will go through.  
+steps:
+
+# this is the very first step. that would be installing node on the agent
+# the entire project is dependent on node so we install that first
+# other tools will come here if required.
+
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+  displayName: 'Install Node.js'
+
+# here we do the react recommended steps to compile and get this app ready for deployment
+# these steps are identically to want we would do if we were to do a manual deployment  
+- script: |
+    npm install
+    npm run build
+  displayName: 'npm install and build'
+
+
+# here, we are copying the output files to a folder
+# this folder will be our source for all future manipulations
+# like artifact building, zipping and other file operations
+
+- task: CopyFiles@2
+  inputs:
+    Contents: 'build/**' # Pull the build directory (React)
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+# this is building an artificant
+# this is primarily used for file storage options
+# see the output from pipelines and so on
+# this oes not do anything to the actual deployment
+
+- task: PublishBuildArtifacts@1
+  inputs: 
+    pathtoPublish: $(Build.ArtifactStagingDirectory) # dist or build files
+    ArtifactName: 'www' # output artifact named www
+
+# Default value: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+# this is the actual step before deployment
+# so, the thing is, CICD depends on a zipped file for deployments
+# so our output folder must be in zip before it can be sent away for deployment
+
+# here, in the staging directory, there is a folder called build
+# the inside of build contains all of our deployment files
+# that is why, we are setting the zip to happen on the contents of build folder
+# not the build folder itself.
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/build/'
+    includeRootFolder: false
+
+# here, is where, we send off the zip files to perform a deployment to where we want.
+# the main thing is the target web app
+# and authenticating to access the file system of the web app
+
+# I am using what is called as a service connection available in the project
+# inside the devops organization
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'ece188f9-7d26-41f9-9356-661f65f22de5'
+    appName: 'fitrskills'
+    package: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
