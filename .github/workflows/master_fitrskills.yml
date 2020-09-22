@@ -32,4 +32,4 @@ jobs:
         app-name: 'fitrskills'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_e01576dbf66042e889e36bd86599dc54 }}
-        package: .
+        package: 'build'
