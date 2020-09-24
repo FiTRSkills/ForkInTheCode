@@ -22,9 +22,13 @@ jobs:
 
     - name: npm install, build, and test
       run: |
+        cd client
         npm install
         npm run build --if-present
         npm run test --if-present
+        cd ../server
+        npm install
+        npm run start
 
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v2
@@ -32,4 +36,4 @@ jobs:
         app-name: 'fitrskills'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_e01576dbf66042e889e36bd86599dc54 }}
-        package: 'build'
+        package: 'client/build'
