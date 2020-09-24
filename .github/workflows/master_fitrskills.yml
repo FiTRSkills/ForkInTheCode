@@ -23,8 +23,8 @@ jobs:
     - name: npm install, build, and test
       run: |
         npm install --prefix /client
-        npm --prefix /client run build --if-present
-        npm --prefix /client run test --if-present
+        npm --prefix ./client run build --if-present
+        npm --prefix ./client run test --if-present
         npm install --prefix /server
 
     - name: 'Deploy to Azure Web App'
