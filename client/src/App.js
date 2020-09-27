@@ -1,36 +1,54 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {actions as appActions} from './reducers/AppReducer';
+import {bindActionCreators} from 'redux';
+import {connect} from "react-redux";
 
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+} from "react-router-dom";
+import Home from './components/pages/Home'
+const mapStateToProps = (state) => {
+    return {
+        // General
+        state: state
+    };
+};
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators({ ...appActions}, dispatch)
+});
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {apiResponse: ""}
-  }
-
-  callAPI() {
-    fetch("http://localhost:9000/testAPI")
-        .then(res => res.text())
-        .then(res => this.setState({apiResponse: res}));
-  }
-
-  componentWillMount() {
-    this.callAPI();
   }
 
   render() {
     return (
-        <div className="App">
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo"/>
-          </header>
 
-          <p>
-            {this.state.apiResponse}
-          </p>
-        </div>
-    );
-  }
+        <Router>
+            <div>
+                <Switch>
+                    <Route exact path="/">
+                        <Home />
+                    </Route>
+
+                </Switch>
+            </div>
+        </Router>
+    )
+  };
+
+
+
+
+
 }
 
-export default App;
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(App)
