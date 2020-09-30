@@ -1,5 +1,6 @@
 import logo from "../../logo.svg";
 import React, { Component } from 'react';
+import TestService from '../../services/TestService'
 
 class Home extends Component {
     constructor(props) {
@@ -7,14 +8,13 @@ class Home extends Component {
         this.state = {apiResponse: ""}
     }
 
-    callAPI() {
-        fetch("http://localhost:9000/testAPI")
-            .then(res => res.text())
-            .then(res => this.setState({apiResponse: res}));
-    }
+
 
     componentWillMount() {
-        this.callAPI();
+        // callAPI();
+    fetch(process.env.REACT_APP_SERVER_URL+ "/testAPI")
+            .then(res => res.text())
+            .then(res => this.setState({apiResponse: res}));
     }
     render() {
         return (
