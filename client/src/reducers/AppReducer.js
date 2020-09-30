@@ -1,12 +1,11 @@
 export const types = {
-    LOGIN: "@accessibility-lab/app/login",
-    LOGOUT: "@accessibility-lab/app/logout",
-    UPDATE_USER: "@accessibility-lab/app/update_user",
+    LOGIN: "@fitr-skills/app/login",
+    LOGOUT: "@fitr-skills/app/logout",
+    UPDATE_USER: "@fitr-skills/app/update_user",
 };
 export const initialState = {
     user: null,
 };
-
 export default (state = initialState, action) => {
     switch (action.type) {
         case types.UPDATE_USER:
@@ -23,7 +22,6 @@ export default (state = initialState, action) => {
             return state;
     }
 };
-
 export const actions = {
     login: () => ({ type: types.LOGIN }),
     logout: () => ({ type: types.LOGOUT }),
