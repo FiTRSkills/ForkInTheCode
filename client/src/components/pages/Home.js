@@ -1,6 +1,5 @@
 import logo from "../../logo.svg";
 import React, { Component } from 'react';
-import TestService from '../../services/TestService'
 
 class Home extends Component {
     constructor(props) {
