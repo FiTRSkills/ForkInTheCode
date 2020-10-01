@@ -4,8 +4,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+var bodyParser = require('body-parser');
+var expressSession = require('express-session')({
+	secret: 'secret',
+	resave: false,
+	saveUninitialized: false
+});
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var testRouter = require('./routes/testapi');
@@ -21,7 +26,14 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+//bodyparser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(expressSession);
+//express
+app.use(passport.initialize());
+app.use(passport.session());
+//routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/testAPI', testRouter);
@@ -29,18 +41,6 @@ app.use('/testAPI', testRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
-
-// passport setup
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-    User.findOne({ username: username }, function (err, user) {
-      if (err) { return done(err); }
-      if (!user) { return done(null, false); }
-      if (!user.verifyPassword(password)) { return done(null, false); }
-      return done(null, user);
-    });
-  }
-));
 
 // error handler
 app.use(function(err, req, res, next) {
