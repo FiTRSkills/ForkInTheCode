@@ -8,30 +8,24 @@ import NavBar from './components/subcomponents/NavBar'
 import SignUp from './components/pages/SignUp';
 
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+function App() {
+    return (
+        <Router>
+            <div>
+                <NavBar />
+                <Switch>
+                    <Redirect exact from="/" to="/Home" />
+                    <Route exact component={Home} path="/Home" />
+                    <Redirect exact from="/Sign Out" to="/Login" />
+                    <Redirect exact from="/Log In" to="/Login" />
+                    <Route exact component={Login} path="/Login" />
+                    <Redirect exact from="/Sign Up" to="/SignUp" />
+                    <Route exact component={SignUp} path="/SignUp" />
 
-    render() {
-        return (
-            <Router>
-                <div>
-                    <NavBar />
-                    <Switch>
-                        <Redirect exact from="/" to="/Home" />
-                        <Route exact component={Home} path="/Home" />
-                        <Redirect exact from="/Sign Out" to="/Login" />
-                        <Redirect exact from="/Log In" to="/Login" />
-                        <Route exact component={Login} path="/Login" />
-                        <Redirect exact from="/Sign Up" to="/SignUp" />
-                        <Route exact component={SignUp} path="/SignUp" />
-
-                    </Switch>
-                </div>
-            </Router>
-        )
-    };
+                </Switch>
+            </div>
+        </Router>
+    )
 }
 
 export default App
