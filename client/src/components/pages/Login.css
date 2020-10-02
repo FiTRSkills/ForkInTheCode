@@ -1,0 +1,35 @@
+.loginContainer {
+    width: 500px;
+    height: 200px;
+    margin: auto;
+    margin-top: 100px;
+    border: 3px solid black;
+    border-radius: 20px;
+}
+
+.loginForm{
+    justify-content: space-evenly;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 10px;
+    margin: auto;
+}
+
+.loginLabel{
+    text-align: right;
+}
+
+.loginInput {
+    text-align: left;
+}
+
+.loginHeading {
+    text-align: center;
+    font-size: 150%;
+    padding-top: 15px;
+    padding-bottom: 20px;
+}
+
+.loginSubmit{
+    grid-column: 1 / span 2;
+}

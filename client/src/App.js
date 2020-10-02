@@ -1,54 +1,37 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import {actions as appActions} from './reducers/AppReducer';
-import {bindActionCreators} from 'redux';
-import {connect} from "react-redux";
 
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import Home from './components/pages/Home'
-const mapStateToProps = (state) => {
-    return {
-        // General
-        state: state
-    };
-};
-const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators({ ...appActions}, dispatch)
-});
+import Login from './components/pages/Login'
+import NavBar from './components/subcomponents/NavBar'
+import SignUp from './components/pages/SignUp';
+
+
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+    constructor(props) {
+        super(props);
+    }
 
-  render() {
-    return (
+    render() {
+        return (
+            <Router>
+                <div>
+                    <NavBar />
+                    <Switch>
+                        <Redirect exact from="/" to="/Home" />
+                        <Route exact component={Home} path="/Home" />
+                        <Redirect exact from="/Sign Out" to="/Login" />
+                        <Redirect exact from="/Log In" to="/Login" />
+                        <Route exact component={Login} path="/Login" />
+                        <Redirect exact from="/Sign Up" to="/SignUp" />
+                        <Route exact component={SignUp} path="/SignUp" />
 
-        <Router>
-            <div>
-                <Switch>
-                    <Route exact path="/">
-                        <Home />
-                    </Route>
-
-                </Switch>
-            </div>
-        </Router>
-    )
-  };
-
-
-
-
-
+                    </Switch>
+                </div>
+            </Router>
+        )
+    };
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(App)
+export default App
