@@ -1,6 +1,7 @@
 require("dotenv").config({
     path: "../.env"
 });
+const mongoose = require('mongoose');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -10,6 +11,17 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const testRouter = require('./routes/testapi');
 const app = express();
+
+// Database configurations
+mongoose.connect(process.env.DB_CONN, {
+    auth: {
+        user: process.env.DB_USER,
+        password: process.env.DB_PW
+    },
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    retryWrites: false
+});
 
 // Web-server configurations
 app.use(logger('dev'));
