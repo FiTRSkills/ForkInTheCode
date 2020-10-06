@@ -5,7 +5,12 @@ const passport = require("passport");
 const debug = require("debug")("server:debug");
 const error = require("debug")("server:error");
 
-/* GET users listing. */
+/**
+* Get user listing
+* @name GET /users/
+* @property {string} path - Express path
+* @property {function} callback - Register functionality
+*/
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });

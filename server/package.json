@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "doc": "jsdoc -d docs --configure config/jsconf.json app.js"
+    "doc": "jsdoc -d docs --configure jsconf.json app.js"
   },
   "dependencies": {
     "connect-ensure-login": "^0.1.1",

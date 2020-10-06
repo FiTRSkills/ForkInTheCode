@@ -4,21 +4,16 @@ var User = require("../models/user");
 
 var userController = {};
 
-// Restrict access to root page
-userController.home = function(req, res) {
-  res.send('index', { user : req.user });
-};
-
-// Go to registration page
-userController.register = function(req, res) {
-  res.send('register');
-};
-
-// Post registration
+/**
+* functionality for registration
+* @name userController.doRegister
+* @property {request} request - contains username and password
+* @returns {string} response - whether or not registration was completed
+*/
 userController.doRegister = function(req, res) {
   User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
     if (err) {
-      res.send(err);
+      res.send('There was a problem with registration.');
     }
 
     passport.authenticate('local')(req, res, function () {
@@ -27,22 +22,27 @@ userController.doRegister = function(req, res) {
   });
 };
 
-// Go to login page
-userController.login = function(req, res) {
-  res.send('login');
-};
-
-// Post login
+/**
+* functionality for login
+* @name UserController.doLogin
+* @property {request} request - contains username and password
+* @returns {string} response - the user on successful login
+*/
 userController.doLogin = function(req, res) {
   passport.authenticate('local')(req, res, function () {
     res.send(req.user);
   });
 };
 
-// logout
+/**
+* functionality for logout
+* @name UserController.logout
+* @property {request} request - request to server
+* @returns {string} response - the session is closed for the user
+*/
 userController.logout = function(req, res) {
   req.logout();
-  res.redirect('/');
+  res.status(200).send('Successfully logged out');
 };
 
 module.exports = userController;
