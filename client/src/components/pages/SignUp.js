@@ -2,17 +2,17 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { changeCurrentPage } from '../../redux/Actions'
 
-function Home(props) {
+function SignUp(props) {
     useEffect(() => {
-        if (props.user === undefined || Object.keys(props.user).length === 0) {
-            props.history.push('/Login')
+        if (props.user !== undefined && Object.keys(props.user).length > 0) {
+            props.history.push('/Home')
         }
-        props.changeCurrentPage("Home")
+        props.changeCurrentPage("Sign Up")
     });
 
     return (
-        <div className="home">
-            Home - TODO
+        <div>
+            Sign Up - TODO
         </div>
     );
 }
@@ -20,4 +20,4 @@ function Home(props) {
 export default connect(
     state => ({ user: state.authentication }),
     { changeCurrentPage }
-)(Home);
+)(SignUp);
