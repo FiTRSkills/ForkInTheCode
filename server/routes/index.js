@@ -1,18 +1,18 @@
 var express = require('express');
 var router = express.Router();
-var connectEnsureLogin = require('connect-ensure-login');
-var passport = require('passport');
+var auth = require("../controllers/authcontroller.js");
 
-/**
-* Routing to homepage
-* @name GET /
-* @param {string} chicken
-*/
-router.get('/', function(req, res, next) {
-  connectEnsureLogin.ensureLoggedIn();
-  res.render('index', { title: 'Express' });
-});
+// restrict index for logged in user only
+router.get('/', auth.home);
 
+// route to register page
+router.get('/register', auth.register);
+
+// route for register action
+router.post('/register', auth.doRegister);
+
+// route to get login page
+router.get('/login', auth.login);
 
 /**
 * Routing serving login form
@@ -20,22 +20,9 @@ router.get('/', function(req, res, next) {
 * @property {string} path - Express path
 * @param {callback} middleware - Express middleware
 */
-router.post('/login', function(req, res, next) {
-  	passport.authenticate('local', (err, user, info) => {
-  		if (err){
-  			return next(err);
-  		}
-  		if (!user) {
-  			return res.redirect('/login');
-  		}
+router.post('/login', auth.doLogin);
 
-  		req.logIn(user, function(err) {
-  			if (err) {
-  				returen next(err);
-  			}
-  			return res.redirect('/');
-  		});
-  	})(req, res, next);
-});
+// route for logout action
+router.get('/logout', auth.logout);
 
 module.exports = router;
