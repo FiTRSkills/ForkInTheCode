@@ -33,7 +33,7 @@ function Login(props) {
             if (response.status === 401) {
                 setErrorHappened(true);
             } else {
-                props.updateUser(response.user)
+                props.updateUser({ username: response.data })
                 props.history.push('/Home')
             }
         }).catch(response => {
