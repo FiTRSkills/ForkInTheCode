@@ -4,7 +4,6 @@ import './App.css';
 import {actions as appActions} from './reducers/AppReducer';
 import {bindActionCreators} from 'redux';
 import {connect} from "react-redux";
-
 import {
     BrowserRouter as Router,
     Switch,
