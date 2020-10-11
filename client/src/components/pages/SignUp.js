@@ -1,48 +1,54 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { changeCurrentPage } from '../../redux/Actions'
-import {Container, Box, Button, Grid, Typography, TextField} from '@material-ui/core';
-import './SignUp.css';
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { changeCurrentPage } from "../../redux/Actions";
+import { Container, Box, Tabs, Tab } from "@material-ui/core";
+import "./SignUp.css";
+import SignUpTabPanel from "../subcomponents/SignUpTabPanel";
 
 function SignUp(props) {
-    useEffect(() => {
-        if (props.user !== undefined && Object.keys(props.user).length > 0) {
-            props.history.push('/Home')
-        }
-        props.changeCurrentPage("Sign Up")
-    });
+  const [value, setValue] = React.useState(0);
 
-    return (
-        <Container>
-            <Box className={'signUpContainer'}>
-                <Typography className={'formRow'} align={'center'} variant={'h6'}>Sign Up</Typography>
-                <Grid container justify={'center'} alignItems={'center'}>
-                    <Grid className={'formRow'} container justify={'center'} alignItems={'center'} spacing={3}>
-                        <Grid item>
-                            <Typography variant={'body1'}>Username: </Typography>
-                        </Grid>
-                        <Grid item>
-                            <TextField name={'username'} id={'username'} />
-                        </Grid>
-                    </Grid>
-                    <Grid className={'formRow'} container justify={'center'} alignItems={'center'} spacing={3}>
-                        <Grid item>
-                            <Typography variant={'body1'}>Password: </Typography>
-                        </Grid>
-                        <Grid item>
-                            <TextField name={'password'} id={'password'} />
-                        </Grid>
-                    </Grid>
-                    <Grid className={'formRow'} item justify={'center'}>
-                        <Button color={'primary'} variant={'contained'}>Sign Up</Button>
-                    </Grid>
-                </Grid>
-            </Box>
-        </Container>
-    );
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  useEffect(() => {
+    if (props.user !== undefined && Object.keys(props.user).length > 0) {
+      props.history.push("/Home");
+    }
+    props.changeCurrentPage("Sign Up");
+  });
+
+  return (
+    <Container>
+      <Box className={"signUpContainer"}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="simple tabs example"
+        >
+          <Tab label="Job Seeker" />
+          <Tab label="Employer" />
+          <Tab label="Educator" />
+        </Tabs>
+        <SignUpTabPanel value={value} index={0} title={"Job Seeker"} />
+        <SignUpTabPanel value={value} index={1} title={"Employer"} />
+        <SignUpTabPanel value={value} index={2} title={"Educator"} />
+      </Box>
+    </Container>
+  );
 }
 
-export default connect(
-    state => ({ user: state.authentication }),
-    { changeCurrentPage }
-)(SignUp);
+const mapStateToProps = (state) => {
+  return {
+    user: state.authentication,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changeCurrentPage: (content) => dispatch(changeCurrentPage(content)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
