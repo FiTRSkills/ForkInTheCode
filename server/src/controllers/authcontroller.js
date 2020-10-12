@@ -49,4 +49,14 @@ userController.logout = function (req, res) {
   res.status(200).send("Successfully logged out");
 };
 
+/**
+ * functionality for logout
+ * @name UserController.logout
+ * @property {request} request - request to server
+ * @returns {string} response - the session is closed for the user
+ */
+userController.homeTest = function (req, res) {
+  res.status(200).send("Test");
+};
+
 module.exports = userController;

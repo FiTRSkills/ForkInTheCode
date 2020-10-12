@@ -11,8 +11,6 @@ const cors = require("cors");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/users");
-const testRouter = require("./routes/testapi");
 const app = express();
 
 //mongoose config
@@ -33,11 +31,9 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, "../client/build")));
+app.use(express.static(path.join(__dirname, "../../client/build")));
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/testAPI", testRouter);
 
 //initalizing passport and express session
 app.use(
