@@ -5,9 +5,13 @@ client/node_modules
 server/node_modules
 /.pnp
 .pnp.js
+server/src/.env
 
 # testing
 /coverage
+
+# documentation
+server/docs
 
 # production
 /client/build
