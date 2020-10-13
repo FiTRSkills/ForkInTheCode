@@ -26,7 +26,7 @@ describe("testing index.js routes", () => {
 		await mongoose.connection.close();
 	});
 
-	it("POST /register - failure", async () => {
+	it("POST /register - no registration information", async () => {
 		const res = await request.post("/register");
 		expect(res.statusCode).toEqual(200);
 		expect(res.text).toEqual("There was a problem with registration.");
