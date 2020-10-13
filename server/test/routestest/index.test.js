@@ -29,7 +29,7 @@ describe("testing index.js routes", () => {
 	it("POST /register - no registration information", async () => {
 		const res = await request.post("/register");
 		expect(res.statusCode).toEqual(200);
-		expect(res.text).toEqual("There was a problem with registration.");
+		expect(res.body.name).toEqual("MissingUsernameError");
 	});
 
 	it("POST /register - success", async () => {
