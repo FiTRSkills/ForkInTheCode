@@ -5,8 +5,6 @@ const userData = {
 	password: "password",
 };
 
-jest.useFakeTimers();
-
 describe("User Model Test", () => {
 	beforeAll(async () => {
 		await mongoose.connect(
