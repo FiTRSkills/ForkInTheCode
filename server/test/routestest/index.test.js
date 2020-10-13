@@ -39,7 +39,11 @@ describe("testing index.js routes", () => {
 				"Content-Type",
 				"application/x-www-form-urlencoded; charset=UTF-8"
 			)
-			.send({ username: "tester@gmail.com", password: "chicken" });
+			.send({
+				username: "tester@gmail.com",
+				password: "chicken",
+				usertype: "JobSeekerProfile",
+			});
 		expect(res.statusCode).toEqual(200);
 		expect(res.text).toEqual("Successfully created user");
 	});
