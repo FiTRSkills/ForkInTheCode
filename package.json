@@ -4,6 +4,9 @@
         "build": "cd client && npm run build --if-present && cd ../server && npm run build --if-present",
         "start": "cd server && npm start"
     },
+    "dependencies": {
+        "dotenv": "^8.2.0"
+    }
     "devDependencies": {
         "prettier": "2.1.2"
     }
