@@ -21,6 +21,10 @@ const USER_TYPES = {
  */
 const User = new mongoose.Schema({
 	//email, hash, salt, etc. defined by passportLocalMongoose
+	created: {
+		type: Date,
+		default: Date.now
+	},
 	type: {
 		type: String,
 		enum: Object.values(USER_TYPES),
