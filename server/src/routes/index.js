@@ -26,7 +26,4 @@ router.post("/login", auth.doLogin);
  */
 router.get("/logout", auth.logout);
 
-// sends the user back in the request
-router.get("/HomeTest", auth.homeTest);
-
 module.exports = router;

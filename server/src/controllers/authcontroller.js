@@ -12,11 +12,11 @@ var userController = {};
  */
 userController.doRegister = function (req, res) {
   User.register(
-    new User({ username: req.body.username }),
+    new User({ username: req.body.username, type: req.body.usertype }),
     req.body.password,
     function (err, user) {
       if (err) {
-        res.send("There was a problem with registration.");
+        res.send(err);
         return;
       }
 
@@ -48,16 +48,6 @@ userController.doLogin = function (req, res) {
 userController.logout = function (req, res) {
   req.logout();
   res.status(200).send("Successfully logged out");
-};
-
-/**
- * functionality for logout
- * @name UserController.logout
- * @property {request} request - request to server
- * @returns {string} response - the session is closed for the user
- */
-userController.homeTest = function (req, res) {
-  res.status(200).send("Test");
 };
 
 module.exports = userController;

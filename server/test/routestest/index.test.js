@@ -26,20 +26,27 @@ describe("testing index.js routes", () => {
     await mongoose.connection.close();
   });
 
-  it("POST /register - no registration information", async () => {
-    const res = await request.post("/register");
-    expect(res.statusCode).toEqual(200);
-    expect(res.text).toEqual("There was a problem with registration.");
-  });
+	it("POST /register - no registration information", async () => {
+		const res = await request.post("/register");
+		expect(res.statusCode).toEqual(200);
+		expect(res.body.name).toEqual("MissingUsernameError");
+	});
 
-  it("POST /register - success", async () => {
-    const res = await request
-      .post("/register")
-      .set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-      .send({ username: "tester@gmail.com", password: "chicken" });
-    expect(res.statusCode).toEqual(200);
-    expect(res.text).toEqual("Successfully created user");
-  });
+	it("POST /register - success", async () => {
+		const res = await request
+			.post("/register")
+			.set(
+				"Content-Type",
+				"application/x-www-form-urlencoded; charset=UTF-8"
+			)
+			.send({
+				username: "tester@gmail.com",
+				password: "chicken",
+				usertype: "JobSeekerProfile",
+			});
+		expect(res.statusCode).toEqual(200);
+		expect(res.text).toEqual("Successfully created user");
+	});
 
   it("POST /login - failure", async () => {
     const res = await request.post("/login");
