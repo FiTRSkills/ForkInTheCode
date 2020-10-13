@@ -13,6 +13,9 @@ server/src/.env
 # documentation
 server/docs
 
+# coverage
+server/coverage
+
 # production
 /client/build
 /build
