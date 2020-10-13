@@ -9,7 +9,6 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
 const indexRouter = require("./routes/index");
 const app = express();
 
@@ -36,6 +35,7 @@ app.use(express.static(path.join(__dirname, "../../client/build")));
 app.use("/", indexRouter);
 
 //initalizing passport and express session
+//further passport configuration can be found in user.js
 app.use(
     require("express-session")({
         secret: "secret",
@@ -45,20 +45,6 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-
-// Configure passport to be used independently.
-const User = require("./models/user");
-passport.use(
-    new LocalStrategy(
-        {
-            usernameField: "username",
-            passwordField: "password",
-        },
-        User.authenticate()
-    )
-);
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 
 // Web-server 404 handling
 app.use(function (req, res, next) {
