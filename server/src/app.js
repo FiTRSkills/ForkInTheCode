@@ -1,5 +1,9 @@
 require("dotenv").config({
+<<<<<<< HEAD
 	path: ".env",
+=======
+  path: ".env",
+>>>>>>> a992fd34dbd2fa9a50cf755a4454e9e66fc62559
 });
 const createError = require("http-errors");
 const express = require("express");
@@ -13,15 +17,15 @@ const indexRouter = require("./routes/index");
 const app = express();
 
 //mongoose config
-mongoose.connect(process.env.DB_CONN, {
-	auth: {
-		user: process.env.DB_USER,
-		password: process.env.DB_PW,
-	},
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-	retryWrites: false,
-});
+// mongoose.connect(process.env.DB_CONN, {
+// 	auth: {
+// 		user: process.env.DB_USER,
+// 		password: process.env.DB_PW,
+// 	},
+// 	useNewUrlParser: true,
+// 	useUnifiedTopology: true,
+// 	retryWrites: false,
+// });
 
 //web server config
 app.use(logger("dev"));

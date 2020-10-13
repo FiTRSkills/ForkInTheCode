@@ -6,10 +6,10 @@ const mongoose = require("mongoose");
  * @type {Schema}
  */
 const JobSeekerProfile = new mongoose.Schema({
-    name:{
-        first: String,
-        last: String
-    }
+  name: {
+    first: String,
+    last: String,
+  },
 });
 
 module.exports = mongoose.model("JobSeekerProfile", JobSeekerProfile);
