@@ -13,15 +13,15 @@ const indexRouter = require("./routes/index");
 const app = express();
 
 //mongoose config
-mongoose.connect(process.env.DB_CONN, {
-    auth: {
-        user: process.env.DB_USER,
-        password: process.env.DB_PW,
-    },
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    retryWrites: false,
-});
+// mongoose.connect(process.env.DB_CONN, {
+//     auth: {
+//         user: process.env.DB_USER,
+//         password: process.env.DB_PW,
+//     },
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//     retryWrites: false,
+// });
 
 //web server config
 app.use(logger("dev"));

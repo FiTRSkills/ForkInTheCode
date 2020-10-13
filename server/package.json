@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./src/bin/www",
     "doc": "jsdoc -d docs --configure jsconf.json ./src/app.js",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "dependencies": {
     "@shelf/jest-mongodb": "^1.2.3",
