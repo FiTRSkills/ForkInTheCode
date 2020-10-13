@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./src/bin/www",
-    "doc": "jsdoc -d docs --configure jsconf.json app.js",
+    "doc": "jsdoc -d docs --configure jsconf.json ./src/app.js",
     "test": "jest"
   },
   "dependencies": {
