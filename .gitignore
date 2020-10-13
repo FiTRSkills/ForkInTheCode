@@ -10,6 +10,8 @@ server/src/.env
 
 # testing
 /coverage
+server/globalConfig.json
+server/coverage
 
 # documentation
 server/docs
