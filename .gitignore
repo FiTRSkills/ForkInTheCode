@@ -16,6 +16,9 @@ server/coverage
 # documentation
 server/docs
 
+# coverage
+server/coverage
+
 # production
 /client/build
 /build
