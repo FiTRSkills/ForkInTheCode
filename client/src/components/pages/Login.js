@@ -22,12 +22,6 @@ function Login(props) {
     })
 
     function attemptLogin() {
-        /*if (username === "") {
-            setErrorHappened(true);
-        } else {
-            props.updateUser({ username: "hello", other: "other" })
-            props.history.push('/Home')
-        }*/
         let url = process.env.REACT_APP_ENVIRONMENT === 'prod' ? process.env.REACT_APP_PROD_SERVER_URL : process.env.REACT_APP_DEV_SERVER_URL;
         axios.post(url + "/Login", { username, password }).then(response => {
             if (response.status === 401) {
