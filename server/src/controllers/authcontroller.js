@@ -1,8 +1,8 @@
-var mongoose = require("mongoose");
-var passport = require("passport");
-var User = require("../models/user");
+const mongoose = require("mongoose");
+const passport = require("passport");
+const User = require("../models/user");
 
-var userController = {};
+const userController = {};
 
 /**
  * functionality for registration

@@ -21,25 +21,26 @@ app.use(express.static(path.join(__dirname, "../../client/build")));
 app.use("/", indexRouter);
 
 //initalizing passport and express session
-//further passport configuration can be found in user.js
+
 app.use(
-	require("express-session")({
-		secret: "secret",
-		resave: false,
-		saveUninitialized: false,
-	})
+  require("express-session")({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: false,
+  })
 );
+//further passport configuration can be found in models/user.js
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Web-server 404 handling
 app.use(function (req, res, next) {
-	res.send("Unknown resource: " + req.path);
+  res.send("Unknown resource: " + req.path);
 });
 // Web-server error handling
 app.use(function (err, req, res, next) {
-	res.status(err.status || 500);
-	res.send(err.message);
+  res.status(err.status || 500);
+  res.send(err.message);
 });
 
 module.exports = app;
