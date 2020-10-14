@@ -1,9 +1,5 @@
 require("dotenv").config({
-<<<<<<< HEAD
 	path: ".env",
-=======
-  path: ".env",
->>>>>>> a992fd34dbd2fa9a50cf755a4454e9e66fc62559
 });
 const createError = require("http-errors");
 const express = require("express");
