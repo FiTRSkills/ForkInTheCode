@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./src/bin/www",
     "doc": "jsdoc -d docs --configure jsconf.json ./src/app.js",
-    "test": "jest"
+    "test": "jest -i"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",

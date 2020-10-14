@@ -1,3 +1,7 @@
+/** Module providing user implementation for routes
+ * @module controllers/authcontroller
+ */
+
 const mongoose = require("mongoose");
 const passport = require("passport");
 const User = require("../models/user");
@@ -6,7 +10,9 @@ const userController = {};
 
 /**
  * functionality for registration
- * @name userController.doRegister
+ * @name doRegister
+ * @function
+ * @alias module:/controllers/authcontroller
  * @property {request} request - contains username and password
  * @returns {string} response - whether or not registration was completed
  */
@@ -29,7 +35,9 @@ userController.doRegister = function (req, res) {
 
 /**
  * functionality for login
- * @name UserController.doLogin
+ * @name doLogin
+ * @function
+ * @alias module:/controllers/authcontroller
  * @property {request} request - contains username and password
  * @returns {string} response - the user on successful login
  */
@@ -41,7 +49,9 @@ userController.doLogin = function (req, res) {
 
 /**
  * functionality for logout
- * @name UserController.logout
+ * @name logout
+ * @function
+ * @alias module:/controllers/authcontroller
  * @property {request} request - request to server
  * @returns {string} response - the session is closed for the user
  */

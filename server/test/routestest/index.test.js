@@ -29,6 +29,16 @@ describe("testing index.js routes", () => {
   it("POST /login - failure", async () => {
     const res = await request.post("/login");
     expect(res.statusCode).toEqual(400);
+    expect(res.text).toEqual("Bad Request");
+  });
+
+  it("POST /login - incorrect password", async () => {
+    const res = await request
+      .post("/login")
+      .set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+      .send({ username: "tester@gmail.com", password: "chickem" });
+    expect(res.statusCode).toEqual(401);
+    expect(res.text).toEqual("Unauthorized");
   });
 
   it("POST /login - success", async () => {
@@ -36,6 +46,7 @@ describe("testing index.js routes", () => {
       .post("/login")
       .set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
       .send({ username: "tester@gmail.com", password: "chicken" });
+    console.log(res.text);
     expect(res.statusCode).toEqual(200);
     expect(res.text).toEqual("tester@gmail.com");
   });

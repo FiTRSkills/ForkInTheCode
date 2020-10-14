@@ -4,7 +4,7 @@
  * Set up enviornment variables from a .env file
  */
 
-require("dotenv").config();
+require("dotenv").config("");
 
 /**
  * Module dependencies.
