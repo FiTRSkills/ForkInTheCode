@@ -1,30 +1,11 @@
-const mongoose = require("mongoose");
-const express = require("express");
+const { connectDB, disconnectDB } = require("../util");
 const supertest = require("supertest");
 const app = require("../../src/app");
 const request = supertest(app);
 
 describe("testing index.js routes", () => {
-  beforeAll(async () => {
-    await mongoose.connect(
-      process.env.MONGO_URL,
-      {
-        useNewUrlParser: true,
-        useCreateIndex: true,
-        useUnifiedTopology: true,
-      },
-      (err) => {
-        if (err) {
-          console.error(err);
-          process.exit(1);
-        }
-      }
-    );
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-  });
+  beforeAll(connectDB);
+  afterAll(disconnectDB);
 
   it("POST /register - no registration information", async () => {
     const res = await request.post("/register");
