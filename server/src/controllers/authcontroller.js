@@ -17,7 +17,6 @@ userController.doRegister = function (req, res) {
     function (err, user) {
       if (err) {
         res.send(err);
-        return;
       }
 
       passport.authenticate("local")(req, res, function () {
