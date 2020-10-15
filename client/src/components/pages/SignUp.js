@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { changeCurrentPage } from "../../redux/Actions";
+import { changeCurrentPage } from "../../redux/actions";
 import { Container, Box, Tabs, Tab } from "@material-ui/core";
 import "./SignUp.css";
 import SignUpTabPanel from "../subcomponents/SignUpTabPanel";

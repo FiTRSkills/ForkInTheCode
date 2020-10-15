@@ -1,16 +1,9 @@
-import { UPDATE_USER, CHANGE_CURRENT_PAGE, LOG_OUT } from "./ActionTypes"
+import { UPDATE_USER, LOG_OUT } from "../ActionTypes"
 
 export const updateUser = user => ({
     type: UPDATE_USER,
     payload: {
         user
-    }
-});
-
-export const changeCurrentPage = content => ({
-    type: CHANGE_CURRENT_PAGE,
-    payload: {
-        content
     }
 });
 
