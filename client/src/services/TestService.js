@@ -6,7 +6,7 @@ const endpoints = {
 
 export default {
     test: () => {
-        return API.get(process.env.DEV_SERVER_URL + endpoints.TEST_API)
+        return API.get(process.env.REACT_APP_DEV_SERVER_URL + endpoints.TEST_API)
             .then((response) => response.json())
             .then((json) => json);
     }
