@@ -10,10 +10,10 @@ const EMPLOYER_USERTYPE = "EmployerProfile";
 const EDUCATOR_USERTYPE = "EducatorProfile";
 
 function SignUp(props) {
-  const [value, setValue] = React.useState(0);
+  const [currentTabIdx, setTabIdx] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleChange = (event, newIdx) => {
+    setTabIdx(newIdx);
   };
 
   useEffect(() => {
@@ -27,7 +27,7 @@ function SignUp(props) {
     <Container>
       <Box className={"signUpContainer"}>
         <Tabs
-          value={value}
+          value={currentTabIdx}
           onChange={handleChange}
           aria-label="simple tabs example"
         >
@@ -37,7 +37,7 @@ function SignUp(props) {
         </Tabs>
         <SignUpTabPanel
           usertype={JOB_SEEKER_USERTYPE}
-          value={value}
+          currentTabIdx={currentTabIdx}
           index={0}
           title={"Job Seeker"}
           form_id={"job_seeker_form"}
@@ -45,7 +45,7 @@ function SignUp(props) {
         />
         <SignUpTabPanel
           usertype={EMPLOYER_USERTYPE}
-          value={value}
+          currentTabIdx={currentTabIdx}
           index={1}
           title={"Employer"}
           form_id={"employer_form"}
@@ -53,7 +53,7 @@ function SignUp(props) {
         />
         <SignUpTabPanel
           usertype={EDUCATOR_USERTYPE}
-          value={value}
+          currentTabIdx={currentTabIdx}
           index={2}
           title={"Educator"}
           form_id={"educator_form"}

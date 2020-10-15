@@ -10,7 +10,7 @@ const url =
     : process.env.REACT_APP_DEV_SERVER_URL;
 
 function SignUpTabPanel(props) {
-  const { value, index, title, usertype, history, form_id } = props;
+  const { currentTabIdx, index, title, usertype, history, form_id } = props;
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -58,7 +58,7 @@ function SignUpTabPanel(props) {
   return (
     <Box
       component={"form"}
-      hidden={value !== index}
+      hidden={currentTabIdx !== index}
       onSubmit={signUp}
       id={form_id}
     >

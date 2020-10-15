@@ -1,5 +1,5 @@
 describe("Sign Up", () => {
-  it("Sign Up Job Seeker S", () => {
+  it("Sign Up Job Seeker Success", () => {
     cy.visit("/SignUp");
     cy.get("#navBarTitle").should("contain", "Sign Up");
     cy.server();
