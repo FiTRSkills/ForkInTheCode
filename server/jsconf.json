@@ -1,11 +1,11 @@
 {
-    "source": {
-        "includePattern": ".+\\.js(doc|x)?$",
-        "exclude": ["node_modules"],
-        "include": ["."]
-    },
-    "recurseDepth": 5,
-    "opts": {
-        "recurse": true                        
-    }
+	"source": {
+		"includePattern": ".+\\.js(doc|x)?$",
+		"exclude": ["node_modules"],
+		"include": ["."]
+	},
+	"recurseDepth": 5,
+	"opts": {
+		"recurse": true
+	}
 }
