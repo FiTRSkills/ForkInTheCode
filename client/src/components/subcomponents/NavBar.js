@@ -54,9 +54,9 @@ function NavBar(props) {
                     <div className="navBarSides">
                         {navBarListLeft}
                     </div>
-                    {/*<Typography variant="h6" className="navBarTitle">*/}
-                        {/*{props.currentPage}*/}
-                    {/*</Typography>*/}
+                    <Typography variant="h6" className="navBarTitle">
+                        {props.currentPage}
+                    </Typography>
                     <div className="navBarSides navBarRight">
                         {navBarListRight}
                     </div>
