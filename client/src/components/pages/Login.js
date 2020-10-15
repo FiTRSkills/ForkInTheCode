@@ -15,6 +15,26 @@ import { updateUser, changeCurrentPage } from "../../redux/actions";
 import "./Login.css";
 import { Grid } from "@material-ui/core";
 
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(4),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: "100%",
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
+
 function Login(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -61,25 +81,6 @@ function Login(props) {
         break;
     }
   }
-  const useStyles = makeStyles((theme) => ({
-    paper: {
-      marginTop: theme.spacing(4),
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-    },
-    avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-      width: "100%",
-      marginTop: theme.spacing(1),
-    },
-    submit: {
-      margin: theme.spacing(3, 0, 2),
-    },
-  }));
 
   const classes = useStyles();
 
