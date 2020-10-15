@@ -2,7 +2,7 @@ import { Button } from '@material-ui/core';
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { changeCurrentPage } from '../../redux/actions/Actions'
+import { changeCurrentPage } from '../../redux/actions'
 
 function Home(props) {
     useEffect(() => {

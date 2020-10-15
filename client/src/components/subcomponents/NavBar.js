@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { connect } from "react-redux"
 import { Link } from "react-router-dom"
-import { changeCurrentPage, logOut } from '../../redux/actions/Authentication'
+import { changeCurrentPage, logOut } from '../../redux/actions'
 import './NavBar.css'
 
 function NavBar(props) {

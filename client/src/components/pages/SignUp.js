@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { changeCurrentPage } from '../../redux/actions/Actions'
+import { changeCurrentPage } from '../../redux/actions'
 
 function SignUp(props) {
     useEffect(() => {
