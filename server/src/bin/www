@@ -1,7 +1,7 @@
-#!/usr/bin/env node
+#!/usr/bin/.env node
 
 /**
- * Set up enviornment variables from a .env file
+ * Set up enviornment variables from a ..env file
  */
 
 require("dotenv").config("");

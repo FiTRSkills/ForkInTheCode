@@ -17,7 +17,6 @@ server/coverage
 server/docs
 
 # coverage
-server/coverage
 
 # production
 /client/build
@@ -35,7 +34,6 @@ server/coverage
 .env.production.local
 client/.env
 
-.env
 /client/.env
 /server/.env
 

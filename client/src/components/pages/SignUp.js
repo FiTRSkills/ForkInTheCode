@@ -5,6 +5,10 @@ import { Container, Box, Tabs, Tab } from "@material-ui/core";
 import "./SignUp.css";
 import SignUpTabPanel from "../subcomponents/SignUpTabPanel";
 
+const JOB_SEEKER_USERTYPE = "JobSeekerProfile";
+const EMPLOYER_USERTYPE = "EmployerProfile";
+const EDUCATOR_USERTYPE = "EducatorProfile";
+
 function SignUp(props) {
   const [value, setValue] = React.useState(0);
 
@@ -31,9 +35,27 @@ function SignUp(props) {
           <Tab label="Employer" />
           <Tab label="Educator" />
         </Tabs>
-        <SignUpTabPanel value={value} index={0} title={"Job Seeker"} />
-        <SignUpTabPanel value={value} index={1} title={"Employer"} />
-        <SignUpTabPanel value={value} index={2} title={"Educator"} />
+        <SignUpTabPanel
+          usertype={JOB_SEEKER_USERTYPE}
+          value={value}
+          index={0}
+          title={"Job Seeker"}
+          history={props.history}
+        />
+        <SignUpTabPanel
+          usertype={EMPLOYER_USERTYPE}
+          value={value}
+          index={1}
+          title={"Employer"}
+          history={props.history}
+        />
+        <SignUpTabPanel
+          usertype={EDUCATOR_USERTYPE}
+          value={value}
+          index={2}
+          title={"Educator"}
+          history={props.history}
+        />
       </Box>
     </Container>
   );
