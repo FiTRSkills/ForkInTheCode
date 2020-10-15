@@ -70,7 +70,7 @@ function Login(props) {
                         <TextField name="password" id="password" type="password" className="loginInput" value={password} onChange={handleChange} />
                     </Grid>
                     <Grid item xs={12} align="center">
-                        <Button variant="contained" color="inherit" className="loginSubmit" onClick={attemptLogin}>Submit</Button>
+                        <Button variant="contained" color="inherit" className="loginSubmit" onClick={attemptLogin} id="submit">Submit</Button>
                     </Grid>
                     <Grid item xs={12} align="center">
                         <div>Don't have an account? Sign up <Link to="/SignUp" onClick={() => { console.log("click") }}>here</Link>!</div>

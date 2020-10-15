@@ -36,7 +36,7 @@ function NavBar(props) {
 
     function getButtonArray(labelList) {
         return labelList.map((item) =>
-            <Button color="inherit" key={item} onClick={() => { onButtonClick(item) }} component={Link} to={'/' + item}>{item}</Button>
+            <Button color="inherit" key={item} onClick={() => { onButtonClick(item) }} component={Link} to={'/' + item} id={item.replace(' ', '')}>{item}</Button>
         )
     }
 
@@ -54,7 +54,7 @@ function NavBar(props) {
                     <div className="navBarSides">
                         {navBarListLeft}
                     </div>
-                    <Typography variant="h6" className="navBarTitle">
+                    <Typography variant="h6" className="navBarTitle" id="navBarTitle">
                         {props.currentPage}
                     </Typography>
                     <div className="navBarSides navBarRight">
