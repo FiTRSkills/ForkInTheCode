@@ -31,6 +31,7 @@ function SignUpTabPanel(props) {
   };
 
   const signUp = (event) => {
+    event.preventDefault();
     setLoading(true);
     axios
       .post(url + "/register", {
@@ -48,11 +49,10 @@ function SignUpTabPanel(props) {
       .finally(() => {
         setLoading(false);
       });
-    event.preventDefault();
   };
 
   return (
-    <Box component={"form"} hidden={value !== index}>
+    <Box component={"form"} hidden={value !== index} onSubmit={signUp}>
       <Typography className={"formRow"} align={"center"} variant={"h6"}>
         Sign Up for {title}
       </Typography>
@@ -99,12 +99,7 @@ function SignUpTabPanel(props) {
           </Grid>
         </Grid>
         <Grid className={"formRow"} item justify={"center"}>
-          <Button
-            color={"primary"}
-            variant={"contained"}
-            type={"submit"}
-            onClick={signUp}
-          >
+          <Button color={"primary"} variant={"contained"} type={"submit"}>
             {!loading ? "Sign Up" : "Processing..."}
           </Button>
         </Grid>
