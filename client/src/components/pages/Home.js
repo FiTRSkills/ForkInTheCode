@@ -2,7 +2,7 @@ import { Button } from '@material-ui/core';
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { changeCurrentPage } from '../../redux/Actions'
+import { changeCurrentPage } from '../../redux/actions/Actions'
 
 function Home(props) {
     useEffect(() => {
@@ -17,7 +17,6 @@ function Home(props) {
         axios.post(url + "/HomeTest", user).then(response => {
             console.log(response)
         }).catch(response => {
-            setErrorHappened(true);
             console.log(response)
         })
     }

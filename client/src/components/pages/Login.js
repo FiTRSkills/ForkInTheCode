@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Alert from '@material-ui/lab/Alert';
 import { Link } from "react-router-dom"
 import { connect } from 'react-redux';
-import { updateUser, changeCurrentPage } from '../../redux/Actions'
+import { updateUser, changeCurrentPage } from '../../redux/actions/Authentication'
 import './Login.css'
 import { Grid } from '@material-ui/core';
 
