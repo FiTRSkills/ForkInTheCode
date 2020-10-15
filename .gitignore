@@ -11,7 +11,6 @@ server/src/.env
 # testing
 /coverage
 server/globalConfig.json
-server/coverage
 
 # documentation
 server/docs
@@ -34,7 +33,7 @@ server/coverage
 .env.development.local
 .env.test.local
 .env.production.local
-/client/.env
+client/.env
 /server/.env
 
 npm-debug.log*
