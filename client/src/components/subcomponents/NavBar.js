@@ -20,6 +20,7 @@ function NavBar(props) {
   // Lifecycle hooks
   useEffect(() => {
     assignBarContents(Object.keys(props.user).length > 0);
+    // eslint-disable-next-line
   }, [props.currentPage]);
 
   // Helper functions

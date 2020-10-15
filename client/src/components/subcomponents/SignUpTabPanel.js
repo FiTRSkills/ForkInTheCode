@@ -16,6 +16,8 @@ function SignUpTabPanel(props) {
       case "password":
         setPassword(event.target.value);
         break;
+      default:
+        break;
     }
   };
 
@@ -41,6 +43,7 @@ function SignUpTabPanel(props) {
               id={"username"}
               onChange={handleChange}
               required
+              value={username}
               type={"username"}
             />
           </Grid>
@@ -61,6 +64,7 @@ function SignUpTabPanel(props) {
               id={"password"}
               onChange={handleChange}
               required
+              value={password}
               type={"password"}
             />
           </Grid>
