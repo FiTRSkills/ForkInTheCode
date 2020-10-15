@@ -10,12 +10,12 @@ const url =
     : process.env.REACT_APP_DEV_SERVER_URL;
 
 function SignUpTabPanel(props) {
-  const { value, index, title, usertype, history } = props;
+  const { value, index, title, usertype, history, form_id } = props;
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState(false);
+  const [error, setError] = React.useState(null);
 
   const handleChange = (event) => {
     switch (event.target.name) {
@@ -40,10 +40,14 @@ function SignUpTabPanel(props) {
         password,
       })
       .then((response) => {
-        history.push("/Login");
+        if (response.data.name && response.data.name === "UserExistsError") {
+          setError(response.data.message);
+        } else {
+          history.push("/Login");
+        }
       })
       .catch((error) => {
-        setError(true);
+        setError("Something wrong occurs!");
         console.log(error);
       })
       .finally(() => {
@@ -52,11 +56,16 @@ function SignUpTabPanel(props) {
   };
 
   return (
-    <Box component={"form"} hidden={value !== index} onSubmit={signUp}>
+    <Box
+      component={"form"}
+      hidden={value !== index}
+      onSubmit={signUp}
+      id={form_id}
+    >
       <Typography className={"formRow"} align={"center"} variant={"h6"}>
         Sign Up for {title}
       </Typography>
-      {error && <Alert severity={"error"}>Sign up fails!</Alert>}
+      {error && <Alert severity={"error"}>{error}</Alert>}
       <Grid container justify={"center"} alignItems={"center"}>
         <Grid
           className={"formRow"}

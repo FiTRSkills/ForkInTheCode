@@ -40,6 +40,7 @@ function SignUp(props) {
           value={value}
           index={0}
           title={"Job Seeker"}
+          form_id={"job_seeker_form"}
           {...props}
         />
         <SignUpTabPanel
@@ -47,6 +48,7 @@ function SignUp(props) {
           value={value}
           index={1}
           title={"Employer"}
+          form_id={"employer_form"}
           {...props}
         />
         <SignUpTabPanel
@@ -54,6 +56,7 @@ function SignUp(props) {
           value={value}
           index={2}
           title={"Educator"}
+          form_id={"educator_form"}
           {...props}
         />
       </Box>
