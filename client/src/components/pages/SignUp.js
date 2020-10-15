@@ -40,21 +40,21 @@ function SignUp(props) {
           value={value}
           index={0}
           title={"Job Seeker"}
-          history={props.history}
+          {...props}
         />
         <SignUpTabPanel
           usertype={EMPLOYER_USERTYPE}
           value={value}
           index={1}
           title={"Employer"}
-          history={props.history}
+          {...props}
         />
         <SignUpTabPanel
           usertype={EDUCATOR_USERTYPE}
           value={value}
           index={2}
           title={"Educator"}
-          history={props.history}
+          {...props}
         />
       </Box>
     </Container>
