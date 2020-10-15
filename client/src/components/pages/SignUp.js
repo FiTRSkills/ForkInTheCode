@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { changeCurrentPage } from "../../redux/actions";
-import "./SignUp.css";
 
 function SignUp(props) {
     useEffect(() => {
