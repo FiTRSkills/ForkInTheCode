@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { changeCurrentPage } from "../../redux/actions";
-import { Container, Box, Tabs, Tab } from "@material-ui/core";
+import { Container, Tabs, Tab } from "@material-ui/core";
 import "./SignUp.css";
 import SignUpTabPanel from "../subcomponents/SignUpTabPanel";
+import { makeStyles } from "@material-ui/core/styles";
 
 const JOB_SEEKER_USERTYPE = "JobSeekerProfile";
 const EMPLOYER_USERTYPE = "EmployerProfile";
@@ -15,17 +16,32 @@ function SignUp(props) {
   const handleChange = (event, newIdx) => {
     setTabIdx(newIdx);
   };
-
+  const useStyles = makeStyles((theme) => ({
+    paper: {
+        marginTop: theme.spacing(4),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+    },
+    form: {
+        width: "100%",
+        marginTop: theme.spacing(1),
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
+    },
+  }));
   useEffect(() => {
     if (props.user !== undefined && Object.keys(props.user).length > 0) {
       props.history.push("/Home");
     }
     props.changeCurrentPage("Sign Up");
   });
+  const classes = useStyles();
 
   return (
     <Container>
-      <Box className={"signUpContainer"}>
+     <div className={classes.paper}>
         <Tabs
           value={currentTabIdx}
           onChange={handleChange}
@@ -59,7 +75,7 @@ function SignUp(props) {
           form_id={"educator_form"}
           {...props}
         />
-      </Box>
+      </div>
     </Container>
   );
 }

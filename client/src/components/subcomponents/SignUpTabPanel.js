@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Box, Button, Grid, TextField, Typography } from "@material-ui/core";
+import {Box, Button, Container, Grid, TextField, Typography} from "@material-ui/core";
 import "./SignUpTabPanel.css";
 import axios from "axios";
 import { Alert } from "@material-ui/lab";
+import {makeStyles} from "@material-ui/core/styles";
 
 const url =
   process.env.REACT_APP_ENVIRONMENT === "prod"
@@ -54,65 +55,74 @@ function SignUpTabPanel(props) {
         setLoading(false);
       });
   };
+  const useStyles = makeStyles((theme) => ({
+    paper: {
+      marginTop: theme.spacing(4),
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+    },
+    avatar: {
+      margin: theme.spacing(1),
+      backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+      width: "100%",
+      marginTop: theme.spacing(1),
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2),
+      width:"100%"
+    },
+    header: {
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(1)
+    }
+  }));
+  const classes = useStyles();
 
   return (
-    <Box
+
+      <Box
       component={"form"}
       hidden={currentTabIdx !== index}
       onSubmit={signUp}
       id={form_id}
     >
-      <Typography className={"formRow"} align={"center"} variant={"h6"}>
+      <Typography component="h1" variant="h5" align={"center"} className = {classes.header}>
         Sign Up for {title}
       </Typography>
+
       {error && <Alert severity={"error"}>{error}</Alert>}
-      <Grid container justify={"center"} alignItems={"center"}>
-        <Grid
-          className={"formRow"}
-          container
-          justify={"center"}
-          alignItems={"center"}
-          spacing={3}
-        >
-          <Grid item>
-            <Typography variant={"body1"}>Username: </Typography>
-          </Grid>
-          <Grid item>
-            <TextField
-              name={"username"}
-              onChange={handleChange}
-              required
-              value={username}
-              type={"username"}
-            />
-          </Grid>
-        </Grid>
-        <Grid
-          className={"formRow"}
-          container
-          justify={"center"}
-          alignItems={"center"}
-          spacing={3}
-        >
-          <Grid item>
-            <Typography variant={"body1"}>Password: </Typography>
-          </Grid>
-          <Grid item>
-            <TextField
-              name={"password"}
-              onChange={handleChange}
-              required
-              value={password}
-              type={"password"}
-            />
-          </Grid>
-        </Grid>
-        <Grid className={"formRow"} item justify={"center"}>
-          <Button color={"primary"} variant={"contained"} type={"submit"}>
+      <form className={classes.form}>
+        <TextField
+            variant="outlined"
+            margin="normal"
+            required={true}
+            fullWidth
+            id="username"
+            label="Username"
+            name="username"
+            autoFocus
+            value={username}
+            onChange={handleChange}
+        />
+        <TextField
+            variant="outlined"
+            margin="normal"
+            required={true}
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            value={password}
+            onChange={handleChange}
+        />
+          <Button color={"primary"} variant={"contained"} type={"submit"} className={classes.submit}>
             {!loading ? "Sign Up" : "Processing..."}
           </Button>
-        </Grid>
-      </Grid>
+      </form>
     </Box>
   );
 }
