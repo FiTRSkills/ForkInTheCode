@@ -5,7 +5,8 @@ import { Container, Tabs, Tab } from "@material-ui/core";
 import "./SignUp.css";
 import SignUpTabPanel from "../subcomponents/SignUpTabPanel";
 import { makeStyles } from "@material-ui/core/styles";
-
+import Avatar from "@material-ui/core/Avatar";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 const JOB_SEEKER_USERTYPE = "JobSeekerProfile";
 const EMPLOYER_USERTYPE = "EmployerProfile";
 const EDUCATOR_USERTYPE = "EducatorProfile";
@@ -27,6 +28,10 @@ function SignUp(props) {
         width: "100%",
         marginTop: theme.spacing(1),
     },
+    avatar: {
+      margin: theme.spacing(1),
+      backgroundColor: theme.palette.secondary.main,
+    },
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
@@ -42,6 +47,9 @@ function SignUp(props) {
   return (
     <Container>
      <div className={classes.paper}>
+         <Avatar className={classes.avatar}>
+             <LockOutlinedIcon />
+         </Avatar>
         <Tabs
           value={currentTabIdx}
           onChange={handleChange}
