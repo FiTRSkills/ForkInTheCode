@@ -5,7 +5,7 @@ on:
     branches: [master]
 
 jobs:
-  test_pull_request:
+  client_ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -13,7 +13,11 @@ jobs:
       - run: npm ci --prefix client
       - run: npm run test-ci --if-present --prefix client
       - run: npm run build --prefix client
+  server_ci:
+    runs-on: ubuntu-latest
+    step:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
       - run: npm ci --prefix server
       - run: npm test --if-present --prefix server
       - run: npm run build --prefix server
-        
