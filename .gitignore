@@ -2,24 +2,22 @@
 
 # dependencies
 /node_modules
-client/node_modules
-server/node_modules
+/client/node_modules
+/server/node_modules
 /.pnp
 .pnp.js
-server/src/.env
 
 # testing
-/coverage
-server/globalConfig.json
+/client/cypress/videos
+/server/coverage
+/server/globalConfig.json
 
 # documentation
-server/docs
-
-# coverage
-server/coverage
+/server/docs
 
 # production
 /client/build
+/server/build
 /build
 
 # IntelliJ
@@ -33,7 +31,7 @@ server/coverage
 .env.development.local
 .env.test.local
 .env.production.local
-client/.env
+/client/.env
 /server/.env
 
 npm-debug.log*
