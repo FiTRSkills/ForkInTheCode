@@ -4,7 +4,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import "./web.config";
 import ReactDOM from 'react-dom'
-import reducers from "./reducers";
+import reducers from "./redux/reducers";
 import { createStore } from "redux";
 import { Provider } from 'react-redux'
 

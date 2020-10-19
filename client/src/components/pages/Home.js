@@ -1,32 +1,43 @@
-import logo from "../../logo.svg";
-import React, { Component } from 'react';
+import { Button } from '@material-ui/core';
+import axios from 'axios';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { changeCurrentPage } from '../../redux/actions'
 
-class Home extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {apiResponse: ""}
+function Home(props) {
+    useEffect(() => {
+        if (props.user === undefined || Object.keys(props.user).length === 0) {
+            props.history.push('/Login')
+        }
+        props.changeCurrentPage("Home")
+    });
+
+    function doThing(user) {
+        let url = process.env.REACT_APP_ENVIRONMENT === 'prod' ? process.env.REACT_APP_PROD_SERVER_URL : process.env.REACT_APP_DEV_SERVER_URL;
+        axios.post(url + "/HomeTest", user).then(response => {
+            console.log(response)
+        }).catch(response => {
+            console.log(response)
+        })
     }
 
-
-
-    componentWillMount() {
-        // callAPI();
-    fetch(process.env.REACT_APP_SERVER_URL+ "/testAPI")
-            .then(res => res.text())
-            .then(res => this.setState({apiResponse: res}));
+    function sendUser() {
+        doThing(props.user)
     }
-    render() {
-        return (
-            <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo"/>
-                </header>
 
-                <p>
-                    {this.state.apiResponse}
-                </p>
-            </div>
-        );
+    function sendNoUser() {
+        doThing({})
     }
+
+    return (
+        <div className="home">
+            <Button onClick={sendUser}>testing for rochel w/ user</Button>
+            <Button onClick={sendNoUser}>testing for rochel w/o user</Button>
+        </div>
+    );
 }
-export default Home;
+
+export default connect(
+    state => ({ user: state.authentication }),
+    { changeCurrentPage }
+)(Home);
