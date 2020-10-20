@@ -13,8 +13,6 @@ jobs:
       - run: npm ci --prefix server
       - run: npm run doc --prefix server
       - name: copy file via ssh password
-      - uses: actions/checkout@master
-      - name: copy file via ssh password
         uses: appleboy/scp-action@master
         with:
           HOST: nitron.se.rit.edu
