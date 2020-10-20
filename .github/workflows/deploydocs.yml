@@ -19,8 +19,8 @@ jobs:
           USERNAME: forkinthecode
           PORT: 22
           KEY: ${{ secrets.SSH_SECRET }}
-          source: "./server/docs"
-          target: "/home/senior-projects/forkinthecode/public_html/docs"
+          source: "/server/docs"
+          target: "/home/senior-projects/forkinthecode/public_html"
       - name: Executing remote command
         uses: appleboy/ssh-action@master
         with:
@@ -30,4 +30,4 @@ jobs:
           PORT: 22
           script: |
             cd /home/senior-projects/forkinthecode/public_html
-            chmod -R g+w docs
+            chmod -R g+w server
