@@ -11,7 +11,7 @@ describe('Authentication', () => {
                 user: { id: 1 }
             }
         }).as('loginCall')
-        cy.get('#username').type("user1")
+        cy.get('#email').type("email@email.com")
         cy.get('#password').type("password")
         cy.get('#submit').click()
         cy.wait('@loginCall').its('status').should('eq', 200)
@@ -28,7 +28,7 @@ describe('Authentication', () => {
             status: 401,
             response: {}
         }).as('apiCall')
-        cy.get('#username').type("user1")
+        cy.get('#email').type("email@email.com")
         cy.get('#password').type("password")
         cy.get('#submit').click()
         cy.wait('@apiCall').its('status').should('not.eq', 200)
