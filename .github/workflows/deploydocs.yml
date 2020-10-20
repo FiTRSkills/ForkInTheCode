@@ -19,7 +19,7 @@ jobs:
           USERNAME: forkinthecode
           PORT: 22
           KEY: ${{ secrets.SSH_SECRET }}
-          source: "/server/docs"
+          source: "./server/docs"
           target: "/home/senior-projects/forkinthecode/public_html"
       - name: Executing remote command
         uses: appleboy/ssh-action@master
