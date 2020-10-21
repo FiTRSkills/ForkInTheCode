@@ -50,6 +50,11 @@ router.get("/logout", auth.logout);
  */
 router.get("/profile", isLoggedIn, profile.getProfile);
 
+//The 404 Route (ALWAYS Keep this as the last route)
+router.get('*', function(req, res){
+  res.send('Not Found', 404);
+});
+
 module.exports = router;
 
 //route middleware to ensure user is logged in
