@@ -6,6 +6,7 @@
 var express = require("express");
 var router = express.Router();
 var auth = require("../controllers/authcontroller.js");
+var profile = require("../controllers/profilecontroller.js")
 
 /**
  * Routing serving registration
@@ -39,4 +40,21 @@ router.post("/login", auth.doLogin);
  */
 router.get("/logout", auth.logout);
 
+/**
+ * Routing serving getting profile information
+ * @name GET /profile
+ * @function
+ * @alias module:/routers/profile
+ * @property {string} email - the email of the accounts profile
+ * @returns {json} of user profile infromation
+ */
+router.get("/profile", isLoggedIn, profile.getProfile);
+
 module.exports = router;
+
+//route middleware to ensure user is logged in
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+    res.status(400).send('access denied');
+}
