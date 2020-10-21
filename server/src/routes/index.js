@@ -45,7 +45,7 @@ router.get("/logout", auth.logout);
  * @name GET /profile
  * @function
  * @alias module:/routers/profile
- * @property {string} email - the email of the accounts profile
+ * @property {string} user - the user token for the session
  * @returns {json} of user profile infromation
  */
 router.get("/profile", isLoggedIn, profile.getProfile);
