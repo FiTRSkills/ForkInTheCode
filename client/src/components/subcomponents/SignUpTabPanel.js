@@ -27,7 +27,7 @@ function SignUpTabPanel(props) {
   /**
    * Local states: username, password, sign-up loading, sign-up error
    */
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
@@ -39,8 +39,8 @@ function SignUpTabPanel(props) {
    */
   const handleChange = (event) => {
     switch (event.target.name) {
-      case "username":
-        setUsername(event.target.value);
+      case "email":
+        setEmail(event.target.value);
         break;
       case "password":
         setPassword(event.target.value);
@@ -61,7 +61,7 @@ function SignUpTabPanel(props) {
     axios
       .post(url + "/register", {
         usertype,
-        username,
+        username: email,
         password,
       })
       .then((response) => {
@@ -133,11 +133,11 @@ function SignUpTabPanel(props) {
           margin="normal"
           required={true}
           fullWidth
-          id="username"
-          label="Username"
-          name="username"
+          id="email"
+          label="Email"
+          name="email"
           autoFocus
-          value={username}
+          value={email}
           onChange={handleChange}
         />
         <TextField
