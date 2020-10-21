@@ -17,20 +17,57 @@ const userController = {};
  * @returns {string} response - whether or not registration was completed
  */
 userController.doRegister = function (req, res) {
-  User.register(
-    new User({ username: req.body.username, type: req.body.usertype }),
-    req.body.password,
-    function (err, user) {
-      if (err) {
-        res.status(400).send(err);
-        return;
-      }
+  if (req.body.usertype == 'JobSeekerProfile'){
+    User.register(
+      new User({ username: req.body.username, type: req.body.usertype }),
+      req.body.password,
+      function (err, user) {
+        if (err) {
+          res.status(400).send(err);
+          return;
+        }
 
-      passport.authenticate("local")(req, res, function () {
-        res.status(200).send("Successfully created user");
-      });
-    }
-  );
+        passport.authenticate("local")(req, res, function () {
+          res.status(200).send("Successfully created Job Seeker user");
+        });
+      }
+    );
+  }
+  else if (req.body.usertype == 'EmployerProfile'){
+    User.register(
+      new User({ username: req.body.username, type: req.body.usertype }),
+      req.body.password,
+      function (err, user) {
+        if (err) {
+          res.status(400).send(err);
+          return;
+        }
+
+        passport.authenticate("local")(req, res, function () {
+          res.status(200).send("Successfully created Employer user");
+        });
+      }
+    );
+  }
+  else if (req.body.usertype == 'EducatorProfile'){
+    User.register(
+      new User({ username: req.body.username, type: req.body.usertype }),
+      req.body.password,
+      function (err, user) {
+        if (err) {
+          res.status(400).send(err);
+          return;
+        }
+
+        passport.authenticate("local")(req, res, function () {
+          res.status(200).send("Successfully created Educator user");
+        });
+      }
+    );
+  }
+  else{
+    res.status(400).send('Invalid usertype');
+  }
 };
 
 /**
