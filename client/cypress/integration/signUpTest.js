@@ -17,7 +17,7 @@ describe("Sign Up", () => {
 
     // Fill in the sign up form and submit
     cy.get("#job_seeker_form").within(($form) => {
-      cy.get('input[name="email"]').type("test");
+      cy.get('input[name="email"]').type("test123@gmail.com");
       cy.get('input[name="password"]').type("123456");
       cy.get('button[type="submit"]').click();
     });
@@ -46,7 +46,7 @@ describe("Sign Up", () => {
 
     // Fill in the sign up form and submit
     cy.get("#job_seeker_form").within(($form) => {
-      cy.get('input[name="email"]').type("test");
+      cy.get('input[name="email"]').type("test123@gmail.com");
       cy.get('input[name="password"]').type("123");
       cy.get('button[type="submit"]').click();
     });
@@ -55,4 +55,20 @@ describe("Sign Up", () => {
     cy.wait("@signUpCall").its("status").should("eq", 400);
     cy.contains("A user with the given username is already registered");
   });
+
+  it("Invalid email", () => {
+    // Navigate to sign up page and verify current page is sign up
+    cy.visit("/SignUp");
+    cy.get("#navBarTitle").should("contain", "Sign Up");
+
+    // Fill in the sign up form and submit
+    cy.get("#job_seeker_form").within(($form) => {
+      cy.get('input[name="email"]').type("test");
+      cy.get('input[name="password"]').type("123");
+      cy.get('button[type="submit"]').click();
+    });
+
+    // Verify email is invalid
+    cy.contains("Invalid email!");
+  })
 });

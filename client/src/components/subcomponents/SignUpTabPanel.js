@@ -57,6 +57,10 @@ function SignUpTabPanel(props) {
    */
   const signUp = (event) => {
     event.preventDefault();
+    if (!validEmail(email)) {
+      setError("Invalid email!");
+      return;
+    }
     setLoading(true);
     axios
       .post(url + "/register", {
@@ -78,6 +82,17 @@ function SignUpTabPanel(props) {
       .finally(() => {
         setLoading(false);
       });
+  };
+
+  /**
+   * Validate email inputs
+   *
+   * @param email: input email
+   * @returns {boolean}
+   */
+  const validEmail = (email) => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
   };
 
   /**
