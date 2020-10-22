@@ -54,16 +54,12 @@ User.pre("save", function (next) {
  * @param cb An optional callback to use instead of a promise
  * @returns {Promise} resolves when the profile is retrieved from the database
  */
-User.methods.getProfile = function (cb) {
+User.methods.getProfile = async function () {
   const Profile = mongoose.model(this.type);
-  let promise;
   //If a custom method is provided to assist with populate, use that first.
   if (Profile.findAndPopulateById)
-    promise = Profile.findAndPopulateById(this.profile);
-  else promise = Profile.findById(this.profile).exec();
-
-  if (!cb) return promise;
-  promise.then((profile) => cb(profile));
+    return await Profile.findAndPopulateById(this.profile);
+  else return await Profile.findById(this.profile).exec();
 };
 
 // Expose user types to avoid magic strings
