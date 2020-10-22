@@ -56,7 +56,12 @@ User.pre("save", function (next) {
  */
 User.methods.getProfile = function (cb) {
   const Profile = mongoose.model(this.type);
-  const promise = Profile.findById(this.profile);
+  let promise;
+  //If a custom method is provided to assist with populate, use that first.
+  if (Profile.findAndPopulateById)
+    promise = Profile.findAndPopulateById(this.profile);
+  else promise = Profile.findById(this.profile).exec();
+
   if (!cb) return promise;
   promise.then((profile) => cb(profile));
 };
