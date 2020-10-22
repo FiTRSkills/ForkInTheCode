@@ -36,7 +36,9 @@ const User = new mongoose.Schema({
   },
 });
 // Adds username, hash, salt, (also defined above for clarity) and some methods to the schema.
-User.plugin(passportLocalMongoose);
+User.plugin(passportLocalMongoose, {
+  usernameField: "email",
+});
 
 // Generate a new profile before saving the user to the database
 User.pre("save", function (next) {

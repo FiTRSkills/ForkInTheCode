@@ -18,7 +18,7 @@ const userController = {};
  */
 userController.doRegister = function (req, res) {
   User.register(
-    new User({ username: req.body.username, type: req.body.usertype }),
+    new User({ email: req.body.username, type: req.body.usertype }),
     req.body.password,
     function (err, user) {
       if (err) {
