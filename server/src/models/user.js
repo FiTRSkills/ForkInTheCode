@@ -41,10 +41,12 @@ User.plugin(passportLocalMongoose, {
 });
 
 // Generate a new profile before saving the user to the database
-User.pre("save", function (next) {
-  let profile = mongoose.model(this.type)();
-  this.profile = profile.id;
-  profile.save();
+User.pre("save", async function (next) {
+  if (this.isNew) {
+    let profile = mongoose.model(this.type)();
+    this.profile = profile.id;
+    await profile.save();
+  }
   next();
 });
 
