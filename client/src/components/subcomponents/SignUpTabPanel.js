@@ -6,9 +6,9 @@ import { Alert } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
 
 const url =
-    process.env.REACT_APP_ENVIRONMENT === "prod"
-        ? process.env.REACT_APP_PROD_SERVER_URL
-        : process.env.REACT_APP_DEV_SERVER_URL;
+  process.env.REACT_APP_ENVIRONMENT === "prod"
+    ? process.env.REACT_APP_PROD_SERVER_URL
+    : process.env.REACT_APP_DEV_SERVER_URL;
 
 function SignUpTabPanel(props) {
   const { currentTabIdx, index, title, usertype, history, form_id } = props;
@@ -35,25 +35,25 @@ function SignUpTabPanel(props) {
     event.preventDefault();
     setLoading(true);
     axios
-        .post(url + "/register", {
-          usertype,
-          username,
-          password,
-        })
-        .then((response) => {
-          if (response.data.name && response.data.name === "UserExistsError") {
-            setError(response.data.message);
-          } else {
-            history.push("/Login");
-          }
-        })
-        .catch((error) => {
-          setError("Something wrong occurs!");
-          console.log(error);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      .post(url + "/register", {
+        usertype,
+        username,
+        password,
+      })
+      .then((response) => {
+        history.push("/Login");
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          setError(error.response.data.message);
+        } else {
+          setError("Something wrong occurred");
+        }
+        console.error(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
   const useStyles = makeStyles((theme) => ({
     paper: {
@@ -82,52 +82,52 @@ function SignUpTabPanel(props) {
   const classes = useStyles();
 
   return (
-      <Box hidden={currentTabIdx !== index}>
-        <Typography
-            component="h1"
-            variant="h5"
-            align={"center"}
-            className={classes.header}
-        >
-          Sign Up for {title}
-        </Typography>
+    <Box hidden={currentTabIdx !== index}>
+      <Typography
+        component="h1"
+        variant="h5"
+        align={"center"}
+        className={classes.header}
+      >
+        Sign Up for {title}
+      </Typography>
 
-        {error && <Alert severity={"error"}>{error}</Alert>}
-        <form className={classes.form} onSubmit={signUp} id={form_id}>
-          <TextField
-              variant="outlined"
-              margin="normal"
-              required={true}
-              fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoFocus
-              value={username}
-              onChange={handleChange}
-          />
-          <TextField
-              variant="outlined"
-              margin="normal"
-              required={true}
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              value={password}
-              onChange={handleChange}
-          />
-          <Button
-              color={"primary"}
-              variant={"contained"}
-              type={"submit"}
-              className={classes.submit}
-          >
-            {!loading ? "Sign Up" : "Processing..."}
-          </Button>
-        </form>
-      </Box>
+      {error && <Alert severity={"error"}>{error}</Alert>}
+      <form className={classes.form} onSubmit={signUp} id={form_id}>
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required={true}
+          fullWidth
+          id="username"
+          label="Username"
+          name="username"
+          autoFocus
+          value={username}
+          onChange={handleChange}
+        />
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required={true}
+          fullWidth
+          name="password"
+          label="Password"
+          type="password"
+          id="password"
+          value={password}
+          onChange={handleChange}
+        />
+        <Button
+          color={"primary"}
+          variant={"contained"}
+          type={"submit"}
+          className={classes.submit}
+        >
+          {!loading ? "Sign Up" : "Processing..."}
+        </Button>
+      </form>
+    </Box>
   );
 }
 

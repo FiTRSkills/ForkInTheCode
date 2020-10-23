@@ -9,7 +9,7 @@ describe("testing index.js routes", () => {
 
   it("POST /register - no registration information", async () => {
     const res = await request.post("/register");
-    expect(res.statusCode).toEqual(200);
+    expect(res.statusCode).toEqual(400);
     expect(res.body.name).toEqual("MissingUsernameError");
   });
 
