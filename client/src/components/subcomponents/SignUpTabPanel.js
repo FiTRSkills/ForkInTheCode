@@ -47,9 +47,9 @@ function SignUpTabPanel(props) {
         if (error.response.status === 400) {
           setError(error.response.data.message);
         } else {
-          setError("Something wrong occurs!");
+          setError("Something wrong occurred");
         }
-        console.log(error);
+        console.error(error);
       })
       .finally(() => {
         setLoading(false);
