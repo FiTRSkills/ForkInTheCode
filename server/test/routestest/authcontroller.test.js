@@ -3,7 +3,7 @@ const supertest = require("supertest");
 const app = require("../../src/app");
 const request = supertest(app);
 
-describe("testing index.js routes", () => {
+describe("AuthController Tests", () => {
   beforeAll(connectDB);
   afterAll(disconnectDB);
 
@@ -39,7 +39,7 @@ describe("testing index.js routes", () => {
       .post("/register")
       .set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
       .send({
-        username: "testEducator@gmail.com",
+        email: "testEducator@gmail.com",
         password: "chicken",
         usertype: "adminProfile",
       });
@@ -52,7 +52,7 @@ describe("testing index.js routes", () => {
       .post("/register")
       .set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
       .send({
-        username: "tester@gmail.com",
+        email: "tester@gmail.com",
         password: "chicken",
         usertype: "JobSeekerProfile",
       });
@@ -65,7 +65,7 @@ describe("testing index.js routes", () => {
       .post("/register")
       .set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
       .send({
-        username: "testEducator@gmail.com",
+        email: "testEducator@gmail.com",
         password: "chicken",
         usertype: "EducatorProfile",
       });
@@ -78,7 +78,7 @@ describe("testing index.js routes", () => {
       .post("/register")
       .set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
       .send({
-        username: "testEmployer@gmail.com",
+        email: "testEmployer@gmail.com",
         password: "chicken",
         usertype: "EmployerProfile",
       });
@@ -96,7 +96,7 @@ describe("testing index.js routes", () => {
     const res = await request
       .post("/login")
       .set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-      .send({ username: "tester@gmail.com", password: "chickem" });
+      .send({ email: "tester@gmail.com", password: "chickem" });
     expect(res.statusCode).toEqual(401);
     expect(res.text).toEqual("Unauthorized");
   });
@@ -105,7 +105,7 @@ describe("testing index.js routes", () => {
     const res = await request
       .post("/login")
       .set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-      .send({ username: "tester@gmail.com", password: "chicken" });
+      .send({ email: "tester@gmail.com", password: "chicken" });
     expect(res.statusCode).toEqual(200);
     expect(res.text).toEqual(expect.anything());
   });

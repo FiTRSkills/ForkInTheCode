@@ -19,7 +19,7 @@ const userController = {};
 userController.doRegister = function (req, res) {
   if (req.body.usertype == 'JobSeekerProfile'){
     User.register(
-      new User({ username: req.body.username, type: req.body.usertype }),
+      new User({ email: req.body.email, type: req.body.usertype }),
       req.body.password,
       function (err, user) {
         if (err) {
@@ -35,7 +35,7 @@ userController.doRegister = function (req, res) {
   }
   else if (req.body.usertype == 'EmployerProfile'){
     User.register(
-      new User({ username: req.body.username, type: req.body.usertype }),
+      new User({ email: req.body.email, type: req.body.usertype }),
       req.body.password,
       function (err, user) {
         if (err) {
@@ -51,7 +51,7 @@ userController.doRegister = function (req, res) {
   }
   else if (req.body.usertype == 'EducatorProfile'){
     User.register(
-      new User({ username: req.body.username, type: req.body.usertype }),
+      new User({ email: req.body.email, type: req.body.usertype }),
       req.body.password,
       function (err, user) {
         if (err) {

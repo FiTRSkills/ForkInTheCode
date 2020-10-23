@@ -36,7 +36,9 @@ const User = new mongoose.Schema({
   },
 });
 // Adds username, hash, salt, (also defined above for clarity) and some methods to the schema.
-User.plugin(passportLocalMongoose);
+User.plugin(passportLocalMongoose, {
+  usernameField: "email",
+});
 
 // Generate a new profile before saving the user to the database
 User.pre("save", function (next) {
@@ -52,11 +54,12 @@ User.pre("save", function (next) {
  * @param cb An optional callback to use instead of a promise
  * @returns {Promise} resolves when the profile is retrieved from the database
  */
-User.methods.getProfile = function (cb) {
+User.methods.getProfile = async function () {
   const Profile = mongoose.model(this.type);
-  const promise = Profile.findById(this.profile);
-  if (!cb) return promise;
-  promise.then((profile) => cb(profile));
+  //If a custom method is provided to assist with populate, use that first.
+  if (Profile.findAndPopulateById)
+    return await Profile.findAndPopulateById(this.profile);
+  else return await Profile.findById(this.profile).exec();
 };
 
 // Expose user types to avoid magic strings
