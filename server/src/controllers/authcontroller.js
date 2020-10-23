@@ -8,6 +8,7 @@ const User = require("../models/user");
 
 const userController = {};
 
+
 /**
  * functionality for registration
  * @name doRegister
@@ -16,7 +17,7 @@ const userController = {};
  * @property {request} request - contains username and password
  * @returns {string} response - whether or not registration was completed
  */
-userController.doRegister = function (req, res) {
+userController.doRegister =  function (req, res) {
   if (req.body.usertype == 'JobSeekerProfile'){
     User.register(
       new User({ email: req.body.email, type: req.body.usertype }),
@@ -37,12 +38,13 @@ userController.doRegister = function (req, res) {
     User.register(
       new User({ email: req.body.email, type: req.body.usertype }),
       req.body.password,
-      function (err, user) {
+      async function (err, user) {
         if (err) {
           res.status(400).send(err);
           return;
         }
-
+        let profile = await user.getProfile();
+        await profile.setOrganization(req.body.organization);
         passport.authenticate("local")(req, res, function () {
           res.status(200).send("Successfully created Employer user");
         });
@@ -53,12 +55,13 @@ userController.doRegister = function (req, res) {
     User.register(
       new User({ email: req.body.email, type: req.body.usertype }),
       req.body.password,
-      function (err, user) {
+      async function (err, user) {
         if (err) {
           res.status(400).send(err);
           return;
         }
-
+        let profile = await user.getProfile();
+        await profile.setOrganization(req.body.organization);
         passport.authenticate("local")(req, res, function () {
           res.status(200).send("Successfully created Educator user");
         });

@@ -81,6 +81,7 @@ describe("AuthController Tests", () => {
         email: "testEmployer@gmail.com",
         password: "chicken",
         usertype: "EmployerProfile",
+        organization: "WacDonalds",
       });
     expect(res.statusCode).toEqual(200);
     expect(res.text).toEqual("Successfully created Employer user");
