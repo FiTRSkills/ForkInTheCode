@@ -50,6 +50,17 @@ router.get("/logout", auth.logout);
  */
 router.get("/profile", isLoggedIn, profile.getProfile);
 
+/**
+ * Routing serving updating profile information
+ * @name POST /profile
+ * @function
+ * @alias module:/routers/profile
+ * @property {string} user - the user token for the session
+ * @property {json} profile - the updated profile
+ * @returns {string} message - success message
+ */
+router.post("/profile", isLoggedIn, profile.postProfile);
+
 //The 404 Route (ALWAYS Keep this as the last route)
 router.get('*', function(req, res){
   res.send('Not Found', 404);
@@ -61,5 +72,5 @@ module.exports = router;
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
-    res.status(400).send('access denied');
+    res.status(400).send('Access Denied.');
 }
