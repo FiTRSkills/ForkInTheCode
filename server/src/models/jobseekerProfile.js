@@ -81,10 +81,15 @@ JobSeekerProfile.methods.removeJob = async function (index) {
  *
  * @returns {Promise<JobSeekerProfile>}
  */
-JobSeekerProfile.methods.addEducation = async function (degree, institution) {
+JobSeekerProfile.methods.addEducation = async function (
+  degree,
+  major,
+  institution
+) {
   let org = await Organization.findOneOrCreate(institution);
   this.education.push({
     degree: degree,
+    major: major,
     institution: org._id,
   });
   await this.save();
