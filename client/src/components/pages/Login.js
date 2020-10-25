@@ -43,19 +43,19 @@ function Login(props) {
     props.changeCurrentPage("Login");
   });
 
-  function attemptLogin(username, password) {
+  function attemptLogin({email, password}) {
     return axios
-      .post(process.env.REACT_APP_SERVER_URL + "/Login", { username, password })
+      .post(process.env.REACT_APP_SERVER_URL + "/Login", { email, password })
       .then((response) => {
         if (response.status === 200) {
-          props.updateUser({ username: response.data });
+          props.updateUser({ email: response.data });
           props.history.push("/Home");
         } else {
-          setErrorMessage("Your Username and/or Password was incorrect, please try again.")
+          setErrorMessage("Your Email and/or Password was incorrect, please try again.")
         }
       })
       .catch((error) => {
-        setErrorMessage("Your Username and/or Password was incorrect, please try again.")
+        setErrorMessage("Your Email and/or Password was incorrect, please try again.")
         console.log(error);
       });  }
 

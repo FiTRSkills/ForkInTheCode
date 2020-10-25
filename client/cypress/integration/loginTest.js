@@ -32,7 +32,7 @@ describe('Authentication', () => {
         cy.get('#password').type("password")
         cy.get('#submit').click()
         cy.wait('@apiCall').its('status').should('not.eq', 200)
-        cy.contains('Your Username and/or Password was incorrect, please try again.')
+        cy.contains('Your Email and/or Password was incorrect, please try again.')
     })
 
     it('Logs Out', () => {

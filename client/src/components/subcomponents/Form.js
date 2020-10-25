@@ -24,14 +24,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Form({apiCall, buttonTitle, errorMessage}) {
+function Form({apiCall, buttonTitle, errorMessage, isEmployer, isEducator}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [employer, setEmployer] = useState("");
+  const [educator, setEducator] = useState("");
   const [loading, setLoading] = useState(false);
 
   function submit(event) {
     setLoading(true);
-    apiCall(email, password).finally(() => {
+    apiCall({email, password, employer, educator}).finally(() => {
       setLoading(false);
     });
     event.preventDefault();
@@ -44,6 +46,12 @@ function Form({apiCall, buttonTitle, errorMessage}) {
         break;
       case "password":
         setPassword(event.target.value);
+        break;
+      case "employer":
+        setEmployer(event.target.value);
+        break;
+      case "educator":
+        setEducator(event.target.value);
         break;
       default:
         break;
@@ -86,6 +94,34 @@ function Form({apiCall, buttonTitle, errorMessage}) {
         value={password}
         onChange={handleChange}
       />
+      {isEducator && (
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required={true}
+          fullWidth
+          name="educator"
+          label="Educator"
+          id="educator"
+          autoComplete="educator"
+          value={educator}
+          onChange={handleChange}
+        />
+      )}
+      {isEmployer && (
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required={true}
+          fullWidth
+          name="employer"
+          label="Employer"
+          id="employer"
+          autoComplete="employer"
+          value={employer}
+          onChange={handleChange}
+        />
+      )}
       {/*<FormControlLabel*/}
       {/*control={<Checkbox value="remember" color="primary" />}*/}
       {/*label="Remember me"*/}

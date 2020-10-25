@@ -35,16 +35,21 @@ const useStyles = makeStyles((theme) => ({
 function SignUpTabPanel(props) {
   const [errorMessage, setErrorMessage] = useState("");
 
-  function signUp(username, password) {
+  function signUp({email, password, educator, employer}) {
+    let body = {
+      usertype: TAB_TYPES[props.index],
+      email,
+      password
+    }
+    if(educator !== ""){
+      body.educator = educator;
+    }
+    if(employer !== ""){
+      body.employer = employer;
+    }
     return axios
-      .post(process.env.REACT_APP_SERVER_URL + "/register", {
-        usertype: TAB_TYPES[props.index],
-        username,
-        password
-      })
+      .post(process.env.REACT_APP_SERVER_URL + "/register", body)
       .then((response) => {
-        console.log(response)
-        // APPLE: should this be changed to only go to login if it responds with it worked?
         if (response.data.name && response.data.name === "UserExistsError") {
           setErrorMessage(response.data.message);
         } else {
@@ -52,8 +57,7 @@ function SignUpTabPanel(props) {
         }
       })
       .catch((error) => {
-        // APPLE: this is a bad error message, what should it be? Even just "An error has occoured, please try again." is probably better?
-        setErrorMessage("Something wrong occurs!");
+        setErrorMessage("An error has occoured, please try again.!");
         console.log(error);
       });
   };
@@ -77,7 +81,7 @@ function SignUpTabPanel(props) {
           >
             Sign Up for {props.typeTitle}
           </Typography>
-          <Form apiCall={signUp} buttonTitle="Sign Up" errorMessage={errorMessage} />
+          <Form apiCall={signUp} buttonTitle="Sign Up" errorMessage={errorMessage} isEmployer={props.index === 1} isEducator={props.index === 2}/>
         </Box>
       )}
     </div>
