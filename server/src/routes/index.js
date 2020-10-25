@@ -39,4 +39,8 @@ router.post("/login", auth.doLogin);
  */
 router.get("/logout", auth.logout);
 
+router.get('*', (request, response) => {
+    response.sendFile(path.resolve(__dirname, '../../client/public/index.html'))
+});
+
 module.exports = router;
