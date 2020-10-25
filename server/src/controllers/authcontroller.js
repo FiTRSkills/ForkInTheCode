@@ -22,7 +22,7 @@ userController.doRegister = function (req, res) {
     req.body.password,
     function (err, user) {
       if (err) {
-        res.send(err);
+        res.status(400).send(err);
         return;
       }
 

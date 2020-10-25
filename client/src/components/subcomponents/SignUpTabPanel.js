@@ -49,17 +49,17 @@ function SignUpTabPanel(props) {
     }
     return axios
       .post(process.env.REACT_APP_SERVER_URL + "/register", body)
-      .then((response) => {
-        if (response.data.name && response.data.name === "UserExistsError") {
-          setErrorMessage(response.data.message);
-        } else {
-          props.history.push("/Login");
-        }
+      .then(() => {
+        history.push("/Login");
       })
       .catch((error) => {
-        setErrorMessage("An error has occoured, please try again.!");
-        console.log(error);
-      });
+        if (error.response.status === 400) {
+          setError(error.response.data.message);
+        } else {
+          setErrorMessage("An error has occoured, please try again.");
+        }
+        console.error(error);
+      })
   };
 
   const classes = useStyles();

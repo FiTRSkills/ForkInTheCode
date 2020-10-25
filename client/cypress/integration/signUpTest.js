@@ -25,7 +25,7 @@ describe("Sign Up", () => {
     cy.route({
       method: "POST",
       url: "http://localhost:9000/register",
-      status: 200,
+      status: 400,
       response: {
         name: "UserExistsError",
         message: "A user with the given username is already registered",
@@ -34,7 +34,7 @@ describe("Sign Up", () => {
     cy.get('#simple-tabpanel-0 form #email').type("email@email.com")
     cy.get('#simple-tabpanel-0 form #password').type("password")
     cy.get('#simple-tabpanel-0 form #submit').click()
-    cy.wait("@signUpCall").its("status").should("eq", 200);
+    cy.wait("@signUpCall").its("status").should("eq", 400);
     cy.contains("A user with the given username is already registered");
   });
 });
