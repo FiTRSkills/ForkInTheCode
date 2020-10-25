@@ -50,11 +50,11 @@ function SignUpTabPanel(props) {
     return axios
       .post(process.env.REACT_APP_SERVER_URL + "/register", body)
       .then(() => {
-        history.push("/Login");
+        props.history.push("/Login");
       })
       .catch((error) => {
         if (error.response.status === 400) {
-          setError(error.response.data.message);
+          setErrorMessage(error.response.data.message);
         } else {
           setErrorMessage("An error has occoured, please try again.");
         }
