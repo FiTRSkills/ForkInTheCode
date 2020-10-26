@@ -52,7 +52,7 @@ function SignUpTabPanel(props) {
         if (error.response.status === 400) {
           setErrorMessage(error.response.data.message);
         } else {
-          setErrorMessage("An error has occoured, please try again.");
+          setErrorMessage("An error has occurred, please try again.");
         }
         console.error(error);
       })
