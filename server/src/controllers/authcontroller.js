@@ -82,8 +82,6 @@ userController.doRegister =  function (req, res) {
  */
 userController.doLogin = function (req, res) {
   passport.authenticate("local")(req, res, function () {
-    console.log(req.session);
-    //console.log(req);
     res.send(req.user);
   });
 };

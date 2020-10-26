@@ -4,6 +4,7 @@
 
 const mongoose = require("mongoose");
 const passport = require("passport");
+const User = require("../models/user");
 
 const profileController = {};
 
@@ -15,23 +16,17 @@ const profileController = {};
  * @property {request} request - contains user
  * @returns {string} response - the user profile or error if not found
  */
-profileController.getProfile = function (req, res) {
-  User.find({email: req.user.email}).then(function(user){
-  	if(!user){
-  		res.status(400).send('User does not exist.');
-  	}
-  	let profile = user.getProfile();
-  	data = {
-  		firstname: profile.name.first,
-  		lastname: profile.name.last,
-  		dob: profile.dateOfBirth,
-  		education: profile.education,
-  		career: profile.career,
-  	}
-  	res.status(200).send(data);
-  }).catch(function(err){
-  	res.status(400).send({error: err});
-  })
+profileController.getProfile = async function (req, res) {
+	let profile = await req.user.getProfile();
+  console.log(profile);
+	data = {
+		firstname: profile.name.first,
+		lastname: profile.name.last,
+		dob: profile.dateOfBirth,
+		education: profile.education,
+		career: profile.career,
+	}
+	res.status(200).send(data);
 };
 
 /**
