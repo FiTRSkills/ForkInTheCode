@@ -1,7 +1,6 @@
 /** Module providing user implementation for routes
  * @module controllers/authcontroller
  */
-
 const mongoose = require("mongoose");
 const passport = require("passport");
 const User = require("../models/user");

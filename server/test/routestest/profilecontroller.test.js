@@ -11,6 +11,13 @@ describe("testing index.js routes", () => {
     const res = await request
       .get("/profile")
     expect(res.statusCode).toEqual(400);
-    expect(res.text).toEqual("access denied");
+    expect(res.text).toEqual("Access Denied.");
+  });
+
+  it("POST /profile - no user session", async () => {
+    const res = await request
+      .post("/profile")
+    expect(res.statusCode).toEqual(400);
+    expect(res.text).toEqual("Access Denied.");
   });
 });

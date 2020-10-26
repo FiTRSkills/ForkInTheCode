@@ -13,7 +13,7 @@ describe("AuthController Tests", () => {
         usertype: "JobSeekerProfile",
       });
     expect(res.statusCode).toEqual(400);
-    expect(res.body.name).toEqual("MissingUsernameError");
+    expect(res.text).toEqual("Failed Validation.");
   });
 
   it("POST /register - no registration information Employer", async () => {
@@ -22,7 +22,7 @@ describe("AuthController Tests", () => {
         usertype: "EmployerProfile",
       });
     expect(res.statusCode).toEqual(400);
-    expect(res.body.name).toEqual("MissingUsernameError");
+    expect(res.text).toEqual("Failed Validation.");
   });
 
   it("POST /register - no registration information Educator", async () => {
@@ -31,7 +31,18 @@ describe("AuthController Tests", () => {
         usertype: "EducatorProfile",
       });
     expect(res.statusCode).toEqual(400);
-    expect(res.body.name).toEqual("MissingUsernameError");
+    expect(res.text).toEqual("Failed Validation.");
+  });
+
+  it("POST /register - invalid email", async () => {
+    const res = await request.post("/register")
+      .send({
+        email: "testEducator",
+        password: "chicken",
+        usertype: "JobSeekerProfile",
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.text).toEqual("Failed Validation.");
   });
 
   it("POST /register - invalid usertype", async () => {

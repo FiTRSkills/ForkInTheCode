@@ -29,9 +29,9 @@ profileController.getProfile = function (req, res) {
   		career: profile.career,
   	}
   	res.status(200).send(data);
-  }).catch(function(err)){
+  }).catch(function(err){
   	res.status(400).send({error: err});
-  }
+  })
 };
 
 /**
@@ -48,17 +48,16 @@ profileController.postProfile = function (req, res) {
   		res.status(400).send('User does not exist.');
   	}
   	let profile = user.getProfile();
-  	data = {
-  		firstname: profile.name.first,
-  		lastname: profile.name.last,
-  		dob: profile.dateOfBirth,
-  		education: profile.education,
-  		career: profile.career,
-  	}
+		profile.name.first = req.body.firstname;
+		profile.name.last = req.body.lastname;
+		profile.dateOfBirth = req.body.dob;
+		profile.education = req.body.education;
+		profile.career = req.body.career;
+    profile.save();
   	res.status(200).send('Profile updated.');
-  }).catch(function(err)){
+  }).catch(function(err){
   	res.status(400).send({error: err});
-  }
+  })
 };
 
 module.exports = profileController;
