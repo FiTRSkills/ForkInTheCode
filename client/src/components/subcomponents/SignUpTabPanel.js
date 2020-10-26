@@ -41,7 +41,7 @@ function SignUpTabPanel(props) {
       body.organization = organization;
     }
     if(company !== ""){
-      body.company = company;
+      body.organization = company;
     }
     return axios
       .post(process.env.REACT_APP_SERVER_URL + "/register", body)
