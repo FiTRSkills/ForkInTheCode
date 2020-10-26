@@ -27,13 +27,13 @@ const useStyles = makeStyles((theme) => ({
 function Form({apiCall, buttonTitle, errorMessage, isEmployer, isEducator}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [employer, setEmployer] = useState("");
-  const [educator, setEducator] = useState("");
+  const [company, setCompany] = useState("");
+  const [organization, setOrganization] = useState("");
   const [loading, setLoading] = useState(false);
 
   function submit(event) {
     setLoading(true);
-    apiCall({email, password, employer, educator}).finally(() => {
+    apiCall({email, password, company, organization}).finally(() => {
       setLoading(false);
     });
     event.preventDefault();
@@ -47,11 +47,11 @@ function Form({apiCall, buttonTitle, errorMessage, isEmployer, isEducator}) {
       case "password":
         setPassword(event.target.value);
         break;
-      case "employer":
-        setEmployer(event.target.value);
+      case "company":
+        setCompany(event.target.value);
         break;
-      case "educator":
-        setEducator(event.target.value);
+      case "organization":
+        setOrganization(event.target.value);
         break;
       default:
         break;
@@ -100,11 +100,11 @@ function Form({apiCall, buttonTitle, errorMessage, isEmployer, isEducator}) {
           margin="normal"
           required={true}
           fullWidth
-          name="educator"
-          label="Educator"
-          id="educator"
-          autoComplete="educator"
-          value={educator}
+          name="organization"
+          label="Organization"
+          id="organization"
+          autoComplete="organization"
+          value={organization}
           onChange={handleChange}
         />
       )}
@@ -114,11 +114,11 @@ function Form({apiCall, buttonTitle, errorMessage, isEmployer, isEducator}) {
           margin="normal"
           required={true}
           fullWidth
-          name="employer"
-          label="Employer"
-          id="employer"
-          autoComplete="employer"
-          value={employer}
+          name="company"
+          label="Company"
+          id="company"
+          autoComplete="company"
+          value={company}
           onChange={handleChange}
         />
       )}

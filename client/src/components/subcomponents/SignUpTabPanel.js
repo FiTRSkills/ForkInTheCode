@@ -35,17 +35,17 @@ const useStyles = makeStyles((theme) => ({
 function SignUpTabPanel(props) {
   const [errorMessage, setErrorMessage] = useState("");
 
-  function signUp({email, password, educator, employer}) {
+  function signUp({email, password, organization, employer: company}) {
     let body = {
       usertype: TAB_TYPES[props.index],
       email,
       password
     }
-    if(educator !== ""){
-      body.educator = educator;
+    if(organization !== ""){
+      body.organization = organization;
     }
-    if(employer !== ""){
-      body.employer = employer;
+    if(company !== ""){
+      body.company = company;
     }
     return axios
       .post(process.env.REACT_APP_SERVER_URL + "/register", body)
