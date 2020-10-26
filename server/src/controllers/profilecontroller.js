@@ -18,7 +18,6 @@ const profileController = {};
  */
 profileController.getProfile = async function (req, res) {
 	let profile = await req.user.getProfile();
-  console.log(profile);
 	data = {
 		firstname: profile.name.first,
 		lastname: profile.name.last,
@@ -49,7 +48,7 @@ profileController.postProfile = async function (req, res) {
     profile.career = req.body.career;
   }
   profile.save();
-	res.status(200).send('Profile updated.');
+	res.status(200).send('Profile Updated.');
 };
 
 module.exports = profileController;

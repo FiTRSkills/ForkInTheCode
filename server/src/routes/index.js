@@ -2,11 +2,13 @@
  * @module routers/users
  * @requires express
  */
-const { check, validationResult } = require('express-validator');
+const { check } = require('express-validator');
 var express = require("express");
 var router = express.Router();
 var auth = require("../controllers/authcontroller.js");
 var profile = require("../controllers/profilecontroller.js")
+var inputValidation = require("../services/inputValidation.js");
+var sessionValidation = require("../services/sessionValidation.js");
 
 /**
  * Routing serving registration
@@ -22,7 +24,7 @@ router.post("/register", [
     check('email', 'Your email is not valid').not().isEmpty().isEmail().normalizeEmail(),
     check('password', 'Must send a password').not().isEmpty().trim().escape(),
     check('usertype', 'Must send a usertype').not().isEmpty().trim().escape(),
-  ], isValidated, auth.doRegister);
+  ], inputValidation, auth.doRegister);
 
 /**
  * Routing serving login
@@ -52,7 +54,7 @@ router.get("/logout", auth.logout);
  * @property {string} user - the user token for the session
  * @returns {json} of user profile infromation
  */
-router.get("/profile", isLoggedIn, profile.getProfile);
+router.get("/profile", sessionValidation, profile.getProfile);
 
 /**
  * Routing serving updating profile information
@@ -63,22 +65,12 @@ router.get("/profile", isLoggedIn, profile.getProfile);
  * @property {json} profile - the updated profile
  * @returns {string} message - success message
  */
-router.post("/profile", isLoggedIn, [
+router.post("/profile", sessionValidation, [
     check('firstname', 'Must send a fisrtname').not().isEmpty().trim().escape(),
     check('lastname', 'Must send a lastname').not().isEmpty().trim().escape(),
     check('dob', 'Must send a dob').not().isEmpty().isDate(),
-    check('career', 'Must send a career').not().isEmpty(),
-    check('education', 'Must send a education').not().isEmpty(),
-  ], isValidated, profile.postProfile);
+  ], inputValidation, profile.postProfile);
 
-
-router.get('/sessions', (req, res) => {
-  req.sessionStore.sessionModel.findAll()
-    .then(sessions => sessions.map(sess => JSON.parse(sess.dataValues.data)))
-    .then((sessions) => {
-      res.send(sessions)
-    })
-})
 
 //The 404 Route (ALWAYS Keep this as the last route)
 router.get('*', function(req, res){
@@ -87,20 +79,3 @@ router.get('*', function(req, res){
 
 module.exports = router;
 
-//route middleware to ensure user is logged in
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated())
-        return next();
-    res.status(400).send('Access Denied.');
-}
-
-//route middleware ensuring proper validation
-function isValidated(req, res, next) {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      res.status(400).send('Failed Validation.');
-    } else {
-      return next();
-    }
-  }

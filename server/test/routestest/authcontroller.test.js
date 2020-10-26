@@ -71,6 +71,19 @@ describe("AuthController Tests", () => {
     expect(res.text).toEqual("Successfully created Job Seeker user");
   });
 
+  it("POST /register - same email Job Seeker", async () => {
+    const res = await request
+      .post("/register")
+      .set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+      .send({
+        email: "tester@gmail.com",
+        password: "chicken",
+        usertype: "JobSeekerProfile",
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.text).toEqual("{\"name\":\"UserExistsError\",\"message\":\"A user with the given username is already registered\"}");
+  });
+
   it("POST /register - Educator success", async () => {
     const res = await request
       .post("/register")
@@ -82,6 +95,19 @@ describe("AuthController Tests", () => {
       });
     expect(res.statusCode).toEqual(200);
     expect(res.text).toEqual("Successfully created Educator user");
+  });
+
+  it("POST /register - same email Educator", async () => {
+    const res = await request
+      .post("/register")
+      .set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+      .send({
+        email: "testEducator@gmail.com",
+        password: "chicken",
+        usertype: "EducatorProfile",
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.text).toEqual("{\"name\":\"UserExistsError\",\"message\":\"A user with the given username is already registered\"}");
   });
 
   it("POST /register - Employer success", async () => {
@@ -96,6 +122,19 @@ describe("AuthController Tests", () => {
       });
     expect(res.statusCode).toEqual(200);
     expect(res.text).toEqual("Successfully created Employer user");
+  });
+
+  it("POST /register - same email Employer", async () => {
+    const res = await request
+      .post("/register")
+      .set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+      .send({
+        email: "testEmployer@gmail.com",
+        password: "chicken",
+        usertype: "EmployerProfile",
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.text).toEqual("{\"name\":\"UserExistsError\",\"message\":\"A user with the given username is already registered\"}");
   });
 
   it("POST /login - failure", async () => {
