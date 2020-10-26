@@ -73,7 +73,7 @@ router.post("/profile", isLoggedIn, [
 
 //The 404 Route (ALWAYS Keep this as the last route)
 router.get('*', function(req, res){
-  res.send('Not Found', 404);
+  res.status(404).send('Not Found');
 });
 
 module.exports = router;
