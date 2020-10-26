@@ -42,10 +42,10 @@ profileController.postProfile = async function (req, res) {
 	profile.name.first = req.body.firstname;
 	profile.name.last = req.body.lastname;
 	profile.dateOfBirth = Date.parse(req.body.dob);
-  if (req.body.education != "None"){
+  if (req.body.education != ""){
 	 profile.education = req.body.education;
   }
-	if (req.body.career != "None"){
+	if (req.body.career != ""){
     profile.career = req.body.career;
   }
   profile.save();
