@@ -27,6 +27,7 @@ const JobSeekerProfile = new mongoose.Schema({
     {
       degree: String,
       major: String,
+      gradDate: Date,
       institution: {
         type: mongoose.Schema.Types.ObjectId,
         ref: Organization.modelName,
