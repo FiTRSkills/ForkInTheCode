@@ -18,10 +18,6 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
-  form: {
-    maxWidth: 480,
-    marginTop: theme.spacing(1),
-  },
   submit: {
     margin: theme.spacing(3, 0, 2),
     width: "100%",

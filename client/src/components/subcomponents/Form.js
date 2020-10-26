@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%",
+    maxWidth: 480,
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -64,9 +64,6 @@ function Form({apiCall, buttonTitle, errorMessage, isEmployer, isEducator}) {
     <form className={classes.form} onSubmit={submit}>
       {errorMessage !== "" && (
         <Alert severity="error">{errorMessage}</Alert>
-      )}
-      {loading && (
-        <Alert>loading</Alert>
       )}
       <TextField
         variant="outlined"
@@ -133,8 +130,10 @@ function Form({apiCall, buttonTitle, errorMessage, isEmployer, isEducator}) {
         color="primary"
         className={classes.submit}
         id="submit"
+        disabled={loading}
       >
-        {buttonTitle}
+        {loading && ("Processing...")}
+        {!loading && buttonTitle}
       </Button>
     </form>
   );
