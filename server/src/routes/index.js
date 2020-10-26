@@ -66,9 +66,9 @@ router.get("/profile", isLoggedIn, profile.getProfile);
 router.post("/profile", isLoggedIn, [
     check('firstname', 'Must send a fisrtname').not().isEmpty().trim().escape(),
     check('lastname', 'Must send a lastname').not().isEmpty().trim().escape(),
-    check('dob', 'Must send a dob').not().isEmpty().trim().escape(),
-    check('career', 'Must send a career').not().isEmpty().trim().escape(),
-    check('education', 'Must send a education').not().isEmpty().trim().escape(),
+    check('dob', 'Must send a dob').not().isEmpty().isDate(),
+    check('career', 'Must send a career').not().isEmpty(),
+    check('education', 'Must send a education').not().isEmpty(),
   ], isValidated, profile.postProfile);
 
 

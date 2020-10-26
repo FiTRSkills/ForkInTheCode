@@ -37,22 +37,19 @@ profileController.getProfile = async function (req, res) {
  * @property {request} request - contains user
  * @returns {string} response - the user profile or error if not found
  */
-profileController.postProfile = function (req, res) {
-  User.find({email: req.user.email}).then(function(user){
-  	if(!user){
-  		res.status(400).send('User does not exist.');
-  	}
-  	let profile = user.getProfile();
-		profile.name.first = req.body.firstname;
-		profile.name.last = req.body.lastname;
-		profile.dateOfBirth = req.body.dob;
-		profile.education = req.body.education;
-		profile.career = req.body.career;
-    profile.save();
-  	res.status(200).send('Profile updated.');
-  }).catch(function(err){
-  	res.status(400).send({error: err});
-  })
+profileController.postProfile = async function (req, res) {
+	let profile = await req.user.getProfile();
+	profile.name.first = req.body.firstname;
+	profile.name.last = req.body.lastname;
+	profile.dateOfBirth = Date.parse(req.body.dob);
+  if (req.body.education != "None"){
+	 profile.education = req.body.education;
+  }
+	if (req.body.career != "None"){
+    profile.career = req.body.career;
+  }
+  profile.save();
+	res.status(200).send('Profile updated.');
 };
 
 module.exports = profileController;
