@@ -27,13 +27,12 @@ const useStyles = makeStyles((theme) => ({
 function Form({apiCall, buttonTitle, errorMessage, isEmployer, isEducator}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [company, setCompany] = useState("");
   const [organization, setOrganization] = useState("");
   const [loading, setLoading] = useState(false);
 
   function submit(event) {
     setLoading(true);
-    apiCall({email, password, company, organization}).finally(() => {
+    apiCall({email, password, organization}).finally(() => {
       setLoading(false);
     });
     event.preventDefault();
@@ -46,9 +45,6 @@ function Form({apiCall, buttonTitle, errorMessage, isEmployer, isEducator}) {
         break;
       case "password":
         setPassword(event.target.value);
-        break;
-      case "company":
-        setCompany(event.target.value);
         break;
       case "organization":
         setOrganization(event.target.value);
