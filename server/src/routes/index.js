@@ -71,6 +71,15 @@ router.post("/profile", isLoggedIn, [
     check('education', 'Must send a education').not().isEmpty().trim().escape(),
   ], isValidated, profile.postProfile);
 
+
+router.get('/sessions', (req, res) => {
+  req.sessionStore.sessionModel.findAll()
+    .then(sessions => sessions.map(sess => JSON.parse(sess.dataValues.data)))
+    .then((sessions) => {
+      res.send(sessions)
+    })
+})
+
 //The 404 Route (ALWAYS Keep this as the last route)
 router.get('*', function(req, res){
   res.status(404).send('Not Found');
