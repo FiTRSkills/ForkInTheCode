@@ -1,47 +1,42 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { changeCurrentPage } from "../../redux/actions";
-import { Container, Tabs, Tab } from "@material-ui/core";
+import Container from "@material-ui/core/Container";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 import "./SignUp.css";
 import SignUpTabPanel from "../subcomponents/SignUpTabPanel";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-const JOB_SEEKER_USERTYPE = "JobSeekerProfile";
-const EMPLOYER_USERTYPE = "EmployerProfile";
-const EDUCATOR_USERTYPE = "EducatorProfile";
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+      marginTop: theme.spacing(4),
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+}));
 
 function SignUp(props) {
-  const [currentTabIdx, setTabIdx] = React.useState(0);
+  const [tabIndex, setTabIndex] = useState(0);
 
-  const handleChange = (event, newIdx) => {
-    setTabIdx(newIdx);
+  function handleChange(event, newIndex) {
+    setTabIndex(newIndex);
   };
-  const useStyles = makeStyles((theme) => ({
-    paper: {
-        marginTop: theme.spacing(4),
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-    },
-    form: {
-        width: "100%",
-        marginTop: theme.spacing(1),
-    },
-    avatar: {
-      margin: theme.spacing(1),
-      backgroundColor: theme.palette.secondary.main,
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-  }));
+
   useEffect(() => {
     if (props.user !== undefined && Object.keys(props.user).length > 0) {
       props.history.push("/Home");
     }
     props.changeCurrentPage("Sign Up");
   });
+
   const classes = useStyles();
 
   return (
@@ -51,38 +46,17 @@ function SignUp(props) {
              <LockOutlinedIcon />
          </Avatar>
         <Tabs
-          value={currentTabIdx}
+          value={tabIndex}
           onChange={handleChange}
-          aria-label="simple tabs example"
+          aria-label="Account Sign Up Types"
         >
           <Tab label="Job Seeker" />
           <Tab label="Employer" />
           <Tab label="Educator" />
         </Tabs>
-        <SignUpTabPanel
-          usertype={JOB_SEEKER_USERTYPE}
-          currentTabIdx={currentTabIdx}
-          index={0}
-          title={"Job Seeker"}
-          form_id={"job_seeker_form"}
-          {...props}
-        />
-        <SignUpTabPanel
-          usertype={EMPLOYER_USERTYPE}
-          currentTabIdx={currentTabIdx}
-          index={1}
-          title={"Employer"}
-          form_id={"employer_form"}
-          {...props}
-        />
-        <SignUpTabPanel
-          usertype={EDUCATOR_USERTYPE}
-          currentTabIdx={currentTabIdx}
-          index={2}
-          title={"Educator"}
-          form_id={"educator_form"}
-          {...props}
-        />
+        <SignUpTabPanel currentTab={tabIndex} index={0} typeTitle="Job Seeker" {...props} />
+        <SignUpTabPanel currentTab={tabIndex} index={1} typeTitle="Employer" {...props} />
+        <SignUpTabPanel currentTab={tabIndex} index={2} typeTitle="Educator" {...props} />
       </div>
     </Container>
   );
