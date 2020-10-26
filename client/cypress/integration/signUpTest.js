@@ -53,7 +53,7 @@ describe("Sign Up", () => {
     cy.get('#employerTab').click()
     cy.get('#simple-tabpanel-1 form #email').type("email@email.com")
     cy.get('#simple-tabpanel-1 form #password').type("password")
-    cy.get('#simple-tabpanel-1 form #company').type("company")
+    cy.get('#simple-tabpanel-1 form #organization').type("organization")
     cy.get('#simple-tabpanel-1 form #submit').click()
     cy.wait("@signUpCall").its("status").should("eq", 200);
     cy.get("#navBarTitle").should("contain", "Login");
@@ -75,7 +75,7 @@ describe("Sign Up", () => {
     cy.get('#employerTab').click()
     cy.get('#simple-tabpanel-1 form #email').type("email@email.com")
     cy.get('#simple-tabpanel-1 form #password').type("password")
-    cy.get('#simple-tabpanel-1 form #company').type("company")
+    cy.get('#simple-tabpanel-1 form #organization').type("organization")
     cy.get('#simple-tabpanel-1 form #submit').click()
     cy.wait("@signUpCall").its("status").should("eq", 400);
     cy.contains("A user with the given username is already registered");

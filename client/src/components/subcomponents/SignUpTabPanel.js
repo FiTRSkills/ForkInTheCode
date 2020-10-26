@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 function SignUpTabPanel(props) {
   const [errorMessage, setErrorMessage] = useState("");
 
-  function signUp({email, password, organization, employer: company}) {
+  function signUp({email, password, organization}) {
     let body = {
       usertype: TAB_TYPES[props.index],
       email,
@@ -40,16 +40,13 @@ function SignUpTabPanel(props) {
     if(organization !== ""){
       body.organization = organization;
     }
-    if(company !== ""){
-      body.organization = company;
-    }
     return axios
       .post(process.env.REACT_APP_SERVER_URL + "/register", body)
       .then(() => {
         props.history.push("/Login");
       })
       .catch((error) => {
-        if (error.response.status === 400) {
+        if (error?.response?.status === 400) {
           setErrorMessage(error.response.data.message);
         } else {
           setErrorMessage("An error has occurred, please try again.");

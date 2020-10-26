@@ -91,7 +91,7 @@ function Form({apiCall, buttonTitle, errorMessage, isEmployer, isEducator}) {
         value={password}
         onChange={handleChange}
       />
-      {isEducator && (
+      {(isEducator || isEmployer) && (
         <TextField
           variant="outlined"
           margin="normal"
@@ -102,20 +102,6 @@ function Form({apiCall, buttonTitle, errorMessage, isEmployer, isEducator}) {
           id="organization"
           autoComplete="organization"
           value={organization}
-          onChange={handleChange}
-        />
-      )}
-      {isEmployer && (
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required={true}
-          fullWidth
-          name="company"
-          label="Company"
-          id="company"
-          autoComplete="company"
-          value={company}
           onChange={handleChange}
         />
       )}
