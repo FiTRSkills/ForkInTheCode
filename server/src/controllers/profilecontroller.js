@@ -37,15 +37,21 @@ profileController.getProfile = async function (req, res) {
  * @returns {string} response - the user profile or error if not found
  */
 profileController.postProfile = async function (req, res) {
-	let profile = await req.user.getProfile();
-	profile.name.first = req.body.firstname;
-	profile.name.last = req.body.lastname;
+  let profile = await req.user.getProfile();
+  profile.name.first = req.body.firstname;
+  profile.name.last = req.body.lastname;
+  if (req.body.dob){
 	profile.dateOfBirth = Date.parse(req.body.dob);
-  if (req.body.education != ""){
-	 profile.education = req.body.education;
   }
-	if (req.body.career != ""){
-    profile.career = req.body.career;
+  if (req.body.education){
+	for (const education in req.body.education) {
+      profile.addEducation(education.degree, education.major, education.institution);
+    }
+  }
+  if (req.body.career){
+    for (const career in req.body.career) {
+      profile.addEducation(career.jobTitle, career.organization);
+    }
   }
   profile.save();
 	res.status(200).send('Profile Updated.');

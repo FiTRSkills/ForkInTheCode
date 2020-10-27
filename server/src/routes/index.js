@@ -66,9 +66,11 @@ router.get("/profile", sessionValidation, profile.getProfile);
  * @returns {string} message - success message
  */
 router.post("/profile", sessionValidation, [
-    check('firstname', 'Must send a fisrtname').not().isEmpty().trim().escape(),
-    check('lastname', 'Must send a lastname').not().isEmpty().trim().escape(),
-    check('dob', 'Must send a dob').not().isEmpty().isDate(),
+    check('firstname', 'Must send a viable firstname').trim().escape().optional({nullable: true}),
+    check('lastname', 'Must send a viable lastname').trim().escape().optional({nullable: true}),
+    check('dob', 'Must send a viable dob').isDate().optional({nullable: true}),
+    check('education', 'Must send a viable education').optional({nullable: true}),
+    check('career', 'Must send a viable career').optional({nullable: true}),
   ], inputValidation, profile.postProfile);
 
 
