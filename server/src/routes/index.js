@@ -39,8 +39,8 @@ router.post("/login", auth.doLogin);
  */
 router.get("/logout", auth.logout);
 
-router.get('/*', (request, response) => {
-    response.sendFile(path.join(__dirname, '../../../client/build/index.html'));
+router.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../../client/build/index.html'));
 });
 
 module.exports = router;
