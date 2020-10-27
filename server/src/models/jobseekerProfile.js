@@ -8,10 +8,19 @@ const Organization = require("./organization");
  */
 const JobSeekerProfile = new mongoose.Schema({
   name: {
-    first: String,
-    last: String,
+    first: {
+      type: String,
+      default: ""
+    },
+    last: {
+      String,
+      default: ""
+    },
   },
-  dateOfBirth: Date,
+  dateOfBirth: {
+    Date,
+    default: null
+  },
   career: [
     {
       jobTitle: String,
@@ -85,12 +94,14 @@ JobSeekerProfile.methods.removeJob = async function (index) {
 JobSeekerProfile.methods.addEducation = async function (
   degree,
   major,
+  gradDate,
   institution
 ) {
   let org = await Organization.findOneOrCreate(institution);
   this.education.push({
     degree: degree,
     major: major,
+    gradDate: gradDate,
     institution: org._id,
   });
   await this.save();
@@ -103,7 +114,7 @@ JobSeekerProfile.methods.addEducation = async function (
  * @param index The number of degree to remove
  * @returns {Promise<JobSeekerProfile>}
  */
-JobSeekerProfile.methods.removeJob = async function (index) {
+JobSeekerProfile.methods.removeEducation = async function (index) {
   this.education = this.education.splice(index, 1);
   await this.save();
   return this;
