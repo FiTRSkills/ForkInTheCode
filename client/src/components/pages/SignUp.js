@@ -50,9 +50,9 @@ function SignUp(props) {
           onChange={handleChange}
           aria-label="Account Sign Up Types"
         >
-          <Tab label="Job Seeker" />
-          <Tab label="Employer" />
-          <Tab label="Educator" />
+          <Tab label="Job Seeker" id="jobSeekerTab" />
+          <Tab label="Employer" id="employerTab" />
+          <Tab label="Educator" id="educatorTab" />
         </Tabs>
         <SignUpTabPanel currentTab={tabIndex} index={0} typeTitle="Job Seeker" {...props} />
         <SignUpTabPanel currentTab={tabIndex} index={1} typeTitle="Employer" {...props} />
