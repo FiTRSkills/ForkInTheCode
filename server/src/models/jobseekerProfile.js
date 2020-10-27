@@ -10,16 +10,16 @@ const JobSeekerProfile = new mongoose.Schema({
   name: {
     first: {
       type: String,
-      default: ""
+      default: "",
     },
     last: {
-      String,
-      default: ""
+      type: String,
+      default: "",
     },
   },
   dateOfBirth: {
-    Date,
-    default: null
+    type: Date,
+    default: null,
   },
   career: [
     {
