@@ -2,7 +2,7 @@
  * @module routers/users
  * @requires express
  */
-
+const path = require("path");
 var express = require("express");
 var router = express.Router();
 var auth = require("../controllers/authcontroller.js");
@@ -39,9 +39,8 @@ router.post("/login", auth.doLogin);
  */
 router.get("/logout", auth.logout);
 
-//The 404 Route (ALWAYS Keep this as the last route)
-router.get('*', function(req, res){
-  res.send('Not Found', 404);
+router.get('/*', (request, response) => {
+    response.sendFile(path.join(__dirname, '../../../client/build/index.html'));
 });
 
 module.exports = router;
