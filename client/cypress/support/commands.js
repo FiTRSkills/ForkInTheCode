@@ -21,7 +21,7 @@ Cypress.Commands.add("fakeLogin", () => {
             user: { id: 1 }
         }
     }).as('loginCall')
-    cy.get('#username').type("user1")
+    cy.get('#email').type("email@email.com")
     cy.get('#password').type("password")
     cy.get('#submit').click()
     cy.wait('@loginCall')

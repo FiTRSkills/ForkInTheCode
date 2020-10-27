@@ -5,15 +5,13 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Alert from "@material-ui/lab/Alert";
 import Container from "@material-ui/core/Container";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { updateUser, changeCurrentPage } from "../../redux/actions";
 import "./Login.css";
 import { Grid } from "@material-ui/core";
+import Form from "../subcomponents/Form";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -36,9 +34,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Login(props) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorHappened, setErrorHappened] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     if (props.user !== undefined && Object.keys(props.user).length > 0) {
@@ -47,40 +43,21 @@ function Login(props) {
     props.changeCurrentPage("Login");
   });
 
-  function attemptLogin(event) {
-    let url =
-      process.env.REACT_APP_ENVIRONMENT === "prod"
-        ? process.env.REACT_APP_PROD_SERVER_URL
-        : process.env.REACT_APP_DEV_SERVER_URL;
-    axios
-      .post(url + "/Login", { username, password })
+  function attemptLogin({email, password}) {
+    return axios
+      .post(process.env.REACT_APP_SERVER_URL + "/Login", { email, password })
       .then((response) => {
-        if (response.status === 401) {
-          setErrorHappened(true);
-        } else {
-          props.updateUser({ username: response.data });
+        if (response.status === 200) {
+          props.updateUser({ email: response.data });
           props.history.push("/Home");
+        } else {
+          setErrorMessage("Your Email and/or Password was incorrect, please try again.")
         }
       })
-      .catch((response) => {
-        setErrorHappened(true);
-        console.log(response);
-      });
-    event.preventDefault();
-  }
-
-  function handleChange(event) {
-    switch (event.target.name) {
-      case "username":
-        setUsername(event.target.value);
-        break;
-      case "password":
-        setPassword(event.target.value);
-        break;
-      default:
-        break;
-    }
-  }
+      .catch((error) => {
+        setErrorMessage("Your Email and/or Password was incorrect, please try again.")
+        console.log(error);
+      });  }
 
   const classes = useStyles();
 
@@ -94,72 +71,35 @@ function Login(props) {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        {errorHappened && (
-          <Alert severity="error">
-            Your Username and/or Password was incorrect, please try again.
-          </Alert>
-        )}
-        <form className={classes.form} onSubmit={attemptLogin}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required={true}
-            fullWidth
-            id="username"
-            label="Username"
-            name="username"
-            autoComplete="username"
-            autoFocus
-            value={username}
-            onChange={handleChange}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required={true}
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={handleChange}
-          />
-          {/*<FormControlLabel*/}
-          {/*control={<Checkbox value="remember" color="primary" />}*/}
-          {/*label="Remember me"*/}
-          {/*/> commenting out remember me*/}
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={attemptLogin}
-            id="submit"
-          >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2" to="/SignUp">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
+        <Form apiCall={attemptLogin} buttonTitle="Sign In" errorMessage={errorMessage} />
+        <Grid container>
+          <Grid item xs>
+            <Link href="#" variant="body2" to="#">
+              Forgot password?
+            </Link>
           </Grid>
-        </form>
+          <Grid item>
+            <Link href="#" variant="body2" to="/SignUp">
+              {"Don't have an account? Sign Up"}
+            </Link>
+          </Grid>
+        </Grid>
       </div>
     </Container>
   );
 }
 
-export default connect((state) => ({ user: state.authentication }), {
-  updateUser,
-  changeCurrentPage,
-})(Login);
+const mapStateToProps = (state) => {
+  return {
+    user: state.authentication,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateUser: (content) => dispatch(updateUser(content)),
+    changeCurrentPage: (content) => dispatch(changeCurrentPage(content)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
