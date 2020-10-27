@@ -50,7 +50,6 @@ describe("testing index.js routes", () => {
       .post("/profile")
       .set("Cookie", [session_info])
       .send({ firstname: "Howard", lastname: "Rogers", dob: null, education: null, career: null})
-    console.log(res.text);
     expect(res.statusCode).toEqual(200);
     expect(res.text).toEqual("Profile Updated.");
   });
@@ -59,7 +58,6 @@ describe("testing index.js routes", () => {
     const res = await request
       .get("/profile")
       .set("Cookie", [session_info])
-    console.log(res.text);
     expect(res.statusCode).toEqual(200);
     expect(res.text).toEqual("{\"firstname\":\"Howard\",\"lastname\":\"Rogers\",\"education\":[],\"career\":[]}");
   });
@@ -69,7 +67,6 @@ describe("testing index.js routes", () => {
       .post("/profile")
       .set("Cookie", [session_info])
       .send({ firstname: "Howard", lastname: "Rogers", dob: "1923/09/19", education: null, career: null})
-    console.log(res.text);
     expect(res.statusCode).toEqual(200);
     expect(res.text).toEqual("Profile Updated.");
   });
@@ -78,7 +75,6 @@ describe("testing index.js routes", () => {
     const res = await request
       .get("/profile")
       .set("Cookie", [session_info])
-    console.log(res.text);
     expect(res.statusCode).toEqual(200);
     expect(res.text).toEqual("{\"firstname\":\"Howard\",\"lastname\":\"Rogers\",\"dob\":\"1923-09-19T04:00:00.000Z\",\"education\":[],\"career\":[]}");
   });
@@ -87,8 +83,7 @@ describe("testing index.js routes", () => {
     const res = await request
       .post("/profile")
       .set("Cookie", [session_info])
-      .send({ firstname: "Howard", lastname: "Rogers", dob: "1923/09/19", education: [{degree: "Bachelors", major: "Software Engineering", gradDate: Date("2018/05/21"), institution: "RIT"}], career: ""})
-    console.log(res.text);
+      .send({ firstname: "Howard", lastname: "Rogers", dob: "1923/09/19", education: [{degree: "Bachelors", major: "Software Engineering", gradDate: Date("2018/05/21"), institution: "RIT"}], career: null});
     expect(res.statusCode).toEqual(200);
     expect(res.text).toEqual("Profile Updated.");
   });
