@@ -44,13 +44,15 @@ profileController.postProfile = async function (req, res) {
 	profile.dateOfBirth = Date.parse(req.body.dob);
   }
   if (req.body.education){
-	for (const education in req.body.education) {
-      profile.addEducation(education.degree, education.major, education.gradDate, education.institution);
+	for (i = 0; i < req.body.education.length; i++) {
+	  let education = req.body.education[i];
+      await profile.addEducation(education.degree, education.major, Date.parse(education.gradDate), education.institution);
     }
   }
   if (req.body.career){
-    for (const career in req.body.career) {
-      profile.addEducation(career.jobTitle, career.organization);
+    for (i = 0; i < req.body.career.length; i++) {
+      let career = req.body.career[i];
+      await profile.addJob(career.jobTitle, career.organization);
     }
   }
   profile.save();
