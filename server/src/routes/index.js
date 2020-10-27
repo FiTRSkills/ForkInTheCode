@@ -2,7 +2,7 @@
  * @module routers/users
  * @requires express
  */
-
+const path = require("path");
 var express = require("express");
 var router = express.Router();
 var auth = require("../controllers/authcontroller.js");
@@ -39,8 +39,8 @@ router.post("/login", auth.doLogin);
  */
 router.get("/logout", auth.logout);
 
-router.get('*', (request, response) => {
-    response.sendFile(path.resolve(__dirname, '../../client/public/index.html'))
+router.get('/*', (request, response) => {
+    response.sendFile(path.join(__dirname, '../../../client/build/index.html'));
 });
 
 module.exports = router;
