@@ -65,7 +65,7 @@ function SignUpTabPanel(props) {
     axios
       .post(url + "/register", {
         usertype,
-        username,
+        username: email,
         password,
       })
       .then((response) => {
