@@ -6,10 +6,7 @@ import ProfileDisplay from "../subcomponents/ProfileDisplay";
 import ProfileEdit from "../subcomponents/ProfileEdit";
 import axios from "axios";
 
-let url =
-  process.env.REACT_APP_ENVIRONMENT === "prod"
-    ? process.env.REACT_APP_PROD_SERVER_URL
-    : process.env.REACT_APP_DEV_SERVER_URL;
+let url = process.env.REACT_APP_SERVER_URL;
 
 const Profile = (props) => {
   /**
@@ -50,7 +47,7 @@ const Profile = (props) => {
   const loadProfile = () => {
     setLoading(true);
     axios
-      .get(url + "/profile")
+      .get(url + "/Profile")
       .then((response) => {
         setFirstName(response.data.firstname);
         setLastName(response.data.lastname);
@@ -59,11 +56,11 @@ const Profile = (props) => {
         setCareer(response.data.career);
       })
       .catch((error) => {
-        // if (error.response.status === 400) {
-        //   setError(error.response.data.message);
-        // } else {
-        //   setError("Failed to load profile");
-        // }
+        if (error.response.status === 400) {
+          setError(error.response.data);
+        } else {
+          setError("Failed to load profile");
+        }
         console.error(error);
       })
       .finally(() => setLoading(false));

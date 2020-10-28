@@ -12,12 +12,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { Alert } from "@material-ui/lab";
 
-let url =
-  process.env.REACT_APP_ENVIRONMENT === "prod"
-    ? process.env.REACT_APP_PROD_SERVER_URL
-    : process.env.REACT_APP_DEV_SERVER_URL;
+let url = process.env.REACT_APP_SERVER_URL;
 
-const ProfileEdit = (props) => {
+const ProfileEdit = ({ endEdit }) => {
   /**
    * Local states for text fields
    */
@@ -28,11 +25,6 @@ const ProfileEdit = (props) => {
   const [career, setCareer] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  /**
-   * Props
-   */
-  const { endEdit } = props;
 
   /**
    * Style hook
@@ -143,8 +135,8 @@ const ProfileEdit = (props) => {
           firstname: firstName,
           lastname: lastName,
           dob: dob,
-          education: education,
-          career: career,
+          education: [], // TODO: education for profile edit later implemented
+          career: [], // TODO: career for profile edit later implemented
         },
       })
       .then((response) => {
@@ -152,7 +144,7 @@ const ProfileEdit = (props) => {
       })
       .catch((error) => {
         if (error.response.status === 400) {
-          setError(error.response.data.message);
+          setError(error.response.data);
         } else {
           setError("Failed to save profile");
         }

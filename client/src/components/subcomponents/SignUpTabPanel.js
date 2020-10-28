@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import "./SignUpTabPanel.css";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import Form from "../subcomponents/Form";
