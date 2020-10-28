@@ -15,7 +15,7 @@ import moment from "moment";
 
 let url = process.env.REACT_APP_SERVER_URL;
 
-const ProfileEdit = ({ endEdit }) => {
+const ProfileEdit = ({ endEdit, loadProfile }) => {
   /**
    * Local states for text fields
    */
@@ -150,6 +150,7 @@ const ProfileEdit = ({ endEdit }) => {
       })
       .then((response) => {
         endEdit();
+        loadProfile();
       })
       .catch((error) => {
         if (error.response.status === 400) {

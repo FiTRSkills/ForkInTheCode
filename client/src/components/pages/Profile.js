@@ -87,7 +87,11 @@ const Profile = (props) => {
           error={error}
         />
       ) : (
-        <ProfileEdit endEdit={toggleEdit} user={props.user} />
+        <ProfileEdit
+          endEdit={toggleEdit}
+          loadProfile={loadProfile}
+          user={props.user}
+        />
       )}
     </Container>
   );
