@@ -9,7 +9,7 @@ const Profile = (props) => {
   /**
    * Profile edit mode
    */
-  const [isEdit, setEdit] = useState(false);
+  const [isEdit, setEdit] = useState(true);
 
   /**
    * Change the nav title to Profile, but if user is not signed in, redirect to login
@@ -34,9 +34,9 @@ const Profile = (props) => {
   return (
     <Container>
       {!isEdit ? (
-        <ProfileDisplay startEdit={toggleEdit} />
+        <ProfileDisplay startEdit={toggleEdit} user={props.user} />
       ) : (
-        <ProfileEdit endEdit={toggleEdit} />
+        <ProfileEdit endEdit={toggleEdit} user={props.user} />
       )}
     </Container>
   );
