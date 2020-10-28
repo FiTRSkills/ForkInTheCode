@@ -9,6 +9,13 @@ import {
   Link,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
+import { Alert } from "@material-ui/lab";
+
+let url =
+  process.env.REACT_APP_ENVIRONMENT === "prod"
+    ? process.env.REACT_APP_PROD_SERVER_URL
+    : process.env.REACT_APP_DEV_SERVER_URL;
 
 const ProfileEdit = (props) => {
   /**
@@ -19,6 +26,8 @@ const ProfileEdit = (props) => {
   const [dob, setDob] = useState(null);
   const [education, setEducation] = useState([]);
   const [career, setCareer] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   /**
    * Props
@@ -34,6 +43,7 @@ const ProfileEdit = (props) => {
    * Handle change of text fields to local states
    *
    * @param event
+   * @param index - index position of education or career items in education or career array
    */
   const handleChange = (event, index) => {
     let copyEducation = [...education];
@@ -93,7 +103,7 @@ const ProfileEdit = (props) => {
   /**
    * Add a new item to education or career
    *
-   * @param type
+   * @param type - education or career
    */
   const addItemToList = (type) => {
     switch (type) {
@@ -124,16 +134,48 @@ const ProfileEdit = (props) => {
   /**
    * Save updated profile
    */
-  const saveProfile = () => {
+  const saveProfile = (event) => {
+    event.preventDefault();
+    setLoading(true);
+    axios
+      .post(url, {
+        data: {
+          firstname: firstName,
+          lastname: lastName,
+          dob: dob,
+          education: education,
+          career: career,
+        },
+      })
+      .then((response) => {
+        endEdit();
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          setError(error.response.data.message);
+        } else {
+          setError("Failed to save profile");
+        }
+        console.error(error);
+      })
+      .finally(() => setLoading(false));
+  };
+
+  /**
+   * Cancel edit profile
+   */
+  const cancelEdit = (event) => {
+    event.preventDefault();
     endEdit();
   };
 
   return (
     <Container className={classes.container}>
       <Avatar className={classes.avatar} />
-      <Link href={"/Profile"} onClick={endEdit}>
+      <Link href={"/Profile"} onClick={cancelEdit}>
         Back to profile
       </Link>
+      {error && <Alert severity={"error"}>{error}</Alert>}
       <form className={classes.form} onSubmit={saveProfile}>
         <Box className={classes.field}>
           <Typography>First name</Typography>
@@ -326,7 +368,7 @@ const ProfileEdit = (props) => {
           className={classes.submit}
           id="submit"
         >
-          Save
+          {!loading ? "Save" : "Processing..."}
         </Button>
       </form>
     </Container>
