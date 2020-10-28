@@ -6,9 +6,7 @@ import ProfileDisplay from "../subcomponents/ProfileDisplay";
 import ProfileEdit from "../subcomponents/ProfileEdit";
 import axios from "axios";
 
-let url = process.env.REACT_APP_SERVER_URL;
-
-const Profile = (props) => {
+function Profile(props) {
   /**
    * Local states for text fields
    */
@@ -30,7 +28,7 @@ const Profile = (props) => {
    */
   useEffect(() => {
     if (props.user !== undefined && Object.keys(props.user).length === 0) {
-      // props.history.push("/Login");
+      props.history.push("/Login");
     } else {
       props.changeCurrentPage("Profile");
       loadProfile();
@@ -51,7 +49,7 @@ const Profile = (props) => {
     // Load profile
     setLoading(true);
     axios
-      .get(url + "/Profile")
+      .get(process.env.REACT_APP_SERVER_URL + "/Profile")
       .then((response) => {
         setFirstName(response.data.firstname);
         setLastName(response.data.lastname);
@@ -100,7 +98,7 @@ const Profile = (props) => {
       )}
     </Container>
   );
-};
+}
 
 const mapStateToProps = (state) => {
   return {

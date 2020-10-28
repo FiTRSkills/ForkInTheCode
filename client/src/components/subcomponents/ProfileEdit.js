@@ -13,9 +13,32 @@ import axios from "axios";
 import { Alert } from "@material-ui/lab";
 import moment from "moment";
 
-let url = process.env.REACT_APP_SERVER_URL;
+const useStyles = makeStyles((theme) => ({
+  container: {
+    marginTop: theme.spacing(6),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    margin: theme.spacing(2),
+  },
+  form: {
+    minWidth: 480,
+  },
+  field: {
+    marginTop: theme.spacing(2),
+  },
+  submit: {
+    marginTop: theme.spacing(4),
+    padding: theme.spacing(2),
+    marginBottom: theme.spacing(4),
+  },
+}));
 
-const ProfileEdit = ({ endEdit, loadProfile, ...props }) => {
+function ProfileEdit({ endEdit, loadProfile, ...props }) {
   /**
    * Local states for text fields
    */
@@ -150,7 +173,7 @@ const ProfileEdit = ({ endEdit, loadProfile, ...props }) => {
     // Save profile
     setLoading(true);
     axios
-      .post(url + "/Profile", {
+      .post(process.env.REACT_APP_SERVER_URL + "/Profile", {
         data: {
           firstname: firstName,
           lastname: lastName,
@@ -387,31 +410,6 @@ const ProfileEdit = ({ endEdit, loadProfile, ...props }) => {
       </form>
     </Container>
   );
-};
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    marginTop: theme.spacing(6),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    width: 100,
-    height: 100,
-    margin: theme.spacing(2),
-  },
-  form: {
-    minWidth: 480,
-  },
-  field: {
-    marginTop: theme.spacing(2),
-  },
-  submit: {
-    marginTop: theme.spacing(4),
-    padding: theme.spacing(2),
-    marginBottom: theme.spacing(4),
-  },
-}));
+}
 
 export default ProfileEdit;
