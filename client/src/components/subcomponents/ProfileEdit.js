@@ -11,6 +11,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { Alert } from "@material-ui/lab";
+import moment from "moment";
 
 let url = process.env.REACT_APP_SERVER_URL;
 
@@ -123,20 +124,33 @@ const ProfileEdit = ({ endEdit }) => {
     }
   };
 
+  const convertDate = (date) => {
+    return moment(JSON.stringify(date)).format("YYYY/MM/DD");
+  };
+
   /**
    * Save updated profile
    */
   const saveProfile = (event) => {
     event.preventDefault();
+    // Convert any dates in dob, education or career to follow format YYYY/MM/DD
+    const convertedDatesDob = convertDate(dob);
+    const convertedDatesCareer = [...career];
+    convertedDatesCareer.forEach((item) => {
+      item.startDate = convertDate(item.startDate);
+      item.endDate = convertDate(item.endDate);
+    });
+
+    // Save profile
     setLoading(true);
     axios
-      .post(url, {
+      .post(url + "/Profile", {
         data: {
           firstname: firstName,
           lastname: lastName,
-          dob: dob,
-          education: [], // TODO: education for profile edit later implemented
-          career: [], // TODO: career for profile edit later implemented
+          dob: convertedDatesDob,
+          education: education,
+          career: convertedDatesCareer,
         },
       })
       .then((response) => {
@@ -359,6 +373,7 @@ const ProfileEdit = ({ endEdit }) => {
           color="primary"
           className={classes.submit}
           id="submit"
+          onClick={saveProfile}
         >
           {!loading ? "Save" : "Processing..."}
         </Button>

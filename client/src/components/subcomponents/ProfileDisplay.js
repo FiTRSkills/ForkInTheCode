@@ -39,7 +39,12 @@ const ProfileDisplay = ({
             <Avatar className={classes.avatar} />
           </Grid>
           <Grid item>
-            <Button variant="contained" color="primary" onClick={startEdit}>
+            <Button
+              name={"editProfile"}
+              variant="contained"
+              color="primary"
+              onClick={startEdit}
+            >
               Edit profile
             </Button>
           </Grid>

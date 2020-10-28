@@ -44,7 +44,11 @@ const Profile = (props) => {
     setEdit(!isEdit);
   };
 
+  /**
+   * Load profile
+   */
   const loadProfile = () => {
+    // Load profile
     setLoading(true);
     axios
       .get(url + "/Profile")
