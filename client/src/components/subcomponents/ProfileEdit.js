@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Box,
@@ -15,7 +15,7 @@ import moment from "moment";
 
 let url = process.env.REACT_APP_SERVER_URL;
 
-const ProfileEdit = ({ endEdit, loadProfile }) => {
+const ProfileEdit = ({ endEdit, loadProfile, ...props }) => {
   /**
    * Local states for text fields
    */
@@ -26,6 +26,17 @@ const ProfileEdit = ({ endEdit, loadProfile }) => {
   const [career, setCareer] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  /**
+   * Auto filled profile fields
+   */
+  useEffect(() => {
+    setFirstName(props.firstName);
+    setLastName(props.lastName);
+    setDob(moment(props.dob).format("YYYY-MM-DD"));
+    setEducation(props.education);
+    setCareer(props.career);
+  }, []);
 
   /**
    * Style hook

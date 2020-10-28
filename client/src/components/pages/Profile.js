@@ -91,6 +91,11 @@ const Profile = (props) => {
           endEdit={toggleEdit}
           loadProfile={loadProfile}
           user={props.user}
+          firstName={firstName}
+          lastName={lastName}
+          dob={dob}
+          education={education}
+          career={career}
         />
       )}
     </Container>
