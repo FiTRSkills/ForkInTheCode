@@ -38,14 +38,14 @@ function Profile(props) {
   /**
    * Toggle the profile edit mode
    */
-  const toggleEdit = () => {
+  function toggleEdit() {
     setEdit(!isEdit);
-  };
+  }
 
   /**
    * Load profile
    */
-  const loadProfile = () => {
+  function loadProfile() {
     // Load profile
     setLoading(true);
     axios
@@ -66,7 +66,7 @@ function Profile(props) {
         console.error(error);
       })
       .finally(() => setLoading(false));
-  };
+  }
 
   /**
    * If edit mode is true, then show edit profile, else show regular profile

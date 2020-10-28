@@ -72,7 +72,7 @@ function ProfileEdit({ endEdit, loadProfile, ...props }) {
    * @param event
    * @param index - index position of education or career items in education or career array
    */
-  const handleChange = (event, index) => {
+  function handleChange(event, index) {
     let copyEducation = [...education];
     let targetEducationItem = { ...copyEducation[index] };
     let copyCareer = [...career];
@@ -125,14 +125,14 @@ function ProfileEdit({ endEdit, loadProfile, ...props }) {
       default:
         break;
     }
-  };
+  }
 
   /**
    * Add a new item to education or career
    *
    * @param type - education or career
    */
-  const addItemToList = (type) => {
+  function addItemToList(type) {
     switch (type) {
       case "education":
         const newEducationItem = {
@@ -156,16 +156,16 @@ function ProfileEdit({ endEdit, loadProfile, ...props }) {
       default:
         break;
     }
-  };
+  }
 
-  const convertDate = (date) => {
+  function convertDate(date) {
     return moment(JSON.stringify(date)).format("YYYY/MM/DD");
-  };
+  }
 
   /**
    * Save updated profile
    */
-  const saveProfile = (event) => {
+  function saveProfile(event) {
     event.preventDefault();
     // Convert any dates in dob, education or career to follow format YYYY/MM/DD
     const convertedDatesDob = convertDate(dob);
@@ -195,15 +195,15 @@ function ProfileEdit({ endEdit, loadProfile, ...props }) {
         console.error(error);
       })
       .finally(() => setLoading(false));
-  };
+  }
 
   /**
    * Cancel edit profile
    */
-  const cancelEdit = (event) => {
+  function cancelEdit(event) {
     event.preventDefault();
     endEdit();
-  };
+  }
 
   return (
     <Container className={classes.container}>
