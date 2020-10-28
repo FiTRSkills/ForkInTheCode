@@ -135,11 +135,6 @@ const ProfileEdit = ({ endEdit }) => {
     event.preventDefault();
     // Convert any dates in dob, education or career to follow format YYYY/MM/DD
     const convertedDatesDob = convertDate(dob);
-    const convertedDatesCareer = [...career];
-    convertedDatesCareer.forEach((item) => {
-      item.startDate = convertDate(item.startDate);
-      item.endDate = convertDate(item.endDate);
-    });
 
     // Save profile
     setLoading(true);
@@ -149,8 +144,8 @@ const ProfileEdit = ({ endEdit }) => {
           firstname: firstName,
           lastname: lastName,
           dob: convertedDatesDob,
-          education: education,
-          career: convertedDatesCareer,
+          education: [], // TODO: implemented later
+          career: [], // TODO: implemented later
         },
       })
       .then((response) => {
