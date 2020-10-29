@@ -81,7 +81,9 @@ JobSeekerProfile.methods.addJob = async function (jobTitle, organization) {
  * @returns {Promise<JobSeekerProfile>}
  */
 JobSeekerProfile.methods.removeJob = async function (index) {
-  this.career = this.career.splice(index, 1);
+  let result = this.career.splice(index, 1);
+  if (result.length === 0)
+    throw new RangeError("Job does not exist at that index");
   await this.save();
   return this;
 };
@@ -115,7 +117,9 @@ JobSeekerProfile.methods.addEducation = async function (
  * @returns {Promise<JobSeekerProfile>}
  */
 JobSeekerProfile.methods.removeEducation = async function (index) {
-  this.education = this.education.splice(index, 1);
+  let result = this.education.splice(index, 1);
+  if (result.length === 0)
+    throw new RangeError("Education does not exist at that index");
   await this.save();
   return this;
 };
