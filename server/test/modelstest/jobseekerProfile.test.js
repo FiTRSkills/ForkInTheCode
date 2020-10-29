@@ -1,5 +1,5 @@
 const { connectDB, disconnectDB } = require("../util");
-const JobSeekerProfile = require("../../src/models/JobSeekerProfile");
+const JobSeekerProfile = require("../../src/models/jobseekerProfile");
 const Organization = require("../../src/models/organization");
 
 describe("EducatorProfile Model Test", () => {
