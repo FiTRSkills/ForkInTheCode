@@ -19,9 +19,9 @@ function ProfileDisplayEducationItem(props) {
         <Typography name={`major${index}`}>{educationItem.major}</Typography>
       </Grid>
       <Grid item xl={4} lg={4} sm={4} xs={4}>
-        <Typography variant={"h6"}>Institution</Typography>
-        <Typography name={`institution${index}`}>
-          {educationItem.institution}
+        <Typography variant={"h6"}>Organization</Typography>
+        <Typography name={`organization${index}`}>
+          {educationItem.organization}
         </Typography>
       </Grid>
     </Grid>

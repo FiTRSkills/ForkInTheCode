@@ -132,7 +132,7 @@ function ProfileEdit({ endEdit, ...props }) {
         const newEducationItem = {
           degree: "",
           major: "",
-          institution: "",
+          organization: "",
         };
         let updatedEducation = education.concat(newEducationItem);
         setEducation(updatedEducation);
