@@ -47,7 +47,6 @@ router.post("/login", auth.doLogin);
  */
 router.get("/logout", auth.logout);
 
-
 /**
  * Routing serving getting profile information
  * @name GET /profile
