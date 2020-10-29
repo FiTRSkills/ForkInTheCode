@@ -1,22 +1,7 @@
 describe("Edit profile", () => {
   beforeEach(() => {
     // Login first
-    cy.visit("/Login");
-    cy.get("#navBarTitle").should("contain", "Login");
-    cy.server();
-    cy.route({
-      method: "POST",
-      url: "http://localhost:9000/Login",
-      status: 200,
-      response: {
-        user: { id: 1 },
-      },
-    }).as("loginCall");
-    cy.get("#email").type("email@email.com");
-    cy.get("#password").type("123456");
-    cy.get("#submit").click();
-    cy.wait("@loginCall").its("status").should("eq", 200);
-    cy.get("#navBarTitle").should("contain", "Home");
+    cy.fakeLogin();
 
     // Stub get profile error response
     cy.route({
