@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import "./SignUpTabPanel.css";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import Form from "../subcomponents/Form";
@@ -31,17 +30,14 @@ const useStyles = makeStyles((theme) => ({
 function SignUpTabPanel(props) {
   const [errorMessage, setErrorMessage] = useState("");
 
-  function signUp({email, password, educator, employer}) {
+  function signUp({email, password, organization}) {
     let body = {
       usertype: TAB_TYPES[props.index],
       email,
       password
     }
-    if(educator !== ""){
-      body.educator = educator;
-    }
-    if(employer !== ""){
-      body.employer = employer;
+    if(organization !== ""){
+      body.organization = organization;
     }
     return axios
       .post(process.env.REACT_APP_SERVER_URL + "/register", body)
@@ -49,7 +45,7 @@ function SignUpTabPanel(props) {
         props.history.push("/Login");
       })
       .catch((error) => {
-        if (error.response.status === 400) {
+        if (error?.response?.status === 400) {
           setErrorMessage(error.response.data.message);
         } else {
           setErrorMessage("An error has occurred, please try again.");

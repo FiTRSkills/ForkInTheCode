@@ -4,7 +4,6 @@ import { changeCurrentPage } from "../../redux/actions";
 import Container from "@material-ui/core/Container";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import "./SignUp.css";
 import SignUpTabPanel from "../subcomponents/SignUpTabPanel";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
@@ -50,9 +49,9 @@ function SignUp(props) {
           onChange={handleChange}
           aria-label="Account Sign Up Types"
         >
-          <Tab label="Job Seeker" />
-          <Tab label="Employer" />
-          <Tab label="Educator" />
+          <Tab label="Job Seeker" id="jobSeekerTab" />
+          <Tab label="Employer" id="employerTab" />
+          <Tab label="Educator" id="educatorTab" />
         </Tabs>
         <SignUpTabPanel currentTab={tabIndex} index={0} typeTitle="Job Seeker" {...props} />
         <SignUpTabPanel currentTab={tabIndex} index={1} typeTitle="Employer" {...props} />
