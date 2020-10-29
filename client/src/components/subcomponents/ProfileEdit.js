@@ -1,18 +1,21 @@
 import React, { useState } from "react";
-import Container from '@material-ui/core/Container';
-import Box from '@material-ui/core/Box';
-import Avatar from '@material-ui/core/Avatar';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
-import DateFnsUtils from '@date-io/date-fns';
-import {MuiPickersUtilsProvider,
+import Container from "@material-ui/core/Container";
+import Box from "@material-ui/core/Box";
+import Avatar from "@material-ui/core/Avatar";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import Link from "@material-ui/core/Link";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
   KeyboardDatePicker,
-} from '@material-ui/pickers';
+} from "@material-ui/pickers";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { Alert } from "@material-ui/lab";
+import ProfileEditEducationItem from "./ProfileEditEducationItem";
+import ProfileEditCareerItem from "./ProfileEditCareerItem";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -115,8 +118,8 @@ function ProfileEdit({ endEdit, ...props }) {
   }
 
   const handleDateChange = (date) => {
-    setDob(date)
-  }
+    setDob(date);
+  };
 
   /**
    * Add a new item to education or career
@@ -150,17 +153,15 @@ function ProfileEdit({ endEdit, ...props }) {
   }
 
   function dobAsString() {
-    let month = '' + (dob.getMonth() + 1);
-    let day = '' + (dob.getDate() + 1);
+    let month = "" + (dob.getMonth() + 1);
+    let day = "" + (dob.getDate() + 1);
     let year = dob.getFullYear();
 
-    if (month.length < 2)
-        month = '0' + month;
-    if (day.length < 2)
-        day = '0' + day;
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
 
-    return [year, month, day].join('-');
-  };
+    return [year, month, day].join("-");
+  }
 
   /**
    * Save updated profile
@@ -252,7 +253,7 @@ function ProfileEdit({ endEdit, ...props }) {
               value={dob}
               onChange={handleDateChange}
               KeyboardButtonProps={{
-                'aria-label': 'change date',
+                "aria-label": "change date",
               }}
             />
           </MuiPickersUtilsProvider>
@@ -261,53 +262,11 @@ function ProfileEdit({ endEdit, ...props }) {
           Education
         </Typography>
         {education.map((educationItem, index) => (
-          <Box>
-            <Box className={classes.field}>
-              <Typography>Degree</Typography>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                id="degree"
-                label="Degree"
-                name="degree"
-                autoFocus
-                required
-                value={educationItem.degree}
-                onChange={(event) => handleChange(event, index)}
-              />
-            </Box>
-            <Box className={classes.field}>
-              <Typography>Major</Typography>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                id="major"
-                label="Major"
-                name="major"
-                autoFocus
-                required
-                value={educationItem.major}
-                onChange={(event) => handleChange(event, index)}
-              />
-            </Box>
-            <Box className={classes.field}>
-              <Typography>Institution</Typography>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                id="institution"
-                label="Institution"
-                name="institution"
-                autoFocus
-                required
-                value={educationItem.institution}
-                onChange={(event) => handleChange(event, index)}
-              />
-            </Box>
-          </Box>
+          <ProfileEditEducationItem
+            educationItem={educationItem}
+            index={index}
+            handleChange={handleChange}
+          />
         ))}
         <Button
           variant="outlined"
@@ -321,70 +280,11 @@ function ProfileEdit({ endEdit, ...props }) {
           Career
         </Typography>
         {career.map((careerItem, index) => (
-          <Box>
-            <Box className={classes.field}>
-              <Typography>Job title</Typography>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                id="jobTitle"
-                label="jobTitle"
-                name="jobTitle"
-                autoFocus
-                required
-                value={careerItem.jobTitle}
-                onChange={(event) => handleChange(event, index)}
-              />
-            </Box>
-            <Box className={classes.field}>
-              <Typography>Start date</Typography>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                id="startDate"
-                name="startDate"
-                type="date"
-                fullWidth
-                autoFocus
-                required
-                className={classes.field}
-                value={careerItem.startDate}
-                onChange={(event) => handleChange(event, index)}
-              />
-            </Box>
-            <Box className={classes.field}>
-              <Typography>End date</Typography>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                id="endDate"
-                name="endDate"
-                type="date"
-                fullWidth
-                autoFocus
-                required
-                className={classes.field}
-                value={careerItem.endDate}
-                onChange={(event) => handleChange(event, index)}
-              />
-            </Box>
-            <Box className={classes.field}>
-              <Typography>Organization</Typography>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                id="organization"
-                label="Organization"
-                name="organization"
-                autoFocus
-                required
-                value={careerItem.organization}
-                onChange={(event) => handleChange(event, index)}
-              />
-            </Box>
-          </Box>
+          <ProfileEditCareerItem
+            careerItem={careerItem}
+            index={index}
+            handleChange={handleChange}
+          />
         ))}
         <Button
           variant="outlined"

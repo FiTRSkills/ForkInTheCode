@@ -3,6 +3,9 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 
 function ProfileDisplayCareerItem(props) {
+  /**
+   * Props
+   */
   const { careerItem, index } = props;
 
   return (
