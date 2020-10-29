@@ -149,9 +149,18 @@ function ProfileEdit({ endEdit, ...props }) {
     }
   }
 
-  /*const convertDate = (date) => {
-    return moment(JSON.stringify(date)).format("YYYY/MM/DD");
-  };*/
+  function dobAsString() {
+    let month = '' + (dob.getMonth() + 1);
+    let day = '' + (dob.getDate() + 1);
+    let year = dob.getFullYear();
+
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+  };
 
   /**
    * Save updated profile
@@ -165,7 +174,7 @@ function ProfileEdit({ endEdit, ...props }) {
       .post(process.env.REACT_APP_SERVER_URL + "/Profile", {
         firstname,
         lastname,
-        dob: [dob.getFullYear(), (dob.getMonth() + 1), dob.getDate()].join('/'),
+        dob: dobAsString(),
         education: [], // TODO: implemented later
         career: [], // TODO: implemented later
       })
