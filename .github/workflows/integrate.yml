@@ -2,7 +2,9 @@ name: Node Continuous Integration
 
 on:
   pull_request:
-    branches: [master, sprint_*]
+    branches: 
+      - master
+      - sprint_*
 
 jobs:
   client_ci:
