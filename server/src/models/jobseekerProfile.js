@@ -54,8 +54,8 @@ const JobSeekerProfile = new mongoose.Schema({
  */
 JobSeekerProfile.statics.findAndPopulateById = function (id) {
   return this.findById(id)
-    .populate("education.organization")
     .populate("career.organization")
+    .populate("education.organization")
     .exec();
 };
 
