@@ -31,9 +31,12 @@ function Profile(props) {
       props.history.push("/Login");
     } else {
       props.changeCurrentPage("Profile");
-      loadProfile();
     }
-  }, []);
+  });
+
+  useEffect(() => {
+    loadProfile()
+  }, [isEdit]);
 
   /**
    * Toggle the profile edit mode
@@ -53,7 +56,7 @@ function Profile(props) {
       .then((response) => {
         setFirstName(response.data.firstname);
         setLastName(response.data.lastname);
-        setDob(response.data.dob);
+        setDob(new Date(response.data.dob));
         setEducation(response.data.education);
         setCareer(response.data.career);
       })
@@ -87,7 +90,6 @@ function Profile(props) {
       ) : (
         <ProfileEdit
           endEdit={toggleEdit}
-          loadProfile={loadProfile}
           user={props.user}
           firstName={firstName}
           lastName={lastName}

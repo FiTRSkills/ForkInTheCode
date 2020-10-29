@@ -61,7 +61,7 @@ function ProfileDisplay({
                 color="primary"
                 onClick={startEdit}
               >
-                Edit profile
+                Edit Profile
               </Button>
             </Grid>
           </Grid>
@@ -73,17 +73,17 @@ function ProfileDisplay({
             justify={"center"}
           >
             <Grid item>
-              <Typography variant={"h6"}>First name</Typography>
+              <Typography variant={"h6"}>First Name</Typography>
               <Typography name={"firstName"}>{firstName}</Typography>
             </Grid>
             <Grid item>
-              <Typography variant={"h6"}>Last name</Typography>
+              <Typography variant={"h6"}>Last Name</Typography>
               <Typography name={"lastName"}>{lastName}</Typography>
             </Grid>
             <Grid item>
               <Grid item>
-                <Typography variant={"h6"}>Date of birth</Typography>
-                <Typography name={"dob"}>{dob}</Typography>
+                <Typography variant={"h6"}>Date of Birth</Typography>
+                <Typography name={"dob"}>{dob !== null ? [dob.getFullYear(), (dob.getMonth() + 1), dob.getDate()].join('/') : ""}</Typography>
               </Grid>
             </Grid>
             <Grid item>

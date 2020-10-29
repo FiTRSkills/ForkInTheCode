@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Container,
   Box,
@@ -8,10 +8,13 @@ import {
   Button,
   Link,
 } from "@material-ui/core";
+import DateFnsUtils from '@date-io/date-fns';
+import {MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { Alert } from "@material-ui/lab";
-import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -38,28 +41,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ProfileEdit({ endEdit, loadProfile, ...props }) {
+function ProfileEdit({ endEdit, ...props }) {
   /**
    * Local states for text fields
    */
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [dob, setDob] = useState(null);
-  const [education, setEducation] = useState([]);
-  const [career, setCareer] = useState([]);
+  const [firstname, setFirstName] = useState(props.firstName);
+  const [lastname, setLastName] = useState(props.lastName);
+  const [dob, setDob] = useState(props.dob);
+  const [education, setEducation] = useState(props.education);
+  const [career, setCareer] = useState(props.career);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  /**
-   * Auto filled profile fields
-   */
-  useEffect(() => {
-    setFirstName(props.firstName);
-    setLastName(props.lastName);
-    setDob(moment(props.dob).format("YYYY-MM-DD"));
-    setEducation(props.education);
-    setCareer(props.career);
-  }, []);
 
   /**
    * Style hook
@@ -83,9 +75,6 @@ function ProfileEdit({ endEdit, loadProfile, ...props }) {
         break;
       case "lastName":
         setLastName(event.target.value);
-        break;
-      case "dob":
-        setDob(event.target.value);
         break;
       case "degree":
         targetEducationItem.degree = event.target.value;
@@ -127,6 +116,10 @@ function ProfileEdit({ endEdit, loadProfile, ...props }) {
     }
   }
 
+  const handleDateChange = (date) => {
+    setDob(date)
+  }
+
   /**
    * Add a new item to education or career
    *
@@ -158,33 +151,28 @@ function ProfileEdit({ endEdit, loadProfile, ...props }) {
     }
   }
 
-  function convertDate(date) {
+  /*const convertDate = (date) => {
     return moment(JSON.stringify(date)).format("YYYY/MM/DD");
-  }
+  };*/
 
   /**
    * Save updated profile
    */
   function saveProfile(event) {
     event.preventDefault();
-    // Convert any dates in dob, education or career to follow format YYYY/MM/DD
-    const convertedDatesDob = convertDate(dob);
 
     // Save profile
     setLoading(true);
     axios
       .post(process.env.REACT_APP_SERVER_URL + "/Profile", {
-        data: {
-          firstname: firstName,
-          lastname: lastName,
-          dob: convertedDatesDob,
-          education: [], // TODO: implemented later
-          career: [], // TODO: implemented later
-        },
+        firstname,
+        lastname,
+        dob: [dob.getFullYear(), (dob.getMonth() + 1), dob.getDate()].join('/'),
+        education: [], // TODO: implemented later
+        career: [], // TODO: implemented later
       })
       .then((response) => {
         endEdit();
-        loadProfile();
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -224,7 +212,7 @@ function ProfileEdit({ endEdit, loadProfile, ...props }) {
             name="firstName"
             autoFocus
             required
-            value={firstName}
+            value={firstname}
             onChange={handleChange}
           />
         </Box>
@@ -239,25 +227,28 @@ function ProfileEdit({ endEdit, loadProfile, ...props }) {
             name="lastName"
             autoFocus
             required
-            value={lastName}
+            value={lastname}
             onChange={handleChange}
           />
         </Box>
         <Box className={classes.field}>
-          <Typography>DOB</Typography>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            id="dob"
-            name="dob"
-            type="date"
-            fullWidth
-            autoFocus
-            required
-            className={classes.field}
-            value={dob}
-            onChange={handleChange}
-          />
+          <Typography>Date of Birth</Typography>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              disableToolbar
+              variant="inline"
+              format="yyyy/MM/dd"
+              margin="normal"
+              id="dob"
+              label="Date of Birth"
+              name="dob"
+              value={dob}
+              onChange={handleDateChange}
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
+            />
+          </MuiPickersUtilsProvider>
         </Box>
         <Typography className={classes.field} variant={"h5"}>
           Education
