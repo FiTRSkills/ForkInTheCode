@@ -9,7 +9,6 @@ const passport = require("passport");
 const app = express();
 
 //initalizing passport and express session
-
 app.use(
   require("express-session")({
     secret: "secret",
