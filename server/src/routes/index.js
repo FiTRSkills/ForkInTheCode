@@ -77,8 +77,8 @@ router.post("/profile", sessionValidation, [
 
 //The catch all for refreshing
 router.get('/*', function(req, res){
-    res.sendFile(express.static(path.join(__dirname, "../../client/build/index.html"));
-}
-           
+    res.sendFile(path.join(__dirname, "../../../client/build/index.html"));
+});
+
 module.exports = router;
 
