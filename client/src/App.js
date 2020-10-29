@@ -1,18 +1,13 @@
-import React from "react";
-import "./App.css";
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
-import Home from "./components/pages/Home";
-import Login from "./components/pages/Login";
-import NavBar from "./components/subcomponents/NavBar";
-import SignUp from "./components/pages/SignUp";
 import Profile from "./components/pages/Profile";
 
+import React from 'react';
+import './App.css';
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import Home from './components/pages/Home'
+import Login from './components/pages/Login'
+import NavBar from './components/subcomponents/NavBar'
+import SignUp from './components/pages/SignUp';
 function App() {
   return (
     <Router>
