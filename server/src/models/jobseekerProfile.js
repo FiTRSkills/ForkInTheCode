@@ -37,7 +37,7 @@ const JobSeekerProfile = new mongoose.Schema({
       degree: String,
       major: String,
       gradDate: Date,
-      institution: {
+      organization: {
         type: mongoose.Schema.Types.ObjectId,
         ref: Organization.modelName,
       },
@@ -54,8 +54,8 @@ const JobSeekerProfile = new mongoose.Schema({
  */
 JobSeekerProfile.statics.findAndPopulateById = function (id) {
   return this.findById(id)
-    .populate("education.institution")
     .populate("career.organization")
+    .populate("education.organization")
     .exec();
 };
 
@@ -81,7 +81,9 @@ JobSeekerProfile.methods.addJob = async function (jobTitle, organization) {
  * @returns {Promise<JobSeekerProfile>}
  */
 JobSeekerProfile.methods.removeJob = async function (index) {
-  this.career = this.career.splice(index, 1);
+  let result = this.career.splice(index, 1);
+  if (result.length === 0)
+    throw new RangeError("Job does not exist at that index");
   await this.save();
   return this;
 };
@@ -95,17 +97,17 @@ JobSeekerProfile.methods.addEducation = async function (
   degree,
   major,
   gradDate,
-  institution
+  organization
 ) {
-  let org = await Organization.findOneOrCreate(institution);
+  let org = await Organization.findOneOrCreate(organization);
   this.education.push({
     degree: degree,
     major: major,
     gradDate: gradDate,
-    institution: org._id,
+    organization: org._id,
   });
   await this.save();
-  return await this.constructor.populate(this, "education.institution");
+  return await this.constructor.populate(this, "education.organization");
 };
 
 /**
@@ -115,7 +117,9 @@ JobSeekerProfile.methods.addEducation = async function (
  * @returns {Promise<JobSeekerProfile>}
  */
 JobSeekerProfile.methods.removeEducation = async function (index) {
-  this.education = this.education.splice(index, 1);
+  let result = this.education.splice(index, 1);
+  if (result.length === 0)
+    throw new RangeError("Education does not exist at that index");
   await this.save();
   return this;
 };
