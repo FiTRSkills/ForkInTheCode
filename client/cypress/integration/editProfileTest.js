@@ -2,38 +2,7 @@ describe("Edit profile", () => {
   beforeEach(() => {
     // Login first
     cy.fakeLogin();
-
-    // Stub get profile error response
-    cy.route({
-      method: "GET",
-      url: "http://localhost:9000/Profile",
-      status: 200,
-      response: {
-        firstname: "John",
-        lastname: "Appleseed",
-        dob: "1998-01-05",
-        education: [
-          {
-            degree: "BS Software Engineering",
-            major: "Software Engineering",
-            institution: "RIT",
-          },
-        ],
-        career: [
-          {
-            jobTitle: "Student",
-            startDate: "2018-01-01",
-            endDate: "2020-01-01",
-            organization: "Apple",
-          },
-        ],
-      },
-    }).as("profileCall");
-
-    // Go to profile. Verify profile loaded success.
-    cy.get("#Profile").click();
-    cy.wait("@profileCall").its("status").should("eq", 200);
-    cy.get("p[name='firstName']").should("contain", "John");
+    cy.fakeProfile();
   });
 
   it("Edit profile success", () => {
