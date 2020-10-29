@@ -1,13 +1,11 @@
 import React from "react";
-import {
-  Avatar,
-  Button,
-  Container,
-  Grid,
-  Typography,
-  Box,
-  CircularProgress,
-} from "@material-ui/core";
+import Container from "@material-ui/core/Container";
+import Box from "@material-ui/core/Box";
+import Avatar from "@material-ui/core/Avatar";
+import Grid from "@material-ui/core/Grid";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import { Alert } from "@material-ui/lab";
 import ProfileDisplayEducationItem from "./ProfileDisplayEducationItem";
@@ -83,7 +81,15 @@ function ProfileDisplay({
             <Grid item>
               <Grid item>
                 <Typography variant={"h6"}>Date of Birth</Typography>
-                <Typography name={"dob"}>{dob !== null ? [dob.getFullYear(), (dob.getMonth() + 1), dob.getDate()].join('/') : ""}</Typography>
+                <Typography name={"dob"}>
+                  {dob !== null
+                    ? [
+                        dob.getFullYear(),
+                        dob.getMonth() + 1,
+                        dob.getDate(),
+                      ].join("/")
+                    : ""}
+                </Typography>
               </Grid>
             </Grid>
             <Grid item>
