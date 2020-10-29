@@ -2,7 +2,8 @@
   "scripts": {
     "postinstall": "cd client && npm install && cd ../server && npm install",
     "build": "cd client && npm run build --if-present && cd ../server && npm run build --if-present",
-    "start": "cd server && npm start"
+    "start": "cd server && npm start",
+    "rebuildAndStart": "npm install && npm run build && npm run start"
   },
   "dependencies": {
     "dotenv": "^8.2.0"
