@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container } from "@material-ui/core";
+import Container from "@material-ui/core/Container";
 import { changeCurrentPage } from "../../redux/actions";
 import { connect } from "react-redux";
 import ProfileDisplay from "../subcomponents/ProfileDisplay";

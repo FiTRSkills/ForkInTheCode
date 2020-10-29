@@ -1,5 +1,6 @@
 import React from "react";
-import { Grid, Typography } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
 
 function ProfileDisplayCareerItem(props) {
   const { careerItem, index } = props;
