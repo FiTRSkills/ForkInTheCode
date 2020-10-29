@@ -86,9 +86,14 @@ describe("testing index.js routes", () => {
   it("GET /profile - updated dob profile information", async () => {
     const res = await request.get("/profile").set("Cookie", [session_info]);
     expect(res.statusCode).toEqual(200);
-    expect(res.text).toEqual(
-      '{"firstname":"Howard","lastname":"Rogers","dob":"1923-09-19T04:00:00.000Z","education":[],"career":[]}'
-    );
+    let body = JSON.parse(res.text);
+    expect(body.firstname).toEqual("Howard");
+    expect(body.lastname).toEqual("Rogers");
+    let date = new Date(body.dob);
+    //months are 0-11 in json date format for some ungodly reason
+    expect(date.getMonth()).toEqual(8);
+    expect(date.getDate()).toEqual(19);
+    expect(date.getFullYear()).toEqual(1923);
   });
 
   it("POST /profile - update the profile education", async () => {
@@ -119,10 +124,18 @@ describe("testing index.js routes", () => {
     let body = JSON.parse(res.text);
     expect(body.firstname).toEqual("Howard");
     expect(body.lastname).toEqual("Rogers");
-    expect(body.dob).toEqual("1923-09-19T04:00:00.000Z");
+    let date = new Date(body.dob);
+    //months are 0-11 in json date format for some ungodly reason
+    expect(date.getMonth()).toEqual(8);
+    expect(date.getDate()).toEqual(19);
+    expect(date.getFullYear()).toEqual(1923);
     expect(body.education[0].degree).toEqual("Bachelors");
     expect(body.education[0].major).toEqual("Software Engineering");
-    expect(body.education[0].gradDate).toEqual("2018-05-21T04:00:00.000Z");
+    let resultGradDate = new Date(body.education[0].gradDate);
+    //months are 0-11 in json date format for some ungodly reason
+    expect(resultGradDate.getMonth()).toEqual(4);
+    expect(resultGradDate.getDate()).toEqual(21);
+    expect(resultGradDate.getFullYear()).toEqual(2018);
     expect(body.education[0].organization.name).toEqual("RIT");
   });
 
@@ -154,10 +167,18 @@ describe("testing index.js routes", () => {
     let body = JSON.parse(res.text);
     expect(body.firstname).toEqual("Howard");
     expect(body.lastname).toEqual("Rogers");
-    expect(body.dob).toEqual("1923-09-19T04:00:00.000Z");
+    let date = new Date(body.dob);
+    //months are 0-11 in json date format for some ungodly reason
+    expect(date.getMonth()).toEqual(8);
+    expect(date.getDate()).toEqual(19);
+    expect(date.getFullYear()).toEqual(1923);
     expect(body.education[0].degree).toEqual("Bachelors");
     expect(body.education[0].major).toEqual("Software Engineering");
-    expect(body.education[0].gradDate).toEqual("2018-05-21T04:00:00.000Z");
+    let resultGradDate = new Date(body.education[0].gradDate);
+    //months are 0-11 in json date format for some ungodly reason
+    expect(resultGradDate.getMonth()).toEqual(4);
+    expect(resultGradDate.getDate()).toEqual(21);
+    expect(resultGradDate.getFullYear()).toEqual(2018);
     expect(body.education[0].organization.name).toEqual("RIT");
     expect(body.career[0].jobTitle).toEqual("Plumber");
     expect(body.career[0].organization.name).toEqual("Happy Plumbing Inc");
