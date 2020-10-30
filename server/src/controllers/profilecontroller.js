@@ -64,4 +64,65 @@ profileController.postProfile = async function (req, res) {
   res.status(200).send("Profile Updated.");
 };
 
+/**
+ * functionality for deleting an education
+ * @name postDeleteEducation
+ * @function
+ * @alias module:/controllers/profilecontroller
+ * @property {request} request - contains user
+ * @returns {string} response - that profile was successfully updated
+ */
+profileController.postDeleteEducation = async function(req, res) {
+  let profile = await req.user.getProfile();
+  // gets the id of the education from the request
+  await profile.removeEducation(req.body.id, function(err, data){
+    if (err){
+      res.status(400).send('Error removing education.');
+      return;
+    }
+    res.status(200).send('Successfully removed education.');
+  });
+};
+
+/**
+ * functionality for editing an education
+ * @name postEditEducation
+ * @function
+ * @alias module:/controllers/profilecontroller
+ * @property {request} request - contains user
+ * @returns {string} response - that profile was successfully updated
+ */
+profileController.postEditEducation = async function(req, res) {
+  let profile = await req.user.getProfile();
+  // gets the id of the education from the request and the updated education
+  await profile.editEducation(req.body.id, req.body.education, function(err, data){
+    if (err){
+      res.status(400).send('Error editing education.');
+      return;
+    }
+    res.status(200).send('Successfully edited education.');
+  });
+}
+
+/**
+ * functionality for adding an education
+ * @name postAddEducation
+ * @function
+ * @alias module:/controllers/profilecontroller
+ * @property {request} request - contains user
+ * @returns {string} response - that profile was successfully updated
+ */
+profileController.postAddEducation = async function(req, res) {
+  let profile = await req.user.getProfile();
+  let education = req.body.education;
+  // gets the education to add from the request
+  await profile.removeEducation(education.degree, education.major, education.gradDate, education.organization, function(err, data){
+    if (err){
+      res.status(400).send('Error adding education.');
+      return;
+    }
+    res.status(200).send('Successfully added education.');
+  });
+}
+
 module.exports = profileController;

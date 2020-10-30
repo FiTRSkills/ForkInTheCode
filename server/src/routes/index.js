@@ -75,6 +75,48 @@ router.post("/profile", sessionValidation, [
   ], inputValidation, profile.postProfile);
 
 
+/**
+ * Routing serving updating profile information
+ * @name POST /deleteEducation
+ * @function
+ * @alias module:/routers/profile
+ * @property {string} user - the user token for the session
+ * @property {string} id - the id of the education
+ * @returns {string} message - success message
+ */
+router.post("/deleteEducation", sessionValidation, [
+    check('id', 'Must send a viable ID').not().isEmpty(),
+  ], inputValidation, profile.postDeleteEducation);
+
+/**
+ * Routing serving updating profile information
+ * @name POST /editEducation
+ * @function
+ * @alias module:/routers/profile
+ * @property {string} user - the user token for the session
+ * @property {string} id - the id of the education
+ * @property {string} education -  the updated version of the education
+ * @returns {string} message - success message
+ */
+router.post("/editEducation", sessionValidation, [
+    check('id', 'Must send a viable ID').not().isEmpty(),
+    check('education', 'Must send a viable education').not().isEmpty(),
+  ], inputValidation, profile.postEditEducation);
+
+/**
+ * Routing serving updating profile information
+ * @name POST /addEducation
+ * @function
+ * @alias module:/routers/profile
+ * @property {string} user - the user token for the session
+ * @property {string} education -  the updated version of the education
+ * @returns {string} message - success message
+ */
+router.post("/addEducation", sessionValidation, [
+    check('education', 'Must send a viable education').not().isEmpty(),
+  ], inputValidation, profile.postAddEducation);
+
+
 //The catch all for refreshing
 router.get('/*', function(req, res){
     res.sendFile(path.join(__dirname, "../../../client/build/index.html"));
