@@ -2,12 +2,11 @@
  * @module routers/users
  * @requires express
  */
-const path = require("path");
 const { check } = require('express-validator');
 var express = require("express");
 var router = express.Router();
 var auth = require("../controllers/authcontroller.js");
-var profile = require("../controllers/profilecontroller.js")
+var profile = require("../controllers/profilecontroller.js");
 var inputValidation = require("../services/inputValidation.js");
 var sessionValidation = require("../services/sessionValidation.js");
 
@@ -75,9 +74,9 @@ router.post("/profile", sessionValidation, [
   ], inputValidation, profile.postProfile);
 
 
-//The catch all for refreshing
-router.get('/*', function(req, res){
-    res.sendFile(path.join(__dirname, "../../../client/build/index.html"));
+//The 404 Route (ALWAYS Keep this as the last route)
+router.get('*', function(req, res){
+    res.status(404).send('Not Found');
 });
 
 module.exports = router;
