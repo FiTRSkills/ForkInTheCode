@@ -1,0 +1,35 @@
+name: Continuous Deployment
+
+on:
+  push:
+    branches: ['master']
+jobs:
+  build_job:
+    name: Build and Deploy Docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - run: npm ci --prefix server
+      - run: npm run doc --prefix server
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@master
+        with:
+          HOST: nitron.se.rit.edu
+          USERNAME: forkinthecode
+          PORT: 22
+          KEY: ${{ secrets.SSH_SECRET }}
+          source: "./server/docs"
+          target: "/home/senior-projects/forkinthecode/public_html"
+      - name: Executing remote command
+        uses: appleboy/ssh-action@master
+        with:
+          HOST: nitron.se.rit.edu
+          USERNAME: forkinthecode
+          KEY: ${{ secrets.SSH_SECRET }}
+          PORT: 22
+          script: |
+            cd /home/senior-projects/forkinthecode/public_html
+            mv server/docs .
+            rmdir server
+            chmod -R g+w docs
