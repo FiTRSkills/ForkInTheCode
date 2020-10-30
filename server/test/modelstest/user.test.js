@@ -2,11 +2,11 @@ const { connectDB, disconnectDB } = require("../util");
 const User = require("../../src/models/user");
 
 const USER1 = {
-  username: "test@gmail.com",
+  email: "test@gmail.com",
   password: "password",
 };
 const USER2 = {
-  username: "test2@gmail.com",
+  email: "test2@gmail.com",
   password: "password2",
 };
 
@@ -20,20 +20,20 @@ describe("User Model Test", () => {
   });
 
   it("register user", async () => {
-    let user = new User({ username: USER1.username });
-    return User.register(user, USER1.password).then(async (user) => {
-      expect(user._id).toEqual(expect.anything());
-      expect(user.username).toEqual(USER1.username);
-      expect(user.password).toBeUndefined();
-      expect(user.hash).toEqual(expect.anything());
-      expect(user.salt).toEqual(expect.anything());
-      await expect(user.getProfile()).resolves.toEqual(expect.anything());
-    });
+    let user = new User({ email: USER1.email });
+    user = await User.register(user, USER1.password);
+
+    expect(user._id).toEqual(expect.anything());
+    expect(user.email).toEqual(USER1.email);
+    expect(user.password).toBeUndefined();
+    expect(user.hash).toEqual(expect.anything());
+    expect(user.salt).toEqual(expect.anything());
+    await expect(user.getProfile()).resolves.toEqual(expect.anything());
   });
 
-  it("register user - used username", async () => {
-    let user1 = new User({ username: USER1.username });
-    let user2 = new User({ username: USER1.username });
+  it("register user - used email", async () => {
+    let user1 = new User({ email: USER1.email });
+    let user2 = new User({ email: USER1.email });
     await expect(User.register(user1, USER1.password)).resolves.toEqual(
       expect.anything()
     );
@@ -42,59 +42,54 @@ describe("User Model Test", () => {
 
   it("authenticate user - no user", async () => {
     const authenticate = User.authenticate();
+    let auth = await authenticate(USER1.email, USER1.password);
 
-    return authenticate(USER1.username, USER1.password).then((auth) => {
-      expect(auth.user).toBeFalsy();
-      expect(auth.error).toEqual(expect.anything());
-    });
+    expect(auth.user).toBeFalsy();
+    expect(auth.error).toEqual(expect.anything());
   });
 
   it("authenticate user - success", async () => {
-    let user1 = new User({ username: USER1.username });
-    return User.register(user1, USER1.password).then((user) => {
-      return user.authenticate(USER1.password).then((auth) => {
-        expect(auth.user).toBe(user1);
-        expect(auth.error).toBeUndefined();
-      });
-    });
+    let user1 = new User({ email: USER1.email });
+    let user = await User.register(user1, USER1.password);
+    let auth = await user.authenticate(USER1.password);
+
+    expect(auth.user).toBe(user1);
+    expect(auth.error).toBeUndefined();
   });
 
   it("authenticate user - static method", async () => {
-    let user1 = new User({ username: USER1.username });
+    let user1 = new User({ email: USER1.email });
     await expect(User.register(user1, USER1.password)).resolves.toEqual(
       expect.anything()
     );
 
     const authenticate = User.authenticate();
 
-    return authenticate(USER1.username, USER1.password).then((auth) => {
-      expect(auth.user.username).toEqual(user1.username);
-      expect(auth.user.hash).toEqual(user1.hash);
-      expect(auth.error).toBeUndefined();
-    });
+    let auth = await authenticate(USER1.email, USER1.password);
+    expect(auth.user.email).toEqual(user1.email);
+    expect(auth.user.hash).toEqual(user1.hash);
+    expect(auth.error).toBeUndefined();
   });
 
-  it("authenticate user - incorrect username", async () => {
-    let user1 = new User({ username: USER1.username });
+  it("authenticate user - incorrect email", async () => {
+    let user1 = new User({ email: USER1.email });
     await expect(User.register(user1, USER1.password)).resolves.toEqual(
       expect.anything()
     );
 
     const authenticate = User.authenticate();
 
-    return authenticate(USER2.username, USER1.password).then((auth) => {
-      expect(auth.user).toBeFalsy();
-      expect(auth.error).toEqual(expect.anything());
-    });
+    let auth = await authenticate(USER2.email, USER1.password);
+    expect(auth.user).toBeFalsy();
+    expect(auth.error).toEqual(expect.anything());
   });
 
   it("authenticate user - incorrect password", async () => {
-    let user1 = new User({ username: USER1.username });
-    return User.register(user1, USER1.password).then((user) => {
-      return user.authenticate(USER2.password).then((auth) => {
-        expect(auth.user).toBeFalsy();
-        expect(auth.error).toEqual(expect.anything());
-      });
-    });
+    let user1 = new User({ email: USER1.email });
+    let user = await User.register(user1, USER1.password);
+
+    let auth = await user.authenticate(USER2.password);
+    expect(auth.user).toBeFalsy();
+    expect(auth.error).toEqual(expect.anything());
   });
 });

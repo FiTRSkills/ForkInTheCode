@@ -6,19 +6,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
 const passport = require("passport");
-const indexRouter = require("./routes/index");
 const app = express();
-
-//web server config
-app.use(logger("dev"));
-app.use(express.json());
-app.use(cors());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-
-app.use(express.static(path.join(__dirname, "../../client/build")));
-
-app.use("/", indexRouter);
 
 //initalizing passport and express session
 
@@ -32,6 +20,19 @@ app.use(
 //further passport configuration can be found in models/user.js
 app.use(passport.initialize());
 app.use(passport.session());
+
+//web server config
+app.use(logger("dev"));
+app.use(express.json());
+app.use(cors());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+app.use(express.static(path.join(__dirname, "../../client/build")));
+
+
+const indexRouter = require("./routes/index");
+app.use("/", indexRouter);
 
 // Web-server 404 handling
 app.use(function (req, res, next) {

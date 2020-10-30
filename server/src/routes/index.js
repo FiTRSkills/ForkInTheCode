@@ -2,10 +2,14 @@
  * @module routers/users
  * @requires express
  */
-
+const path = require("path");
+const { check } = require('express-validator');
 var express = require("express");
 var router = express.Router();
 var auth = require("../controllers/authcontroller.js");
+var profile = require("../controllers/profilecontroller.js")
+var inputValidation = require("../services/inputValidation.js");
+var sessionValidation = require("../services/sessionValidation.js");
 
 /**
  * Routing serving registration
@@ -17,7 +21,11 @@ var auth = require("../controllers/authcontroller.js");
  * @property {string} usertype - the usertype for the new account (EducatorProfile, EmployerProfile, JobSeekerProfile)
  * @returns {json} Success or Failure message
  */
-router.post("/register", auth.doRegister);
+router.post("/register", [
+    check('email', 'Your email is not valid').not().isEmpty().isEmail().normalizeEmail(),
+    check('password', 'Must send a password').not().isEmpty().trim().escape(),
+    check('usertype', 'Must send a usertype').not().isEmpty().trim().escape(),
+  ], inputValidation, auth.doRegister);
 
 /**
  * Routing serving login
@@ -39,4 +47,38 @@ router.post("/login", auth.doLogin);
  */
 router.get("/logout", auth.logout);
 
+/**
+ * Routing serving getting profile information
+ * @name GET /profile
+ * @function
+ * @alias module:/routers/profile
+ * @property {string} user - the user token for the session
+ * @returns {json} of user profile infromation
+ */
+router.get("/profile", sessionValidation, profile.getProfile);
+
+/**
+ * Routing serving updating profile information
+ * @name POST /profile
+ * @function
+ * @alias module:/routers/profile
+ * @property {string} user - the user token for the session
+ * @property {json} profile - the updated profile
+ * @returns {string} message - success message
+ */
+router.post("/profile", sessionValidation, [
+    check('firstname', 'Must send a viable firstname').trim().escape().optional({nullable: true}),
+    check('lastname', 'Must send a viable lastname').trim().escape().optional({nullable: true}),
+    check('dob', 'Must send a viable dob').isDate().optional({nullable: true}),
+    check('education', 'Must send a viable education').optional({nullable: true}),
+    check('career', 'Must send a viable career').optional({nullable: true}),
+  ], inputValidation, profile.postProfile);
+
+
+//The catch all for refreshing
+router.get('/*', function(req, res){
+    res.sendFile(path.join(__dirname, "../../../client/build/index.html"));
+});
+
 module.exports = router;
+
