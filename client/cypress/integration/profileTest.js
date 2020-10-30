@@ -18,7 +18,7 @@ describe("Load profile", () => {
           {
             degree: "BS Software Engineering",
             major: "Software Engineering",
-            institution: "RIT",
+            organization: "RIT",
           },
         ],
         career: [
