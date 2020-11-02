@@ -13,7 +13,7 @@ describe("AuthController Tests", () => {
         usertype: "JobSeekerProfile",
       });
     expect(res.statusCode).toEqual(400);
-    expect(res.text).toEqual("Failed Validation.");
+    expect(res.text).toEqual("{\"errors\":[{\"msg\":\"Your email is not valid\",\"param\":\"email\",\"location\":\"body\"},{\"msg\":\"Your email is not valid\",\"param\":\"email\",\"location\":\"body\"},{\"msg\":\"Must send a password\",\"param\":\"password\",\"location\":\"body\"}]}");
   });
 
   it("POST /register - no registration information Employer", async () => {
@@ -22,7 +22,7 @@ describe("AuthController Tests", () => {
         usertype: "EmployerProfile",
       });
     expect(res.statusCode).toEqual(400);
-    expect(res.text).toEqual("Failed Validation.");
+    expect(res.text).toEqual("{\"errors\":[{\"msg\":\"Your email is not valid\",\"param\":\"email\",\"location\":\"body\"},{\"msg\":\"Your email is not valid\",\"param\":\"email\",\"location\":\"body\"},{\"msg\":\"Must send a password\",\"param\":\"password\",\"location\":\"body\"}]}");
   });
 
   it("POST /register - no registration information Educator", async () => {
@@ -31,7 +31,7 @@ describe("AuthController Tests", () => {
         usertype: "EducatorProfile",
       });
     expect(res.statusCode).toEqual(400);
-    expect(res.text).toEqual("Failed Validation.");
+    expect(res.text).toEqual("{\"errors\":[{\"msg\":\"Your email is not valid\",\"param\":\"email\",\"location\":\"body\"},{\"msg\":\"Your email is not valid\",\"param\":\"email\",\"location\":\"body\"},{\"msg\":\"Must send a password\",\"param\":\"password\",\"location\":\"body\"}]}");
   });
 
   it("POST /register - invalid email", async () => {
@@ -42,7 +42,7 @@ describe("AuthController Tests", () => {
         usertype: "JobSeekerProfile",
       });
     expect(res.statusCode).toEqual(400);
-    expect(res.text).toEqual("Failed Validation.");
+    expect(res.text).toEqual("{\"errors\":[{\"value\":\"testEducator\",\"msg\":\"Your email is not valid\",\"param\":\"email\",\"location\":\"body\"}]}");
   });
 
   it("POST /register - invalid usertype", async () => {
