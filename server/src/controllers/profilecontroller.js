@@ -66,13 +66,13 @@ profileController.postProfile = async function (req, res) {
 
 /**
  * functionality for deleting an education
- * @name postDeleteEducation
+ * @name deleteEducation
  * @function
  * @alias module:/controllers/profilecontroller
  * @property {request} request - contains user
  * @returns {string} response - that profile was successfully updated
  */
-profileController.postDeleteEducation = async function(req, res) {
+profileController.deleteEducation = async function(req, res) {
   let profile = await req.user.getProfile();
   // gets the id of the education from the request
   await profile.removeEducation(req.body.id, function(err, data){
@@ -86,13 +86,13 @@ profileController.postDeleteEducation = async function(req, res) {
 
 /**
  * functionality for editing an education
- * @name postEditEducation
+ * @name patchEducation
  * @function
  * @alias module:/controllers/profilecontroller
  * @property {request} request - contains user
  * @returns {string} response - that profile was successfully updated
  */
-profileController.postEditEducation = async function(req, res) {
+profileController.patchEducation = async function(req, res) {
   let profile = await req.user.getProfile();
   // gets the id of the education from the request and the updated education
   await profile.editEducation(req.body.id, req.body.education, function(err, data){
@@ -106,17 +106,76 @@ profileController.postEditEducation = async function(req, res) {
 
 /**
  * functionality for adding an education
- * @name postAddEducation
+ * @name postEducation
  * @function
  * @alias module:/controllers/profilecontroller
  * @property {request} request - contains user
  * @returns {string} response - that profile was successfully updated
  */
-profileController.postAddEducation = async function(req, res) {
+profileController.postEducation = async function(req, res) {
   let profile = await req.user.getProfile();
-  let education = req.body.education;
   // gets the education to add from the request
-  await profile.removeEducation(education.degree, education.major, education.gradDate, education.organization, function(err, data){
+  await profile.addEducation(req.body.degree, req.body.major, req.body.gradDate, req.body.organization, function(err, data){
+    if (err){
+      res.status(400).send('Error adding education.');
+      return;
+    }
+    res.status(200).send('Successfully added education.');
+  });
+}
+
+/**
+ * functionality for deleting a career
+ * @name deleteEducation
+ * @function
+ * @alias module:/controllers/profilecontroller
+ * @property {request} request - contains user
+ * @returns {string} response - that profile was successfully updated
+ */
+profileController.deleteCareer = async function(req, res) {
+  let profile = await req.user.getProfile();
+  // gets the id of the education from the request
+  await profile.removeCareer(req.body.id, function(err, data){
+    if (err){
+      res.status(400).send('Error removing education.');
+      return;
+    }
+    res.status(200).send('Successfully removed education.');
+  });
+};
+
+/**
+ * functionality for editing a career
+ * @name patchEducation
+ * @function
+ * @alias module:/controllers/profilecontroller
+ * @property {request} request - contains user
+ * @returns {string} response - that profile was successfully updated
+ */
+profileController.patchCareer = async function(req, res) {
+  let profile = await req.user.getProfile();
+  // gets the id of the education from the request and the updated education
+  await profile.editCareer(req.body.id, req.body.career, function(err, data){
+    if (err){
+      res.status(400).send('Error editing education.');
+      return;
+    }
+    res.status(200).send('Successfully edited education.');
+  });
+}
+
+/**
+ * functionality for adding a career
+ * @name postEducation
+ * @function
+ * @alias module:/controllers/profilecontroller
+ * @property {request} request - contains user
+ * @returns {string} response - that profile was successfully updated
+ */
+profileController.postCareer = async function(req, res) {
+  let profile = await req.user.getProfile();
+  // gets the education to add from the request
+  await profile.addCareer(req.body.jobTitle, req.body.startDate, req.body.endDate, req.body.organization, function(err, data){
     if (err){
       res.status(400).send('Error adding education.');
       return;

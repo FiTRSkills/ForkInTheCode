@@ -76,21 +76,21 @@ router.post("/profile", sessionValidation, [
 
 
 /**
- * Routing serving updating profile information
- * @name POST /deleteEducation
+ * Routing serving adding an education
+ * @name DELETE /profile/education
  * @function
  * @alias module:/routers/profile
  * @property {string} user - the user token for the session
  * @property {string} id - the id of the education
  * @returns {string} message - success message
  */
-router.post("/deleteEducation", sessionValidation, [
+router.delete("/profile/education", sessionValidation, [
     check('id', 'Must send a viable ID').not().isEmpty(),
-  ], inputValidation, profile.postDeleteEducation);
+  ], inputValidation, profile.deleteEducation);
 
 /**
- * Routing serving updating profile information
- * @name POST /editEducation
+ * Routing serving updating an education
+ * @name PATCH /profile/education
  * @function
  * @alias module:/routers/profile
  * @property {string} user - the user token for the session
@@ -98,23 +98,76 @@ router.post("/deleteEducation", sessionValidation, [
  * @property {string} education -  the updated version of the education
  * @returns {string} message - success message
  */
-router.post("/editEducation", sessionValidation, [
+router.patch("/profile/education", sessionValidation, [
     check('id', 'Must send a viable ID').not().isEmpty(),
-    check('education', 'Must send a viable education').not().isEmpty(),
-  ], inputValidation, profile.postEditEducation);
+    check('degree', 'Must send a viable degree').not().isEmpty().optional({nullable: true}),
+    check('gradDate', 'Must send a viable gradDate').not().isEmpty().optional({nullable: true}),
+    check('major', 'Must send a viable major').not().isEmpty().optional({nullable: true}),
+    check('organization', 'Must send a viable organization').not().isEmpty().optional({nullable: true}),
+  ], inputValidation, profile.patchEducation);
 
 /**
- * Routing serving updating profile information
- * @name POST /addEducation
+ * Routing serving adding an education
+ * @name POST /profile/education
  * @function
  * @alias module:/routers/profile
  * @property {string} user - the user token for the session
  * @property {string} education -  the updated version of the education
  * @returns {string} message - success message
  */
-router.post("/addEducation", sessionValidation, [
-    check('education', 'Must send a viable education').not().isEmpty(),
-  ], inputValidation, profile.postAddEducation);
+router.post("/profile/education", sessionValidation, [
+    check('degree', 'Must send a viable degree').not().isEmpty(),
+    check('gradDate', 'Must send a viable gradDate').not().isEmpty(),
+    check('major', 'Must send a viable major').not().isEmpty(),
+    check('organization', 'Must send a viable organization').not().isEmpty(),
+  ], inputValidation, profile.postEducation);
+
+/**
+ * Routing serving adding a career
+ * @name DELETE /profile/career
+ * @function
+ * @alias module:/routers/profile
+ * @property {string} user - the user token for the session
+ * @property {string} id - the id of the education
+ * @returns {string} message - success message
+ */
+router.delete("/profile/career", sessionValidation, [
+    check('id', 'Must send a viable ID').not().isEmpty(),
+  ], inputValidation, profile.deleteCareer);
+
+/**
+ * Routing serving updating a career
+ * @name PATCH /profile/career
+ * @function
+ * @alias module:/routers/profile
+ * @property {string} user - the user token for the session
+ * @property {string} id - the id of the education
+ * @property {string} education -  the updated version of the education
+ * @returns {string} message - success message
+ */
+router.patch("/profile/career", sessionValidation, [
+    check('id', 'Must send a viable ID').not().isEmpty(),
+    check('jobTitle', 'Must send a viable job title').not().isEmpty().optional({nullable: true}),
+    check('endDate', 'Must send a viable endDate').not().isEmpty().optional({nullable: true}),
+    check('startDate', 'Must send a viable startDate').not().isEmpty().optional({nullable: true}),
+    check('organization', 'Must send a viable organization').not().isEmpty().optional({nullable: true}),
+  ], inputValidation, profile.patchCareer);
+
+/**
+ * Routing serving adding a career
+ * @name POST /profile/career
+ * @function
+ * @alias module:/routers/profile
+ * @property {string} user - the user token for the session
+ * @property {string} education -  the updated version of the education
+ * @returns {string} message - success message
+ */
+router.post("/profile/career", sessionValidation, [
+    check('jobTitle', 'Must send a viable job title').not().isEmpty(),
+    check('endDate', 'Must send a viable endDate').not().isEmpty(),
+    check('startDate', 'Must send a viable startDate').not().isEmpty(),
+    check('organization', 'Must send a viable organization').not().isEmpty(),
+  ], inputValidation, profile.postCareer);
 
 
 //The catch all for refreshing
