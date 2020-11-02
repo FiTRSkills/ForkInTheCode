@@ -38,27 +38,14 @@ profileController.getProfile = async function (req, res) {
  */
 profileController.postProfile = async function (req, res) {
   let profile = await req.user.getProfile();
-  profile.name.first = req.body.firstname;
-  profile.name.last = req.body.lastname;
+  if (req.body.firstname){
+    profile.name.first = req.body.firstname;
+  }
+  if (req.body.lastname){
+    profile.name.last = req.body.lastname;
+  }
   if (req.body.dob) {
     profile.dateOfBirth = Date.parse(req.body.dob);
-  }
-  if (req.body.education) {
-    for (i = 0; i < req.body.education.length; i++) {
-      let education = req.body.education[i];
-      await profile.addEducation(
-        education.degree,
-        education.major,
-        Date.parse(education.gradDate),
-        education.organization
-      );
-    }
-  }
-  if (req.body.career) {
-    for (i = 0; i < req.body.career.length; i++) {
-      let career = req.body.career[i];
-      await profile.addJob(career.jobTitle, career.organization);
-    }
   }
   profile.save();
   res.status(200).send("Profile Updated.");
