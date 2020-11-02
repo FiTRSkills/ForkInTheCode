@@ -74,7 +74,6 @@ router.post("/profile", sessionValidation, [
   ], inputValidation, profile.postProfile);
 
 
-<<<<<<< HEAD
 /**
  * Routing serving adding an education
  * @name DELETE /profile/education

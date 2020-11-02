@@ -137,10 +137,10 @@ profileController.deleteCareer = async function(req, res) {
   // gets the id of the education from the request
   await profile.removeCareer(req.body.id, function(err, data){
     if (err){
-      res.status(400).send('Error removing education.');
+      res.status(400).send('Error removing career.');
       return;
     }
-    res.status(200).send('Successfully removed education.');
+    res.status(200).send('Successfully removed career.');
   });
 };
 
@@ -157,10 +157,10 @@ profileController.patchCareer = async function(req, res) {
   // gets the id of the education from the request and the updated education
   await profile.editCareer(req.body.id, req.body.career, function(err, data){
     if (err){
-      res.status(400).send('Error editing education.');
+      res.status(400).send('Error editing career.');
       return;
     }
-    res.status(200).send('Successfully edited education.');
+    res.status(200).send('Successfully edited career.');
   });
 }
 
@@ -177,10 +177,10 @@ profileController.postCareer = async function(req, res) {
   // gets the education to add from the request
   await profile.addCareer(req.body.jobTitle, req.body.startDate, req.body.endDate, req.body.organization, function(err, data){
     if (err){
-      res.status(400).send('Error adding education.');
+      res.status(400).send('Error adding career.');
       return;
     }
-    res.status(200).send('Successfully added education.');
+    res.status(200).send('Successfully added career.');
   });
 }
 
