@@ -10,6 +10,7 @@ import Login from "./components/pages/Login";
 import NavBar from "./components/subcomponents/NavBar";
 import SignUp from "./components/pages/SignUp";
 import Profile from "./components/pages/Profile";
+import JobPosting from "./components/pages/JobPosting";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Redirect exact from="/Sign Up" to="/SignUp" />
           <Route exact component={SignUp} path="/SignUp" />
           <Route exact component={Profile} path="/Profile" />
+          <Route component={JobPosting} path="/Job/:id" />
         </Switch>
       </div>
     </Router>
