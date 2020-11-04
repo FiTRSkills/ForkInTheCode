@@ -52,7 +52,7 @@ function Profile(props) {
     // Load profile
     setLoading(true);
     axios
-      .get(process.env.REACT_APP_SERVER_URL + "/Profile")
+      .get(process.env.REACT_APP_SERVER_URL + "/Profile", { withCredentials: true })
       .then((response) => {
         setFirstName(response.data.firstname);
         setLastName(response.data.lastname);
