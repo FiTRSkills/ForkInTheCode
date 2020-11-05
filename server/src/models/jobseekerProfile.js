@@ -64,10 +64,12 @@ JobSeekerProfile.statics.findAndPopulateById = function (id) {
  *
  * @returns {Promise<JobSeekerProfile>}
  */
-JobSeekerProfile.methods.addCareer = async function (jobTitle, organization) {
+JobSeekerProfile.methods.addCareer = async function (jobTitle, startDate, endDate, organization) {
   let org = await Organization.findOneOrCreate(organization);
   this.career.push({
     jobTitle: jobTitle,
+    startDate: startDate,
+    endDate: endDate,
     organization: org._id,
   });
   await this.save();
