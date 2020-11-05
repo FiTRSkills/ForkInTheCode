@@ -178,7 +178,7 @@ function ProfileEdit({ endEdit, ...props }) {
         dob: dobAsString(),
         education: [], // TODO: implemented later
         career: [], // TODO: implemented later
-      })
+      }, {withCredentials: true})
       .then((response) => {
         endEdit();
       })

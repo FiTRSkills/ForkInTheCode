@@ -45,7 +45,7 @@ function Login(props) {
 
   function attemptLogin({email, password}) {
     return axios
-      .post(process.env.REACT_APP_SERVER_URL + "/Login", { email, password })
+      .post(process.env.REACT_APP_SERVER_URL + "/Login", { email, password }, {withCredentials: true})
       .then((response) => {
         if (response.status === 200) {
           props.updateUser({ email: response.data });
