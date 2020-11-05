@@ -29,6 +29,7 @@ const JobSeekerProfile = new mongoose.Schema({
       organization: {
         type: mongoose.Schema.Types.ObjectId,
         ref: Organization.modelName,
+        autopopulate: true,
       },
     },
   ],
@@ -40,31 +41,23 @@ const JobSeekerProfile = new mongoose.Schema({
       organization: {
         type: mongoose.Schema.Types.ObjectId,
         ref: Organization.modelName,
+        autopopulate: true,
       },
     },
   ],
 });
 
 /**
- * Automatically populates various fields when finding the document so that
- * information can be accessed more directly.
- *
- * @param id The id of the document to search for
- * @returns {Promise<JobSeekerProfile>}
- */
-JobSeekerProfile.statics.findAndPopulateById = function (id) {
-  return this.findById(id)
-    .populate("career.organization")
-    .populate("education.organization")
-    .exec();
-};
-
-/**
  * Adds a new entry to the careers this job seeker has undergone
  *
  * @returns {Promise<JobSeekerProfile>}
  */
-JobSeekerProfile.methods.addCareer = async function (jobTitle, startDate, endDate, organization) {
+JobSeekerProfile.methods.addCareer = async function (
+  jobTitle,
+  startDate,
+  endDate,
+  organization
+) {
   let org = await Organization.findOneOrCreate(organization);
   this.career.push({
     jobTitle: jobTitle,
@@ -73,7 +66,6 @@ JobSeekerProfile.methods.addCareer = async function (jobTitle, startDate, endDat
     organization: org._id,
   });
   await this.save();
-  return await this.constructor.populate(this, "career.organization");
 };
 
 /**
@@ -109,7 +101,6 @@ JobSeekerProfile.methods.addEducation = async function (
     organization: org._id,
   });
   await this.save();
-  return await this.constructor.populate(this, "education.organization");
 };
 
 /**

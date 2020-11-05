@@ -8,6 +8,10 @@ const cors = require("cors");
 const passport = require("passport");
 const app = express();
 
+//global mongoose configurations
+const mongoose = require("mongoose");
+mongoose.plugin(require("mongoose-autopopulate"));
+
 //initalizing passport and express session
 
 app.use(
