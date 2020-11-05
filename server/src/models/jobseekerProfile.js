@@ -60,11 +60,11 @@ JobSeekerProfile.statics.findAndPopulateById = function (id) {
 };
 
 /**
- * Adds a new job to the career this job seeker has undergone
+ * Adds a new entry to the careers this job seeker has undergone
  *
  * @returns {Promise<JobSeekerProfile>}
  */
-JobSeekerProfile.methods.addJob = async function (jobTitle, organization) {
+JobSeekerProfile.methods.addCareer = async function (jobTitle, organization) {
   let org = await Organization.findOneOrCreate(organization);
   this.career.push({
     jobTitle: jobTitle,
@@ -75,15 +75,15 @@ JobSeekerProfile.methods.addJob = async function (jobTitle, organization) {
 };
 
 /**
- * Remove a job from the job seekers career record
+ * Remove an entry from the job seekers career record
  *
- * @param index The number of job to remove
+ * @param index The number of the career to remove
  * @returns {Promise<JobSeekerProfile>}
  */
-JobSeekerProfile.methods.removeJob = async function (index) {
+JobSeekerProfile.methods.removeCareer = async function (index) {
   let result = this.career.splice(index, 1);
   if (result.length === 0)
-    throw new RangeError("Job does not exist at that index");
+    throw new RangeError("Career does not exist at that index");
   await this.save();
   return this;
 };
