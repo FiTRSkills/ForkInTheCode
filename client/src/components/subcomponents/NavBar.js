@@ -8,12 +8,13 @@ import { Link } from "react-router-dom";
 import { changeCurrentPage, logOut } from "../../redux/actions";
 import "./NavBar.css";
 
-function NavBar(props) {
-  const authLeftSide = ["Search", "Something Else"];
-  const authRightSide = ["Profile", "Sign Out"];
-  const notAuthLeftSide = [];
-  const notAuthRightSide = ["Log In", "Sign Up"];
+const authLeftSide = ["Search", "Something Else"];
+const authRightSide = ["Sign Out"];
+const notAuthLeftSide = [];
+const notAuthRightSide = ["Log In", "Sign Up"];
+const jobSeekerRightSide = ["Profile"];
 
+function NavBar(props) {
   const [navBarListLeft, editNavBarListLeft] = useState([]);
   const [navBarListRight, editNavBarListRight] = useState([]);
 
@@ -26,8 +27,15 @@ function NavBar(props) {
   // Helper functions
   function assignBarContents(isAuthenticated) {
     if (isAuthenticated) {
-      editNavBarListLeft(getButtonArray(authLeftSide));
-      editNavBarListRight(getButtonArray(authRightSide));
+      let leftSide = [];
+      let rightSide = [];
+      if (props.user.type === "JobSeekerProfile") {
+        rightSide.push(...jobSeekerRightSide);
+      }
+      leftSide.push(...authLeftSide);
+      rightSide.push(...authRightSide);
+      editNavBarListLeft(getButtonArray(leftSide));
+      editNavBarListRight(getButtonArray(rightSide));
     } else {
       editNavBarListLeft(getButtonArray(notAuthLeftSide));
       editNavBarListRight(getButtonArray(notAuthRightSide));
