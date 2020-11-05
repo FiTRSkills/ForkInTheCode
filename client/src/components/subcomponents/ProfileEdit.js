@@ -172,13 +172,17 @@ function ProfileEdit({ endEdit, ...props }) {
     // Save profile
     setLoading(true);
     axios
-      .post(process.env.REACT_APP_SERVER_URL + "/Profile", {
-        firstname,
-        lastname,
-        dob: dobAsString(),
-        education: [], // TODO: implemented later
-        career: [], // TODO: implemented later
-      }, { withCredentials: true })
+      .post(
+        process.env.REACT_APP_SERVER_URL + "/Profile",
+        {
+          firstname,
+          lastname,
+          dob: dobAsString(),
+          education: [], // TODO: implemented later
+          career: [], // TODO: implemented later
+        },
+        { withCredentials: true }
+      )
       .then((response) => {
         endEdit();
       })

@@ -11,11 +11,11 @@ const app = express();
 //initalizing passport and express session
 
 app.use(
-  require("express-session")({
-    secret: "secret",
-    resave: false,
-    saveUninitialized: false,
-  })
+	require("express-session")({
+		secret: "secret",
+		resave: false,
+		saveUninitialized: false,
+	})
 );
 //further passport configuration can be found in models/user.js
 app.use(passport.initialize());
@@ -24,31 +24,23 @@ app.use(passport.session());
 //web server config
 app.use(logger("dev"));
 app.use(express.json());
-app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
-
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "YOUR-DOMAIN.TLD"); // update to match the domain you will make the request from
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
-
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, "../../client/build")));
-
 
 const indexRouter = require("./routes/index");
 app.use("/", indexRouter);
 
 // Web-server 404 handling
 app.use(function (req, res, next) {
-  res.send("Unknown resource: " + req.path);
+	res.send("Unknown resource: " + req.path);
 });
 // Web-server error handling
 app.use(function (err, req, res, next) {
-  res.status(err.status || 500);
-  res.send(err.message);
+	res.status(err.status || 500);
+	res.send(err.message);
 });
 
 module.exports = app;
