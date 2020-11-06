@@ -66,6 +66,20 @@ JobSeekerProfile.methods.addCareer = async function (
     organization: org._id,
   });
   await this.save();
+  return this;
+};
+
+/**
+ * Edits a career entry on the profile with the given id.
+ *
+ * @param id The id of the career entry
+ * @param values An object indicating the values that will be set, this should mirror the schema of careers
+ * @returns {Promise<JobSeekerProfile>}
+ */
+JobSeekerProfile.methods.editCareer = async function (id, values) {
+  await this.career.id(id).set(values);
+  await this.save();
+  return this;
 };
 
 /**
@@ -77,6 +91,7 @@ JobSeekerProfile.methods.addCareer = async function (
 JobSeekerProfile.methods.removeCareer = async function (id) {
   await this.career.pull({ _id: id });
   await this.save();
+  return this;
 };
 
 /**
@@ -98,6 +113,20 @@ JobSeekerProfile.methods.addEducation = async function (
     organization: org._id,
   });
   await this.save();
+  return this;
+};
+
+/**
+ * Edits an education entry on the profile with the given id.
+ *
+ * @param id The id of the education entry
+ * @param values An object indicating the values that will be set, this should mirror the schema of educations
+ * @returns {Promise<JobSeekerProfile>}
+ */
+JobSeekerProfile.methods.editEducation = async function (id, values) {
+  await this.education.id(id).set(values);
+  await this.save();
+  return this;
 };
 
 /**
@@ -109,6 +138,7 @@ JobSeekerProfile.methods.addEducation = async function (
 JobSeekerProfile.methods.removeEducation = async function (id) {
   await this.education.pull({ _id: id });
   await this.save();
+  return this;
 };
 
 module.exports = mongoose.model("JobSeekerProfile", JobSeekerProfile);
