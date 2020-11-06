@@ -1,3 +1,7 @@
 {
-  "projectId": "uh3r3j"
+  "projectId": "uh3r3j",
+  "env": {
+    "REACT_APP_SERVER_URL": "http://localhost:9000",
+    "REACT_APP_CLIENT_URL": "http://localhost:3000"
+  }
 }
