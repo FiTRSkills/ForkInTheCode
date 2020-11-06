@@ -16,6 +16,7 @@ describe("EducatorProfile Model Test", () => {
     await profile.save();
 
     let savedProfile = await JobSeekerProfile.findById(profile._id).exec();
+
     expect(savedProfile.name.first).toEqual("");
     expect(savedProfile.name.last).toEqual("");
     expect(savedProfile.dateOfBirth).toBeNull();
@@ -34,6 +35,7 @@ describe("EducatorProfile Model Test", () => {
     await profile.save();
 
     let savedProfile = await JobSeekerProfile.findById(profile._id).exec();
+
     expect(savedProfile.name.first).toEqual("Bob");
     expect(savedProfile.name.last).toEqual("Smith");
     expect(savedProfile.dateOfBirth).toEqual(new Date("01/01/2000"));
@@ -55,8 +57,8 @@ describe("EducatorProfile Model Test", () => {
     savedProfile.name.first = "Joe";
     savedProfile.dateOfBirth = new Date("12/12/2012");
     await savedProfile.save();
-
     savedProfile = await JobSeekerProfile.findById(profile._id).exec();
+
     expect(savedProfile.name.first).toEqual("Joe");
     expect(savedProfile.name.last).toEqual("Smith");
     expect(savedProfile.dateOfBirth).toEqual(new Date("12/12/2012"));
@@ -76,8 +78,8 @@ describe("EducatorProfile Model Test", () => {
     savedProfile.name.first = "Joe";
     savedProfile.dateOfBirth = "12/12/2012";
     await savedProfile.save();
-
     savedProfile = await JobSeekerProfile.findById(profile._id).exec();
+
     expect(savedProfile.name.first).toEqual("Joe");
     expect(savedProfile.name.last).toEqual("Smith");
     // Test it represents the correct actual date object
@@ -89,8 +91,9 @@ describe("EducatorProfile Model Test", () => {
     await profile.addEducation("Degree", "Major", "01/01/2020", "Org 1");
 
     let savedProfile = await JobSeekerProfile.findById(profile._id).exec();
-    expect(savedProfile.education.length).toEqual(1);
     let education = savedProfile.education[0];
+
+    expect(savedProfile.education.length).toEqual(1);
     expect(education.degree).toEqual("Degree");
     expect(education.major).toEqual("Major");
     expect(education.gradDate).toEqual(new Date("01/01/2020"));
@@ -104,15 +107,72 @@ describe("EducatorProfile Model Test", () => {
     await profile.addEducation("Degree", "Major", "01/01/2020", "Org 1");
 
     let savedProfile = await JobSeekerProfile.findById(profile._id).exec();
-    expect(savedProfile.education.length).toEqual(1);
     let education = savedProfile.education[0];
+    let organizations = await Organization.find({}).exec();
+
+    expect(savedProfile.education.length).toEqual(1);
     expect(education.degree).toEqual("Degree");
     expect(education.major).toEqual("Major");
     expect(education.gradDate).toEqual(new Date("01/01/2020"));
     expect(education.organization.name).toEqual(organization.name);
     expect(education.organization._id).toEqual(organization._id);
-    let organizations = await Organization.find({}).exec();
     expect(organizations.length).toEqual(1);
+  });
+
+  it("edit education - invalid id", async () => {
+    let profile = new JobSeekerProfile();
+    await profile.addEducation("Degree", "Major", "01/01/2020", "Org 1");
+
+    let savedProfile = await JobSeekerProfile.findById(profile._id).exec();
+    let education = savedProfile.education[0];
+    await expect(
+      savedProfile.editEducation("N/A", {
+        degree: "Degree2",
+        major: "Major2",
+        gradDate: "01/01/2021",
+      })
+    ).rejects.toThrow();
+
+    expect(savedProfile.education.length).toEqual(1);
+    expect(education.degree).toEqual("Degree");
+    expect(education.major).toEqual("Major");
+    expect(education.gradDate).toEqual(new Date("01/01/2020"));
+    expect(education.organization.name).toEqual("Org 1");
+  });
+
+  it("edit education - invalid data", async () => {
+    let profile = new JobSeekerProfile();
+    await profile.addEducation("Degree", "Major", "01/01/2020", "Org 1");
+
+    let savedProfile = await JobSeekerProfile.findById(profile._id).exec();
+    let education = savedProfile.education[0];
+    await savedProfile.editEducation(education._id, { newField: "newData" });
+
+    expect(savedProfile.education.length).toEqual(1);
+    expect(education.newField).toBeUndefined();
+    expect(education.degree).toEqual("Degree");
+    expect(education.major).toEqual("Major");
+    expect(education.gradDate).toEqual(new Date("01/01/2020"));
+    expect(education.organization.name).toEqual("Org 1");
+  });
+
+  it("edit education - valid data", async () => {
+    let profile = new JobSeekerProfile();
+    await profile.addEducation("Degree", "Major", "01/01/2020", "Org 1");
+
+    let savedProfile = await JobSeekerProfile.findById(profile._id).exec();
+    let education = savedProfile.education[0];
+    await savedProfile.editEducation(education._id, {
+      degree: "Degree2",
+      major: "Major2",
+      gradDate: "01/01/2021",
+    });
+
+    expect(savedProfile.education.length).toEqual(1);
+    expect(education.degree).toEqual("Degree2");
+    expect(education.major).toEqual("Major2");
+    expect(education.gradDate).toEqual(new Date("01/01/2021"));
+    expect(education.organization.name).toEqual("Org 1");
   });
 
   it("remove education - existing education", async () => {
