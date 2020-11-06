@@ -15,7 +15,7 @@ describe("EmployerProfile Model Test", () => {
     let profile = new EmployerProfile();
     await profile.save();
 
-    let savedProfile = await EmployerProfile.findAndPopulateById(profile._id);
+    let savedProfile = await EmployerProfile.findById(profile._id);
     expect(savedProfile.organization).toBeUndefined();
   });
 
@@ -25,7 +25,7 @@ describe("EmployerProfile Model Test", () => {
     let profile = new EmployerProfile({ organization: organization._id });
     await profile.save();
 
-    let savedProfile = await EmployerProfile.findAndPopulateById(profile._id);
+    let savedProfile = await EmployerProfile.findById(profile._id);
     expect(savedProfile.organization._id).toEqual(organization._id);
     expect(savedProfile.organization.name).toEqual(organization.name);
   });
@@ -34,7 +34,7 @@ describe("EmployerProfile Model Test", () => {
     let profile = new EmployerProfile();
     await profile.setOrganization("Org 1");
 
-    let savedProfile = await EmployerProfile.findAndPopulateById(profile._id);
+    let savedProfile = await EmployerProfile.findById(profile._id);
     expect(savedProfile.organization.name).toEqual("Org 1");
   });
 
@@ -43,7 +43,7 @@ describe("EmployerProfile Model Test", () => {
     await profile.setOrganization("Org 1");
     await profile.setOrganization("Org 2");
 
-    let savedProfile = await EmployerProfile.findAndPopulateById(profile._id);
+    let savedProfile = await EmployerProfile.findById(profile._id);
     expect(savedProfile.organization.name).toEqual("Org 2");
     let organizations = await Organization.find({}).exec();
     expect(organizations.length).toEqual(2);
@@ -55,7 +55,7 @@ describe("EmployerProfile Model Test", () => {
     let profile = new EmployerProfile();
     await profile.setOrganization("Org 1");
 
-    let savedProfile = await EmployerProfile.findAndPopulateById(profile._id);
+    let savedProfile = await EmployerProfile.findById(profile._id);
     expect(savedProfile.organization.name).toEqual("Org 1");
     let organizations = await Organization.find({}).exec();
     expect(organizations.length).toEqual(1);
