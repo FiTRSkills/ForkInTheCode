@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Organization = require("./organization");
+const Skill = require("./skill");
 
 /**
  * Profile information for job seekers.
@@ -43,6 +44,13 @@ const JobSeekerProfile = new mongoose.Schema({
         ref: Organization.modelName,
         autopopulate: true,
       },
+    },
+  ],
+  skills: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: Skill.modelName,
+      autopopulate: true,
     },
   ],
 });
@@ -89,7 +97,7 @@ JobSeekerProfile.methods.editCareer = async function (id, values) {
  * @returns {Promise<JobSeekerProfile>}
  */
 JobSeekerProfile.methods.removeCareer = async function (id) {
-  await this.career.pull({ _id: id });
+  await this.career.pull(id);
   await this.save();
   return this;
 };
@@ -136,7 +144,32 @@ JobSeekerProfile.methods.editEducation = async function (id, values) {
  * @returns {Promise<JobSeekerProfile>}
  */
 JobSeekerProfile.methods.removeEducation = async function (id) {
-  await this.education.pull({ _id: id });
+  await this.education.pull(id);
+  await this.save();
+  return this;
+};
+
+/**
+ * Adds a new skill to the profile, associating it with a current skill if it exists.
+ *
+ * @param skill The name of the skill to add, if it already exists, that skill will be used.
+ * @returns {Promise<JobSeekerProfile>}
+ */
+JobSeekerProfile.methods.addSkill = async function (skill) {
+  let skillEntry = await Skill.findOneOrCreate(skill);
+  await this.skills.push(skillEntry);
+  await this.save();
+  return this;
+};
+
+/**
+ * Removes a skill from the profile by the given id.  This does not delete the skill from the system.
+ *
+ * @param id The id of the skill to remove from the profile
+ * @returns {Promise<JobSeekerProfile>}
+ */
+JobSeekerProfile.methods.removeSkill = async function (id) {
+  await this.skills.pull(id);
   await this.save();
   return this;
 };
