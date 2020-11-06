@@ -242,6 +242,62 @@ describe("EducatorProfile Model Test", () => {
     expect(organizations.length).toEqual(1);
   });
 
+  it("edit career - invalid id", async () => {
+    let profile = new JobSeekerProfile();
+    await profile.addCareer("Worker", "01/01/2020", "01/01/2021", "Org 1");
+
+    let savedProfile = await JobSeekerProfile.findById(profile._id).exec();
+    let career = savedProfile.career[0];
+    await expect(
+      savedProfile.editCareer("N/A", {
+        jobTitle: "Worker2",
+        startDate: "02/02/2020",
+        endDate: "02/02/2021",
+      })
+    ).rejects.toThrow();
+
+    expect(savedProfile.career.length).toEqual(1);
+    expect(career.jobTitle).toEqual("Worker");
+    expect(career.startDate).toEqual(new Date("01/01/2020"));
+    expect(career.endDate).toEqual(new Date("01/01/2021"));
+    expect(career.organization.name).toEqual("Org 1");
+  });
+
+  it("edit carrer - invalid data", async () => {
+    let profile = new JobSeekerProfile();
+    await profile.addCareer("Worker", "01/01/2020", "01/01/2021", "Org 1");
+
+    let savedProfile = await JobSeekerProfile.findById(profile._id).exec();
+    let career = savedProfile.career[0];
+    await savedProfile.editCareer(career._id, { newField: "newData" });
+
+    expect(savedProfile.career.length).toEqual(1);
+    expect(career.newField).toBeUndefined();
+    expect(career.jobTitle).toEqual("Worker");
+    expect(career.startDate).toEqual(new Date("01/01/2020"));
+    expect(career.endDate).toEqual(new Date("01/01/2021"));
+    expect(career.organization.name).toEqual("Org 1");
+  });
+
+  it("edit carrer - valid data", async () => {
+    let profile = new JobSeekerProfile();
+    await profile.addCareer("Worker", "01/01/2020", "01/01/2021", "Org 1");
+
+    let savedProfile = await JobSeekerProfile.findById(profile._id).exec();
+    let career = savedProfile.career[0];
+    await savedProfile.editCareer(career._id, {
+      jobTitle: "Worker2",
+      startDate: "02/02/2020",
+      endDate: "02/02/2021",
+    });
+
+    expect(savedProfile.career.length).toEqual(1);
+    expect(career.jobTitle).toEqual("Worker2");
+    expect(career.startDate).toEqual(new Date("02/02/2020"));
+    expect(career.endDate).toEqual(new Date("02/02/2021"));
+    expect(career.organization.name).toEqual("Org 1");
+  });
+
   it("remove career - existing career", async () => {
     let profile = new JobSeekerProfile();
     await profile.addCareer("Worker", "01/01/2020", "01/01/2021", "Org 1");
