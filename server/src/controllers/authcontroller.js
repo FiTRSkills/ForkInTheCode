@@ -22,6 +22,11 @@ userController.doRegister = function (req, res) {
       req.body.password,
       function (err, user) {
         if (err) {
+          if (err.name == "UserExistsError") {
+            err.message = "A user with the given email is already registered";
+            res.status(400).send(err);
+            return;
+          }
           res.status(400).send(err);
           return;
         }
@@ -37,6 +42,11 @@ userController.doRegister = function (req, res) {
       req.body.password,
       async function (err, user) {
         if (err) {
+          if (err.name == "UserExistsError") {
+            err.message = "A user with the given email is already registered";
+            res.status(400).send(err);
+            return;
+          }
           res.status(400).send(err);
           return;
         }
@@ -53,6 +63,11 @@ userController.doRegister = function (req, res) {
       req.body.password,
       async function (err, user) {
         if (err) {
+          if (err.name == "UserExistsError") {
+            err.message = "A user with the given email is already registered";
+            res.status(400).send(err);
+            return;
+          }
           res.status(400).send(err);
           return;
         }
