@@ -6,9 +6,8 @@
     "start": "node ./src/bin/www",
     "doc": "jsdoc -d docs --configure jsconf.json ./src/app.js",
     "test": "jest -i",
-    "test profile": "jest -i profilecontroller.test.js",
-    "test integration": "jest -i routestest",
-    "test model": "jest -i modelstest"
+    "test_integration": "jest -i routestest",
+    "test_model": "jest -i modelstest"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
