@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
       - run: npm ci --prefix client
-      - name: cypress run --record --key 2b71c803-ef27-425a-b947-72b0d0dfdf25
+      - name: cypress run --record --key=2b71c803-ef27-425a-b947-72b0d0dfdf25
         uses: cypress-io/github-action@v2
         with:
           start: npm start
