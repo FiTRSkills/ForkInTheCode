@@ -59,7 +59,7 @@ JobSeekerProfile.methods.addCareer = async function (
   organization
 ) {
   let org = await Organization.findOneOrCreate(organization);
-  this.career.push({
+  await this.career.push({
     jobTitle: jobTitle,
     startDate: startDate,
     endDate: endDate,
@@ -71,15 +71,12 @@ JobSeekerProfile.methods.addCareer = async function (
 /**
  * Remove an entry from the job seekers career record
  *
- * @param index The number of the career to remove
+ * @param id The id of the career to remove
  * @returns {Promise<JobSeekerProfile>}
  */
-JobSeekerProfile.methods.removeCareer = async function (index) {
-  let result = this.career.splice(index, 1);
-  if (result.length === 0)
-    throw new RangeError("Career does not exist at that index");
+JobSeekerProfile.methods.removeCareer = async function (id) {
+  await this.career.pull({ _id: id });
   await this.save();
-  return this;
 };
 
 /**
@@ -94,7 +91,7 @@ JobSeekerProfile.methods.addEducation = async function (
   organization
 ) {
   let org = await Organization.findOneOrCreate(organization);
-  this.education.push({
+  await this.education.push({
     degree: degree,
     major: major,
     gradDate: gradDate,
@@ -106,15 +103,12 @@ JobSeekerProfile.methods.addEducation = async function (
 /**
  * Remove a degree from the education list of a job seeker
  *
- * @param index The number of degree to remove
+ * @param id The id of the education to remove
  * @returns {Promise<JobSeekerProfile>}
  */
-JobSeekerProfile.methods.removeEducation = async function (index) {
-  let result = this.education.splice(index, 1);
-  if (result.length === 0)
-    throw new RangeError("Education does not exist at that index");
+JobSeekerProfile.methods.removeEducation = async function (id) {
+  await this.education.pull({ _id: id });
   await this.save();
-  return this;
 };
 
 module.exports = mongoose.model("JobSeekerProfile", JobSeekerProfile);
