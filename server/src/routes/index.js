@@ -118,10 +118,7 @@ router.delete(
  * @function
  * @alias module:/routers/profile
  * @property {string} id - the id of the education
- * @property {string} degree -  the degree type
- * @property {string} major -  the major
- * @property {string} gradDate -  the graduation date
- * @property {string} organization -  the organization/college name
+ * @property {string} education -  the education object getting updated
  * @returns {string} message - success message
  */
 router.patch(
@@ -129,22 +126,7 @@ router.patch(
   sessionValidation,
   [
     check("id", "Must send a viable ID").not().isEmpty(),
-    check("degree", "Must send a viable degree")
-      .not()
-      .isEmpty()
-      .optional({ nullable: true }),
-    check("gradDate", "Must send a viable gradDate")
-      .not()
-      .isEmpty()
-      .optional({ nullable: true }),
-    check("major", "Must send a viable major")
-      .not()
-      .isEmpty()
-      .optional({ nullable: true }),
-    check("organization", "Must send a viable organization")
-      .not()
-      .isEmpty()
-      .optional({ nullable: true }),
+    check("education", "Must send a viable education object").not().isEmpty(),
   ],
   inputValidation,
   profile.patchEducation
@@ -196,10 +178,7 @@ router.delete(
  * @function
  * @alias module:/routers/profile
  * @property {string} id - the id from the career object
- * @property {string} jobTitle -  the jobtitle
- * @property {string} endDate -  the end date of the job
- * @property {string} startDate -  the state date of the job
- * @property {string} organization -  the organization name
+ * @property {string} career -  the career object
  * @returns {string} message - success message
  */
 router.patch(
@@ -207,22 +186,7 @@ router.patch(
   sessionValidation,
   [
     check("id", "Must send a viable ID").not().isEmpty(),
-    check("jobTitle", "Must send a viable job title")
-      .not()
-      .isEmpty()
-      .optional({ nullable: true }),
-    check("endDate", "Must send a viable endDate")
-      .not()
-      .isEmpty()
-      .optional({ nullable: true }),
-    check("startDate", "Must send a viable startDate")
-      .not()
-      .isEmpty()
-      .optional({ nullable: true }),
-    check("organization", "Must send a viable organization")
-      .not()
-      .isEmpty()
-      .optional({ nullable: true }),
+    check("career", "Must send a viable career object").not().isEmpty(),
   ],
   inputValidation,
   profile.patchCareer

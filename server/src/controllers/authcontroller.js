@@ -7,7 +7,6 @@ const User = require("../models/user");
 
 const userController = {};
 
-
 /**
  * functionality for registration
  * @name doRegister
@@ -16,8 +15,8 @@ const userController = {};
  * @property {request} request - contains username and password
  * @returns {string} response - whether or not registration was completed
  */
-userController.doRegister =  function (req, res) {
-  if (req.body.usertype == 'JobSeekerProfile'){
+userController.doRegister = function (req, res) {
+  if (req.body.usertype == "JobSeekerProfile") {
     User.register(
       new User({ email: req.body.email, type: req.body.usertype }),
       req.body.password,
@@ -32,8 +31,7 @@ userController.doRegister =  function (req, res) {
         });
       }
     );
-  }
-  else if (req.body.usertype == 'EmployerProfile'){
+  } else if (req.body.usertype == "EmployerProfile") {
     User.register(
       new User({ email: req.body.email, type: req.body.usertype }),
       req.body.password,
@@ -49,8 +47,7 @@ userController.doRegister =  function (req, res) {
         });
       }
     );
-  }
-  else if (req.body.usertype == 'EducatorProfile'){
+  } else if (req.body.usertype == "EducatorProfile") {
     User.register(
       new User({ email: req.body.email, type: req.body.usertype }),
       req.body.password,
@@ -66,9 +63,8 @@ userController.doRegister =  function (req, res) {
         });
       }
     );
-  }
-  else{
-    res.status(400).send('Invalid usertype');
+  } else {
+    res.status(400).send("Invalid usertype");
   }
 };
 
@@ -82,7 +78,6 @@ userController.doRegister =  function (req, res) {
  */
 userController.doLogin = function (req, res) {
   passport.authenticate("local")(req, res, function () {
-    console.log(req.user.user_info);
     res.send(req.user.user_info);
   });
 };
