@@ -93,7 +93,7 @@ userController.doRegister = function (req, res) {
  */
 userController.doLogin = function (req, res) {
   passport.authenticate("local")(req, res, function () {
-    res.send(req.user.user_info);
+    res.send(req.user.email);
   });
 };
 
