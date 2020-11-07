@@ -8,39 +8,35 @@ describe("AuthController Tests", () => {
   afterAll(disconnectDB);
 
   it("POST /register - no registration information JobSeeker", async () => {
-    const res = await request.post("/register")
-      .send({
-        usertype: "JobSeekerProfile",
-      });
+    const res = await request.post("/register").send({
+      usertype: "JobSeekerProfile",
+    });
     expect(res.statusCode).toEqual(400);
     expect(res.text).toEqual("Failed Validation.");
   });
 
   it("POST /register - no registration information Employer", async () => {
-    const res = await request.post("/register")
-      .send({
-        usertype: "EmployerProfile",
-      });
+    const res = await request.post("/register").send({
+      usertype: "EmployerProfile",
+    });
     expect(res.statusCode).toEqual(400);
     expect(res.text).toEqual("Failed Validation.");
   });
 
   it("POST /register - no registration information Educator", async () => {
-    const res = await request.post("/register")
-      .send({
-        usertype: "EducatorProfile",
-      });
+    const res = await request.post("/register").send({
+      usertype: "EducatorProfile",
+    });
     expect(res.statusCode).toEqual(400);
     expect(res.text).toEqual("Failed Validation.");
   });
 
   it("POST /register - invalid email", async () => {
-    const res = await request.post("/register")
-      .send({
-        email: "testEducator",
-        password: "chicken",
-        usertype: "JobSeekerProfile",
-      });
+    const res = await request.post("/register").send({
+      email: "testEducator",
+      password: "chicken",
+      usertype: "JobSeekerProfile",
+    });
     expect(res.statusCode).toEqual(400);
     expect(res.text).toEqual("Failed Validation.");
   });
@@ -81,7 +77,9 @@ describe("AuthController Tests", () => {
         usertype: "JobSeekerProfile",
       });
     expect(res.statusCode).toEqual(400);
-    expect(res.text).toEqual("{\"name\":\"UserExistsError\",\"message\":\"A user with the given username is already registered\"}");
+    expect(res.text).toEqual(
+      '{"name":"UserExistsError","message":"A user with the given email is already registered"}'
+    );
   });
 
   it("POST /register - Educator success", async () => {
@@ -107,7 +105,9 @@ describe("AuthController Tests", () => {
         usertype: "EducatorProfile",
       });
     expect(res.statusCode).toEqual(400);
-    expect(res.text).toEqual("{\"name\":\"UserExistsError\",\"message\":\"A user with the given username is already registered\"}");
+    expect(res.text).toEqual(
+      '{"name":"UserExistsError","message":"A user with the given email is already registered"}'
+    );
   });
 
   it("POST /register - Employer success", async () => {
@@ -134,7 +134,9 @@ describe("AuthController Tests", () => {
         usertype: "EmployerProfile",
       });
     expect(res.statusCode).toEqual(400);
-    expect(res.text).toEqual("{\"name\":\"UserExistsError\",\"message\":\"A user with the given username is already registered\"}");
+    expect(res.text).toEqual(
+      '{"name":"UserExistsError","message":"A user with the given email is already registered"}'
+    );
   });
 
   it("POST /login - failure", async () => {

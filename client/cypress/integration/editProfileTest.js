@@ -9,7 +9,7 @@ describe("Edit profile", () => {
     // Stub edit profile success response
     cy.route({
       method: "POST",
-      url: "http://localhost:9000/Profile",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
       status: 200,
       response: "Profile Updated.",
     }).as("editProfileCall");
@@ -27,7 +27,7 @@ describe("Edit profile", () => {
     // Stub edit profile error response
     cy.route({
       method: "POST",
-      url: "http://localhost:9000/Profile",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
       status: 400,
       response: "Failed to save profile",
     }).as("editProfileCall");
