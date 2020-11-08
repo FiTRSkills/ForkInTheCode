@@ -2,7 +2,7 @@
  * @module routers/users
  * @requires express
  */
-const { check } = require('express-validator');
+const { check } = require("express-validator");
 var express = require("express");
 var router = express.Router();
 var auth = require("../controllers/authcontroller.js");
@@ -20,11 +20,20 @@ var sessionValidation = require("../services/sessionValidation.js");
  * @property {string} usertype - the usertype for the new account (EducatorProfile, EmployerProfile, JobSeekerProfile)
  * @returns {json} Success or Failure message
  */
-router.post("/register", [
-    check('email', 'Your email is not valid').not().isEmpty().isEmail().normalizeEmail(),
-    check('password', 'Must send a password').not().isEmpty().trim().escape(),
-    check('usertype', 'Must send a usertype').not().isEmpty().trim().escape(),
-  ], inputValidation, auth.doRegister);
+router.post(
+  "/register",
+  [
+    check("email", "Your email is not valid")
+      .not()
+      .isEmpty()
+      .isEmail()
+      .normalizeEmail(),
+    check("password", "Must send a password").not().isEmpty().trim().escape(),
+    check("usertype", "Must send a usertype").not().isEmpty().trim().escape(),
+  ],
+  inputValidation,
+  auth.doRegister
+);
 
 /**
  * Routing serving login
@@ -65,19 +74,33 @@ router.get("/profile", sessionValidation, profile.getProfile);
  * @property {json} profile - the updated profile
  * @returns {string} message - success message
  */
-router.post("/profile", sessionValidation, [
-    check('firstname', 'Must send a viable firstname').trim().escape().optional({nullable: true}),
-    check('lastname', 'Must send a viable lastname').trim().escape().optional({nullable: true}),
-    check('dob', 'Must send a viable dob').isDate().optional({nullable: true}),
-    check('education', 'Must send a viable education').optional({nullable: true}),
-    check('career', 'Must send a viable career').optional({nullable: true}),
-  ], inputValidation, profile.postProfile);
-
+router.post(
+  "/profile",
+  sessionValidation,
+  [
+    check("firstname", "Must send a viable firstname")
+      .trim()
+      .escape()
+      .optional({ nullable: true }),
+    check("lastname", "Must send a viable lastname")
+      .trim()
+      .escape()
+      .optional({ nullable: true }),
+    check("dob", "Must send a viable dob")
+      .isDate()
+      .optional({ nullable: true }),
+    check("education", "Must send a viable education").optional({
+      nullable: true,
+    }),
+    check("career", "Must send a viable career").optional({ nullable: true }),
+  ],
+  inputValidation,
+  profile.postProfile
+);
 
 //The 404 Route (ALWAYS Keep this as the last route)
-router.get('*', function(req, res){
-    res.status(404).send('Not Found');
+router.all("*", function (req, res) {
+  res.status(404).send("Not Found");
 });
 
 module.exports = router;
-
