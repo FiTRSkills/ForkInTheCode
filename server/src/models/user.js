@@ -33,6 +33,7 @@ const User = new mongoose.Schema({
   profile: {
     type: mongoose.Schema.Types.ObjectId,
     refPath: "type",
+    autopopulate: true,
   },
 });
 // Adds username, hash, salt, (also defined above for clarity) and some methods to the schema.
@@ -57,11 +58,11 @@ User.pre("save", async function (next) {
  * @returns {Promise} resolves when the profile is retrieved from the database
  */
 User.methods.getProfile = async function () {
+  // Try to use the auto populated value first
+  if (this.populated("profile")) return this.profile;
+  // In case the profile was not populated for some reason
   const Profile = mongoose.model(this.type);
-  //If a custom method is provided to assist with populate, use that first.
-  if (Profile.findAndPopulateById)
-    return await Profile.findAndPopulateById(this.profile);
-  else return await Profile.findById(this.profile).exec();
+  return await Profile.findById(this.profile).exec();
 };
 
 // Expose user types to avoid magic strings

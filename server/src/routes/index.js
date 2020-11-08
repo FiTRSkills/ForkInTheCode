@@ -61,8 +61,9 @@ router.get("/logout", auth.logout);
  * @name GET /profile
  * @function
  * @alias module:/routers/profile
- * @property {string} user - the user token for the session
- * @returns {json} of user profile infromation
+ * @returns {string} firstname - the first name
+ * @returns {string} lastname - the last name
+ * @returns {Date} dob - the date of birth
  */
 router.get("/profile", sessionValidation, profile.getProfile);
 
@@ -71,8 +72,9 @@ router.get("/profile", sessionValidation, profile.getProfile);
  * @name POST /profile
  * @function
  * @alias module:/routers/profile
- * @property {string} user - the user token for the session
- * @property {json} profile - the updated profile
+ * @property {string} firstname - the first name
+ * @property {string} lastname - the last name
+ * @property {string} dob - the date of birth YYYY/MM/DD
  * @returns {string} message - success message
  */
 router.post(
@@ -96,11 +98,10 @@ router.post(
 );
 
 /**
- * Routing serving adding an education
+ * Routing serving removing an education
  * @name DELETE /profile/education
  * @function
  * @alias module:/routers/profile
- * @property {string} user - the user token for the session
  * @property {string} id - the id of the education
  * @returns {string} message - success message
  */
@@ -117,9 +118,8 @@ router.delete(
  * @name PATCH /profile/education
  * @function
  * @alias module:/routers/profile
- * @property {string} user - the user token for the session
  * @property {string} id - the id of the education
- * @property {string} education -  the updated version of the education
+ * @property {string} education -  the education object getting updated
  * @returns {string} message - success message
  */
 router.patch(
@@ -127,22 +127,7 @@ router.patch(
   sessionValidation,
   [
     check("id", "Must send a viable ID").not().isEmpty(),
-    check("degree", "Must send a viable degree")
-      .not()
-      .isEmpty()
-      .optional({ nullable: true }),
-    check("gradDate", "Must send a viable gradDate")
-      .not()
-      .isEmpty()
-      .optional({ nullable: true }),
-    check("major", "Must send a viable major")
-      .not()
-      .isEmpty()
-      .optional({ nullable: true }),
-    check("organization", "Must send a viable organization")
-      .not()
-      .isEmpty()
-      .optional({ nullable: true }),
+    check("education", "Must send a viable education object").not().isEmpty(),
   ],
   inputValidation,
   profile.patchEducation
@@ -153,8 +138,10 @@ router.patch(
  * @name POST /profile/education
  * @function
  * @alias module:/routers/profile
- * @property {string} user - the user token for the session
- * @property {string} education -  the updated version of the education
+ * @property {string} degree -  the degree type
+ * @property {string} major -  the major
+ * @property {string} gradDate -  the graduation date
+ * @property {string} organization -  the organization/college name
  * @returns {string} message - success message
  */
 router.post(
@@ -171,12 +158,11 @@ router.post(
 );
 
 /**
- * Routing serving adding a career
+ * Routing serving removing a career
  * @name DELETE /profile/career
  * @function
  * @alias module:/routers/profile
- * @property {string} user - the user token for the session
- * @property {string} id - the id of the education
+ * @property {string} id - the id of the career
  * @returns {string} message - success message
  */
 router.delete(
@@ -192,9 +178,8 @@ router.delete(
  * @name PATCH /profile/career
  * @function
  * @alias module:/routers/profile
- * @property {string} user - the user token for the session
- * @property {string} id - the id of the education
- * @property {string} education -  the updated version of the education
+ * @property {string} id - the id from the career object
+ * @property {string} career -  the career object
  * @returns {string} message - success message
  */
 router.patch(
@@ -202,22 +187,7 @@ router.patch(
   sessionValidation,
   [
     check("id", "Must send a viable ID").not().isEmpty(),
-    check("jobTitle", "Must send a viable job title")
-      .not()
-      .isEmpty()
-      .optional({ nullable: true }),
-    check("endDate", "Must send a viable endDate")
-      .not()
-      .isEmpty()
-      .optional({ nullable: true }),
-    check("startDate", "Must send a viable startDate")
-      .not()
-      .isEmpty()
-      .optional({ nullable: true }),
-    check("organization", "Must send a viable organization")
-      .not()
-      .isEmpty()
-      .optional({ nullable: true }),
+    check("career", "Must send a viable career object").not().isEmpty(),
   ],
   inputValidation,
   profile.patchCareer
@@ -228,8 +198,10 @@ router.patch(
  * @name POST /profile/career
  * @function
  * @alias module:/routers/profile
- * @property {string} user - the user token for the session
- * @property {string} education -  the updated version of the education
+ * @property {string} jobTitle -  the jobtitle
+ * @property {string} endDate -  the end date of the job
+ * @property {string} startDate -  the state date of the job
+ * @property {string} organization -  the organization name
  * @returns {string} message - success message
  */
 router.post(
@@ -246,6 +218,7 @@ router.post(
 );
 
 /**
+<<<<<<< HEAD
  * Routing serving retrieving a job posting by id
  * @name POST /jobs/jobposting
  * @function
@@ -295,8 +268,40 @@ router.post(
   job.searchJobPostings
 );
 
+/*
+ * Routing serving removing a skill
+ * @name DELETE /profile/skill
+ * @function
+ * @alias module:/routers/profile
+ * @property {string} id - the id of the skill
+ * @returns {string} message - success message
+ */
+router.delete(
+  "/profile/skill",
+  sessionValidation,
+  [check("id", "Must send a viable ID").not().isEmpty()],
+  inputValidation,
+  profile.deleteSkill
+);
+
+/**
+ * Routing serving adding a skill
+ * @name POST /profile/skill
+ * @function
+ * @alias module:/routers/profile
+ * @property {string} skill -  the skill
+ * @returns {string} message - success message
+ */
+router.post(
+  "/profile/skill",
+  sessionValidation,
+  [check("skill", "Must send a viable skill").not().isEmpty()],
+  inputValidation,
+  profile.postSkill
+);
+
 //The 404 Route handles returns on routes that don't exist
-router.get("*", function (req, res) {
+router.all("*", function (req, res) {
   res.status(404).send("Not Found");
 });
 

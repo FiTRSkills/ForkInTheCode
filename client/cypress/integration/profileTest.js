@@ -8,7 +8,7 @@ describe("Load profile", () => {
     // Stub get profile success response
     cy.route({
       method: "GET",
-      url: "http://localhost:9000/Profile",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
       status: 200,
       response: {
         firstname: "John",
@@ -42,7 +42,7 @@ describe("Load profile", () => {
     // Stub get profile error response
     cy.route({
       method: "GET",
-      url: "http://localhost:9000/Profile",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
       status: 400,
       response: "Access denied",
     }).as("profileCall");

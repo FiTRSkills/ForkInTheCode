@@ -24,6 +24,7 @@ profileController.getProfile = async function (req, res) {
     dob: profile.dateOfBirth,
     education: profile.education,
     career: profile.career,
+    skills: profile.skills,
   };
   res.status(200).send(data);
 };
@@ -38,10 +39,10 @@ profileController.getProfile = async function (req, res) {
  */
 profileController.postProfile = async function (req, res) {
   let profile = await req.user.getProfile();
-  if (req.body.firstname){
+  if (req.body.firstname) {
     profile.name.first = req.body.firstname;
   }
-  if (req.body.lastname){
+  if (req.body.lastname) {
     profile.name.last = req.body.lastname;
   }
   if (req.body.dob) {
@@ -59,16 +60,11 @@ profileController.postProfile = async function (req, res) {
  * @property {request} request - contains user
  * @returns {string} response - that profile was successfully updated
  */
-profileController.deleteEducation = async function(req, res) {
+profileController.deleteEducation = async function (req, res) {
   let profile = await req.user.getProfile();
   // gets the id of the education from the request
-  await profile.removeEducation(req.body.id, function(err, data){
-    if (err){
-      res.status(400).send('Error removing education.');
-      return;
-    }
-    res.status(200).send('Successfully removed education.');
-  });
+  await profile.removeEducation(req.body.id);
+  res.status(200).send("Successfully removed education.");
 };
 
 /**
@@ -79,17 +75,12 @@ profileController.deleteEducation = async function(req, res) {
  * @property {request} request - contains user
  * @returns {string} response - that profile was successfully updated
  */
-profileController.patchEducation = async function(req, res) {
+profileController.patchEducation = async function (req, res) {
   let profile = await req.user.getProfile();
   // gets the id of the education from the request and the updated education
-  await profile.editEducation(req.body.id, req.body.education, function(err, data){
-    if (err){
-      res.status(400).send('Error editing education.');
-      return;
-    }
-    res.status(200).send('Successfully edited education.');
-  });
-}
+  await profile.editEducation(req.body.id, req.body.education);
+  res.status(200).send("Successfully edited education.");
+};
 
 /**
  * functionality for adding an education
@@ -99,76 +90,91 @@ profileController.patchEducation = async function(req, res) {
  * @property {request} request - contains user
  * @returns {string} response - that profile was successfully updated
  */
-profileController.postEducation = async function(req, res) {
+profileController.postEducation = async function (req, res) {
   let profile = await req.user.getProfile();
   // gets the education to add from the request
-  await profile.addEducation(req.body.degree, req.body.major, req.body.gradDate, req.body.organization, function(err, data){
-    if (err){
-      res.status(400).send('Error adding education.');
-      return;
-    }
-    res.status(200).send('Successfully added education.');
-  });
-}
+  await profile.addEducation(
+    req.body.degree,
+    req.body.major,
+    req.body.gradDate,
+    req.body.organization
+  );
+  res.status(200).send("Successfully added education.");
+};
 
 /**
  * functionality for deleting a career
- * @name deleteEducation
+ * @name deleteCareer
  * @function
  * @alias module:/controllers/profilecontroller
  * @property {request} request - contains user
  * @returns {string} response - that profile was successfully updated
  */
-profileController.deleteCareer = async function(req, res) {
+profileController.deleteCareer = async function (req, res) {
   let profile = await req.user.getProfile();
-  // gets the id of the education from the request
-  await profile.removeCareer(req.body.id, function(err, data){
-    if (err){
-      res.status(400).send('Error removing career.');
-      return;
-    }
-    res.status(200).send('Successfully removed career.');
-  });
+  await profile.removeCareer(req.body.id);
+  res.status(200).send("Successfully removed career.");
 };
 
 /**
  * functionality for editing a career
- * @name patchEducation
+ * @name patchCareer
  * @function
  * @alias module:/controllers/profilecontroller
  * @property {request} request - contains user
  * @returns {string} response - that profile was successfully updated
  */
-profileController.patchCareer = async function(req, res) {
+profileController.patchCareer = async function (req, res) {
   let profile = await req.user.getProfile();
-  // gets the id of the education from the request and the updated education
-  await profile.editCareer(req.body.id, req.body.career, function(err, data){
-    if (err){
-      res.status(400).send('Error editing career.');
-      return;
-    }
-    res.status(200).send('Successfully edited career.');
-  });
-}
+  await profile.editCareer(req.body.id, req.body.career);
+  res.status(200).send("Successfully edited career.");
+};
 
 /**
  * functionality for adding a career
- * @name postEducation
+ * @name postCareer
  * @function
  * @alias module:/controllers/profilecontroller
  * @property {request} request - contains user
  * @returns {string} response - that profile was successfully updated
  */
-profileController.postCareer = async function(req, res) {
+profileController.postCareer = async function (req, res) {
   let profile = await req.user.getProfile();
-  // gets the education to add from the request
-  await profile.addCareer(req.body.jobTitle, req.body.startDate, req.body.endDate, req.body.organization, function(err, data){
-    if (err){
-      res.status(400).send('Error adding career.');
-      return;
-    }
-    res.status(200).send('Successfully added career.');
-  });
-}
+  await profile.addCareer(
+    req.body.jobTitle,
+    req.body.startDate,
+    req.body.endDate,
+    req.body.organization
+  );
+  res.status(200).send("Successfully added career.");
+};
+
+/**
+ * functionality for deleting a skill
+ * @name deleteSkill
+ * @function
+ * @alias module:/controllers/profilecontroller
+ * @property {request} request - contains user
+ * @returns {string} response - that skill was successfully updated
+ */
+profileController.deleteSkill = async function (req, res) {
+  let profile = await req.user.getProfile();
+  await profile.removeSkill(req.body.id);
+  res.status(200).send("Successfully removed skill.");
+};
+
+/**
+ * functionality for adding a skill
+ * @name postSkill
+ * @function
+ * @alias module:/controllers/profilecontroller
+ * @property {request} request - contains user
+ * @returns {string} response - that skill was successfully updated
+ */
+profileController.postSkill = async function (req, res) {
+  let profile = await req.user.getProfile();
+  await profile.addSkill(req.body.skill);
+  res.status(200).send("Successfully added skill.");
+};
 
 module.exports = profileController;
