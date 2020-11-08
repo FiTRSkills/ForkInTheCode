@@ -249,7 +249,7 @@ router.post(
 );
 
 //The 404 Route handles returns on routes that don't exist
-router.get("*", function (req, res) {
+router.all("*", function (req, res) {
   res.status(404).send("Not Found");
 });
 
