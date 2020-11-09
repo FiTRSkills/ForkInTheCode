@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 function ViewEditEducationItem({
   educationItem,
-  edit,
+  allowEdit,
   deleteEducation,
   editEducation,
 }) {
@@ -48,6 +48,7 @@ function ViewEditEducationItem({
   const [organization, setOrganization] = useState(
     educationItem.organization.name
   );
+  const [edit, setEdit] = useState(false);
 
   const classes = useStyles();
 
@@ -79,37 +80,42 @@ function ViewEditEducationItem({
       gradDate,
       organization,
     });
+    setEdit(false);
   }
 
   return (
     <Box className={classes.container}>
-      {edit && (
-        <CloseIcon
+      {edit && allowEdit && (
+        <Button
           className={classes.icon}
           onClick={() => {
             deleteEducation(educationItem.id);
           }}
-        />
+        >
+          <CloseIcon />
+        </Button>
       )}
-      {edit && (
-        <EditIcon
+      {allowEdit && (
+        <Button
           className={classes.icon}
           onClick={() => {
-            editEducation(educationItem.id);
+            setEdit(true);
           }}
-        />
+        >
+          <EditIcon />
+        </Button>
       )}
       <Box className={classes.field}>
         <Typography>Degree</Typography>
         <TextField
-          variant={edit ? "outlined" : "standard"}
+          variant={edit && allowEdit ? "outlined" : "standard"}
           margin="normal"
           fullWidth
           id="degree"
           name="degree"
           autoFocus
           required
-          disabled={!edit}
+          disabled={!(edit && allowEdit)}
           value={degree}
           onChange={handleChange}
           style={{ color: "rgba(0, 0, 0, 1)" }}
@@ -118,13 +124,13 @@ function ViewEditEducationItem({
       <Box className={classes.field}>
         <Typography>Major</Typography>
         <TextField
-          variant={edit ? "outlined" : "standard"}
+          variant={edit && allowEdit ? "outlined" : "standard"}
           margin="normal"
           fullWidth
           id="major"
           name="major"
           required
-          disabled={!edit}
+          disabled={!(edit && allowEdit)}
           value={major}
           onChange={handleChange}
           style={{ color: "rgba(0, 0, 0, 1)" }}
@@ -135,7 +141,7 @@ function ViewEditEducationItem({
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
             disableToolbar
-            inputVariant={edit ? "outlined" : "standard"}
+            inputVariant={edit && allowEdit ? "outlined" : "standard"}
             variant="inline"
             format="yyyy/MM/dd"
             margin="normal"
@@ -148,7 +154,7 @@ function ViewEditEducationItem({
             KeyboardButtonProps={{
               "aria-label": "change graduation date",
             }}
-            disabled={!edit}
+            disabled={!(edit && allowEdit)}
             style={{ color: "rgba(0, 0, 0, 1)" }}
           />
         </MuiPickersUtilsProvider>
@@ -156,18 +162,18 @@ function ViewEditEducationItem({
       <Box className={classes.field}>
         <Typography>Organization</Typography>
         <TextField
-          variant={edit ? "outlined" : "standard"}
+          variant={edit && allowEdit ? "outlined" : "standard"}
           margin="normal"
           fullWidth
           id="organization"
           name="organization"
           required
-          disabled={!edit}
+          disabled={!(edit && allowEdit)}
           value={organization}
           onChange={handleChange}
         />
       </Box>
-      {edit && (
+      {edit && allowEdit && (
         <Button
           variant="outlined"
           color="primary"

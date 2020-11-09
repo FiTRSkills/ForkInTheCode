@@ -18,6 +18,13 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     marginBottom: theme.spacing(6),
   },
+  divider: {
+    marginTop: "25px",
+    marginBottom: "25px",
+    width: "680px",
+    minHeight: "1px",
+    backgroundColor: "rgba(0, 0, 0, .6)",
+  },
 }));
 
 function Profile(props) {
@@ -137,9 +144,9 @@ function Profile(props) {
         education={education}
         career={careers}
       />
-      <Divider />
+      <Divider className={classes.divider} variant="middle" />
       <CareerItemList careers={careers} updateCareers={updateCareers} />
-      <Divider />
+      <Divider className={classes.divider} variant="middle" />
       <EducationItemList
         education={education}
         updateEducation={updateEducation}

@@ -36,13 +36,19 @@ const useStyles = makeStyles((theme) => ({
   icon: { float: "right", paddingTop: "15px" },
 }));
 
-function ViewEditCareerItem({ careerItem, edit, deleteCareer, editCareer }) {
+function ViewEditCareerItem({
+  careerItem,
+  allowEdit,
+  deleteCareer,
+  editCareer,
+}) {
   const [jobTitle, setJobTitle] = useState(careerItem.jobTitle);
   const [startDate, setStartDate] = useState(careerItem.startDate);
   const [endDate, setEndDate] = useState(careerItem.endDate);
   const [organization, setOrganization] = useState(
     careerItem.organization.name
   );
+  const [edit, setEdit] = useState(false);
 
   const classes = useStyles();
 
@@ -75,37 +81,42 @@ function ViewEditCareerItem({ careerItem, edit, deleteCareer, editCareer }) {
       endDate,
       organization,
     });
+    setEdit(false);
   }
 
   return (
     <Box className={classes.container}>
-      {edit && (
-        <CloseIcon
+      {edit && allowEdit && (
+        <Button
           className={classes.icon}
           onClick={() => {
             deleteCareer(careerItem.id);
           }}
-        />
+        >
+          <CloseIcon />
+        </Button>
       )}
-      {edit && (
-        <EditIcon
+      {allowEdit && (
+        <Button
           className={classes.icon}
           onClick={() => {
-            editCareer(careerItem.id);
+            setEdit(true);
           }}
-        />
+        >
+          <EditIcon />
+        </Button>
       )}
       <Box className={classes.field}>
         <Typography>Job title</Typography>
         <TextField
-          variant={edit ? "outlined" : "standard"}
+          variant={edit && allowEdit ? "outlined" : "standard"}
           margin="normal"
           fullWidth
           id="jobTitle"
           name="jobTitle"
           autoFocus
           required
-          disabled={!edit}
+          disabled={!(edit && allowEdit)}
           value={jobTitle}
           onChange={handleChange}
           style={{ color: "rgba(0, 0, 0, 1)" }}
@@ -116,7 +127,7 @@ function ViewEditCareerItem({ careerItem, edit, deleteCareer, editCareer }) {
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
             disableToolbar
-            inputVariant={edit ? "outlined" : "standard"}
+            inputVariant={edit && allowEdit ? "outlined" : "standard"}
             variant="inline"
             format="yyyy/MM/dd"
             margin="normal"
@@ -129,7 +140,7 @@ function ViewEditCareerItem({ careerItem, edit, deleteCareer, editCareer }) {
             KeyboardButtonProps={{
               "aria-label": "change start date",
             }}
-            disabled={!edit}
+            disabled={!(edit && allowEdit)}
             style={{ color: "rgba(0, 0, 0, 1)" }}
           />
         </MuiPickersUtilsProvider>
@@ -139,7 +150,7 @@ function ViewEditCareerItem({ careerItem, edit, deleteCareer, editCareer }) {
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
             disableToolbar
-            inputVariant={edit ? "outlined" : "standard"}
+            inputVariant={edit && allowEdit ? "outlined" : "standard"}
             variant="inline"
             format="yyyy/MM/dd"
             margin="normal"
@@ -152,7 +163,7 @@ function ViewEditCareerItem({ careerItem, edit, deleteCareer, editCareer }) {
             KeyboardButtonProps={{
               "aria-label": "change end date",
             }}
-            disabled={!edit}
+            disabled={!(edit && allowEdit)}
             style={{ color: "rgba(0, 0, 0, 1)" }}
           />
         </MuiPickersUtilsProvider>
@@ -160,18 +171,18 @@ function ViewEditCareerItem({ careerItem, edit, deleteCareer, editCareer }) {
       <Box className={classes.field}>
         <Typography>Organization</Typography>
         <TextField
-          variant={edit ? "outlined" : "standard"}
+          variant={edit && allowEdit ? "outlined" : "standard"}
           margin="normal"
           fullWidth
           id="organization"
           name="organization"
           required
-          disabled={!edit}
+          disabled={!(edit && allowEdit)}
           value={organization}
           onChange={handleChange}
         />
       </Box>
-      {edit && (
+      {edit && allowEdit && (
         <Button
           variant="outlined"
           color="primary"

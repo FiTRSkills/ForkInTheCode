@@ -12,7 +12,6 @@ import AddEducation from "./AddEducation";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    marginTop: theme.spacing(2),
     minWidth: 680,
   },
   icon: { float: "right", paddingTop: "5px" },
@@ -102,7 +101,9 @@ function EducationItemList({ education, updateEducation }) {
 
   return (
     <Box className={classes.container}>
-      <EditIcon className={classes.icon} onClick={toggleEdit} />
+      <Button className={classes.icon} onClick={toggleEdit}>
+        <EditIcon />
+      </Button>
       <Typography className={classes.field} variant={"h5"}>
         Education
       </Typography>
@@ -111,7 +112,7 @@ function EducationItemList({ education, updateEducation }) {
         <ViewEditEducationItem
           key={index}
           educationItem={educationItem}
-          edit={edit}
+          allowEdit={edit}
           editEducation={editEducation}
           deleteEducation={deleteEducation}
         />
@@ -130,8 +131,8 @@ function EducationItemList({ education, updateEducation }) {
       {showAddEducationPopup && (
         <Box className={classes.educationPopupOverlay}>
           <Box className={classes.educationPopupContent}>
-            <Button className={classes.closeButton}>
-              <CloseIcon onClick={closeAddEducation} />
+            <Button className={classes.closeButton} onClick={closeAddEducation}>
+              <CloseIcon />
             </Button>
             <AddEducation
               closePopup={closeAddEducation}
