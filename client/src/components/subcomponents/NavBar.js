@@ -9,9 +9,9 @@ import { changeCurrentPage, logOut } from "../../redux/actions";
 import "./NavBar.css";
 
 function NavBar(props) {
-  const authLeftSide = ["Search", "Something Else"];
+  const authLeftSide = ["Job Search", "Something Else"];
   const authRightSide = ["Profile", "Sign Out"];
-  const notAuthLeftSide = [];
+  const notAuthLeftSide = ["Job Search"];
   const notAuthRightSide = ["Log In", "Sign Up"];
 
   const [navBarListLeft, editNavBarListLeft] = useState([]);
