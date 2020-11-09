@@ -6,6 +6,7 @@ import MainProfile from "../subcomponents/MainProfile";
 import axios from "axios";
 import Divider from "@material-ui/core/Divider";
 import CareerItemList from "../subcomponents/CareerItemList";
+import EducationItemList from "../subcomponents/EducationItemList";
 import { makeStyles } from "@material-ui/core/styles";
 import { Alert } from "@material-ui/lab";
 
@@ -139,10 +140,10 @@ function Profile(props) {
       <Divider />
       <CareerItemList careers={careers} updateCareers={updateCareers} />
       <Divider />
-      {/*<EducationItemList
+      <EducationItemList
         education={education}
         updateEducation={updateEducation}
-      />*/}
+      />
     </Container>
   );
 }

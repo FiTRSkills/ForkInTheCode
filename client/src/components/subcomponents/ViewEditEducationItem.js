@@ -36,20 +36,28 @@ const useStyles = makeStyles((theme) => ({
   icon: { float: "right", paddingTop: "15px" },
 }));
 
-function ViewEditCareerItem({ careerItem, edit, deleteCareer, editCareer }) {
-  const [jobTitle, setJobTitle] = useState(careerItem.jobTitle);
-  const [startDate, setStartDate] = useState(careerItem.startDate);
-  const [endDate, setEndDate] = useState(careerItem.endDate);
+function ViewEditEducationItem({
+  educationItem,
+  edit,
+  deleteEducation,
+  editEducation,
+}) {
+  const [degree, setDegree] = useState(educationItem.degree);
+  const [major, setMajor] = useState(educationItem.major);
+  const [gradDate, setGradDate] = useState(educationItem.gradDate);
   const [organization, setOrganization] = useState(
-    careerItem.organization.name
+    educationItem.organization.name
   );
 
   const classes = useStyles();
 
   function handleChange(event) {
     switch (event.target.name) {
-      case "jobTitle":
-        setJobTitle(event.target.value);
+      case "degree":
+        setDegree(event.target.value);
+        break;
+      case "major":
+        setMajor(event.target.value);
         break;
       case "organization":
         setOrganization(event.target.value);
@@ -59,20 +67,16 @@ function ViewEditCareerItem({ careerItem, edit, deleteCareer, editCareer }) {
     }
   }
 
-  function handleStartDateChange(date) {
-    setStartDate(date);
-  }
-
-  function handleEndDateChange(date) {
-    setEndDate(date);
+  function handleGradDateChange(date) {
+    setGradDate(date);
   }
 
   function submitEdit() {
-    editCareer({
-      id: careerItem.id,
-      jobTitle,
-      startDate,
-      endDate,
+    editEducation({
+      id: educationItem.id,
+      degree,
+      major,
+      gradDate,
       organization,
     });
   }
@@ -83,7 +87,7 @@ function ViewEditCareerItem({ careerItem, edit, deleteCareer, editCareer }) {
         <CloseIcon
           className={classes.icon}
           onClick={() => {
-            deleteCareer(careerItem.id);
+            deleteEducation(educationItem.id);
           }}
         />
       )}
@@ -91,51 +95,43 @@ function ViewEditCareerItem({ careerItem, edit, deleteCareer, editCareer }) {
         <EditIcon
           className={classes.icon}
           onClick={() => {
-            editCareer(careerItem.id);
+            editEducation(educationItem.id);
           }}
         />
       )}
       <Box className={classes.field}>
-        <Typography>Job title</Typography>
+        <Typography>Degree</Typography>
         <TextField
           variant={edit ? "outlined" : "standard"}
           margin="normal"
           fullWidth
-          id="jobTitle"
-          name="jobTitle"
+          id="degree"
+          name="degree"
           autoFocus
           required
           disabled={!edit}
-          value={jobTitle}
+          value={degree}
           onChange={handleChange}
           style={{ color: "rgba(0, 0, 0, 1)" }}
         />
       </Box>
       <Box className={classes.field}>
-        <Typography>Start date</Typography>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            disableToolbar
-            inputVariant={edit ? "outlined" : "standard"}
-            variant="inline"
-            format="yyyy/MM/dd"
-            margin="normal"
-            id="startDate"
-            name="startDate"
-            value={startDate}
-            required
-            fullWidth
-            onChange={handleStartDateChange}
-            KeyboardButtonProps={{
-              "aria-label": "change start date",
-            }}
-            disabled={!edit}
-            style={{ color: "rgba(0, 0, 0, 1)" }}
-          />
-        </MuiPickersUtilsProvider>
+        <Typography>Major</Typography>
+        <TextField
+          variant={edit ? "outlined" : "standard"}
+          margin="normal"
+          fullWidth
+          id="major"
+          name="major"
+          required
+          disabled={!edit}
+          value={major}
+          onChange={handleChange}
+          style={{ color: "rgba(0, 0, 0, 1)" }}
+        />
       </Box>
       <Box className={classes.field}>
-        <Typography>End date</Typography>
+        <Typography>Grad date</Typography>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
             disableToolbar
@@ -143,14 +139,14 @@ function ViewEditCareerItem({ careerItem, edit, deleteCareer, editCareer }) {
             variant="inline"
             format="yyyy/MM/dd"
             margin="normal"
-            id="endDate"
-            name="endDate"
-            value={endDate}
+            id="gradDate"
+            name="gradDate"
+            value={gradDate}
             required
             fullWidth
-            onChange={handleEndDateChange}
+            onChange={handleGradDateChange}
             KeyboardButtonProps={{
-              "aria-label": "change end date",
+              "aria-label": "change graduation date",
             }}
             disabled={!edit}
             style={{ color: "rgba(0, 0, 0, 1)" }}
@@ -178,11 +174,11 @@ function ViewEditCareerItem({ careerItem, edit, deleteCareer, editCareer }) {
           fullWidth
           onClick={submitEdit}
         >
-          Update Career
+          Update Education
         </Button>
       )}
     </Box>
   );
 }
 
-export default ViewEditCareerItem;
+export default ViewEditEducationItem;
