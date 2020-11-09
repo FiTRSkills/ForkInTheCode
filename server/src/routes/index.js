@@ -251,7 +251,6 @@ router.post(
       .not()
       .isEmpty()
       .optional({ nullable: true }),
-    ,
     check("code", "Must send a viable code")
       .not()
       .isEmpty()
