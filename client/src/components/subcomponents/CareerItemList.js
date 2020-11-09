@@ -8,11 +8,12 @@ import { Alert } from "@material-ui/lab";
 import ViewEditCareerItem from "./ViewEditCareerItem";
 import CloseIcon from "@material-ui/icons/Close";
 import EditIcon from "@material-ui/icons/Edit";
-import AddEducation from "./AddEducation";
+import AddCareer from "./AddCareer";
 
 const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: theme.spacing(2),
+    minWidth: 680,
   },
   icon: { float: "right", paddingTop: "5px" },
   careerPopupOverlay: {
@@ -49,30 +50,15 @@ function CareerItemList({ careers, updateCareers }) {
   /**
    * Local states
    */
-  const [individualCareer, setIndividualCareer] = useState({});
   const [showAddCareerPopup, setShowAddCareerPopup] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [edit, setEdit] = useState(true);
+  const [edit, setEdit] = useState(false);
 
   /**
    * Style hook
    */
   const classes = useStyles();
-
-  function startAddCareer() {
-    setIndividualCareer({
-      title: "",
-      startDate: "",
-      endDate: Date.now(),
-      organization: "",
-    });
-    setShowAddCareerPopup(true);
-  }
-
-  function submitAddCareer() {
-    console.log("APPLE: submit the new career");
-  }
 
   function closeAddCareer() {
     setShowAddCareerPopup(false);
@@ -83,8 +69,12 @@ function CareerItemList({ careers, updateCareers }) {
     axios
       .patch(url, editedCareer, { withCredentials: true })
       .catch((error) => {
-        setError(error.response.data.message);
         console.error(error);
+        if (error.response && error.response.data && error.response.message) {
+          setError(error.response.data.message);
+        } else {
+          setError("An error has occoured while trying to edit a career.");
+        }
       })
       .finally(() => {
         updateCareers();
@@ -116,9 +106,10 @@ function CareerItemList({ careers, updateCareers }) {
       <Typography className={classes.field} variant={"h5"}>
         Careers
       </Typography>
-      {error && <Alert severity={"error"}>{error}</Alert>}
-      {careers.map((careerItem) => (
+      {error && loading && <Alert severity={"error"}>{error}</Alert>}
+      {careers.map((careerItem, index) => (
         <ViewEditCareerItem
+          key={index}
           careerItem={careerItem}
           edit={edit}
           editCareer={editCareer}
@@ -126,9 +117,12 @@ function CareerItemList({ careers, updateCareers }) {
         />
       ))}
       <Button
+        fullWidth
         variant="outlined"
         color="primary"
-        onClick={startAddCareer}
+        onClick={() => {
+          setShowAddCareerPopup(true);
+        }}
         className={classes.field}
       >
         Add career
@@ -139,9 +133,9 @@ function CareerItemList({ careers, updateCareers }) {
             <Button className={classes.closeButton}>
               <CloseIcon onClick={closeAddCareer} />
             </Button>
-            <AddEducation
-              education={{ degree: "test" }}
+            <AddCareer
               closePopup={closeAddCareer}
+              updateCareer={updateCareers}
             />
           </Box>
         </Box>

@@ -35,13 +35,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function AddEducation({ closePopup, updateEducation }) {
+function AddCareer({ closePopup, updateCareer }) {
   /**
    * Local state
    */
-  const [degree, setDegree] = useState("");
-  const [major, setMajor] = useState("");
-  const [gradDate, setGradDate] = useState(null);
+  const [jobTitle, setJobTitle] = useState("");
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [organization, setOrganization] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -58,11 +58,8 @@ function AddEducation({ closePopup, updateEducation }) {
    */
   function handleChange(event) {
     switch (event.target.name) {
-      case "degree":
-        setDegree(event.target.value);
-        break;
-      case "major":
-        setMajor(event.target.value);
+      case "jobTitle":
+        setJobTitle(event.target.value);
         break;
       case "organization":
         setOrganization(event.target.value);
@@ -72,37 +69,41 @@ function AddEducation({ closePopup, updateEducation }) {
     }
   }
 
-  const handleDateChange = (date) => {
-    setGradDate(date);
+  const handleStartDateChange = (date) => {
+    setStartDate(date);
+  };
+
+  const handleEndDateChange = (date) => {
+    setEndDate(date);
   };
 
   /**
    * Submit form
    */
-  function submitEducationForm(event) {
+  function submitCareerForm(event) {
     event.preventDefault();
 
     setLoading(true);
     axios
       .post(
-        process.env.REACT_APP_SERVER_URL + "/profile/education",
+        process.env.REACT_APP_SERVER_URL + "/profile/career",
         {
-          degree,
-          major,
-          gradDate,
+          jobTitle,
+          startDate,
+          endDate,
           organization,
         },
         { withCredentials: true }
       )
       .then((response) => {
         closePopup();
-        updateEducation();
+        updateCareer();
       })
       .catch((error) => {
         if (error.response.status === 400) {
           setError(error.response.data);
         } else {
-          setError("Failed to create a new education.");
+          setError("Failed to create a new career.");
         }
         console.error(error);
       })
@@ -112,39 +113,26 @@ function AddEducation({ closePopup, updateEducation }) {
   return (
     <Box className={classes.container}>
       <Typography className={classes.field} variant={"h5"}>
-        New Education
+        New Career
       </Typography>
       {error && <Alert severity={"error"}>{error}</Alert>}
-      <form className={classes.form} onSubmit={submitEducationForm}>
+      <form className={classes.form} onSubmit={submitCareerForm}>
         <Box className={classes.field}>
-          <Typography>Degree</Typography>
+          <Typography>Job Title</Typography>
           <TextField
             variant="outlined"
             margin="normal"
             fullWidth
-            id="degree"
-            name="degree"
+            id="jobTitle"
+            name="jobTitle"
             autoFocus
             required
-            value={degree}
+            value={jobTitle}
             onChange={handleChange}
           />
         </Box>
         <Box className={classes.field}>
-          <Typography>Major</Typography>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            id="major"
-            name="major"
-            required
-            value={major}
-            onChange={handleChange}
-          />
-        </Box>
-        <Box className={classes.field}>
-          <Typography>Graduation Date</Typography>
+          <Typography>Start Date</Typography>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               disableToolbar
@@ -154,18 +142,39 @@ function AddEducation({ closePopup, updateEducation }) {
               format="yyyy/MM/dd"
               placeholder="YYYY/MM/DD"
               margin="normal"
-              id="gradDate"
-              name="gradDate"
-              value={gradDate}
-              onChange={handleDateChange}
+              id="startDate"
+              name="startDate"
+              value={startDate}
+              onChange={handleStartDateChange}
               KeyboardButtonProps={{
-                "aria-label": "change graduation date",
+                "aria-label": "change start date",
               }}
             />
           </MuiPickersUtilsProvider>
         </Box>
         <Box className={classes.field}>
-          <Typography>School</Typography>
+          <Typography>End Date</Typography>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              disableToolbar
+              fullWidth
+              inputVariant="outlined"
+              variant="inline"
+              format="yyyy/MM/dd"
+              placeholder="YYYY/MM/DD"
+              margin="normal"
+              id="endDate"
+              name="endDate"
+              value={endDate}
+              onChange={handleEndDateChange}
+              KeyboardButtonProps={{
+                "aria-label": "change end date",
+              }}
+            />
+          </MuiPickersUtilsProvider>
+        </Box>
+        <Box className={classes.field}>
+          <Typography>Organization</Typography>
           <TextField
             variant="outlined"
             margin="normal"
@@ -184,7 +193,7 @@ function AddEducation({ closePopup, updateEducation }) {
           color="primary"
           className={classes.submit}
           id="submit"
-          onClick={submitEducationForm}
+          onClick={submitCareerForm}
         >
           {!loading ? "Save" : "Processing..."}
         </Button>
@@ -193,4 +202,4 @@ function AddEducation({ closePopup, updateEducation }) {
   );
 }
 
-export default AddEducation;
+export default AddCareer;

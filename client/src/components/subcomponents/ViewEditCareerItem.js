@@ -36,17 +36,13 @@ const useStyles = makeStyles((theme) => ({
   icon: { float: "right", paddingTop: "15px" },
 }));
 
-function ViewEditCareerItem({
-  careerItem,
-  handleChange,
-  edit,
-  deleteCareer,
-  editCareer,
-}) {
+function ViewEditCareerItem({ careerItem, edit, deleteCareer, editCareer }) {
   const [jobTitle, setJobTitle] = useState(careerItem.jobTitle);
   const [startDate, setStartDate] = useState(careerItem.startDate);
   const [endDate, setEndDate] = useState(careerItem.endDate);
-  const [organization, setOrganization] = useState(careerItem.organization);
+  const [organization, setOrganization] = useState(
+    careerItem.organization.name
+  );
 
   const classes = useStyles();
 

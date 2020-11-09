@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import Avatar from "@material-ui/core/Avatar";
 import TextField from "@material-ui/core/TextField";
@@ -16,19 +15,13 @@ import axios from "axios";
 import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-    marginTop: theme.spacing(6),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
   avatar: {
     width: 100,
     height: 100,
     margin: theme.spacing(2),
   },
-  form: {
-    minWidth: 480,
+  container: {
+    minWidth: 680,
   },
   field: {
     marginTop: theme.spacing(2),
@@ -40,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MainProfileEdit({ endEdit, ...props }) {
+function MainProfile({ endEdit, ...props }) {
   /**
    * Local states
    */
@@ -126,40 +119,17 @@ function MainProfileEdit({ endEdit, ...props }) {
    */
   function cancelEdit(event) {
     event.preventDefault();
-    endEdit();
+    setEdit(false);
   }
 
-  /*function editEducatio(id) {
-    let education = educations.filter((education) => education.id === id);
-    let newEducation = {
-      degree: "",
-      major: "",
-      gradDate: Date.now(),
-      organization: "",
-      id: -1,
-    };
-    switch (education.length) {
-      case 0:
-        break;
-      case 1:
-        newEducation = { ...education };
-        break;
-      default:
-        console.error(
-          "Warning: trying to edit an id associated with multiple careers"
-        );
-        break;
-    }
-  }*/
-
   return (
-    <Container className={classes.container}>
+    <Box className={classes.container}>
       <Avatar className={classes.avatar} />
       <Link href={"/Profile"} onClick={cancelEdit}>
         Back to profile
       </Link>
       {error && <Alert severity={"error"}>{error}</Alert>}
-      <form className={classes.form} onSubmit={updateProfile}>
+      <form onSubmit={updateProfile}>
         <Box className={classes.field}>
           <Typography>First name</Typography>
           <TextField
@@ -227,8 +197,8 @@ function MainProfileEdit({ endEdit, ...props }) {
           </Button>
         )}
       </form>
-    </Container>
+    </Box>
   );
 }
 
-export default MainProfileEdit;
+export default MainProfile;

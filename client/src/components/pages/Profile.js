@@ -2,10 +2,22 @@ import React, { useEffect, useState } from "react";
 import Container from "@material-ui/core/Container";
 import { changeCurrentPage } from "../../redux/actions";
 import { connect } from "react-redux";
-import MainProfileEdit from "../subcomponents/MainProfileEdit";
+import MainProfile from "../subcomponents/MainProfile";
 import axios from "axios";
 import Divider from "@material-ui/core/Divider";
 import CareerItemList from "../subcomponents/CareerItemList";
+import { makeStyles } from "@material-ui/core/styles";
+import { Alert } from "@material-ui/lab";
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    marginTop: theme.spacing(6),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    marginBottom: theme.spacing(6),
+  },
+}));
 
 function Profile(props) {
   /**
@@ -15,17 +27,13 @@ function Profile(props) {
   const [lastName, setLastName] = useState("");
   const [dob, setDob] = useState(null);
   const [education, setEducation] = useState([]);
-  //const [careers, setCareers] = useState([]);
-  const [careers, setCareers] = useState([
-    {
-      jobTitle: "test",
-      startDate: "2020-05-05",
-      endDate: "2021-03-22",
-      organization: "test org",
-    },
-  ]);
-  const [loading, setLoading] = useState(false);
+  const [careers, setCareers] = useState([]);
   const [error, setError] = useState(null);
+
+  /**
+   * Style hook
+   */
+  const classes = useStyles();
 
   /**
    * Profile edit mode
@@ -59,7 +67,6 @@ function Profile(props) {
    */
   function loadProfile() {
     // Load profile
-    setLoading(true);
     axios
       .get(process.env.REACT_APP_SERVER_URL + "/Profile", {
         withCredentials: true,
@@ -69,7 +76,7 @@ function Profile(props) {
         setLastName(response.data.lastname);
         setDob(new Date(response.data.dob));
         setEducation(response.data.education);
-        //setCareers(response.data.career);
+        setCareers(response.data.career);
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -78,8 +85,7 @@ function Profile(props) {
           setError("Failed to load profile");
         }
         console.error(error);
-      })
-      .finally(() => setLoading(false));
+      });
   }
 
   function updateCareers() {
@@ -119,8 +125,9 @@ function Profile(props) {
   }
 
   return (
-    <Container>
-      <MainProfileEdit
+    <Container className={classes.container}>
+      {error && <Alert severity={"error"}>{error}</Alert>}
+      <MainProfile
         endEdit={toggleEdit}
         user={props.user}
         firstName={firstName}
