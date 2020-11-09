@@ -245,7 +245,23 @@ router.post(
 router.post(
   "/jobs/createjobposting",
   sessionValidation,
-  [//todo],
+  [
+    check("jobTitle", "Must send a viable job title").not().isEmpty(),
+    check("pay", "Must send a viable pay")
+      .not()
+      .isEmpty()
+      .optional({ nullable: true }),
+    ,
+    check("code", "Must send a viable code")
+      .not()
+      .isEmpty()
+      .optional({ nullable: true }),
+    ,
+    check("description", "Must send a viable description").not().isEmpty(),
+    check("organization", "Must send a viable organization").not().isEmpty(),
+    check("qualifications", "Must send viable qualifications").not().isEmpty(),
+    check("skills", "Must send viable skills").not().isEmpty(),
+  ],
   inputValidation,
   job.getJobPosting
 );
@@ -262,8 +278,10 @@ router.post(
 router.post(
   "/jobs/search",
   sessionValidation,
-  [check("zip_code", "Must send a viable zipcode").not().isEmpty(), 
-  check("skills", "Must send a viable skills list").not().isEmpty()],
+  [
+    check("zip_code", "Must send a viable zipcode").not().isEmpty(),
+    check("skills", "Must send a viable skills list").not().isEmpty(),
+  ],
   inputValidation,
   job.searchJobPostings
 );
