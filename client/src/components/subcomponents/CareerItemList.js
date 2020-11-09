@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -45,19 +45,43 @@ const useStyles = makeStyles((theme) => ({
 
 const url = process.env.REACT_APP_SERVER_URL + "/profile/career";
 
-function CareerItemList({ careers, updateCareers }) {
+function CareerItemList() {
   /**
    * Local states
    */
+  const [careers, setCareers] = useState([]);
   const [showAddCareerPopup, setShowAddCareerPopup] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [edit, setEdit] = useState(false);
 
+  // Whenever we swap between editing and not the profile is updated
+  useEffect(() => {
+    updateCareers();
+  }, [edit]);
+
   /**
    * Style hook
    */
   const classes = useStyles();
+
+  function updateCareers() {
+    axios
+      .get(process.env.REACT_APP_SERVER_URL + "/Profile", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setCareers(response.data.career);
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          setError(error.response.data);
+        } else {
+          setError("Failed to get updated Career list.");
+        }
+        console.error(error);
+      });
+  }
 
   function closeAddCareer() {
     setShowAddCareerPopup(false);

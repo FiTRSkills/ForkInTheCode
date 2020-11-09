@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -45,19 +45,43 @@ const useStyles = makeStyles((theme) => ({
 
 const url = process.env.REACT_APP_SERVER_URL + "/profile/education";
 
-function EducationItemList({ education, updateEducation }) {
+function EducationItemList() {
   /**
    * Local states
    */
+  const [education, setEducation] = useState([]);
   const [showAddEducationPopup, setShowAddEducationPopup] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [edit, setEdit] = useState(false);
 
+  // Whenever we swap between editing and not the profile is updated
+  useEffect(() => {
+    updateEducation();
+  }, [edit]);
+
   /**
    * Style hook
    */
   const classes = useStyles();
+
+  function updateEducation() {
+    axios
+      .get(process.env.REACT_APP_SERVER_URL + "/Profile", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setEducation(response.data.education);
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          setError(error.response.data);
+        } else {
+          setError("Failed to get updated Education list.");
+        }
+        console.error(error);
+      });
+  }
 
   function closeAddEducation() {
     setShowAddEducationPopup(false);

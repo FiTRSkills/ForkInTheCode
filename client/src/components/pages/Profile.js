@@ -28,16 +28,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Profile(props) {
-  /**
-   * Local states for text fields
-   */
-  const [education, setEducation] = useState([]);
-  const [careers, setCareers] = useState([]);
-  const [error, setError] = useState(null);
-
-  /**
-   * Style hook
-   */
+  // Style hook
   const classes = useStyles();
 
   /**
@@ -51,58 +42,13 @@ function Profile(props) {
     }
   });
 
-  useEffect(() => {
-    updateCareers();
-    updateEducation();
-  }, [error]);
-
-  function updateCareers() {
-    axios
-      .get(process.env.REACT_APP_SERVER_URL + "/Profile", {
-        withCredentials: true,
-      })
-      .then((response) => {
-        setCareers(response.data.career);
-      })
-      .catch((error) => {
-        if (error.response.status === 400) {
-          setError(error.response.data);
-        } else {
-          setError("Failed to get updated Career list.");
-        }
-        console.error(error);
-      });
-  }
-
-  function updateEducation() {
-    axios
-      .get(process.env.REACT_APP_SERVER_URL + "/Profile", {
-        withCredentials: true,
-      })
-      .then((response) => {
-        setEducation(response.data.education);
-      })
-      .catch((error) => {
-        if (error.response.status === 400) {
-          setError(error.response.data);
-        } else {
-          setError("Failed to get updated Education list.");
-        }
-        console.error(error);
-      });
-  }
-
   return (
     <Container className={classes.container}>
-      {error && <Alert severity={"error"}>{error}</Alert>}
       <MainProfile />
       <Divider className={classes.divider} variant="middle" />
-      <CareerItemList careers={careers} updateCareers={updateCareers} />
+      <CareerItemList />
       <Divider className={classes.divider} variant="middle" />
-      <EducationItemList
-        education={education}
-        updateEducation={updateEducation}
-      />
+      <EducationItemList />
     </Container>
   );
 }
