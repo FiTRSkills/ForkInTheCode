@@ -141,12 +141,10 @@ describe("testing index.js routes", () => {
       .set("Cookie", [session_info])
       .send({
         id: education_id,
-        education: {
-          degree: "Bachelors",
-          major: "Computer Science",
-          gradDate: "2021/05/07",
-          organization: organization,
-        },
+        degree: "Bachelors",
+        major: "Computer Science",
+        gradDate: "2021/05/07",
+        organization: organization,
       });
     expect(res.statusCode).toEqual(200);
     expect(res.text).toEqual("Successfully edited education.");
@@ -238,12 +236,10 @@ describe("testing index.js routes", () => {
       .set("Cookie", [session_info])
       .send({
         id: career_id,
-        career: {
-          jobTitle: "Junior Software Engineer",
-          startDate: "2008/09/10",
-          endDate: "2019/02/07",
-          organization: organization,
-        },
+        jobTitle: "Junior Software Engineer",
+        startDate: "2008/09/10",
+        endDate: "2019/02/07",
+        organization: organization,
       });
     expect(res.statusCode).toEqual(200);
     expect(res.text).toEqual("Successfully edited career.");
