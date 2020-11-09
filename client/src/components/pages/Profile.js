@@ -31,9 +31,6 @@ function Profile(props) {
   /**
    * Local states for text fields
    */
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [dob, setDob] = useState(null);
   const [education, setEducation] = useState([]);
   const [careers, setCareers] = useState([]);
   const [error, setError] = useState(null);
@@ -44,11 +41,6 @@ function Profile(props) {
   const classes = useStyles();
 
   /**
-   * Profile edit mode
-   */
-  const [isEdit, setEdit] = useState(false);
-
-  /**
    * Change the nav title to Profile, but if user is not signed in, redirect to login
    */
   useEffect(() => {
@@ -56,19 +48,9 @@ function Profile(props) {
       //props.history.push("/Login");
     } else {
       props.changeCurrentPage("Profile");
+      loadProfile();
     }
   });
-
-  useEffect(() => {
-    loadProfile();
-  }, [isEdit]);
-
-  /**
-   * Toggle the profile edit mode
-   */
-  function toggleEdit() {
-    setEdit(!isEdit);
-  }
 
   /**
    * Load profile
@@ -80,9 +62,6 @@ function Profile(props) {
         withCredentials: true,
       })
       .then((response) => {
-        setFirstName(response.data.firstname);
-        setLastName(response.data.lastname);
-        setDob(new Date(response.data.dob));
         setEducation(response.data.education);
         setCareers(response.data.career);
       })
@@ -135,15 +114,7 @@ function Profile(props) {
   return (
     <Container className={classes.container}>
       {error && <Alert severity={"error"}>{error}</Alert>}
-      <MainProfile
-        endEdit={toggleEdit}
-        user={props.user}
-        firstName={firstName}
-        lastName={lastName}
-        dob={dob}
-        education={education}
-        career={careers}
-      />
+      <MainProfile />
       <Divider className={classes.divider} variant="middle" />
       <CareerItemList careers={careers} updateCareers={updateCareers} />
       <Divider className={classes.divider} variant="middle" />

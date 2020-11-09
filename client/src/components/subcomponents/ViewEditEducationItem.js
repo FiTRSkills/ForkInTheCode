@@ -144,6 +144,7 @@ function ViewEditEducationItem({
             inputVariant={edit && allowEdit ? "outlined" : "standard"}
             variant="inline"
             format="yyyy/MM/dd"
+            placeholder="YYYY/MM/DD"
             margin="normal"
             id="gradDate"
             name="gradDate"

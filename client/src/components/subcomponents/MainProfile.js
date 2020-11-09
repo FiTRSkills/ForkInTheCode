@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 import Avatar from "@material-ui/core/Avatar";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import Link from "@material-ui/core/Link";
+import EditIcon from "@material-ui/icons/Edit";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -33,16 +33,49 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MainProfile({ endEdit, ...props }) {
-  /**
-   * Local states
-   */
-  const [firstname, setFirstName] = useState(props.firstName);
-  const [lastname, setLastName] = useState(props.lastName);
-  const [dob, setDob] = useState(props.dob);
+function MainProfile() {
+  // Local State
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastName] = useState("");
+  const [dob, setDob] = useState(null);
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // Whenever we swap between editing and not the profile is updated
+  useEffect(() => {
+    updateProfile();
+  }, [edit]);
+
+  function updateProfile() {
+    setLoading(true);
+    // Load profile
+    axios
+      .get(process.env.REACT_APP_SERVER_URL + "/Profile", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setFirstName(response.data.firstname);
+        setLastName(response.data.lastname);
+        setDob(response.data.dob);
+      })
+      .catch((error) => {
+        if (
+          error.response &&
+          error.response.status &&
+          error.response.data &&
+          error.response.status === 400
+        ) {
+          setError(error.response.data);
+        } else {
+          setError("Failed to get updated basic profile.");
+        }
+        console.error(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
 
   /**
    * Style hook
@@ -85,7 +118,7 @@ function MainProfile({ endEdit, ...props }) {
   /**
    * Save updated profile
    */
-  function updateProfile(event) {
+  function saveProfile(event) {
     event.preventDefault();
 
     // Save profile
@@ -101,7 +134,7 @@ function MainProfile({ endEdit, ...props }) {
         { withCredentials: true }
       )
       .then((response) => {
-        endEdit();
+        setEdit(false);
       })
       .catch((error) => {
         if (error.response.status === 400) {
@@ -111,75 +144,77 @@ function MainProfile({ endEdit, ...props }) {
         }
         console.error(error);
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
-  /**
-   * Cancel edit profile
-   */
-  function cancelEdit(event) {
-    event.preventDefault();
-    setEdit(false);
+  function toggleEdit() {
+    setEdit(!edit);
   }
 
   return (
     <Box className={classes.container}>
       <Avatar className={classes.avatar} />
-      <Link href={"/Profile"} onClick={cancelEdit}>
-        Back to profile
-      </Link>
+      <Button className={classes.icon} onClick={toggleEdit}>
+        <EditIcon />
+      </Button>
+      <Typography className={classes.field} variant={"h5"}>
+        Overall
+      </Typography>
       {error && <Alert severity={"error"}>{error}</Alert>}
-      <form onSubmit={updateProfile}>
+      <form onSubmit={saveProfile}>
         <Box className={classes.field}>
           <Typography>First name</Typography>
           <TextField
-            variant="outlined"
+            variant={edit ? "outlined" : "standard"}
             margin="normal"
             fullWidth
             id="firstName"
-            label="First name"
             name="firstName"
             autoFocus
             required
             value={firstname}
             onChange={handleChange}
             disabled={!edit}
+            style={{ color: "rgba(0, 0, 0, 1)" }}
           />
         </Box>
         <Box className={classes.field}>
           <Typography>Last name</Typography>
           <TextField
-            variant="outlined"
+            variant={edit ? "outlined" : "standard"}
             margin="normal"
             fullWidth
             id="lastName"
-            label="Last name"
             name="lastName"
             required
             value={lastname}
             onChange={handleChange}
             disabled={!edit}
+            style={{ color: "rgba(0, 0, 0, 1)" }}
           />
         </Box>
         <Box className={classes.field}>
           <Typography>Date of Birth</Typography>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
-              inputVariant="outlined"
+              inputVariant={edit ? "outlined" : "standard"}
               fullWidth
               disableToolbar
               variant="inline"
               format="yyyy/MM/dd"
+              placeholder="YYYY/MM/DD"
               margin="normal"
               id="dob"
-              label="Date of Birth"
               name="dob"
               value={dob}
               onChange={handleDateChange}
               KeyboardButtonProps={{
-                "aria-label": "change date",
+                "aria-label": "change date of birth",
               }}
               disabled={!edit}
+              style={{ color: "rgba(0, 0, 0, 1)" }}
             />
           </MuiPickersUtilsProvider>
         </Box>
@@ -191,7 +226,7 @@ function MainProfile({ endEdit, ...props }) {
             color="primary"
             className={classes.submit}
             id="submit"
-            onClick={updateProfile}
+            onClick={saveProfile}
           >
             {!loading ? "Save" : "Processing..."}
           </Button>

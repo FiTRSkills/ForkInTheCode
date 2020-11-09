@@ -130,6 +130,7 @@ function ViewEditCareerItem({
             inputVariant={edit && allowEdit ? "outlined" : "standard"}
             variant="inline"
             format="yyyy/MM/dd"
+            placeholder="YYYY/MM/DD"
             margin="normal"
             id="startDate"
             name="startDate"
@@ -153,6 +154,7 @@ function ViewEditCareerItem({
             inputVariant={edit && allowEdit ? "outlined" : "standard"}
             variant="inline"
             format="yyyy/MM/dd"
+            placeholder="YYYY/MM/DD"
             margin="normal"
             id="endDate"
             name="endDate"
