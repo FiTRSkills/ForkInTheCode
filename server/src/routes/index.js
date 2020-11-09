@@ -126,7 +126,10 @@ router.patch(
   sessionValidation,
   [
     check("id", "Must send a viable ID").not().isEmpty(),
-    check("education", "Must send a viable education object").not().isEmpty(),
+    check("degree", "Must send a viable degree").not().isEmpty(),
+    check("gradDate", "Must send a viable gradDate").not().isEmpty(),
+    check("major", "Must send a viable major").not().isEmpty(),
+    check("organization", "Must send a viable organization").not().isEmpty(),
   ],
   inputValidation,
   profile.patchEducation
@@ -186,7 +189,10 @@ router.patch(
   sessionValidation,
   [
     check("id", "Must send a viable ID").not().isEmpty(),
-    check("career", "Must send a viable career object").not().isEmpty(),
+    check("jobTitle", "Must send a viable job title").not().isEmpty(),
+    check("endDate", "Must send a viable endDate").not().isEmpty(),
+    check("startDate", "Must send a viable startDate").not().isEmpty(),
+    check("organization", "Must send a viable organization").not().isEmpty(),
   ],
   inputValidation,
   profile.patchCareer
