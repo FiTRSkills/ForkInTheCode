@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
@@ -11,6 +11,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   field: {
@@ -33,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     backgroundColor: theme.palette.primary.main,
   },
-  icon: { float: "right", paddingTop: "15px" },
+  icon: { float: "right", marginTop: "5px" },
 }));
 
 function ViewEditCareerItem({
@@ -49,6 +50,13 @@ function ViewEditCareerItem({
     careerItem.organization.name
   );
   const [edit, setEdit] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Whenever we swap between allowing editing and not make the individual items not in the edit state
+  useEffect(() => {
+    setEdit(false);
+  }, [allowEdit]);
 
   const classes = useStyles();
 
@@ -74,14 +82,23 @@ function ViewEditCareerItem({
   }
 
   function submitEdit() {
+    setLoading(true);
     editCareer({
       id: careerItem.id,
       jobTitle,
       startDate,
       endDate,
       organization,
-    });
-    setEdit(false);
+    })
+      .then((response) => {
+        console.log("resolved");
+        setError(null);
+        setEdit(false);
+      })
+      .catch((error) => {
+        setError(error);
+      })
+      .finally(setLoading(false));
   }
 
   return (
@@ -106,6 +123,7 @@ function ViewEditCareerItem({
           <EditIcon />
         </Button>
       )}
+      {error && <Alert severity={"error"}>{error}</Alert>}
       <Box className={classes.field}>
         <Typography>Job title</Typography>
         <TextField
@@ -184,7 +202,7 @@ function ViewEditCareerItem({
           fullWidth
           onClick={submitEdit}
         >
-          Update Career
+          {loading ? "Processing..." : "Update Career"}
         </Button>
       )}
     </Box>

@@ -88,21 +88,26 @@ function EducationItemList() {
   }
 
   function editEducation(editedEducation) {
-    setLoading(true);
-    axios
-      .patch(url, editedEducation, { withCredentials: true })
-      .catch((error) => {
-        console.error(error);
-        if (error.response && error.response.data && error.response.message) {
-          setError(error.response.data.message);
-        } else {
-          setError("An error has occoured while trying to edit a education.");
-        }
-      })
-      .finally(() => {
-        updateEducation();
-        setLoading(false);
-      });
+    return new Promise((resolve, reject) => {
+      setLoading(true);
+      axios
+        .patch(url, editedEducation, { withCredentials: true })
+        .then((response) => {
+          resolve();
+          updateEducation();
+        })
+        .catch((error) => {
+          console.error(error);
+          if (error.response && error.response.data && error.response.message) {
+            reject(error.response.data.message);
+          } else {
+            reject("An error has occoured while trying to edit a education.");
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    });
   }
 
   function deleteEducation(id) {

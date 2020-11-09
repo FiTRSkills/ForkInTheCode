@@ -88,21 +88,26 @@ function CareerItemList() {
   }
 
   function editCareer(editedCareer) {
-    setLoading(true);
-    axios
-      .patch(url, editedCareer, { withCredentials: true })
-      .catch((error) => {
-        console.error(error);
-        if (error.response && error.response.data && error.response.message) {
-          setError(error.response.data.message);
-        } else {
-          setError("An error has occoured while trying to edit a career.");
-        }
-      })
-      .finally(() => {
-        updateCareers();
-        setLoading(false);
-      });
+    return new Promise((resolve, reject) => {
+      setLoading(true);
+      axios
+        .patch(url, editedCareer, { withCredentials: true })
+        .then(() => {
+          resolve();
+          updateCareers();
+        })
+        .catch((error) => {
+          console.error(error);
+          if (error.response && error.response.data && error.response.message) {
+            reject(error.response.data.message);
+          } else {
+            reject("An error has occoured while trying to edit a career.");
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    });
   }
 
   function deleteCareer(id) {
@@ -131,7 +136,7 @@ function CareerItemList() {
       <Typography className={classes.field} variant={"h5"}>
         Careers
       </Typography>
-      {error && loading && <Alert severity={"error"}>{error}</Alert>}
+      {error && <Alert severity={"error"}>{error}</Alert>}
       {careers.map((careerItem, index) => (
         <ViewEditCareerItem
           key={index}
