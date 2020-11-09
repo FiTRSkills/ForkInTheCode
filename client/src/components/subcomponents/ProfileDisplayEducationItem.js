@@ -2,12 +2,7 @@ import React from "react";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 
-function ProfileDisplayEducationItem(props) {
-  /**
-   * Props
-   */
-  const { educationItem, index } = props;
-
+function ProfileDisplayEducationItem({ educationItem, index }) {
   return (
     <Grid item container>
       <Grid item xl={4} lg={4} sm={4} xs={4}>

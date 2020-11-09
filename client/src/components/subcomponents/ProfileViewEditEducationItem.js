@@ -8,77 +8,64 @@ const useStyles = makeStyles((theme) => ({
   field: {
     marginTop: theme.spacing(2),
   },
+  container: {
+    border: "black, 2px, solid",
+    borderRadius: "15px",
+  },
 }));
 
-function ProfileEditCareerItem(props) {
+function ProfileViewEditEducationItem(props) {
   /**
    * Props
    */
-  const { careerItem, index, handleChange } = props;
+  const { educationItem, index, handleChange } = props;
 
   const classes = useStyles();
 
   return (
-    <Box>
+    <Box className={classes.container}>
       <Box className={classes.field}>
-        <Typography>Job title</Typography>
+        <Typography>Degree</Typography>
         <TextField
           variant="outlined"
           margin="normal"
           fullWidth
-          id="jobTitle"
-          label="jobTitle"
-          name="jobTitle"
+          id="degree"
+          label="Degree"
+          name="degree"
           autoFocus
           required
-          value={careerItem.jobTitle}
+          value={educationItem.degree}
           onChange={(event) => handleChange(event, index)}
         />
       </Box>
       <Box className={classes.field}>
-        <Typography>Start date</Typography>
+        <Typography>Major</Typography>
         <TextField
           variant="outlined"
           margin="normal"
-          id="startDate"
-          name="startDate"
-          type="date"
           fullWidth
+          id="major"
+          label="Major"
+          name="major"
           autoFocus
           required
-          className={classes.field}
-          value={careerItem.startDate}
+          value={educationItem.major}
           onChange={(event) => handleChange(event, index)}
         />
       </Box>
       <Box className={classes.field}>
-        <Typography>End date</Typography>
-        <TextField
-          variant="outlined"
-          margin="normal"
-          id="endDate"
-          name="endDate"
-          type="date"
-          fullWidth
-          autoFocus
-          required
-          className={classes.field}
-          value={careerItem.endDate}
-          onChange={(event) => handleChange(event, index)}
-        />
-      </Box>
-      <Box className={classes.field}>
-        <Typography>Organization</Typography>
+        <Typography>Institution</Typography>
         <TextField
           variant="outlined"
           margin="normal"
           fullWidth
-          id="organization"
-          label="Organization"
-          name="organization"
+          id="institution"
+          label="Institution"
+          name="institution"
           autoFocus
           required
-          value={careerItem.organization}
+          value={educationItem.institution}
           onChange={(event) => handleChange(event, index)}
         />
       </Box>
@@ -86,4 +73,4 @@ function ProfileEditCareerItem(props) {
   );
 }
 
-export default ProfileEditCareerItem;
+export default ProfileViewEditEducationItem;

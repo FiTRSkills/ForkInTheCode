@@ -35,7 +35,7 @@ function Profile(props) {
   });
 
   useEffect(() => {
-    loadProfile()
+    loadProfile();
   }, [isEdit]);
 
   /**
@@ -52,7 +52,9 @@ function Profile(props) {
     // Load profile
     setLoading(true);
     axios
-      .get(process.env.REACT_APP_SERVER_URL + "/Profile", {withCredentials: true})
+      .get(process.env.REACT_APP_SERVER_URL + "/Profile", {
+        withCredentials: true,
+      })
       .then((response) => {
         setFirstName(response.data.firstname);
         setLastName(response.data.lastname);
@@ -76,7 +78,16 @@ function Profile(props) {
    */
   return (
     <Container>
-      {!isEdit ? (
+      <ProfileEdit
+        endEdit={toggleEdit}
+        user={props.user}
+        firstName={firstName}
+        lastName={lastName}
+        dob={dob}
+        education={education}
+        career={career}
+      />
+      {false && (
         <ProfileDisplay
           startEdit={toggleEdit}
           firstName={firstName}
@@ -86,16 +97,6 @@ function Profile(props) {
           career={career}
           loading={loading}
           error={error}
-        />
-      ) : (
-        <ProfileEdit
-          endEdit={toggleEdit}
-          user={props.user}
-          firstName={firstName}
-          lastName={lastName}
-          dob={dob}
-          education={education}
-          career={career}
         />
       )}
     </Container>

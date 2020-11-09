@@ -14,8 +14,10 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { Alert } from "@material-ui/lab";
-import ProfileEditEducationItem from "./ProfileEditEducationItem";
-import ProfileEditCareerItem from "./ProfileEditCareerItem";
+import ProfileViewEditEducationItem from "./ProfileViewEditEducationItem";
+import CareerItemList from "./CareerItemList";
+import AddEducation from "./AddEducation";
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -44,15 +46,28 @@ const useStyles = makeStyles((theme) => ({
 
 function ProfileEdit({ endEdit, ...props }) {
   /**
-   * Local states for text fields
+   * Local states
    */
   const [firstname, setFirstName] = useState(props.firstName);
   const [lastname, setLastName] = useState(props.lastName);
   const [dob, setDob] = useState(props.dob);
-  const [education, setEducation] = useState(props.education);
-  const [career, setCareer] = useState(props.career);
+  const [educations, setEducations] = useState(props.education);
+  //const [careers, setCareers] = useState(props.career);
+  const [careers, setCareers] = useState([
+    {
+      jobTitle: "test",
+      startDate: "2020-05-05",
+      endDate: "2021-03-22",
+      organization: "test org",
+    },
+  ]);
+  const [individualEducation, setIndividualEducation] = useState({});
+  const [individualCareer, setIndividualCareer] = useState({});
+  const [showAddEduPopup, setShowAddEduPopup] = useState(false);
+  const [showAddCareerPopup, setShowAddCareerPopup] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [tilesEdit, setTilesEdit] = useState(true);
 
   /**
    * Style hook
@@ -63,13 +78,8 @@ function ProfileEdit({ endEdit, ...props }) {
    * Handle change of text fields to local states
    *
    * @param event
-   * @param index - index position of education or career items in education or career array
    */
-  function handleChange(event, index) {
-    let copyEducation = [...education];
-    let targetEducationItem = { ...copyEducation[index] };
-    let copyCareer = [...career];
-    let targetCareerItem = { ...copyCareer[index] };
+  function handleChange(event) {
     switch (event.target.name) {
       case "firstName":
         setFirstName(event.target.value);
@@ -77,79 +87,13 @@ function ProfileEdit({ endEdit, ...props }) {
       case "lastName":
         setLastName(event.target.value);
         break;
-      case "degree":
-        targetEducationItem.degree = event.target.value;
-        copyEducation[index] = targetEducationItem;
-        setEducation(copyEducation);
-        break;
-      case "major":
-        targetEducationItem.major = event.target.value;
-        copyEducation[index] = targetEducationItem;
-        setEducation(copyEducation);
-        break;
-      case "institution":
-        targetEducationItem.institution = event.target.value;
-        copyEducation[index] = targetEducationItem;
-        setEducation(copyEducation);
-        break;
-      case "jobTitle":
-        targetCareerItem.jobTitle = event.target.value;
-        copyCareer[index] = targetCareerItem;
-        setCareer(copyCareer);
-        break;
-      case "startDate":
-        targetCareerItem.startDate = event.target.value;
-        copyCareer[index] = targetCareerItem;
-        setCareer(copyCareer);
-        break;
-      case "endDate":
-        targetCareerItem.endDate = event.target.value;
-        copyCareer[index] = targetCareerItem;
-        setCareer(copyCareer);
-        break;
-      case "organization":
-        targetCareerItem.organization = event.target.value;
-        copyCareer[index] = targetCareerItem;
-        setCareer(copyCareer);
-        break;
       default:
         break;
     }
   }
 
-  const handleDateChange = (date) => {
+  function handleDateChange(date) {
     setDob(date);
-  };
-
-  /**
-   * Add a new item to education or career
-   *
-   * @param type - education or career
-   */
-  function addItemToList(type) {
-    switch (type) {
-      case "education":
-        const newEducationItem = {
-          degree: "",
-          major: "",
-          organization: "",
-        };
-        let updatedEducation = education.concat(newEducationItem);
-        setEducation(updatedEducation);
-        break;
-      case "career":
-        const newCareerItem = {
-          jobTitle: "",
-          startDate: "",
-          endDate: "",
-          organization: "",
-        };
-        let updatedCareer = career.concat(newCareerItem);
-        setCareer(updatedCareer);
-        break;
-      default:
-        break;
-    }
   }
 
   function dobAsString() {
@@ -166,19 +110,21 @@ function ProfileEdit({ endEdit, ...props }) {
   /**
    * Save updated profile
    */
-  function saveProfile(event) {
+  function updateProfile(event) {
     event.preventDefault();
 
     // Save profile
     setLoading(true);
     axios
-      .post(process.env.REACT_APP_SERVER_URL + "/Profile", {
-        firstname,
-        lastname,
-        dob: dobAsString(),
-        education: [], // TODO: implemented later
-        career: [], // TODO: implemented later
-      }, {withCredentials: true})
+      .post(
+        process.env.REACT_APP_SERVER_URL + "/Profile",
+        {
+          firstname,
+          lastname,
+          dob: dobAsString(),
+        },
+        { withCredentials: true }
+      )
       .then((response) => {
         endEdit();
       })
@@ -201,6 +147,84 @@ function ProfileEdit({ endEdit, ...props }) {
     endEdit();
   }
 
+  function closePopups() {
+    setShowAddCareerPopup(false);
+    setShowAddEduPopup(false);
+  }
+
+  function closePopupsUpdateLists() {
+    axios
+      .get(process.env.REACT_APP_SERVER_URL + "/Profile", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setEducations(response.data.education);
+        setCareers(response.data.career);
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          setError(error.response.data);
+        } else {
+          setError("Failed to get updated Education and Career lists.");
+        }
+        console.error(error);
+      });
+  }
+
+  function editCareer(id) {
+    let career = careers.filter((career) => career.id === id);
+    let newCareer = {
+      title: "",
+      startDate: "",
+      endDate: Date.now(),
+      organization: "",
+      id: -1,
+    };
+    switch (career.length) {
+      case 0:
+        break;
+      case 1:
+        newCareer = { ...career };
+        break;
+      default:
+        console.error(
+          "Warning: trying to edit an id associated with multiple careers"
+        );
+        break;
+    }
+    setIndividualCareer(newCareer);
+    showAddCareerPopup(true);
+  }
+
+  function editEducation(id) {
+    let education = educations.filter((education) => education.id === id);
+    let newEducation = {
+      degree: "",
+      major: "",
+      gradDate: Date.now(),
+      organization: "",
+      id: -1,
+    };
+    switch (education.length) {
+      case 0:
+        break;
+      case 1:
+        newEducation = { ...education };
+        break;
+      default:
+        console.error(
+          "Warning: trying to edit an id associated with multiple careers"
+        );
+        break;
+    }
+    setIndividualCareer(newEducation);
+    showAddCareerPopup(true);
+  }
+
+  function updateCareers() {
+    console.log("APPLE: update careers");
+  }
+
   return (
     <Container className={classes.container}>
       <Avatar className={classes.avatar} />
@@ -208,7 +232,7 @@ function ProfileEdit({ endEdit, ...props }) {
         Back to profile
       </Link>
       {error && <Alert severity={"error"}>{error}</Alert>}
-      <form className={classes.form} onSubmit={saveProfile}>
+      <form className={classes.form} onSubmit={updateProfile}>
         <Box className={classes.field}>
           <Typography>First name</Typography>
           <TextField
@@ -233,7 +257,6 @@ function ProfileEdit({ endEdit, ...props }) {
             id="lastName"
             label="Last name"
             name="lastName"
-            autoFocus
             required
             value={lastname}
             onChange={handleChange}
@@ -243,6 +266,8 @@ function ProfileEdit({ endEdit, ...props }) {
           <Typography>Date of Birth</Typography>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
+              inputVariant="outlined"
+              fullWidth
               disableToolbar
               variant="inline"
               format="yyyy/MM/dd"
@@ -258,11 +283,13 @@ function ProfileEdit({ endEdit, ...props }) {
             />
           </MuiPickersUtilsProvider>
         </Box>
+        <Divider />
+        <CareerItemList careers={careers} updateCareers={updateCareers} />
         <Typography className={classes.field} variant={"h5"}>
           Education
         </Typography>
-        {education.map((educationItem, index) => (
-          <ProfileEditEducationItem
+        {educations.map((educationItem, index) => (
+          <ProfileViewEditEducationItem
             educationItem={educationItem}
             index={index}
             handleChange={handleChange}
@@ -271,28 +298,10 @@ function ProfileEdit({ endEdit, ...props }) {
         <Button
           variant="outlined"
           color="primary"
-          onClick={() => addItemToList("education")}
+          onClick={() => setShowAddEduPopup(true)}
           className={classes.field}
         >
           Add education
-        </Button>
-        <Typography className={classes.field} variant={"h5"}>
-          Career
-        </Typography>
-        {career.map((careerItem, index) => (
-          <ProfileEditCareerItem
-            careerItem={careerItem}
-            index={index}
-            handleChange={handleChange}
-          />
-        ))}
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={() => addItemToList("career")}
-          className={classes.field}
-        >
-          Add career
         </Button>
         <Button
           type="submit"
@@ -301,11 +310,25 @@ function ProfileEdit({ endEdit, ...props }) {
           color="primary"
           className={classes.submit}
           id="submit"
-          onClick={saveProfile}
+          onClick={updateProfile}
         >
           {!loading ? "Save" : "Processing..."}
         </Button>
       </form>
+      <div id="overlay">
+        <div id="popupBackground">
+          <Button onClick={closePopups}>X</Button>
+          {showAddCareerPopup && /*<AddCareer />*/ "Career"}
+          {showAddEduPopup && (
+            <AddEducation
+              education={individualEducation}
+              closePopup={() => {
+                setShowAddEduPopup(false);
+              }}
+            />
+          )}
+        </div>
+      </div>
     </Container>
   );
 }
