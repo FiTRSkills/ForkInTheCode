@@ -112,7 +112,6 @@ function ViewEditCareerItem({
           variant={edit && allowEdit ? "outlined" : "standard"}
           margin="normal"
           fullWidth
-          id="jobTitle"
           name="jobTitle"
           autoFocus
           required
@@ -131,7 +130,6 @@ function ViewEditCareerItem({
             format="yyyy/MM/dd"
             placeholder="YYYY/MM/DD"
             margin="normal"
-            id="startDate"
             name="startDate"
             value={startDate}
             required
@@ -154,7 +152,6 @@ function ViewEditCareerItem({
             format="yyyy/MM/dd"
             placeholder="YYYY/MM/DD"
             margin="normal"
-            id="endDate"
             name="endDate"
             value={endDate}
             required
@@ -173,7 +170,6 @@ function ViewEditCareerItem({
           variant={edit && allowEdit ? "outlined" : "standard"}
           margin="normal"
           fullWidth
-          id="organization"
           name="organization"
           required
           disabled={!(edit && allowEdit)}

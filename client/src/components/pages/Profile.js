@@ -49,9 +49,12 @@ function Profile(props) {
     } else {
       props.changeCurrentPage("Profile");
     }
+  });
+
+  useEffect(() => {
     updateCareers();
     updateEducation();
-  });
+  }, [error]);
 
   function updateCareers() {
     axios

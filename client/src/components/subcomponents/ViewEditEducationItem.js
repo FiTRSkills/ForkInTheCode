@@ -111,7 +111,6 @@ function ViewEditEducationItem({
           variant={edit && allowEdit ? "outlined" : "standard"}
           margin="normal"
           fullWidth
-          id="degree"
           name="degree"
           autoFocus
           required
@@ -126,7 +125,6 @@ function ViewEditEducationItem({
           variant={edit && allowEdit ? "outlined" : "standard"}
           margin="normal"
           fullWidth
-          id="major"
           name="major"
           required
           disabled={!(edit && allowEdit)}
@@ -144,7 +142,6 @@ function ViewEditEducationItem({
             format="yyyy/MM/dd"
             placeholder="YYYY/MM/DD"
             margin="normal"
-            id="gradDate"
             name="gradDate"
             value={gradDate}
             required
@@ -163,7 +160,6 @@ function ViewEditEducationItem({
           variant={edit && allowEdit ? "outlined" : "standard"}
           margin="normal"
           fullWidth
-          id="organization"
           name="organization"
           required
           disabled={!(edit && allowEdit)}
