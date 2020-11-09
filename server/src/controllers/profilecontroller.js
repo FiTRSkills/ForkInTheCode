@@ -77,8 +77,14 @@ profileController.deleteEducation = async function (req, res) {
  */
 profileController.patchEducation = async function (req, res) {
   let profile = await req.user.getProfile();
+  let education = {
+    major: req.body.major,
+    degree: req.body.degree,
+    gradDate: req.body.gradDate,
+    organization: req.body.organization,
+  };
   // gets the id of the education from the request and the updated education
-  await profile.editEducation(req.body.id, req.body.education);
+  await profile.editEducation(req.body.id, education);
   res.status(200).send("Successfully edited education.");
 };
 
@@ -126,7 +132,13 @@ profileController.deleteCareer = async function (req, res) {
  */
 profileController.patchCareer = async function (req, res) {
   let profile = await req.user.getProfile();
-  await profile.editCareer(req.body.id, req.body.career);
+  let career = {
+    jobTitle: req.body.jobTitle,
+    startDate: req.body.startDate,
+    endDate: req.body.endDate,
+    organization: req.body.organization,
+  };
+  await profile.editCareer(req.body.id, career);
   res.status(200).send("Successfully edited career.");
 };
 
