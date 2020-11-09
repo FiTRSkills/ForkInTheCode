@@ -48,32 +48,10 @@ function Profile(props) {
       //props.history.push("/Login");
     } else {
       props.changeCurrentPage("Profile");
-      loadProfile();
     }
+    updateCareers();
+    updateEducation();
   });
-
-  /**
-   * Load profile
-   */
-  function loadProfile() {
-    // Load profile
-    axios
-      .get(process.env.REACT_APP_SERVER_URL + "/Profile", {
-        withCredentials: true,
-      })
-      .then((response) => {
-        setEducation(response.data.education);
-        setCareers(response.data.career);
-      })
-      .catch((error) => {
-        if (error.response.status === 400) {
-          setError(error.response.data);
-        } else {
-          setError("Failed to load profile");
-        }
-        console.error(error);
-      });
-  }
 
   function updateCareers() {
     axios

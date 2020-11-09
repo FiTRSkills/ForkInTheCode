@@ -119,7 +119,6 @@ function ViewEditCareerItem({
           disabled={!(edit && allowEdit)}
           value={jobTitle}
           onChange={handleChange}
-          style={{ color: "rgba(0, 0, 0, 1)" }}
         />
       </Box>
       <Box className={classes.field}>
@@ -142,7 +141,6 @@ function ViewEditCareerItem({
               "aria-label": "change start date",
             }}
             disabled={!(edit && allowEdit)}
-            style={{ color: "rgba(0, 0, 0, 1)" }}
           />
         </MuiPickersUtilsProvider>
       </Box>
@@ -166,7 +164,6 @@ function ViewEditCareerItem({
               "aria-label": "change end date",
             }}
             disabled={!(edit && allowEdit)}
-            style={{ color: "rgba(0, 0, 0, 1)" }}
           />
         </MuiPickersUtilsProvider>
       </Box>

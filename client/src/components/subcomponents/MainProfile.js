@@ -25,12 +25,16 @@ const useStyles = makeStyles((theme) => ({
   },
   field: {
     marginTop: theme.spacing(2),
+    "& .MuiInputBase-root.Mui-disabled": {
+      color: "rgba(0, 0, 0, 1)",
+    },
   },
   submit: {
     marginTop: theme.spacing(4),
     padding: theme.spacing(2),
     marginBottom: theme.spacing(4),
   },
+  icon: { float: "right", paddingTop: "5px" },
 }));
 
 function MainProfile() {
@@ -177,7 +181,6 @@ function MainProfile() {
             value={firstname}
             onChange={handleChange}
             disabled={!edit}
-            style={{ color: "rgba(0, 0, 0, 1)" }}
           />
         </Box>
         <Box className={classes.field}>
@@ -192,7 +195,6 @@ function MainProfile() {
             value={lastname}
             onChange={handleChange}
             disabled={!edit}
-            style={{ color: "rgba(0, 0, 0, 1)" }}
           />
         </Box>
         <Box className={classes.field}>
@@ -214,7 +216,6 @@ function MainProfile() {
                 "aria-label": "change date of birth",
               }}
               disabled={!edit}
-              style={{ color: "rgba(0, 0, 0, 1)" }}
             />
           </MuiPickersUtilsProvider>
         </Box>

@@ -118,7 +118,6 @@ function ViewEditEducationItem({
           disabled={!(edit && allowEdit)}
           value={degree}
           onChange={handleChange}
-          style={{ color: "rgba(0, 0, 0, 1)" }}
         />
       </Box>
       <Box className={classes.field}>
@@ -133,7 +132,6 @@ function ViewEditEducationItem({
           disabled={!(edit && allowEdit)}
           value={major}
           onChange={handleChange}
-          style={{ color: "rgba(0, 0, 0, 1)" }}
         />
       </Box>
       <Box className={classes.field}>
@@ -156,7 +154,6 @@ function ViewEditEducationItem({
               "aria-label": "change graduation date",
             }}
             disabled={!(edit && allowEdit)}
-            style={{ color: "rgba(0, 0, 0, 1)" }}
           />
         </MuiPickersUtilsProvider>
       </Box>
