@@ -84,7 +84,7 @@ function ViewEditCareerItem({
   function submitEdit() {
     setLoading(true);
     editCareer({
-      id: careerItem.id,
+      id: careerItem._id,
       jobTitle,
       startDate,
       endDate,
@@ -107,7 +107,7 @@ function ViewEditCareerItem({
         <Button
           className={classes.icon}
           onClick={() => {
-            deleteCareer(careerItem.id);
+            deleteCareer(careerItem._id);
           }}
         >
           <CloseIcon />

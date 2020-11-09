@@ -83,7 +83,7 @@ function ViewEditEducationItem({
   function submitEdit() {
     setLoading(true);
     editEducation({
-      id: educationItem.id,
+      id: educationItem._id,
       degree,
       major,
       gradDate,
@@ -106,7 +106,7 @@ function ViewEditEducationItem({
         <Button
           className={classes.icon}
           onClick={() => {
-            deleteEducation(educationItem.id);
+            deleteEducation(educationItem._id);
           }}
         >
           <CloseIcon />

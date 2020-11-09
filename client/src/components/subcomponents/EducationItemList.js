@@ -112,8 +112,14 @@ function EducationItemList() {
 
   function deleteEducation(id) {
     setLoading(true);
-    axios
-      .delete(url, { id }, { withCredentials: true })
+    axios({
+      method: "DELETE",
+      url,
+      data: {
+        id,
+      },
+      withCredentials: true,
+    })
       .catch((error) => {
         setError(error.response.data.message);
         console.error(error);
