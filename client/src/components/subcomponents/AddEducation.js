@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -12,13 +11,11 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { Alert } from "@material-ui/lab";
-
 const useStyles = makeStyles((theme) => ({
   container: {
-    marginTop: theme.spacing(6),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    marginTop: theme.spacing(2),
+    paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4),
   },
   avatar: {
     width: 100,
@@ -38,17 +35,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function AddEducation({ education, closePopup }) {
+function AddEducation({ closePopup, updateEducation }) {
   /**
    * Local state
    */
-  const [degree, setDegree] = useState(education.degree);
-  const [major, setMajor] = useState(education.major);
-  const [gradDate, setGradDate] = useState(education.gradDate);
-  const [school, setSchool] = useState(education.organization);
+  const [degree, setDegree] = useState("");
+  const [major, setMajor] = useState("");
+  const [gradDate, setGradDate] = useState(null);
+  const [organization, setOrganization] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const newEducation = education.id === -1;
 
   /**
    * Style hook
@@ -68,8 +64,8 @@ function AddEducation({ education, closePopup }) {
       case "major":
         setMajor(event.target.value);
         break;
-      case "school":
-        setSchool(event.target.value);
+      case "organization":
+        setOrganization(event.target.value);
         break;
       default:
         break;
@@ -86,49 +82,38 @@ function AddEducation({ education, closePopup }) {
   function submitEducationForm(event) {
     event.preventDefault();
 
-    // Save profile
     setLoading(true);
-    const url = process.env.REACT_APP_SERVER_URL + "/profile/education";
-    let body = {
-      degree,
-      major,
-      gradDate,
-      organization: school,
-    };
-    function catchFunction(error) {
-      if (error.response.status === 400) {
-        setError(error.response.data);
-      } else {
-        let errorMessage = newEducation
-          ? "Failed to create a new education."
-          : "Failed to update education.";
-        setError(errorMessage);
-      }
-      console.error(error);
-    }
-
-    if (newEducation) {
-      axios
-        .post(url, body, { withCredentials: true })
-        .then((response) => {
-          closePopup();
-        })
-        .catch(catchFunction)
-        .finally(() => setLoading(false));
-    } else {
-      axios
-        .patch(url, { id: education.id, ...body }, { withCredentials: true })
-        .then((response) => {
-          closePopup();
-        })
-        .catch(catchFunction)
-        .finally(() => setLoading(false));
-    }
+    axios
+      .post(
+        process.env.REACT_APP_SERVER_URL + "/profile/education",
+        {
+          degree,
+          major,
+          gradDate,
+          organization,
+        },
+        { withCredentials: true }
+      )
+      .then((response) => {
+        closePopup();
+        updateEducation();
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          setError(error.response.data);
+        } else {
+          setError("Failed to create a new education.");
+        }
+        console.error(error);
+      })
+      .finally(() => setLoading(false));
   }
 
   return (
-    <Container className={classes.container}>
-      <Typography>{newEducation ? "New" : "Update"} Education</Typography>
+    <Box className={classes.container}>
+      <Typography className={classes.field} variant={"h5"}>
+        New Education
+      </Typography>
       {error && <Alert severity={"error"}>{error}</Alert>}
       <form className={classes.form} onSubmit={submitEducationForm}>
         <Box className={classes.field}>
@@ -138,7 +123,6 @@ function AddEducation({ education, closePopup }) {
             margin="normal"
             fullWidth
             id="degree"
-            label="Degree"
             name="degree"
             autoFocus
             required
@@ -153,7 +137,6 @@ function AddEducation({ education, closePopup }) {
             margin="normal"
             fullWidth
             id="major"
-            label="Major"
             name="major"
             required
             value={major}
@@ -165,11 +148,13 @@ function AddEducation({ education, closePopup }) {
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               disableToolbar
+              fullWidth
+              inputVariant="outlined"
               variant="inline"
               format="yyyy/MM/dd"
+              placeholder="YYYY/MM/DD"
               margin="normal"
               id="dob"
-              label="Graduation Date"
               name="dob"
               value={gradDate}
               onChange={handleDateChange}
@@ -180,16 +165,15 @@ function AddEducation({ education, closePopup }) {
           </MuiPickersUtilsProvider>
         </Box>
         <Box className={classes.field}>
-          <Typography>Major</Typography>
+          <Typography>School</Typography>
           <TextField
             variant="outlined"
             margin="normal"
             fullWidth
-            id="major"
-            label="Major"
-            name="major"
+            id="organization"
+            name="organization"
             required
-            value={major}
+            value={organization}
             onChange={handleChange}
           />
         </Box>
@@ -205,7 +189,7 @@ function AddEducation({ education, closePopup }) {
           {!loading ? "Save" : "Processing..."}
         </Button>
       </form>
-    </Container>
+    </Box>
   );
 }
 

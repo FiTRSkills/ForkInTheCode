@@ -14,10 +14,6 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { Alert } from "@material-ui/lab";
-import ProfileViewEditEducationItem from "./ProfileViewEditEducationItem";
-import CareerItemList from "./CareerItemList";
-import AddEducation from "./AddEducation";
-import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -44,30 +40,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ProfileEdit({ endEdit, ...props }) {
+function MainProfileEdit({ endEdit, ...props }) {
   /**
    * Local states
    */
   const [firstname, setFirstName] = useState(props.firstName);
   const [lastname, setLastName] = useState(props.lastName);
   const [dob, setDob] = useState(props.dob);
-  const [educations, setEducations] = useState(props.education);
-  //const [careers, setCareers] = useState(props.career);
-  const [careers, setCareers] = useState([
-    {
-      jobTitle: "test",
-      startDate: "2020-05-05",
-      endDate: "2021-03-22",
-      organization: "test org",
-    },
-  ]);
-  const [individualEducation, setIndividualEducation] = useState({});
-  const [individualCareer, setIndividualCareer] = useState({});
-  const [showAddEduPopup, setShowAddEduPopup] = useState(false);
-  const [showAddCareerPopup, setShowAddCareerPopup] = useState(false);
+  const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [tilesEdit, setTilesEdit] = useState(true);
 
   /**
    * Style hook
@@ -147,56 +129,7 @@ function ProfileEdit({ endEdit, ...props }) {
     endEdit();
   }
 
-  function closePopups() {
-    setShowAddCareerPopup(false);
-    setShowAddEduPopup(false);
-  }
-
-  function closePopupsUpdateLists() {
-    axios
-      .get(process.env.REACT_APP_SERVER_URL + "/Profile", {
-        withCredentials: true,
-      })
-      .then((response) => {
-        setEducations(response.data.education);
-        setCareers(response.data.career);
-      })
-      .catch((error) => {
-        if (error.response.status === 400) {
-          setError(error.response.data);
-        } else {
-          setError("Failed to get updated Education and Career lists.");
-        }
-        console.error(error);
-      });
-  }
-
-  function editCareer(id) {
-    let career = careers.filter((career) => career.id === id);
-    let newCareer = {
-      title: "",
-      startDate: "",
-      endDate: Date.now(),
-      organization: "",
-      id: -1,
-    };
-    switch (career.length) {
-      case 0:
-        break;
-      case 1:
-        newCareer = { ...career };
-        break;
-      default:
-        console.error(
-          "Warning: trying to edit an id associated with multiple careers"
-        );
-        break;
-    }
-    setIndividualCareer(newCareer);
-    showAddCareerPopup(true);
-  }
-
-  function editEducation(id) {
+  /*function editEducatio(id) {
     let education = educations.filter((education) => education.id === id);
     let newEducation = {
       degree: "",
@@ -217,13 +150,7 @@ function ProfileEdit({ endEdit, ...props }) {
         );
         break;
     }
-    setIndividualCareer(newEducation);
-    showAddCareerPopup(true);
-  }
-
-  function updateCareers() {
-    console.log("APPLE: update careers");
-  }
+  }*/
 
   return (
     <Container className={classes.container}>
@@ -246,6 +173,7 @@ function ProfileEdit({ endEdit, ...props }) {
             required
             value={firstname}
             onChange={handleChange}
+            disabled={!edit}
           />
         </Box>
         <Box className={classes.field}>
@@ -260,6 +188,7 @@ function ProfileEdit({ endEdit, ...props }) {
             required
             value={lastname}
             onChange={handleChange}
+            disabled={!edit}
           />
         </Box>
         <Box className={classes.field}>
@@ -280,57 +209,26 @@ function ProfileEdit({ endEdit, ...props }) {
               KeyboardButtonProps={{
                 "aria-label": "change date",
               }}
+              disabled={!edit}
             />
           </MuiPickersUtilsProvider>
         </Box>
-        <Divider />
-        <CareerItemList careers={careers} updateCareers={updateCareers} />
-        <Typography className={classes.field} variant={"h5"}>
-          Education
-        </Typography>
-        {educations.map((educationItem, index) => (
-          <ProfileViewEditEducationItem
-            educationItem={educationItem}
-            index={index}
-            handleChange={handleChange}
-          />
-        ))}
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={() => setShowAddEduPopup(true)}
-          className={classes.field}
-        >
-          Add education
-        </Button>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-          id="submit"
-          onClick={updateProfile}
-        >
-          {!loading ? "Save" : "Processing..."}
-        </Button>
+        {edit && (
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            id="submit"
+            onClick={updateProfile}
+          >
+            {!loading ? "Save" : "Processing..."}
+          </Button>
+        )}
       </form>
-      <div id="overlay">
-        <div id="popupBackground">
-          <Button onClick={closePopups}>X</Button>
-          {showAddCareerPopup && /*<AddCareer />*/ "Career"}
-          {showAddEduPopup && (
-            <AddEducation
-              education={individualEducation}
-              closePopup={() => {
-                setShowAddEduPopup(false);
-              }}
-            />
-          )}
-        </div>
-      </div>
     </Container>
   );
 }
 
-export default ProfileEdit;
+export default MainProfileEdit;

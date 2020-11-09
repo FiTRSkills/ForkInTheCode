@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import { makeStyles, rgbToHex } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { Alert } from "@material-ui/lab";
 import ViewEditCareerItem from "./ViewEditCareerItem";
@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     height: "100%",
     background: "rgba(0, 0, 0, 0.6)",
+    zIndex: "9",
   },
   careerPopupContent: {
     borderColor: "black",
@@ -29,12 +30,22 @@ const useStyles = makeStyles((theme) => ({
     borderStyle: "solid",
     borderRadius: "15px",
     background: "white",
+    width: "50%",
+    height: "75%",
+    margin: "0",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    zIndex: "10",
+    overflow: "auto",
   },
+  closeButton: { float: "right", paddingTop: "15px" },
 }));
 
 const url = process.env.REACT_APP_SERVER_URL + "/profile/career";
 
-function CareerItemList({ careers, updateCareers, ...props }) {
+function CareerItemList({ careers, updateCareers }) {
   /**
    * Local states
    */
@@ -101,12 +112,9 @@ function CareerItemList({ careers, updateCareers, ...props }) {
 
   return (
     <Box className={classes.container}>
-      {/*<Link href={"/Profile"} onClick={cancelEdit}>
-        Back to profile
-  </Link>*/}
-      {edit && <EditIcon className={classes.icon} onClick={toggleEdit} />}
+      <EditIcon className={classes.icon} onClick={toggleEdit} />
       <Typography className={classes.field} variant={"h5"}>
-        Career{careers.length > 1 ? "s" : ""}
+        Careers
       </Typography>
       {error && <Alert severity={"error"}>{error}</Alert>}
       {careers.map((careerItem) => (
@@ -125,14 +133,19 @@ function CareerItemList({ careers, updateCareers, ...props }) {
       >
         Add career
       </Button>
-      <Box className={classes.careerPopupOverlay}>
-        <Box className={classes.careerPopupContent}>
-          <Button>
-            <CloseIcon />
-          </Button>
-          {showAddCareerPopup && <AddEducation />}
+      {showAddCareerPopup && (
+        <Box className={classes.careerPopupOverlay}>
+          <Box className={classes.careerPopupContent}>
+            <Button className={classes.closeButton}>
+              <CloseIcon onClick={closeAddCareer} />
+            </Button>
+            <AddEducation
+              education={{ degree: "test" }}
+              closePopup={closeAddCareer}
+            />
+          </Box>
         </Box>
-      </Box>
+      )}
     </Box>
   );
 }
