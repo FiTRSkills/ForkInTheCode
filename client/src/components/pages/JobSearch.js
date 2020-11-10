@@ -4,6 +4,7 @@ import { changeCurrentPage, updateResults } from "../../redux/actions";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import JobSearchForm from "../subcomponents/JobSearchForm";
+import Results from "../subcomponents/Results";
 import axios from "axios";
 
 function JobSearch(props) {
@@ -23,9 +24,12 @@ function JobSearch(props) {
           )
           .then((response) => {
               if (response.status === 200) {
+                  if (response.data.length === 0) {
+                      setErrorMessage("No Results");
+                  }
                   props.updateResults({ results: response.data});
               } else {
-                  setErrorMessage("No Results")
+                  setErrorMessage("Please Try Again")
               }
           })
           .catch((error) => {
@@ -37,13 +41,16 @@ function JobSearch(props) {
         <Container component="main" maxWidth="lg">
             <CssBaseline />
                 <JobSearchForm errorMessage={errorMessage} apiCall={search}/>
-                {/*<Results>*/}
+            {props.results.length>0 &&
+                <Results/>
+            }
         </Container>
     );
 }
 const mapStateToProps = (state) => {
     return {
         user: state.authentication,
+        results: state.searchResults.results
     };
 };
 

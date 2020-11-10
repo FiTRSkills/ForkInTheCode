@@ -40,7 +40,11 @@ function JobSearchForm(props) {
             axios
               .get(process.env.REACT_APP_SERVER_URL + "/Profile")
               .then((response) => {
-                  setSkills(response.data.skills);
+                  let arr = [];
+                  for (let skill of response.data.skills) {
+                      arr.push(skill["name"]);
+                  }
+                  setSkills(arr);
               })
               .catch((error) => {
                   console.error(error);
@@ -49,7 +53,6 @@ function JobSearchForm(props) {
         }
     }
     function submit(event) {
-        console.log(skills);
         setLoading(true);
         props.apiCall({zipcode, skills}).finally(() => {
             setLoading(false);
