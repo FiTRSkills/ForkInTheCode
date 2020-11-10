@@ -106,7 +106,7 @@ describe("JobController Tests", () => {
 		let body = JSON.parse(res.text);
 		job_posting_id = body.id;
 		expect(res.statusCode).toEqual(200);
-		expect(body.organization).toEqual("Microsoft");
+		expect(body.organization.name).toEqual("Microsoft");
 		expect(body.jobTitle).toEqual("Software Engineer");
 		expect(body.pay).toEqual("$60,000");
 		expect(body.code).toEqual("1");
@@ -126,7 +126,7 @@ describe("JobController Tests", () => {
 			.set("Cookie", [employer_session_info]);
 		let body = JSON.parse(res.text);
 		expect(res.statusCode).toEqual(200);
-		expect(body.organization).toEqual("Microsoft");
+		expect(body.organization.name).toEqual("Microsoft");
 		expect(body.jobTitle).toEqual("Software Engineer");
 		expect(body.pay).toEqual("$60,000");
 		expect(body.code).toEqual("1");
@@ -179,7 +179,7 @@ describe("JobController Tests", () => {
 		let body = JSON.parse(res.text);
 		job_posting_id = body.id;
 		expect(res.statusCode).toEqual(200);
-		expect(body.organization).toEqual("Happy Plumbers Inc");
+		expect(body.organization.name).toEqual("Happy Plumbers Inc");
 		expect(body.jobTitle).toEqual("Plumber");
 		expect(body.pay).toEqual("$80,000");
 		expect(body.code).toEqual("2");
@@ -196,9 +196,10 @@ describe("JobController Tests", () => {
 			.get("/jobs/jobposting")
 			.query({ id: job_posting_id })
 			.set("Cookie", [employer_session_info]);
+		console.log(res.text);
 		let body = JSON.parse(res.text);
 		expect(res.statusCode).toEqual(200);
-		expect(body.organization).toEqual("Happy Plumbers Inc");
+		expect(body.organization.name).toEqual("Happy Plumbers Inc");
 		expect(body.jobTitle).toEqual("Plumber");
 		expect(body.pay).toEqual("$80,000");
 		expect(body.code).toEqual("2");
@@ -239,7 +240,7 @@ describe("JobController Tests", () => {
 		let body = JSON.parse(res.text);
 		job_posting_id = body.id;
 		expect(res.statusCode).toEqual(200);
-		expect(body.organization).toEqual("Happy Plumbers Inc");
+		expect(body.organization.name).toEqual("Happy Plumbers Inc");
 		expect(body.jobTitle).toEqual("Plumber");
 		expect(body.pay).toEqual("$80,000");
 		expect(body.code).toEqual("2");
@@ -258,7 +259,7 @@ describe("JobController Tests", () => {
 			.set("Cookie", [employer_session_info]);
 		let body = JSON.parse(res.text);
 		expect(res.statusCode).toEqual(200);
-		expect(body.organization).toEqual("Happy Plumbers Inc");
+		expect(body.organization.name).toEqual("Happy Plumbers Inc");
 		expect(body.jobTitle).toEqual("Plumber");
 		expect(body.pay).toEqual("$80,000");
 		expect(body.code).toEqual("2");

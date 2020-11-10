@@ -32,7 +32,7 @@ jobController.getJobPosting = async function (req, res) {
     zipCode: jobPost.zipCode,
     description: jobPost.description,
     qualifications: jobPost.qualifications,
-    organization: jobPost.organization.name,
+    organization: jobPost.organization,
     skills: jobPost.skills,
   };
   res.status(200).send(data);
@@ -67,11 +67,11 @@ jobController.createJobPosting = async function (req, res) {
         id: jobPost._id,
         jobTitle: jobPost.jobTitle,
         pay: jobPost.pay,
-        zipCode: jobPost.zipCode,
         code: jobPost.code,
+        zipCode: jobPost.zipCode,
         description: jobPost.description,
         qualifications: jobPost.qualifications,
-        organization: jobPost.organization.name,
+        organization: jobPost.organization,
         skills: jobPost.skills,
       };
       res.status(200).send(data);
