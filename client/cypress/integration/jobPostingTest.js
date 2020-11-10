@@ -3,8 +3,8 @@ describe("Job Posting", () => {
     // Stub edit profile success response
     cy.server();
     cy.route({
-      method: "POST",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobposting",
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobposting?id=30",
       status: 200,
       response: {
         organization: {
@@ -34,8 +34,8 @@ describe("Job Posting", () => {
     // Stub edit profile success response
     cy.server();
     cy.route({
-      method: "POST",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobposting",
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobposting?id=30",
       status: 400,
       response: "Bad request",
     }).as("jobPostingCall");
