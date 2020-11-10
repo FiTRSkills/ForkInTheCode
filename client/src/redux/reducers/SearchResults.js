@@ -1,12 +1,12 @@
-import { UPDATE_RESULTS } from "../ActionTypes"
+import { UPDATE_RESULTS } from "../ActionTypes";
 
-export const initialState = {results: []};
+export const initialState = { results: [] };
 let searchResults = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_RESULTS:
       return {
         ...state,
-        results: action.payload.content
+        results: action.payload.content,
       };
     default:
       return state;

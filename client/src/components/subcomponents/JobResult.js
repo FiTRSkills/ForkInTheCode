@@ -1,11 +1,10 @@
-import React from 'react';
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import Chip from '@material-ui/core/Chip';
-import ButtonBase from '@material-ui/core/ButtonBase';
+import Chip from "@material-ui/core/Chip";
+import ButtonBase from "@material-ui/core/ButtonBase";
 import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from "react-router-dom";
-
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -13,33 +12,33 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "end",
-    textAlign:"left",
+    textAlign: "left",
     width: "100%",
     border: "1px solid #3f51b5",
     borderRadius: "5px",
     padding: theme.spacing(2),
     "&:hover": {
-      border: '2px solid #3f51b5'
-    }
+      border: "2px solid #3f51b5",
+    },
   },
-  alert:{
-    width:"100%"
+  alert: {
+    width: "100%",
   },
-  Title:{
-    color:"#3f51b5"
+  Title: {
+    color: "#3f51b5",
   },
-  SmallText:{
+  SmallText: {
     fontSize: "20px",
-    marginTop:theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   chip: {
     marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  }
+    marginBottom: theme.spacing(1),
+  },
 }));
-function getSkills(skillsList){
+function getSkills(skillsList) {
   let arr = [];
-  for (let skill of skillsList){
+  for (let skill of skillsList) {
     arr.push(skill["name"]);
   }
   return arr;
@@ -47,41 +46,40 @@ function getSkills(skillsList){
 
 function JobResult(props) {
   const classes = useStyles();
-  const {jobInfo} = props;
+  const { jobInfo } = props;
   const skills = getSkills(jobInfo.skills);
   return (
-
-    <ButtonBase className={classes.paper} component={RouterLink} to={"/JobPost/"+ jobInfo["_id"]}>
-      <Link variant="h4" className={classes.Title} to={"/JobPost/"+ jobInfo["_id"]}>
+    <ButtonBase
+      className={classes.paper}
+      component={RouterLink}
+      to={"/JobPost/" + jobInfo["_id"]}
+    >
+      <Link
+        variant="h4"
+        className={classes.Title}
+        to={"/JobPost/" + jobInfo["_id"]}
+      >
         {jobInfo.jobTitle}
       </Link>
-      <Typography variant="h5">
-        {jobInfo.organization}
-      </Typography>
-      <Typography variant="h6" >
-        ${jobInfo.pay}
-      </Typography>
+      <Typography variant="h5">{jobInfo.organization}</Typography>
+      <Typography variant="h6">${jobInfo.pay}</Typography>
       <Typography variant="h7" className={classes.SmallText}>
         {jobInfo.description}
       </Typography>
-      <Typography variant="h6">
-        Skills:
-      </Typography>
+      <Typography variant="h6">Skills:</Typography>
       <Typography variant="h7" className={classes.SmallText}>
         {skills.map((skill) => {
           return (
-              <Chip
-                color="primary"
-                variant="outlined"
-                label={skill}
-                className={classes.chip}
-              />
+            <Chip
+              color="primary"
+              variant="outlined"
+              label={skill}
+              className={classes.chip}
+            />
           );
         })}
       </Typography>
-
     </ButtonBase>
   );
 }
 export default JobResult;
-

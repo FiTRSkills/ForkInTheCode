@@ -28,7 +28,6 @@ function App() {
           <Route exact component={Profile} path="/Profile" />
         </Switch>
       </div>
-
     </Router>
   );
 }

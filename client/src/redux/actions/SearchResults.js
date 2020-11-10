@@ -1,8 +1,8 @@
-import { UPDATE_RESULTS } from "../ActionTypes"
+import { UPDATE_RESULTS } from "../ActionTypes";
 
-export const updateResults = content => ({
+export const updateResults = (content) => ({
   type: UPDATE_RESULTS,
   payload: {
-    content
-  }
+    content,
+  },
 });
