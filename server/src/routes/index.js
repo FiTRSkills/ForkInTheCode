@@ -232,13 +232,7 @@ router.post(
  * @property {string} id -  the job posting id
  * @returns {string} message - success message
  */
-router.post(
-  "/jobs/jobposting",
-  sessionValidation,
-  [check("id", "Must send a viable ID").not().isEmpty()],
-  inputValidation,
-  job.getJobPosting
-);
+router.get("/jobs/jobposting", sessionValidation, job.getJobPosting);
 
 /**
  * Routing serving retrieving a job posting by id
@@ -253,22 +247,15 @@ router.post(
   sessionValidation,
   [
     check("jobTitle", "Must send a viable job title").not().isEmpty(),
-    check("pay", "Must send a viable pay")
-      .not()
-      .isEmpty()
-      .optional({ nullable: true }),
-    check("code", "Must send a viable code")
-      .not()
-      .isEmpty()
-      .optional({ nullable: true }),
-    ,
+    check("pay", "Must send a viable pay").optional({ nullable: true }),
+    check("code", "Must send a viable code").optional({ nullable: true }),
     check("description", "Must send a viable description").not().isEmpty(),
     check("organization", "Must send a viable organization").not().isEmpty(),
     check("qualifications", "Must send viable qualifications").not().isEmpty(),
     check("skills", "Must send viable skills").not().isEmpty(),
   ],
   inputValidation,
-  job.getJobPosting
+  job.createJobPosting
 );
 
 /**
@@ -284,8 +271,10 @@ router.post(
   "/jobs/search",
   sessionValidation,
   [
-    check("zip_code", "Must send a viable zipcode").not().isEmpty(),
-    check("skills", "Must send a viable skills list").not().isEmpty(),
+    check("zipCode", "Must send a viable zipcode").not().isEmpty(),
+    check("skills", "Must send a viable skills list").optional({
+      nullable: true,
+    }),
   ],
   inputValidation,
   job.searchJobPostings

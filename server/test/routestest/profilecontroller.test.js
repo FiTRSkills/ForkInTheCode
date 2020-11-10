@@ -327,7 +327,7 @@ describe("testing index.js routes", () => {
     expect(res.text).toEqual("Successfully removed skill.");
   });
 
-  it("GET /profile - added skill information", async () => {
+  it("GET /profile - removed skill information", async () => {
     const res = await request.get("/profile").set("Cookie", [session_info]);
     expect(res.statusCode).toEqual(200);
     let body = JSON.parse(res.text);
