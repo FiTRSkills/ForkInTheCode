@@ -7,7 +7,6 @@ const User = require("../models/user");
 
 const userController = {};
 
-
 /**
  * functionality for registration
  * @name doRegister
@@ -16,13 +15,18 @@ const userController = {};
  * @property {request} request - contains username and password
  * @returns {string} response - whether or not registration was completed
  */
-userController.doRegister =  function (req, res) {
-  if (req.body.usertype == 'JobSeekerProfile'){
+userController.doRegister = function (req, res) {
+  if (req.body.usertype == "JobSeekerProfile") {
     User.register(
       new User({ email: req.body.email, type: req.body.usertype }),
       req.body.password,
       function (err, user) {
         if (err) {
+          if (err.name == "UserExistsError") {
+            err.message = "A user with the given email is already registered";
+            res.status(400).send(err);
+            return;
+          }
           res.status(400).send(err);
           return;
         }
@@ -32,13 +36,17 @@ userController.doRegister =  function (req, res) {
         });
       }
     );
-  }
-  else if (req.body.usertype == 'EmployerProfile'){
+  } else if (req.body.usertype == "EmployerProfile") {
     User.register(
       new User({ email: req.body.email, type: req.body.usertype }),
       req.body.password,
       async function (err, user) {
         if (err) {
+          if (err.name == "UserExistsError") {
+            err.message = "A user with the given email is already registered";
+            res.status(400).send(err);
+            return;
+          }
           res.status(400).send(err);
           return;
         }
@@ -49,13 +57,17 @@ userController.doRegister =  function (req, res) {
         });
       }
     );
-  }
-  else if (req.body.usertype == 'EducatorProfile'){
+  } else if (req.body.usertype == "EducatorProfile") {
     User.register(
       new User({ email: req.body.email, type: req.body.usertype }),
       req.body.password,
       async function (err, user) {
         if (err) {
+          if (err.name == "UserExistsError") {
+            err.message = "A user with the given email is already registered";
+            res.status(400).send(err);
+            return;
+          }
           res.status(400).send(err);
           return;
         }
@@ -66,9 +78,8 @@ userController.doRegister =  function (req, res) {
         });
       }
     );
-  }
-  else{
-    res.status(400).send('Invalid usertype');
+  } else {
+    res.status(400).send("Invalid usertype");
   }
 };
 
@@ -82,7 +93,7 @@ userController.doRegister =  function (req, res) {
  */
 userController.doLogin = function (req, res) {
   passport.authenticate("local")(req, res, function () {
-    res.send(req.user);
+    res.send(req.user.type);
   });
 };
 

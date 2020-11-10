@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Organization = require("./organization");
+const Skill = require("./skill");
 
 /**
  * Profile information for job seekers.
@@ -29,6 +30,7 @@ const JobSeekerProfile = new mongoose.Schema({
       organization: {
         type: mongoose.Schema.Types.ObjectId,
         ref: Organization.modelName,
+        autopopulate: true,
       },
     },
   ],
@@ -40,50 +42,62 @@ const JobSeekerProfile = new mongoose.Schema({
       organization: {
         type: mongoose.Schema.Types.ObjectId,
         ref: Organization.modelName,
+        autopopulate: true,
       },
+    },
+  ],
+  skills: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: Skill.modelName,
+      autopopulate: true,
     },
   ],
 });
 
 /**
- * Automatically populates various fields when finding the document so that
- * information can be accessed more directly.
- *
- * @param id The id of the document to search for
- * @returns {Promise<JobSeekerProfile>}
- */
-JobSeekerProfile.statics.findAndPopulateById = function (id) {
-  return this.findById(id)
-    .populate("career.organization")
-    .populate("education.organization")
-    .exec();
-};
-
-/**
- * Adds a new job to the career this job seeker has undergone
+ * Adds a new entry to the careers this job seeker has undergone
  *
  * @returns {Promise<JobSeekerProfile>}
  */
-JobSeekerProfile.methods.addJob = async function (jobTitle, organization) {
+JobSeekerProfile.methods.addCareer = async function (
+  jobTitle,
+  startDate,
+  endDate,
+  organization
+) {
   let org = await Organization.findOneOrCreate(organization);
-  this.career.push({
+  await this.career.push({
     jobTitle: jobTitle,
+    startDate: startDate,
+    endDate: endDate,
     organization: org._id,
   });
   await this.save();
-  return await this.constructor.populate(this, "career.organization");
+  return this;
 };
 
 /**
- * Remove a job from the job seekers career record
+ * Edits a career entry on the profile with the given id.
  *
- * @param index The number of job to remove
+ * @param id The id of the career entry
+ * @param values An object indicating the values that will be set, this should mirror the schema of careers
  * @returns {Promise<JobSeekerProfile>}
  */
-JobSeekerProfile.methods.removeJob = async function (index) {
-  let result = this.career.splice(index, 1);
-  if (result.length === 0)
-    throw new RangeError("Job does not exist at that index");
+JobSeekerProfile.methods.editCareer = async function (id, values) {
+  await this.career.id(id).set(values);
+  await this.save();
+  return this;
+};
+
+/**
+ * Remove an entry from the job seekers career record
+ *
+ * @param id The id of the career to remove
+ * @returns {Promise<JobSeekerProfile>}
+ */
+JobSeekerProfile.methods.removeCareer = async function (id) {
+  await this.career.pull(id);
   await this.save();
   return this;
 };
@@ -100,26 +114,62 @@ JobSeekerProfile.methods.addEducation = async function (
   organization
 ) {
   let org = await Organization.findOneOrCreate(organization);
-  this.education.push({
+  await this.education.push({
     degree: degree,
     major: major,
     gradDate: gradDate,
     organization: org._id,
   });
   await this.save();
-  return await this.constructor.populate(this, "education.organization");
+  return this;
+};
+
+/**
+ * Edits an education entry on the profile with the given id.
+ *
+ * @param id The id of the education entry
+ * @param values An object indicating the values that will be set, this should mirror the schema of educations
+ * @returns {Promise<JobSeekerProfile>}
+ */
+JobSeekerProfile.methods.editEducation = async function (id, values) {
+  await this.education.id(id).set(values);
+  await this.save();
+  return this;
 };
 
 /**
  * Remove a degree from the education list of a job seeker
  *
- * @param index The number of degree to remove
+ * @param id The id of the education to remove
  * @returns {Promise<JobSeekerProfile>}
  */
-JobSeekerProfile.methods.removeEducation = async function (index) {
-  let result = this.education.splice(index, 1);
-  if (result.length === 0)
-    throw new RangeError("Education does not exist at that index");
+JobSeekerProfile.methods.removeEducation = async function (id) {
+  await this.education.pull(id);
+  await this.save();
+  return this;
+};
+
+/**
+ * Adds a new skill to the profile, associating it with a current skill if it exists.
+ *
+ * @param skill The name of the skill to add, if it already exists, that skill will be used.
+ * @returns {Promise<JobSeekerProfile>}
+ */
+JobSeekerProfile.methods.addSkill = async function (skill) {
+  let skillEntry = await Skill.findOneOrCreate(skill);
+  await this.skills.push(skillEntry);
+  await this.save();
+  return this;
+};
+
+/**
+ * Removes a skill from the profile by the given id.  This does not delete the skill from the system.
+ *
+ * @param id The id of the skill to remove from the profile
+ * @returns {Promise<JobSeekerProfile>}
+ */
+JobSeekerProfile.methods.removeSkill = async function (id) {
+  await this.skills.pull(id);
   await this.save();
   return this;
 };
