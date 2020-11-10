@@ -64,7 +64,7 @@ function JobPosting(props) {
    * Change the nav title to Job
    */
   useEffect(() => {
-    props.changeCurrentPage("Job");
+    props.changeCurrentPage("Job Post");
   });
 
   useEffect(() => {
@@ -74,16 +74,8 @@ function JobPosting(props) {
   function loadJobPosting() {
     setLoading(true);
     axios
-      .post(process.env.REACT_APP_SERVER_URL + "/jobposting", {
-        id,
-      })
+      .get(process.env.REACT_APP_SERVER_URL + "/jobposting?id=" + id)
       .then((res) => {
-        // setOrganization(mockedPosting.organization);
-        // setJob(mockedPosting.jobTitle);
-        // setPay(mockedPosting.pay);
-        // setCode(mockedPosting.code);
-        // setDescription(mockedPosting.description);
-        // setQualifications(mockedPosting.qualifications);
         setOrganization(res.data.organization);
         setJob(res.data.jobTitle);
         setPay(res.data.pay);

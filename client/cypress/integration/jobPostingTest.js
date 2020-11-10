@@ -25,7 +25,7 @@ describe("Job Posting", () => {
     }).as("jobPostingCall");
 
     // Verify load job posting success
-    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/Job/30");
+    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobPost/30");
     cy.wait("@jobPostingCall").its("status").should("eq", 200);
     cy.contains("Good coder");
   });
@@ -41,7 +41,7 @@ describe("Job Posting", () => {
     }).as("jobPostingCall");
 
     // Verify load job posting success
-    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/Job/30");
+    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobPost/30");
     cy.wait("@jobPostingCall").its("status").should("eq", 400);
     cy.contains("Bad request");
   });

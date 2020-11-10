@@ -26,7 +26,7 @@ function App() {
           <Redirect exact from="/Sign Up" to="/SignUp" />
           <Route exact component={SignUp} path="/SignUp" />
           <Route exact component={Profile} path="/Profile" />
-          <Route component={JobPosting} path="/Job/:id" />
+          <Route component={JobPosting} path="/JobPost/:id" />
         </Switch>
       </div>
     </Router>
