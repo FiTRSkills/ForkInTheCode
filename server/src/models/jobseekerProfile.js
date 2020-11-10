@@ -85,6 +85,10 @@ JobSeekerProfile.methods.addCareer = async function (
  * @returns {Promise<JobSeekerProfile>}
  */
 JobSeekerProfile.methods.editCareer = async function (id, values) {
+  if (values.organization) {
+    let org = await Organization.findOneOrCreate(values.organization);
+    values.organization = org._id;
+  }
   await this.career.id(id).set(values);
   await this.save();
   return this;
@@ -132,6 +136,10 @@ JobSeekerProfile.methods.addEducation = async function (
  * @returns {Promise<JobSeekerProfile>}
  */
 JobSeekerProfile.methods.editEducation = async function (id, values) {
+  if (values.organization) {
+    let org = await Organization.findOneOrCreate(values.organization);
+    values.organization = org._id;
+  }
   await this.education.id(id).set(values);
   await this.save();
   return this;
