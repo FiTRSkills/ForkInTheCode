@@ -11,15 +11,13 @@
 //
 // -- This is a parent command --
 Cypress.Commands.add("fakeLogin", () => {
-  cy.visit("/Login");
+  cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/Login");
   cy.server();
   cy.route({
     method: "POST",
-    url: "http://localhost:9000/Login",
+    url: Cypress.env("REACT_APP_SERVER_URL") + "/Login",
     status: 200,
-    response: {
-      user: { id: 1 },
-    },
+    response: { type: "JobSeekerProfile" },
   }).as("loginCall");
   cy.get("#email").type("email@email.com");
   cy.get("#password").type("password");
@@ -31,7 +29,7 @@ Cypress.Commands.add("fakeProfile", () => {
   // Stub get profile error response
   cy.route({
     method: "GET",
-    url: "http://localhost:9000/Profile",
+    url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
     status: 200,
     response: {
       firstname: "John",

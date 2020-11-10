@@ -10,19 +10,9 @@ const EmployerProfile = new mongoose.Schema({
   organization: {
     type: mongoose.Schema.Types.ObjectId,
     ref: Organization.modelName,
+    autopopulate: true,
   },
 });
-
-/**
- * Automatically populates various fields when finding the document so that
- * information can be accessed more directly.
- *
- * @param id The id of the document to search for
- * @returns {Promise<EmployerProfile>}
- */
-EmployerProfile.statics.findAndPopulateById = function (id) {
-  return this.findById(id).populate("organization").exec();
-};
 
 /**
  * Sets the organization or creates a new one if the name is not found.

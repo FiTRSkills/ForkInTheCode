@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+mongoose.plugin(require("mongoose-autopopulate"));
 
 module.exports = {
   connectDB: async () => {
@@ -18,6 +19,8 @@ module.exports = {
     );
   },
   disconnectDB: async () => {
+    // Start with a fresh database for every test
+    await mongoose.connection.db.dropDatabase();
     await mongoose.connection.close();
   },
 };
