@@ -61,7 +61,7 @@ function JobResult(props) {
       >
         {jobInfo.jobTitle}
       </Link>
-      <Typography variant="h5">{jobInfo.organization}</Typography>
+      <Typography variant="h5">{jobInfo.organization.name}</Typography>
       <Typography variant="h6">${jobInfo.pay}</Typography>
       <Typography variant="h7" className={classes.SmallText}>
         {jobInfo.description}
