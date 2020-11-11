@@ -34,7 +34,7 @@ function Profile(props) {
    */
   useEffect(() => {
     if (props.user !== undefined && Object.keys(props.user).length === 0) {
-      //props.history.push("/Login");
+      props.history.push("/Login");
     } else {
       props.changeCurrentPage("Profile");
     }
