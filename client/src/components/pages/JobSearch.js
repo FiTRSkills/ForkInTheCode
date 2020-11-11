@@ -13,7 +13,7 @@ function JobSearch(props) {
     props.changeCurrentPage("Job Search");
   });
 
-  function search({ zipcode, skills }) {
+  function search(zipcode, skills) {
     return axios
       .post(
         process.env.REACT_APP_SERVER_URL + "/JobSearch",

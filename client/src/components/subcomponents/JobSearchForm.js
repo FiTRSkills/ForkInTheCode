@@ -42,7 +42,7 @@ function JobSearchForm(props) {
         .then((response) => {
           let arr = [];
           for (let skill of response.data.skills) {
-            arr.push(skill["name"]);
+            arr.push(skill.name);
           }
           setSkills(arr);
         })
@@ -54,7 +54,7 @@ function JobSearchForm(props) {
   }
   function submit(event) {
     setLoading(true);
-    props.apiCall({ zipcode, skills }).finally(() => {
+    props.apiCall(zipcode, skills).finally(() => {
       setLoading(false);
     });
     event.preventDefault();

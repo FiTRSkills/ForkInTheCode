@@ -24,10 +24,10 @@ const useStyles = makeStyles((theme) => ({
   alert: {
     width: "100%",
   },
-  Title: {
+  title: {
     color: "#3f51b5",
   },
-  SmallText: {
+  smalltext: {
     fontSize: "20px",
     marginTop: theme.spacing(1),
   },
@@ -52,22 +52,22 @@ function JobResult(props) {
     <ButtonBase
       className={classes.paper}
       component={RouterLink}
-      to={"/JobPost/" + jobInfo["_id"]}
+      to={"/JobPost/" + jobInfo._id}
     >
       <Link
         variant="h4"
-        className={classes.Title}
-        to={"/JobPost/" + jobInfo["_id"]}
+        className={classes.title}
+        to={"/JobPost/" + jobInfo._id}
       >
         {jobInfo.jobTitle}
       </Link>
       <Typography variant="h5">{jobInfo.organization.name}</Typography>
       <Typography variant="h6">${jobInfo.pay}</Typography>
-      <Typography variant="h7" className={classes.SmallText}>
+      <Typography variant="h7" className={classes.smalltext}>
         {jobInfo.description}
       </Typography>
       <Typography variant="h6">Skills:</Typography>
-      <Typography variant="h7" className={classes.SmallText}>
+      <Typography variant="h7" className={classes.smalltext}>
         {skills.map((skill) => {
           return (
             <Chip
