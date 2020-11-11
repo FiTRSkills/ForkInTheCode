@@ -12,12 +12,30 @@ const JobPosting = new mongoose.Schema({
     ref: Organization.modelName,
     autopopulate: true,
   },
-  jobTitle: String,
-  zipCode: String,
-  pay: String,
-  code: String,
-  description: String,
-  qualifications: String,
+  jobTitle: {
+    type: String,
+    default: "",
+  },
+  zipCode: {
+    type: String,
+    default: "",
+  },
+  pay: {
+    type: String,
+    default: "",
+  },
+  code: {
+    type: String,
+    default: "",
+  },
+  description: {
+    type: String,
+    default: "",
+  },
+  qualifications: {
+    type: String,
+    default: "",
+  },
   skills: [
     {
       type: mongoose.Schema.Types.ObjectId,
