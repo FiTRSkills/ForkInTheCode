@@ -224,7 +224,6 @@ router.post(
 );
 
 /**
-<<<<<<< HEAD
  * Routing serving retrieving a job posting by id
  * @name POST /jobs/jobposting
  * @function

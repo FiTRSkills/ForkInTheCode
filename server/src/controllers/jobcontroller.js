@@ -3,8 +3,7 @@
  */
 const mongoose = require("mongoose");
 const passport = require("passport");
-const jobPosting = require("../models/jobPosting");
-const organization = require("../models/organization");
+const JobPosting = require("../models/jobPosting");
 
 const jobController = {};
 
@@ -17,7 +16,7 @@ const jobController = {};
  * @returns {string} response - the job posting or error if not found
  */
 jobController.getJobPosting = async function (req, res) {
-  let jobPost = await jobPosting.getJobPosting(req.query.id);
+  let jobPost = await JobPosting.getJobPosting(req.query.id);
   if (jobPost == null) {
     res
       .status(400)
@@ -48,7 +47,7 @@ jobController.getJobPosting = async function (req, res) {
  */
 jobController.createJobPosting = async function (req, res) {
   if (req.user.type == "EmployerProfile") {
-    let jobPost = new jobPosting({
+    let jobPost = new JobPosting({
       jobTitle: req.body.jobTitle,
       pay: req.body.pay,
       code: req.body.code,
@@ -90,7 +89,7 @@ jobController.createJobPosting = async function (req, res) {
  * @returns {string} response - the created job posting id
  */
 jobController.searchJobPostings = async function (req, res) {
-  let searchResults = await jobPosting.search({
+  let searchResults = await JobPosting.search({
     zipCode: req.body.zipCode,
     skills: req.body.skills,
   });

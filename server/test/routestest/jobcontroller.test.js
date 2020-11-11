@@ -196,7 +196,6 @@ describe("JobController Tests", () => {
 			.get("/jobs/jobposting")
 			.query({ id: job_posting_id })
 			.set("Cookie", [employer_session_info]);
-		console.log(res.text);
 		let body = JSON.parse(res.text);
 		expect(res.statusCode).toEqual(200);
 		expect(body.organization.name).toEqual("Happy Plumbers Inc");
