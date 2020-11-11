@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 
 function JobSearchForm(props) {
   const [zipcode, setZipcode] = useState("");
-  const [skills, setSkills] = useState(["yo", "weas"]);
+  const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     loadSkills();
