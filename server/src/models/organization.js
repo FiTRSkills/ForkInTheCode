@@ -10,6 +10,12 @@ const Organization = new mongoose.Schema({
     type: String,
     unique: true,
   },
+  location: String,
+  contact: {
+    address: String,
+    email: String,
+    phone: String,
+  },
 });
 
 /**
