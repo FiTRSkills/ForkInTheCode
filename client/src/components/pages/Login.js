@@ -51,8 +51,7 @@ function Login(props) {
         { withCredentials: true }
       )
       .then((response) => {
-        if (response.status === 200) {
-          props.updateUser({ type: userType });
+        if (response.status({ type: response.data });
           props.history.push("/Home");
         } else {
           setErrorMessage(
