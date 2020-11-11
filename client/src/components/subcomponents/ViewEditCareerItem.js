@@ -30,10 +30,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "10px",
     marginBottom: "10px",
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.primary.main,
-  },
   icon: { float: "right", marginTop: "5px" },
 }));
 
@@ -109,7 +105,7 @@ function ViewEditCareerItem({
         setEdit(false);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
         setError(error);
       })
       .finally(() => {

@@ -17,11 +17,6 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
   },
-  avatar: {
-    width: 100,
-    height: 100,
-    margin: theme.spacing(2),
-  },
   form: {
     minWidth: 480,
   },

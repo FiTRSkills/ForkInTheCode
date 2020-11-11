@@ -13,10 +13,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
   submit: {
     margin: theme.spacing(3, 0, 2),
     width: "100%",
@@ -30,13 +26,13 @@ const useStyles = makeStyles((theme) => ({
 function SignUpTabPanel(props) {
   const [errorMessage, setErrorMessage] = useState("");
 
-  function signUp({email, password, organization}) {
+  function signUp({ email, password, organization }) {
     let body = {
       usertype: TAB_TYPES[props.index],
       email,
-      password
-    }
-    if(organization !== ""){
+      password,
+    };
+    if (organization !== "") {
       body.organization = organization;
     }
     return axios
@@ -51,8 +47,8 @@ function SignUpTabPanel(props) {
           setErrorMessage("An error has occurred, please try again.");
         }
         console.error(error);
-      })
-  };
+      });
+  }
 
   const classes = useStyles();
 
@@ -73,7 +69,13 @@ function SignUpTabPanel(props) {
           >
             Sign Up for {props.typeTitle}
           </Typography>
-          <Form apiCall={signUp} buttonTitle="Sign Up" errorMessage={errorMessage} isEmployer={props.index === 1} isEducator={props.index === 2}/>
+          <Form
+            apiCall={signUp}
+            buttonTitle="Sign Up"
+            errorMessage={errorMessage}
+            isEmployer={props.index === 1}
+            isEducator={props.index === 2}
+          />
         </Box>
       )}
     </div>

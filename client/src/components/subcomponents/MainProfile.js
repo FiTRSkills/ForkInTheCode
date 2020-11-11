@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
-import Avatar from "@material-ui/core/Avatar";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -15,11 +14,6 @@ import axios from "axios";
 import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
-  avatar: {
-    width: 100,
-    height: 100,
-    margin: theme.spacing(2),
-  },
   container: {
     minWidth: 680,
   },
@@ -109,7 +103,6 @@ function MainProfile() {
   }
 
   function dobAsString() {
-    console.log(dob);
     if (dob === null) {
       return "";
     }
@@ -163,7 +156,6 @@ function MainProfile() {
 
   return (
     <Box className={classes.container}>
-      <Avatar className={classes.avatar} />
       <Button
         className={classes.icon}
         onClick={toggleEdit}
