@@ -51,7 +51,6 @@ function CareerItemList() {
    */
   const [careers, setCareers] = useState([]);
   const [showAddCareerPopup, setShowAddCareerPopup] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [edit, setEdit] = useState(false);
 
@@ -89,7 +88,6 @@ function CareerItemList() {
 
   function editCareer(editedCareer) {
     return new Promise((resolve, reject) => {
-      setLoading(true);
       axios
         .patch(url, editedCareer, { withCredentials: true })
         .then(() => {
@@ -103,16 +101,12 @@ function CareerItemList() {
           } else {
             reject("An error has occoured while trying to edit a career.");
           }
-        })
-        .finally(() => {
-          setLoading(false);
         });
     });
   }
 
   function deleteCareer(id) {
     return new Promise((resolve, reject) => {
-      setLoading(true);
       axios({
         method: "DELETE",
         url,
@@ -137,7 +131,6 @@ function CareerItemList() {
         })
         .finally(() => {
           updateCareers();
-          setLoading(false);
         });
     });
   }
