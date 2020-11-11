@@ -61,7 +61,7 @@ function MainProfile() {
       .then((response) => {
         setFirstName(response.data.firstname);
         setLastName(response.data.lastname);
-        setDob(response.data.dob);
+        setDob(new Date(response.data.dob));
       })
       .catch((error) => {
         if (
@@ -109,6 +109,10 @@ function MainProfile() {
   }
 
   function dobAsString() {
+    console.log(dob);
+    if (dob === null) {
+      return "";
+    }
     let month = "" + (dob.getMonth() + 1);
     let day = "" + (dob.getDate() + 1);
     let year = dob.getFullYear();
@@ -142,7 +146,7 @@ function MainProfile() {
       })
       .catch((error) => {
         if (error.response.status === 400) {
-          setError(error.response.data);
+          setError(error.response.data.toString());
         } else {
           setError("Failed to save profile");
         }
@@ -160,7 +164,11 @@ function MainProfile() {
   return (
     <Box className={classes.container}>
       <Avatar className={classes.avatar} />
-      <Button className={classes.icon} onClick={toggleEdit}>
+      <Button
+        className={classes.icon}
+        onClick={toggleEdit}
+        id="basicProfileEdit"
+      >
         <EditIcon />
       </Button>
       <Typography className={classes.field} variant={"h5"}>

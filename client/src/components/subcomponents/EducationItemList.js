@@ -111,23 +111,35 @@ function EducationItemList() {
   }
 
   function deleteEducation(id) {
-    setLoading(true);
-    axios({
-      method: "DELETE",
-      url,
-      data: {
-        id,
-      },
-      withCredentials: true,
-    })
-      .catch((error) => {
-        setError(error.response.data.message);
-        console.error(error);
+    return new Promise((resolve, reject) => {
+      setLoading(true);
+      axios({
+        method: "DELETE",
+        url,
+        data: {
+          id,
+        },
+        withCredentials: true,
       })
-      .finally(() => {
-        updateEducation();
-        setLoading(false);
-      });
+        .then(() => resolve())
+        .catch((error) => {
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.message &&
+            error.response.message.length > 0
+          ) {
+            reject(error.response.data.message);
+          } else {
+            reject("An error has occoured while trying to delete a education.");
+          }
+          console.error(error);
+        })
+        .finally(() => {
+          updateEducation();
+          setLoading(false);
+        });
+    });
   }
 
   function toggleEdit() {
@@ -136,7 +148,7 @@ function EducationItemList() {
 
   return (
     <Box className={classes.container}>
-      <Button className={classes.icon} onClick={toggleEdit}>
+      <Button className={classes.icon} onClick={toggleEdit} id="editEducations">
         <EditIcon />
       </Button>
       <Typography className={classes.field} variant={"h5"}>
@@ -146,6 +158,7 @@ function EducationItemList() {
       {education.map((educationItem, index) => (
         <ViewEditEducationItem
           key={index}
+          number={index}
           educationItem={educationItem}
           allowEdit={edit}
           editEducation={editEducation}
@@ -160,13 +173,18 @@ function EducationItemList() {
           setShowAddEducationPopup(true);
         }}
         className={classes.field}
+        id="addEducation"
       >
         Add Education
       </Button>
       {showAddEducationPopup && (
         <Box className={classes.educationPopupOverlay}>
           <Box className={classes.educationPopupContent}>
-            <Button className={classes.closeButton} onClick={closeAddEducation}>
+            <Button
+              className={classes.closeButton}
+              onClick={closeAddEducation}
+              id="closeAddEducation"
+            >
               <CloseIcon />
             </Button>
             <AddEducation

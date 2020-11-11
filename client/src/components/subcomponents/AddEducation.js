@@ -122,7 +122,7 @@ function AddEducation({ closePopup, updateEducation }) {
             variant="outlined"
             margin="normal"
             fullWidth
-            id="degree"
+            id="addEducationDegree"
             name="degree"
             autoFocus
             required
@@ -136,7 +136,7 @@ function AddEducation({ closePopup, updateEducation }) {
             variant="outlined"
             margin="normal"
             fullWidth
-            id="major"
+            id="addEducationMajor"
             name="major"
             required
             value={major}
@@ -154,7 +154,7 @@ function AddEducation({ closePopup, updateEducation }) {
               format="yyyy/MM/dd"
               placeholder="YYYY/MM/DD"
               margin="normal"
-              id="gradDate"
+              id="addEducationGradDate"
               name="gradDate"
               value={gradDate}
               onChange={handleDateChange}
@@ -170,7 +170,7 @@ function AddEducation({ closePopup, updateEducation }) {
             variant="outlined"
             margin="normal"
             fullWidth
-            id="organization"
+            id="addEducationOrganization"
             name="organization"
             required
             value={organization}
@@ -183,7 +183,7 @@ function AddEducation({ closePopup, updateEducation }) {
           variant="contained"
           color="primary"
           className={classes.submit}
-          id="submit"
+          id="addEducationSubmit"
           onClick={submitEducationForm}
         >
           {!loading ? "Save" : "Processing..."}

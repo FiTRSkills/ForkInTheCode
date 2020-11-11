@@ -111,23 +111,35 @@ function CareerItemList() {
   }
 
   function deleteCareer(id) {
-    setLoading(true);
-    axios({
-      method: "DELETE",
-      url,
-      data: {
-        id,
-      },
-      withCredentials: true,
-    })
-      .catch((error) => {
-        setError(error.response.data.message);
-        console.error(error);
+    return new Promise((resolve, reject) => {
+      setLoading(true);
+      axios({
+        method: "DELETE",
+        url,
+        data: {
+          id,
+        },
+        withCredentials: true,
       })
-      .finally(() => {
-        updateCareers();
-        setLoading(false);
-      });
+        .then(() => resolve())
+        .catch((error) => {
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.message &&
+            error.response.message.length > 0
+          ) {
+            reject(error.response.data.message);
+          } else {
+            reject("An error has occoured while trying to delete a career.");
+          }
+          console.error(error);
+        })
+        .finally(() => {
+          updateCareers();
+          setLoading(false);
+        });
+    });
   }
 
   function toggleEdit() {
@@ -136,7 +148,7 @@ function CareerItemList() {
 
   return (
     <Box className={classes.container}>
-      <Button className={classes.icon} onClick={toggleEdit}>
+      <Button className={classes.icon} onClick={toggleEdit} id="editCareers">
         <EditIcon />
       </Button>
       <Typography className={classes.field} variant={"h5"}>
@@ -146,6 +158,7 @@ function CareerItemList() {
       {careers.map((careerItem, index) => (
         <ViewEditCareerItem
           key={index}
+          number={index}
           careerItem={careerItem}
           allowEdit={edit}
           editCareer={editCareer}
@@ -153,6 +166,7 @@ function CareerItemList() {
         />
       ))}
       <Button
+        id="addCareer"
         fullWidth
         variant="outlined"
         color="primary"
@@ -166,7 +180,11 @@ function CareerItemList() {
       {showAddCareerPopup && (
         <Box className={classes.careerPopupOverlay}>
           <Box className={classes.careerPopupContent}>
-            <Button className={classes.closeButton} onClick={closeAddCareer}>
+            <Button
+              className={classes.closeButton}
+              onClick={closeAddCareer}
+              id="closeAddCareer"
+            >
               <CloseIcon />
             </Button>
             <AddCareer

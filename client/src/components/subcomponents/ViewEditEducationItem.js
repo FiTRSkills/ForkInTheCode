@@ -42,6 +42,7 @@ function ViewEditEducationItem({
   allowEdit,
   deleteEducation,
   editEducation,
+  number,
 }) {
   const [degree, setDegree] = useState(educationItem.degree);
   const [major, setMajor] = useState(educationItem.major);
@@ -90,7 +91,6 @@ function ViewEditEducationItem({
       organization,
     })
       .then((response) => {
-        console.log("resolved");
         setError(null);
         setEdit(false);
       })
@@ -100,24 +100,52 @@ function ViewEditEducationItem({
       .finally(setLoading(false));
   }
 
+  function submitDelete() {
+    setLoading(true);
+    deleteEducation(educationItem._id)
+      .then((response) => {
+        setError(null);
+        setEdit(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setError(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
+  function cancelEdit() {
+    setDegree(educationItem.degree);
+    setMajor(educationItem.major);
+    setGradDate(educationItem.gradDate);
+    setOrganization(educationItem.organization.name);
+  }
+
+  function toggleEdit() {
+    if (edit) {
+      cancelEdit();
+    }
+    setEdit(!edit);
+  }
+
   return (
-    <Box className={classes.container}>
+    <Box className={classes.container} id={"education" + number}>
       {edit && allowEdit && (
         <Button
+          name="deleteEducation"
           className={classes.icon}
-          onClick={() => {
-            deleteEducation(educationItem._id);
-          }}
+          onClick={submitDelete}
         >
           <CloseIcon />
         </Button>
       )}
       {allowEdit && (
         <Button
+          name="editEducation"
           className={classes.icon}
-          onClick={() => {
-            setEdit(true);
-          }}
+          onClick={toggleEdit}
         >
           <EditIcon />
         </Button>
@@ -191,6 +219,7 @@ function ViewEditEducationItem({
           color="primary"
           fullWidth
           onClick={submitEdit}
+          name="updateEducation"
         >
           {loading ? "Processing..." : "Update Education"}
         </Button>

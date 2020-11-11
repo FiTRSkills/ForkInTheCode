@@ -7,7 +7,7 @@ describe("Authentication", () => {
       method: "POST",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/Login",
       status: 200,
-      response: { type: "JobSeekerProfile" },
+      response: "JobSeekerProfile",
     }).as("loginCall");
     cy.get("#email").type("email@email.com");
     cy.get("#password").type("password");

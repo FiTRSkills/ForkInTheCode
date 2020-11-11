@@ -123,7 +123,7 @@ function AddCareer({ closePopup, updateCareer }) {
             variant="outlined"
             margin="normal"
             fullWidth
-            id="jobTitle"
+            id="addCareerJobTitle"
             name="jobTitle"
             autoFocus
             required
@@ -142,7 +142,7 @@ function AddCareer({ closePopup, updateCareer }) {
               format="yyyy/MM/dd"
               placeholder="YYYY/MM/DD"
               margin="normal"
-              id="startDate"
+              id="addCareerStartDate"
               name="startDate"
               value={startDate}
               onChange={handleStartDateChange}
@@ -163,7 +163,7 @@ function AddCareer({ closePopup, updateCareer }) {
               format="yyyy/MM/dd"
               placeholder="YYYY/MM/DD"
               margin="normal"
-              id="endDate"
+              id="addCareerEndDate"
               name="endDate"
               value={endDate}
               onChange={handleEndDateChange}
@@ -179,7 +179,7 @@ function AddCareer({ closePopup, updateCareer }) {
             variant="outlined"
             margin="normal"
             fullWidth
-            id="organization"
+            id="addCareerOrganization"
             name="organization"
             required
             value={organization}
@@ -192,7 +192,7 @@ function AddCareer({ closePopup, updateCareer }) {
           variant="contained"
           color="primary"
           className={classes.submit}
-          id="submit"
+          id="addCareerSubmit"
           onClick={submitCareerForm}
         >
           {!loading ? "Save" : "Processing..."}

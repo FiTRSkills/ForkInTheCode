@@ -42,6 +42,7 @@ function ViewEditCareerItem({
   allowEdit,
   deleteCareer,
   editCareer,
+  number,
 }) {
   const [jobTitle, setJobTitle] = useState(careerItem.jobTitle);
   const [startDate, setStartDate] = useState(careerItem.startDate);
@@ -91,7 +92,6 @@ function ViewEditCareerItem({
       organization,
     })
       .then((response) => {
-        console.log("resolved");
         setError(null);
         setEdit(false);
       })
@@ -101,25 +101,49 @@ function ViewEditCareerItem({
       .finally(setLoading(false));
   }
 
+  function submitDelete() {
+    setLoading(true);
+    deleteCareer(careerItem._id)
+      .then((response) => {
+        setError(null);
+        setEdit(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setError(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
+  function cancelEdit() {
+    setJobTitle(careerItem.jobTitle);
+    setStartDate(careerItem.startDate);
+    setEndDate(careerItem.endDate);
+    setOrganization(careerItem.organization.name);
+  }
+
+  function toggleEdit() {
+    if (edit) {
+      cancelEdit();
+    }
+    setEdit(!edit);
+  }
+
   return (
-    <Box className={classes.container}>
+    <Box key={number} className={classes.container} id={"career" + number}>
       {edit && allowEdit && (
         <Button
+          name="deleteCareer"
           className={classes.icon}
-          onClick={() => {
-            deleteCareer(careerItem._id);
-          }}
+          onClick={submitDelete}
         >
           <CloseIcon />
         </Button>
       )}
       {allowEdit && (
-        <Button
-          className={classes.icon}
-          onClick={() => {
-            setEdit(true);
-          }}
-        >
+        <Button name="editCareer" className={classes.icon} onClick={toggleEdit}>
           <EditIcon />
         </Button>
       )}
@@ -201,6 +225,7 @@ function ViewEditCareerItem({
           color="primary"
           fullWidth
           onClick={submitEdit}
+          name="updateCareer"
         >
           {loading ? "Processing..." : "Update Career"}
         </Button>
