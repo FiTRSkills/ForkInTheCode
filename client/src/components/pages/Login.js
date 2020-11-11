@@ -51,8 +51,9 @@ function Login(props) {
         { withCredentials: true }
       )
       .then((response) => {
-        if (response.status({ type: response.data });
+        if (response.status({ type: response.data }){
           props.history.push("/Home");
+        }
         } else {
           setErrorMessage(
             "Your Email and/or Password was incorrect, please try again."
