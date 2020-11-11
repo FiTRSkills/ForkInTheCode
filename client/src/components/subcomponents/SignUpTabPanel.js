@@ -36,7 +36,9 @@ function SignUpTabPanel(props) {
       body.organization = organization;
     }
     return axios
-      .post(process.env.REACT_APP_SERVER_URL + "/register", body)
+      .post(process.env.REACT_APP_SERVER_URL + "/register", body, {
+        withCredentials: true,
+      })
       .then(() => {
         props.history.push("/Login");
       })
