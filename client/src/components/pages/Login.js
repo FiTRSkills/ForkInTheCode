@@ -52,7 +52,7 @@ function Login(props) {
       )
       .then((response) => {
         if (response.status === 200) {
-          props.updateUser({ email: response.data });
+          props.updateUser({ type: userType });
           props.history.push("/Home");
         } else {
           setErrorMessage(
