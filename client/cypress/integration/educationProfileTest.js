@@ -33,7 +33,7 @@ describe("Load profile educations", () => {
     cy.get("#Profile").click();
     cy.wait("@profileCall");
     cy.get("#editEducations").click();
-    cy.wait("@profileCall");
+    cy.wait(150);
     cy.get("#education0 [name='editEducation']").click();
     cy.get("#education0 [name='degree']").type("{selectall}{backspace}BS CS");
     cy.get("#education0 [name='major']").type("{selectall}{backspace}CS");
@@ -85,6 +85,7 @@ describe("Load profile educations", () => {
     cy.get("#Profile").click();
     cy.wait("@profileCall");
     cy.get("#editEducations").click();
+    cy.wait(150);
     cy.get("#education0 [name='editEducation']").click();
     cy.get("#education0 [name='degree']").type(
       "{selectall}{backspace}designer"
@@ -174,6 +175,7 @@ describe("Load profile educations", () => {
     }).as("deleteProfileCall");
     cy.wait("@profileCall");
     cy.get("#editEducations").click();
+    cy.wait(150);
     cy.get("#education0 [name='editEducation']").click();
     cy.route({
       method: "GET",
@@ -199,7 +201,7 @@ describe("Load profile educations", () => {
     }).as("deleteProfileCall");
     cy.wait("@profileCall");
     cy.get("#editEducations").click();
-    cy.wait("@profileCall");
+    cy.wait(150);
     cy.get("#education0 [name='editEducation']").click();
     cy.get("#education0 [name='deleteEducation']").click();
     cy.wait("@deleteProfileCall");
@@ -227,7 +229,7 @@ describe("Load profile educations", () => {
     cy.get("#Profile").click();
     cy.wait("@profileCall");
     cy.get("#editEducations").click();
-    cy.wait("@profileCall");
+    cy.wait(150);
     cy.get("#education0 [name='editEducation']").click();
     cy.get("#education0 [name='degree']").type(
       "{selectall}{backspace}designer"
@@ -252,12 +254,12 @@ describe("Load profile educations", () => {
     cy.get("#Profile").click();
     cy.wait("@profileCall");
     cy.get("#editEducations").click();
-    cy.wait("@profileCall");
+    cy.wait(150);
     cy.get("#education0 [name='editEducation']").click();
     cy.get("#editEducations").click();
-    cy.wait("@profileCall");
+    cy.wait(150);
     cy.get("#editEducations").click();
-    cy.wait("@profileCall");
+    cy.wait(150);
     cy.get("#education0 [name='degree']").should("be.disabled");
   });
 });

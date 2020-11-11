@@ -33,7 +33,7 @@ describe("Load profile careers", () => {
     cy.get("#Profile").click();
     cy.wait("@profileCall");
     cy.get("#editCareers").click();
-    cy.wait("@profileCall");
+    cy.wait(150);
     cy.get("#career0 [name='editCareer']").click();
     cy.get("#career0 [name='jobTitle']").type("{selectall}{backspace}designer");
     cy.get("#career0 [name='organization']").type(
@@ -79,6 +79,7 @@ describe("Load profile careers", () => {
     cy.get("#Profile").click();
     cy.wait("@profileCall");
     cy.get("#editCareers").click();
+    cy.wait(150);
     cy.get("#career0 [name='editCareer']").click();
     cy.get("#career0 [name='jobTitle']").type("{selectall}{backspace}designer");
     cy.get("#career0 [name='organization']").type(
@@ -189,7 +190,7 @@ describe("Load profile careers", () => {
     }).as("deleteProfileCall");
     cy.wait("@profileCall");
     cy.get("#editCareers").click();
-    cy.wait("@profileCall");
+    cy.wait(150);
     cy.get("#career0 [name='editCareer']").click();
     cy.get("#career0 [name='deleteCareer']").click();
     cy.wait("@deleteProfileCall");
@@ -215,7 +216,7 @@ describe("Load profile careers", () => {
     cy.get("#Profile").click();
     cy.wait("@profileCall");
     cy.get("#editCareers").click();
-    cy.wait("@profileCall");
+    cy.wait(150);
     cy.get("#career0 [name='editCareer']").click();
     cy.get("#career0 [name='jobTitle']").type("{selectall}{backspace}designer");
     cy.get("#career0 [name='organization']").type(
@@ -235,12 +236,12 @@ describe("Load profile careers", () => {
     cy.get("#Profile").click();
     cy.wait("@profileCall");
     cy.get("#editCareers").click();
-    cy.wait("@profileCall");
+    cy.wait(150);
     cy.get("#career0 [name='editCareer']").click();
     cy.get("#editCareers").click();
-    cy.wait("@profileCall");
+    cy.wait(150);
     cy.get("#editCareers").click();
-    cy.wait("@profileCall");
+    cy.wait(150);
     cy.get("#career0 [name='jobTitle']").should("be.disabled");
   });
 });
