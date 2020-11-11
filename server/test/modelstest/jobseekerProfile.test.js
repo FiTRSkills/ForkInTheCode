@@ -166,13 +166,15 @@ describe("EducatorProfile Model Test", () => {
       degree: "Degree2",
       major: "Major2",
       gradDate: "01/01/2021",
+      organization: "Org 2",
     });
+    let org = await Organization.findById(education.organization).exec();
 
     expect(savedProfile.education.length).toEqual(1);
     expect(education.degree).toEqual("Degree2");
     expect(education.major).toEqual("Major2");
     expect(education.gradDate).toEqual(new Date("01/01/2021"));
-    expect(education.organization.name).toEqual("Org 1");
+    expect(org.name).toEqual("Org 2");
   });
 
   it("remove education - existing education", async () => {
@@ -263,7 +265,7 @@ describe("EducatorProfile Model Test", () => {
     expect(career.organization.name).toEqual("Org 1");
   });
 
-  it("edit carrer - invalid data", async () => {
+  it("edit career - invalid data", async () => {
     let profile = new JobSeekerProfile();
     await profile.addCareer("Worker", "01/01/2020", "01/01/2021", "Org 1");
 
@@ -279,7 +281,7 @@ describe("EducatorProfile Model Test", () => {
     expect(career.organization.name).toEqual("Org 1");
   });
 
-  it("edit carrer - valid data", async () => {
+  it("edit career - valid data", async () => {
     let profile = new JobSeekerProfile();
     await profile.addCareer("Worker", "01/01/2020", "01/01/2021", "Org 1");
 
@@ -289,13 +291,14 @@ describe("EducatorProfile Model Test", () => {
       jobTitle: "Worker2",
       startDate: "02/02/2020",
       endDate: "02/02/2021",
+      organization: "Org 2",
     });
+    let org = await Organization.findById(career.organization).exec();
 
     expect(savedProfile.career.length).toEqual(1);
     expect(career.jobTitle).toEqual("Worker2");
     expect(career.startDate).toEqual(new Date("02/02/2020"));
-    expect(career.endDate).toEqual(new Date("02/02/2021"));
-    expect(career.organization.name).toEqual("Org 1");
+    expect(org.name).toEqual("Org 2");
   });
 
   it("remove career - existing career", async () => {
