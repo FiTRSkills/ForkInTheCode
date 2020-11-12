@@ -4,7 +4,7 @@ describe("Job Posting", () => {
     cy.server();
     cy.route({
       method: "GET",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobposting?id=30",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobs/jobposting?id=30",
       status: 200,
       response: {
         organization: {
@@ -35,7 +35,7 @@ describe("Job Posting", () => {
     cy.server();
     cy.route({
       method: "GET",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobposting?id=30",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobs/jobposting?id=30",
       status: 400,
       response: "Bad request",
     }).as("jobPostingCall");

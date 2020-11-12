@@ -12,31 +12,6 @@ import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Alert } from "@material-ui/lab";
 
-const mockedPosting = {
-  organization: {
-    name: "Amazon",
-    location: "USA",
-    contact: {
-      address: "Silicon Valley",
-      email: "amazon@gmail.com",
-      phone: "0111222333",
-    },
-  },
-  jobTitle: "Software Engineer",
-  pay: "$12000",
-  code: 14623,
-  description:
-    "The IT Division is responsible for the planning, development and management of the IT systems and subsystems that support DC Superior Court case flow, office automation, special programs and management operations. The incumbent will serve as the specialist in planning, analyzing, designing, developing, and implementing software applications, primarily in the areas of custom system development, database development, web development, and systems integration and interfacing.",
-  qualifications:
-    "This position is open until filled and resumes will be reviewed every two weeks. The first batch of applicants will be reviewed on August 27, 2019.",
-  skills: [{ name: "Java" }, { name: "Python" }, { name: "SQL" }],
-};
-
-const mockedClasses = [
-  { college: "RIT", skills: [{ name: "Python" }, { name: "SQL" }] },
-  { college: "U of R", skills: [{ name: "Java" }, { name: "Ruby" }] },
-];
-
 const useStyles = makeStyles((theme) => ({
   jobHeader: {
     display: "flex",
@@ -64,6 +39,9 @@ function JobPosting(props) {
    * Change the nav title to Job
    */
   useEffect(() => {
+    if (props.user === undefined || Object.keys(props.user).length === 0) {
+      props.history.push("/Login");
+    }
     props.changeCurrentPage("Job Post");
   });
 
@@ -74,7 +52,7 @@ function JobPosting(props) {
   function loadJobPosting() {
     setLoading(true);
     axios
-      .get(process.env.REACT_APP_SERVER_URL + "/jobposting?id=" + id)
+      .get(process.env.REACT_APP_SERVER_URL + "/jobs/jobposting?id=" + id)
       .then((res) => {
         setOrganization(res.data.organization);
         setJob(res.data.jobTitle);
@@ -109,7 +87,7 @@ function JobPosting(props) {
           <Box className={classes.jobHeader}>
             <Typography variant={"h4"}>{jobTitle}</Typography>
             <Button name={"applyJob"} variant="contained" color="primary">
-              Apply Job
+              Apply For Job
             </Button>
           </Box>
           <JobPostingInfoItem
