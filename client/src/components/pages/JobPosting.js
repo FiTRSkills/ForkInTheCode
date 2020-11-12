@@ -33,7 +33,6 @@ function JobPosting(props) {
   const [description, setDescription] = useState("");
   const [qualifications, setQualifications] = useState("");
   const [organization, setOrganization] = useState({});
-  const [code, setCode] = useState("");
 
   /**
    * Change the nav title to Job
@@ -46,41 +45,36 @@ function JobPosting(props) {
    * Load the job posting on init
    */
   useEffect(() => {
+    function loadJobPosting() {
+      setLoading(true);
+      axios
+        .get(process.env.REACT_APP_SERVER_URL + "/jobs/jobposting?id=" + id, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          setOrganization(res.data.organization);
+          setJob(res.data.jobTitle);
+          setPay(res.data.pay);
+          setDescription(res.data.description);
+          setQualifications(res.data.qualifications);
+        })
+        .catch((error) => {
+          if (error.response) {
+            if (error.response.status === 400) {
+              setError(error.response.data);
+            } else if (error.response.status === 404) {
+              setError("Not found");
+            }
+          } else {
+            setError("Failed to load profile");
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
     loadJobPosting();
   }, []);
-
-  /**
-   * Load the job posting
-   */
-  function loadJobPosting() {
-    setLoading(true);
-    axios
-      .get(process.env.REACT_APP_SERVER_URL + "/jobs/jobposting?id=" + id, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        setOrganization(res.data.organization);
-        setJob(res.data.jobTitle);
-        setPay(res.data.pay);
-        setCode(res.data.code);
-        setDescription(res.data.description);
-        setQualifications(res.data.qualifications);
-      })
-      .catch((error) => {
-        if (error.response) {
-          if (error.response.status === 400) {
-            setError(error.response.data);
-          } else if (error.response.status === 404) {
-            setError("Not found");
-          }
-        } else {
-          setError("Failed to load profile");
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }
 
   const classes = useStyles();
 
