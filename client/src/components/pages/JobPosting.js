@@ -39,20 +39,25 @@ function JobPosting(props) {
    * Change the nav title to Job
    */
   useEffect(() => {
-    if (props.user === undefined || Object.keys(props.user).length === 0) {
-      props.history.push("/Login");
-    }
     props.changeCurrentPage("Job Post");
   });
 
+  /**
+   * Load the job posting on init
+   */
   useEffect(() => {
     loadJobPosting();
   }, []);
 
+  /**
+   * Load the job posting
+   */
   function loadJobPosting() {
     setLoading(true);
     axios
-      .get(process.env.REACT_APP_SERVER_URL + "/jobs/jobposting?id=" + id)
+      .get(process.env.REACT_APP_SERVER_URL + "/jobs/jobposting?id=" + id, {
+        withCredentials: true,
+      })
       .then((res) => {
         setOrganization(res.data.organization);
         setJob(res.data.jobTitle);
@@ -62,10 +67,12 @@ function JobPosting(props) {
         setQualifications(res.data.qualifications);
       })
       .catch((error) => {
-        if (error.response.status === 400) {
-          setError(error.response.data);
-        } else if (error.response.status === 404) {
-          setError("Not found");
+        if (error.response) {
+          if (error.response.status === 400) {
+            setError(error.response.data);
+          } else if (error.response.status === 404) {
+            setError("Not found");
+          }
         } else {
           setError("Failed to load profile");
         }
