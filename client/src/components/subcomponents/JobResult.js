@@ -35,7 +35,12 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
-}));
+  boldText:{
+    fontSize: "1.25rem",
+    fontWeight: 500,
+    lineHeight: 1.6,
+    letterSpacing: "0.0075rem"
+}}));
 
 function JobResult(props) {
   const classes = useStyles();
@@ -54,12 +59,12 @@ function JobResult(props) {
         {jobInfo.jobTitle}
       </Link>
       <Typography variant="h5">{jobInfo.organization.name}</Typography>
-      <Typography variant="h6">${jobInfo.pay}</Typography>
-      <Typography variant="h7" className={classes.smalltext}>
+      <Typography className = {classes.boldText}>${jobInfo.pay}</Typography>
+      <Typography  className={classes.smalltext}>
         {jobInfo.description}
       </Typography>
-      <Typography variant="h6">Skills:</Typography>
-      <Typography variant="h7" className={classes.smalltext}>
+      <Typography className = {classes.boldText}>Skills:</Typography>
+      <Typography className={classes.smalltext}>
         {jobInfo.skills.map((skill) => {
           return (
             <Chip
