@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ChipsArray(props) {
+function AddSkills(props) {
   const { skills, setSkills } = props;
   const classes = useStyles();
   const [chipData, setChipData] = React.useState(skills);
@@ -97,3 +97,4 @@ export default function ChipsArray(props) {
     </Box>
   );
 }
+export default AddSkills;
