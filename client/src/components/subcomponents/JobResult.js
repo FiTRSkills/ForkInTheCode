@@ -41,9 +41,8 @@ const useStyles = makeStyles((theme) => ({
     letterSpacing: "0.0075rem"
 }}));
 
-function JobResult(props) {
+function JobResult({ jobInfo }) {
   const classes = useStyles();
-  const { jobInfo } = props;
   return (
     <ButtonBase //Makes the whole div clickable
       className={classes.paper}
@@ -64,18 +63,6 @@ function JobResult(props) {
       </Typography>
       <Typography className = {classes.boldText}>Skills:</Typography>
       <Skills skills = {jobInfo.skills.map(skill =>skill.name)} editMode = {false}/>
-      {/*<Typography className={classes.smalltext}>*/}
-        {/*{jobInfo.skills.map((skill) => {*/}
-          {/*return (*/}
-            {/*<Chip*/}
-              {/*color="primary"*/}
-              {/*variant="outlined"*/}
-              {/*label={skill.name}*/}
-              {/*className={classes.chip}*/}
-            {/*/>*/}
-          {/*);*/}
-        {/*})}*/}
-      {/*</Typography>*/}
     </ButtonBase>
   );
 }
