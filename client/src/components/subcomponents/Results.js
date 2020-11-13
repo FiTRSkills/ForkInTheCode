@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import JobResult from "../subcomponents/JobResult";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -21,16 +22,17 @@ function Results(props) {
   const classes = useStyles();
   const { results } = props;
   return (
-    <div className={classes.paper} id="results">
+    <Box className={classes.paper} id="results">
       <Typography component="h1" variant="h5">
         Results
       </Typography>
       {results.map((jobInfo) => {
         return <JobResult jobInfo={jobInfo} />;
       })}
-    </div>
+    </Box>
   );
 }
+
 const mapStateToProps = (state) => {
   return {
     results: state.searchResults.results,

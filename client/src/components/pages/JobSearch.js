@@ -13,7 +13,6 @@ function JobSearch(props) {
     props.changeCurrentPage("Job Search");
   });
 
-
   function search(zipcode, skills) {
     return axios
       .post(

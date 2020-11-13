@@ -36,20 +36,12 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
 }));
-function getSkills(skillsList) {
-  let arr = [];
-  for (let skill of skillsList) {
-    arr.push(skill["name"]);
-  }
-  return arr;
-}
 
 function JobResult(props) {
   const classes = useStyles();
   const { jobInfo } = props;
-  const skills = getSkills(jobInfo.skills);
   return (
-    <ButtonBase
+    <ButtonBase //Makes the whole div clickable
       className={classes.paper}
       component={RouterLink}
       to={"/JobPost/" + jobInfo._id}
@@ -68,12 +60,12 @@ function JobResult(props) {
       </Typography>
       <Typography variant="h6">Skills:</Typography>
       <Typography variant="h7" className={classes.smalltext}>
-        {skills.map((skill) => {
+        {jobInfo.skills.map((skill) => {
           return (
             <Chip
               color="primary"
               variant="outlined"
-              label={skill}
+              label={skill.name}
               className={classes.chip}
             />
           );

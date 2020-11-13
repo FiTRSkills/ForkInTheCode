@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Chip from "@material-ui/core/Chip";
+import Box from "@material-ui/core/Box";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -57,9 +58,9 @@ export default function ChipsArray(props) {
   };
 
   return (
-    <div>
+    <Box>
       {errorMessage !== "" && <Alert severity="error">{errorMessage}</Alert>}
-      <div className={classes.root} id="skillList">
+      <Box className={classes.root} id="skillList">
         {chipData.map((skill, index) => {
           return (
             <li key={index}>
@@ -73,7 +74,7 @@ export default function ChipsArray(props) {
             </li>
           );
         })}
-      </div>
+      </Box>
       <Autocomplete
         value={currentSkill}
         freeSolo
@@ -93,6 +94,6 @@ export default function ChipsArray(props) {
       <Button onClick={addSkill} variant="outlined" color="primary" fullWidth id="addSkill">
         Add Skill
       </Button>
-    </div>
+    </Box>
   );
 }

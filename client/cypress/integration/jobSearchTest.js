@@ -6,7 +6,7 @@ describe("Job Search", () => {
     cy.get("#addSkill").click();
     cy.get("#skillList").should("contain", "developer");
   });
-  it("Add Skill already exists- FAILURE", () => {
+  it("Add Duplicate Skill- FAILURE", () => {
     cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
     cy.get("#navBarTitle").should("contain", "Job Search");
     cy.get("#skillInput").type("developer");
@@ -16,7 +16,7 @@ describe("Job Search", () => {
     cy.get("#skillList").should("not.have.value", "developer");
   });
 
-  it("Job Search No Skill Added Not Logged In- SUCCESS", () => {
+  it("Job Results Returned- SUCCESS", () => {
     cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
     cy.server();
     cy.route({
@@ -43,7 +43,7 @@ describe("Job Search", () => {
     cy.contains("Networking");
     cy.contains("Apple");
   });
-  it("Job Search No Skill Added Not Logged In (no results)- FAILURE", () => {
+  it("0 Results returned - SUCCESS", () => {
     cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
     cy.server();
     cy.route({
@@ -58,7 +58,7 @@ describe("Job Search", () => {
     cy.wait("@submitSearch").its("status").should("eq", 200);
     cy.contains("No Results");
   });
-  it("Job Search No Skill Added Not Logged In (no server failure)- FAILURE", () => {
+  it("Job Results 401- FAILURE", () => {
     cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
     cy.server();
     cy.route({
@@ -73,25 +73,20 @@ describe("Job Search", () => {
     cy.wait("@submitSearch").its("status").should("eq", 401);
     cy.contains("Please Try Again");
   });
-  it("Job Search No Skill Added No Zipcode- FAILURE", () => {
+  it("Attempt Job Search No Zipcode- FAILURE", () => {
     cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
     cy.server();
     cy.get("#navBarTitle").should("contain", "Job Search");
     cy.get("#submit").click();
     cy.should("not.have.value", "results");
   });
-  it("Job Search Get Skills Logged In- SUCCESS", () => {
+  it("Retrieve Profile Skills- SUCCESS", () => {
     cy.server();
     cy.route({
       method: "GET",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
       status: 200,
       response:{
-        firstname: "John",
-        lastname: "Appleseed",
-        dob: "1998-01-05",
-        education: [],
-        career: [],
         skills: [{"name": "dev"},{"name": "hardware"}]}
     }).as("getProfileSkills");
     cy.fakeLogin();
@@ -100,26 +95,20 @@ describe("Job Search", () => {
     cy.contains("hardware");
     cy.contains("dev");
   });
-  it("Job Search Get Skills Logged In- FAILURE", () => {
+  it("Retrieve Profile Skills 401- FAILURE", () => {
     cy.server();
     cy.route({
       method: "GET",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
       status: 401,
-      response:{
-        firstname: "John",
-        lastname: "Appleseed",
-        dob: "1998-01-05",
-        education: [],
-        career: [],
-        skills: [{"name": "dev"},{"name": "hardware"}]}
+      response:[]
     }).as("getProfileSkills");
     cy.fakeLogin();
     cy.get("#navBarTitle").should("contain", "Job Search");
     cy.wait("@getProfileSkills").its("status").should("eq", 401);
     cy.get("#skillInput").should("not.have.value", "dev");
   });
-  it("Job Search Click Posting Logged In - SUCCESS", () => {
+  it("Click Job Posting - SUCCESS", () => {
     cy.server();
     cy.route({
       method: "POST",
@@ -141,11 +130,6 @@ describe("Job Search", () => {
       url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
       status: 200,
       response:{
-        firstname: "John",
-        lastname: "Appleseed",
-        dob: "1998-01-05",
-        education: [],
-        career: [],
         skills: [{"name": "dev"},{"name": "hardware"}]}
     }).as("getProfileSkills");
     cy.fakeLogin();

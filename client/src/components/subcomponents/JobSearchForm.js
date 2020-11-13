@@ -7,6 +7,8 @@ import { connect } from "react-redux";
 import Typography from "@material-ui/core/Typography";
 import AddSkills from "./AddSkills";
 import axios from "axios";
+import Box from "@material-ui/core/Box";
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(4),
@@ -36,15 +38,13 @@ function JobSearchForm(props) {
       if (props.user !== undefined && Object.keys(props.user).length > 0) {
         setLoading(true);
         axios
-          .get(process.env.REACT_APP_SERVER_URL + "/Profile", {withCredentials: true})
+          .get(process.env.REACT_APP_SERVER_URL + "/Profile", {
+            withCredentials: true,
+          })
           .then((response) => {
             console.log(response);
             if (response.status === 200) {
-              let arr = [];
-              for (let skill of response.data.skills) {
-                arr.push(skill.name);
-              }
-              setSkills(arr);
+              setSkills(response.data.skills.map((skill) => skill.name));
             }
           })
           .catch((error) => {
@@ -55,7 +55,6 @@ function JobSearchForm(props) {
     }
     loadSkills();
   }, [props.user]);
-
 
   function submit(event) {
     setLoading(true);
@@ -70,9 +69,6 @@ function JobSearchForm(props) {
       case "zipcode":
         setZipcode(event.target.value);
         break;
-      case "skills":
-        setSkills(event.target.value);
-        break;
       default:
         break;
     }
@@ -81,7 +77,7 @@ function JobSearchForm(props) {
   const classes = useStyles();
 
   return (
-    <div className={classes.paper}>
+    <Box className={classes.paper}>
       <Typography component="h1" variant="h5">
         Job Search
       </Typography>
@@ -114,11 +110,10 @@ function JobSearchForm(props) {
           id="submit"
           disabled={loading}
         >
-          {loading && "Processing..."}
-          {!loading && "Search"}
+          {loading ? "Processing..." : "Search"}
         </Button>
       </form>
-    </div>
+    </Box>
   );
 }
 const mapStateToProps = (state) => {
