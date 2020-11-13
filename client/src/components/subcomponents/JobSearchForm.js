@@ -64,16 +64,6 @@ function JobSearchForm(props) {
     event.preventDefault();
   }
 
-  function handleChange(event) {
-    switch (event.target.name) {
-      case "zipcode":
-        setZipcode(event.target.value);
-        break;
-      default:
-        break;
-    }
-  }
-
   const classes = useStyles();
 
   return (
@@ -97,7 +87,7 @@ function JobSearchForm(props) {
           autoComplete="zipcode"
           autoFocus
           value={zipcode}
-          onChange={handleChange}
+          onChange={(event) => setZipcode(event.target.value)}
         />
         <Typography variant="h6">Skills</Typography>
         <Skills skills={skills} setSkills={setSkills} editMode = {true} />
