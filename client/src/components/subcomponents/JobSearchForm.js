@@ -5,7 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import Alert from "@material-ui/lab/Alert";
 import { connect } from "react-redux";
 import Typography from "@material-ui/core/Typography";
-import AddSkills from "./AddSkills";
+import Skills from "./Skills";
 import axios from "axios";
 import Box from "@material-ui/core/Box";
 
@@ -100,7 +100,7 @@ function JobSearchForm(props) {
           onChange={handleChange}
         />
         <Typography variant="h6">Skills</Typography>
-        <AddSkills skills={skills} setSkills={setSkills} />
+        <Skills skills={skills} setSkills={setSkills} editMode = {true} />
         <Button
           type="submit"
           fullWidth

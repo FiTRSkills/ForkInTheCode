@@ -1,11 +1,10 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import Chip from "@material-ui/core/Chip";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from "react-router-dom";
-
+import Skills from "../subcomponents/Skills";
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(4),
@@ -64,18 +63,19 @@ function JobResult(props) {
         {jobInfo.description}
       </Typography>
       <Typography className = {classes.boldText}>Skills:</Typography>
-      <Typography className={classes.smalltext}>
-        {jobInfo.skills.map((skill) => {
-          return (
-            <Chip
-              color="primary"
-              variant="outlined"
-              label={skill.name}
-              className={classes.chip}
-            />
-          );
-        })}
-      </Typography>
+      <Skills skills = {jobInfo.skills.map(skill =>skill.name)} editMode = {false}/>
+      {/*<Typography className={classes.smalltext}>*/}
+        {/*{jobInfo.skills.map((skill) => {*/}
+          {/*return (*/}
+            {/*<Chip*/}
+              {/*color="primary"*/}
+              {/*variant="outlined"*/}
+              {/*label={skill.name}*/}
+              {/*className={classes.chip}*/}
+            {/*/>*/}
+          {/*);*/}
+        {/*})}*/}
+      {/*</Typography>*/}
     </ButtonBase>
   );
 }

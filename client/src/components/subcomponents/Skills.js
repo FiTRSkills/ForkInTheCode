@@ -22,8 +22,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function AddSkills(props) {
-  const { skills, setSkills } = props;
+function Skills(props) {
+  const { skills, setSkills, editMode } = props;
   const classes = useStyles();
   const [chipData, setChipData] = React.useState(skills);
   const [skillsList] = React.useState([]);
@@ -35,7 +35,9 @@ function AddSkills(props) {
   useEffect(() => {
     //TODO make API call to fetch skills list and update
     // setSkillsList([]);
-    setSkills(chipData);
+    if(editMode) {
+      setSkills(chipData);
+    }
   }, [chipData, setSkills]);
   useEffect(() => {
     setChipData(skills);
@@ -68,33 +70,38 @@ function AddSkills(props) {
                 color="primary"
                 variant="outlined"
                 label={skill}
-                onDelete={handleDelete(skill)}
+                onDelete = {editMode ? handleDelete(skill) : undefined}
                 className={classes.chip}
               />
             </li>
           );
         })}
       </Box>
-      <Autocomplete
-        value={currentSkill}
-        freeSolo
-        onInputChange={(event, value) => setCurrentSkill(value)}
-        options={skillsList.map((option) => option)}
-        id = "skillInput"
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="New Skill"
-            margin="normal"
-            variant="outlined"
-            onKeyPress={(e) => handleSubmit(e)}
-          />
-        )}
-      />
-      <Button onClick={addSkill} variant="outlined" color="primary" fullWidth id="addSkill">
-        Add Skill
-      </Button>
+      {editMode &&
+      <Box>
+        <Autocomplete
+          value={currentSkill}
+          freeSolo
+          onInputChange={(event, value) => setCurrentSkill(value)}
+          options={skillsList.map((option) => option)}
+          id="skillInput"
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="New Skill"
+              margin="normal"
+              variant="outlined"
+              onKeyPress={(e) => handleSubmit(e)}
+            />
+          )}
+        />
+        <Button onClick={addSkill} variant="outlined" color="primary" fullWidth id="addSkill">
+          Add Skill
+        </Button>
+      </Box>
+      }
     </Box>
+
   );
 }
-export default AddSkills;
+export default Skills;
