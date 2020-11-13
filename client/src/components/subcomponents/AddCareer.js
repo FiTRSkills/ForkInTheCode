@@ -90,7 +90,7 @@ function AddCareer({ closePopup, updateCareer }) {
         },
         { withCredentials: true }
       )
-      .then((response) => {
+      .then(() => {
         closePopup();
         updateCareer();
       })

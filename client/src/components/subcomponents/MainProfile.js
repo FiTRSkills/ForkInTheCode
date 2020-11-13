@@ -134,7 +134,7 @@ function MainProfile() {
         },
         { withCredentials: true }
       )
-      .then((response) => {
+      .then(() => {
         setEdit(false);
       })
       .catch((error) => {

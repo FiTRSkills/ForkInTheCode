@@ -86,7 +86,7 @@ function ViewEditEducationItem({
       gradDate,
       organization,
     })
-      .then((response) => {
+      .then(() => {
         setError(null);
         setEdit(false);
       })
@@ -99,7 +99,7 @@ function ViewEditEducationItem({
   function submitDelete() {
     setLoading(true);
     deleteEducation(educationItem._id)
-      .then((response) => {
+      .then(() => {
         setError(null);
         setEdit(false);
       })

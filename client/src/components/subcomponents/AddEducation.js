@@ -89,7 +89,7 @@ function AddEducation({ closePopup, updateEducation }) {
         },
         { withCredentials: true }
       )
-      .then((response) => {
+      .then(() => {
         closePopup();
         updateEducation();
       })

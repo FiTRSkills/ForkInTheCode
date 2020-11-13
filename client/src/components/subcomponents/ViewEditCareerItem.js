@@ -87,7 +87,7 @@ function ViewEditCareerItem({
       endDate,
       organization,
     })
-      .then((response) => {
+      .then(() => {
         setError(null);
         setEdit(false);
       })
@@ -100,7 +100,7 @@ function ViewEditCareerItem({
   function submitDelete() {
     setLoading(true);
     deleteCareer(careerItem._id)
-      .then((response) => {
+      .then(() => {
         setError(null);
         setEdit(false);
       })

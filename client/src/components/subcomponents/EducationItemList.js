@@ -92,7 +92,7 @@ function EducationItemList() {
       setLoading(true);
       axios
         .patch(url, editedEducation, { withCredentials: true })
-        .then((response) => {
+        .then(() => {
           resolve();
           updateEducation();
         })
