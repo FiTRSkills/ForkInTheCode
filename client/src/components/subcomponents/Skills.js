@@ -22,8 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Skills(props) {
-  const { skills, setSkills, editMode } = props;
+function Skills({skills, setSkills, editMode}) {
   const classes = useStyles();
   const [chipData, setChipData] = React.useState(skills);
   const [skillsList] = React.useState([]);
