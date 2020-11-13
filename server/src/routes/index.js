@@ -231,7 +231,7 @@ router.post(
  * @property {string} id -  the job posting id
  * @returns {string} message - success message
  */
-router.get("/jobs/jobposting", sessionValidation, job.getJobPosting);
+router.get("/jobs/jobposting", job.getJobPosting);
 
 /**
  * Routing serving retrieving a job posting by id
@@ -268,7 +268,6 @@ router.post(
  */
 router.post(
   "/JobSearch",
-  sessionValidation,
   [
     check("zipCode", "Must send a viable zipcode").not().isEmpty(),
     check("skills", "Must send a viable skills list").optional({
