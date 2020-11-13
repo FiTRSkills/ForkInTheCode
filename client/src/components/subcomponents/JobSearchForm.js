@@ -32,26 +32,31 @@ function JobSearchForm(props) {
   const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    loadSkills();
-  });
-  function loadSkills() {
-    if (props.user !== undefined && Object.keys(props.user).length > 0) {
-      setLoading(true);
-      axios
-        .get(process.env.REACT_APP_SERVER_URL + "/Profile")
-        .then((response) => {
-          let arr = [];
-          for (let skill of response.data.skills) {
-            arr.push(skill.name);
-          }
-          setSkills(arr);
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => setLoading(false));
+    function loadSkills() {
+      if (props.user !== undefined && Object.keys(props.user).length > 0) {
+        setLoading(true);
+        axios
+          .get(process.env.REACT_APP_SERVER_URL + "/Profile", {withCredentials: true})
+          .then((response) => {
+            console.log(response);
+            if (response.status === 200) {
+              let arr = [];
+              for (let skill of response.data.skills) {
+                arr.push(skill.name);
+              }
+              setSkills(arr);
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          })
+          .finally(() => setLoading(false));
+      }
     }
-  }
+    loadSkills();
+  }, [props.user]);
+
+
   function submit(event) {
     setLoading(true);
     props.apiCall(zipcode, skills).finally(() => {

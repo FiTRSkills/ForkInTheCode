@@ -13,6 +13,7 @@ function JobSearch(props) {
     props.changeCurrentPage("Job Search");
   });
 
+
   function search(zipcode, skills) {
     return axios
       .post(
@@ -27,7 +28,7 @@ function JobSearch(props) {
           if (response.data.length === 0) {
             setErrorMessage("No Results");
           }
-          props.updateResults({ results: response.data });
+          props.updateResults(response.data);
         } else {
           setErrorMessage("Please Try Again");
         }

@@ -21,7 +21,7 @@ function Results(props) {
   const classes = useStyles();
   const { results } = props;
   return (
-    <div className={classes.paper}>
+    <div className={classes.paper} id="results">
       <Typography component="h1" variant="h5">
         Results
       </Typography>

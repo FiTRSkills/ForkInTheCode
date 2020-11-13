@@ -36,6 +36,9 @@ export default function ChipsArray(props) {
     // setSkillsList([]);
     setSkills(chipData);
   }, [chipData, setSkills]);
+  useEffect(() => {
+    setChipData(skills);
+  }, [skills]);
   const addSkill = () => {
     if (chipData.indexOf(currentSkill) > -1) {
       setErrorMessage("Already in Skills");
@@ -56,7 +59,7 @@ export default function ChipsArray(props) {
   return (
     <div>
       {errorMessage !== "" && <Alert severity="error">{errorMessage}</Alert>}
-      <div className={classes.root}>
+      <div className={classes.root} id="skillList">
         {chipData.map((skill, index) => {
           return (
             <li key={index}>
@@ -76,6 +79,7 @@ export default function ChipsArray(props) {
         freeSolo
         onInputChange={(event, value) => setCurrentSkill(value)}
         options={skillsList.map((option) => option)}
+        id = "skillInput"
         renderInput={(params) => (
           <TextField
             {...params}
@@ -86,7 +90,7 @@ export default function ChipsArray(props) {
           />
         )}
       />
-      <Button onClick={addSkill} variant="outlined" color="primary" fullWidth>
+      <Button onClick={addSkill} variant="outlined" color="primary" fullWidth id="addSkill">
         Add Skill
       </Button>
     </div>
