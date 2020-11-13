@@ -267,7 +267,7 @@ router.post(
  * @returns {string} message - success message
  */
 router.post(
-  "/jobs/search",
+  "/JobSearch",
   sessionValidation,
   [
     check("zipCode", "Must send a viable zipcode").not().isEmpty(),
