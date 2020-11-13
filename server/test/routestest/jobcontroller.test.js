@@ -79,7 +79,7 @@ describe("JobController Tests", () => {
 
 	it("POST /jobs/search - search for job postings with no results", async () => {
 		const res = await request
-			.post("/jobs/search")
+			.post("/JobSearch")
 			.set("Cookie", [employer_session_info])
 			.send({
 				zipCode: "12345",
@@ -151,7 +151,7 @@ describe("JobController Tests", () => {
 
 	it("POST /jobs/search - search for job postings", async () => {
 		const res = await request
-			.post("/jobs/search")
+			.post("/JobSearch")
 			.set("Cookie", [employer_session_info])
 			.send({
 				zipCode: "12345",
@@ -211,7 +211,7 @@ describe("JobController Tests", () => {
 
 	it("POST /jobs/search - search for job postings 12345 zipcode", async () => {
 		const res = await request
-			.post("/jobs/search")
+			.post("/JobSearch")
 			.set("Cookie", [employer_session_info])
 			.send({
 				zipCode: "12345",
@@ -271,7 +271,7 @@ describe("JobController Tests", () => {
 
 	it("POST /jobs/search - search for job postings 12345 zipcode", async () => {
 		const res = await request
-			.post("/jobs/search")
+			.post("/JobSearch")
 			.set("Cookie", [employer_session_info])
 			.send({
 				zipCode: "12345",
