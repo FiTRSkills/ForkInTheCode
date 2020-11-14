@@ -40,7 +40,7 @@ function ProfileSkills() {
         setSkillObjects(response.data.skills);
       })
       .catch((error) => {
-        if (error.response.status === 400) {
+        if (error?.response?.status === 400) {
           setError(error.response.data);
         } else {
           setError("Failed to get updated Skills list.");
@@ -64,7 +64,7 @@ function ProfileSkills() {
           resolve();
         })
         .catch((error) => {
-          if (error.response.status === 400) {
+          if (error?.response?.status === 400) {
             reject(error.response.data);
           } else {
             reject("An error has occoured while trying to add a skill.");
@@ -109,7 +109,7 @@ function ProfileSkills() {
   // Renderer
   return (
     <Box className={classes.container}>
-      <Button className={classes.icon} onClick={toggleEdit} id="editCareers">
+      <Button className={classes.icon} onClick={toggleEdit} id="editSkills">
         <EditIcon />
       </Button>
       <Typography variant={"h5"}>Skills</Typography>

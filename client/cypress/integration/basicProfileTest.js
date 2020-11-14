@@ -16,6 +16,7 @@ describe("Load basic profile", () => {
         dob: "1998-01-05",
         education: [],
         career: [],
+        skills: [],
       },
     }).as("profileCall");
     // Go to profile. Verify profile loaded success.
@@ -47,6 +48,7 @@ describe("Load basic profile", () => {
       dob: "1988-10-10",
       education: [],
       career: [],
+      skills: [],
     };
     let response2 = {
       firstname: "Sam",
@@ -54,6 +56,7 @@ describe("Load basic profile", () => {
       dob: "1988-10-10",
       education: [],
       career: [],
+      skills: [],
     };
     // Stub get profile success response
     cy.route({
@@ -105,6 +108,7 @@ describe("Load basic profile", () => {
         dob: "1988-10-10",
         education: [],
         career: [],
+        skills: [],
       },
     }).as("getProfileCall");
     cy.route({
@@ -140,6 +144,7 @@ describe("Load basic profile", () => {
         dob: "1988-10-10",
         education: [],
         career: [],
+        skills: [],
       },
     }).as("getProfileCall");
     // Go to profile. Verify profile loaded success.

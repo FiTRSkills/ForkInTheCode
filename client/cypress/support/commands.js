@@ -58,6 +58,20 @@ Cypress.Commands.add("fakeProfile", () => {
           },
         },
       ],
+      skills: [
+        {
+          _id: "1",
+          name: "skill1",
+        },
+        {
+          _id: "2",
+          name: "skill2",
+        },
+        {
+          _id: "3",
+          name: "skill3",
+        },
+      ],
     },
   }).as("profileCall");
 

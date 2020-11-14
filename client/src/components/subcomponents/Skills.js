@@ -32,6 +32,7 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
   useEffect(() => {
     //TODO make API call to fetch skills list and update
     setAllSkills([]);
+    setCurrentSkill("");
   }, [editMode]);
 
   function deleteSkill(skillToDelete) {
@@ -95,6 +96,7 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
                 color="primary"
                 variant="outlined"
                 label={skill}
+                name={skill}
                 onDelete={
                   editMode
                     ? () => {
