@@ -11,10 +11,10 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-      marginTop: theme.spacing(4),
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
+    marginTop: theme.spacing(4),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
@@ -27,7 +27,7 @@ function SignUp(props) {
 
   function handleChange(event, newIndex) {
     setTabIndex(newIndex);
-  };
+  }
 
   useEffect(() => {
     if (props.user !== undefined && Object.keys(props.user).length > 0) {
@@ -40,10 +40,10 @@ function SignUp(props) {
 
   return (
     <Container>
-     <div className={classes.paper}>
-         <Avatar className={classes.avatar}>
-             <LockOutlinedIcon />
-         </Avatar>
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
         <Tabs
           value={tabIndex}
           onChange={handleChange}
@@ -53,9 +53,24 @@ function SignUp(props) {
           <Tab label="Employer" id="employerTab" />
           <Tab label="Educator" id="educatorTab" />
         </Tabs>
-        <SignUpTabPanel currentTab={tabIndex} index={0} typeTitle="Job Seeker" {...props} />
-        <SignUpTabPanel currentTab={tabIndex} index={1} typeTitle="Employer" {...props} />
-        <SignUpTabPanel currentTab={tabIndex} index={2} typeTitle="Educator" {...props} />
+        <SignUpTabPanel
+          currentTab={tabIndex}
+          index={0}
+          typeTitle="Job Seeker"
+          {...props}
+        />
+        <SignUpTabPanel
+          currentTab={tabIndex}
+          index={1}
+          typeTitle="Employer"
+          {...props}
+        />
+        <SignUpTabPanel
+          currentTab={tabIndex}
+          index={2}
+          typeTitle="Educator"
+          {...props}
+        />
       </div>
     </Container>
   );

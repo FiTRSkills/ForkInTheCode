@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { changeCurrentPage, logOut } from "../../redux/actions";
+import { logOut } from "../../redux/actions";
 import "./NavBar.css";
 
 const authLeftSide = ["Job Search", "Something Else"];
@@ -81,10 +81,17 @@ function NavBar(props) {
   );
 }
 
-export default connect(
-  (state) => ({
+const mapStateToProps = (state) => {
+  return {
     user: state.authentication,
     currentPage: state.navigation.currentPage,
-  }),
-  { changeCurrentPage, logOut }
-)(NavBar);
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logOut: () => dispatch(logOut()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

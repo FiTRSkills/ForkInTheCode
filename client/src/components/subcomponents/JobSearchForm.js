@@ -90,7 +90,7 @@ function JobSearchForm(props) {
           onChange={(event) => setZipCode(event.target.value)}
         />
         <Typography variant="h6">Skills</Typography>
-        <Skills skills={skills} setSkills={setSkills} editMode = {true} />
+        <Skills skills={skills} setSkills={setSkills} editMode={true} />
         <Button
           type="submit"
           fullWidth
@@ -106,9 +106,11 @@ function JobSearchForm(props) {
     </Box>
   );
 }
+
 const mapStateToProps = (state) => {
   return {
     user: state.authentication,
   };
 };
+
 export default connect(mapStateToProps)(JobSearchForm);
