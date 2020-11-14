@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function JobSearchForm(props) {
-  const [zipcode, setZipcode] = useState("");
+  const [zipCode, setZipCode] = useState("");
   const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -58,7 +58,7 @@ function JobSearchForm(props) {
 
   function submit(event) {
     setLoading(true);
-    props.apiCall(zipcode, skills).finally(() => {
+    props.apiCall(zipCode, skills).finally(() => {
       setLoading(false);
     });
     event.preventDefault();
@@ -86,8 +86,8 @@ function JobSearchForm(props) {
           name="zipcode"
           autoComplete="zipcode"
           autoFocus
-          value={zipcode}
-          onChange={(event) => setZipcode(event.target.value)}
+          value={zipCode}
+          onChange={(event) => setZipCode(event.target.value)}
         />
         <Typography variant="h6">Skills</Typography>
         <Skills skills={skills} setSkills={setSkills} editMode = {true} />

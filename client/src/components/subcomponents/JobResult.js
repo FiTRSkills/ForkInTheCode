@@ -57,7 +57,7 @@ function JobResult({ jobInfo }) {
         {jobInfo.jobTitle}
       </Link>
       <Typography variant="h5">{jobInfo.organization.name}</Typography>
-      <Typography className = {classes.boldText}>${jobInfo.pay}</Typography>
+      <Typography className = {classes.boldText}>{jobInfo.pay}</Typography>
       <Typography  className={classes.smalltext}>
         {jobInfo.description}
       </Typography>
