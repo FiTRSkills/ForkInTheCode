@@ -22,85 +22,113 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Skills({skills, setSkills, editMode}) {
+function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
   const classes = useStyles();
-  const [chipData, setChipData] = React.useState(skills);
-  const [skillsList] = React.useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [currentSkill, setCurrentSkill] = React.useState("");
-  const handleDelete = (chipToDelete) => () => {
-    setChipData((chips) => chips.filter((chip) => chip !== chipToDelete));
-  };
+  const [allSkills, setAllSkills] = useState([]);
+  const [error, setError] = useState(null);
+  const [currentSkill, setCurrentSkill] = useState("");
+
   useEffect(() => {
     //TODO make API call to fetch skills list and update
-    // setSkillsList([]);
-    if(editMode) {
-      setSkills(chipData);
-    }
-  }, [chipData, setSkills, editMode]);
-  useEffect(() => {
-    setChipData(skills);
-  }, [skills]);
-  const addSkill = () => {
-    if (chipData.indexOf(currentSkill) > -1) {
-      setErrorMessage("Already in Skills");
-    } else if (currentSkill !== "") {
-      setErrorMessage("");
-      setCurrentSkill("");
-      setChipData((chipData) => [...chipData, currentSkill]);
-    }
-  };
+    setAllSkills([]);
+  }, [editMode]);
 
-  const handleSubmit = (e) => {
-    if (e.key === "Enter") {
-      addSkill();
-      e.preventDefault();
+  function deleteSkill(skillToDelete) {
+    if (onDelete !== undefined) {
+      onDelete(skillToDelete)
+        .then(() => {
+          setError(null);
+        })
+        .catch((error) => {
+          setError(error);
+        });
+    } else {
+      setSkills((skills) => skills.filter((skill) => skill !== skillToDelete));
     }
-  };
+  }
+
+  function addSkill() {
+    if (skills.indexOf(currentSkill) > -1) {
+      setError("Already in Skills");
+    } else if (currentSkill !== "") {
+      if (onAdd !== undefined) {
+        onAdd(currentSkill)
+          .then(() => {
+            setError(null);
+            setCurrentSkill("");
+          })
+          .catch((error) => {
+            setError(error);
+          });
+      } else {
+        setSkills([...skills, currentSkill]);
+        setError(null);
+        setCurrentSkill("");
+      }
+    }
+  }
+
+  function handleSubmit(event) {
+    if (event.key === "Enter") {
+      addSkill();
+      event.preventDefault();
+    }
+  }
 
   return (
     <Box>
-      {errorMessage !== "" && <Alert severity="error">{errorMessage}</Alert>}
+      {error && <Alert severity="error">{error}</Alert>}
       <Box className={classes.root} id="skillList">
-        {chipData.map((skill, index) => {
+        {skills.map((skill, index) => {
           return (
             <li key={index}>
               <Chip
                 color="primary"
                 variant="outlined"
                 label={skill}
-                onDelete = {editMode ? handleDelete(skill) : undefined}
+                onDelete={
+                  editMode
+                    ? () => {
+                        deleteSkill(skill);
+                      }
+                    : undefined
+                }
                 className={classes.chip}
               />
             </li>
           );
         })}
       </Box>
-      {editMode &&
-      <Box>
-        <Autocomplete
-          value={currentSkill}
-          freeSolo
-          onInputChange={(event, value) => setCurrentSkill(value)}
-          options={skillsList.map((option) => option)}
-          id="skillInput"
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="New Skill"
-              margin="normal"
-              variant="outlined"
-              onKeyPress={(e) => handleSubmit(e)}
-            />
-          )}
-        />
-        <Button onClick={addSkill} variant="outlined" color="primary" fullWidth id="addSkill">
-          Add Skill
-        </Button>
-      </Box>
-      }
+      {editMode && (
+        <Box>
+          <Autocomplete
+            inputValue={currentSkill}
+            freeSolo
+            onInputChange={(event, value) => setCurrentSkill(value)}
+            options={allSkills.map((option) => option)}
+            id="skillInput"
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="New Skill"
+                margin="normal"
+                variant="outlined"
+                onKeyPress={handleSubmit}
+              />
+            )}
+          />
+          <Button
+            onClick={addSkill}
+            variant="outlined"
+            color="primary"
+            fullWidth
+            id="addSkill"
+          >
+            Add Skill
+          </Button>
+        </Box>
+      )}
     </Box>
-
   );
 }
 export default Skills;

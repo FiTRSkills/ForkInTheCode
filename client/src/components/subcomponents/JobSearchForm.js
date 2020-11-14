@@ -42,7 +42,6 @@ function JobSearchForm(props) {
             withCredentials: true,
           })
           .then((response) => {
-            console.log(response);
             if (response.status === 200) {
               setSkills(response.data.skills.map((skill) => skill.name));
             }
@@ -90,7 +89,7 @@ function JobSearchForm(props) {
           onChange={(event) => setZipCode(event.target.value)}
         />
         <Typography variant="h6">Skills</Typography>
-        <Skills skills={skills} setSkills={setSkills} editMode = {true} />
+        <Skills skills={skills} setSkills={setSkills} editMode={true} />
         <Button
           type="submit"
           fullWidth
