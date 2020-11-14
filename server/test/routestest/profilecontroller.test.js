@@ -144,7 +144,7 @@ describe("testing index.js routes", () => {
         degree: "Bachelors",
         major: "Computer Science",
         gradDate: "2021/05/07",
-        organization: organization,
+        organization: "McDonalds",
       });
     expect(res.statusCode).toEqual(200);
     expect(res.text).toEqual("Successfully edited education.");
@@ -162,7 +162,7 @@ describe("testing index.js routes", () => {
     expect(date.getFullYear()).toEqual(1923);
     expect(body.education[0].degree).toEqual("Bachelors");
     expect(body.education[0].major).toEqual("Computer Science");
-    expect(body.education[0].organization.name).toEqual("RIT");
+    expect(body.education[0].organization.name).toEqual("McDonalds");
     let gradDate = new Date(body.education[0].gradDate);
     expect(gradDate.getMonth()).toEqual(4);
     expect(gradDate.getDate()).toEqual(7);
@@ -239,7 +239,7 @@ describe("testing index.js routes", () => {
         jobTitle: "Junior Software Engineer",
         startDate: "2008/09/10",
         endDate: "2019/02/07",
-        organization: organization,
+        organization: "BoigerKing",
       });
     expect(res.statusCode).toEqual(200);
     expect(res.text).toEqual("Successfully edited career.");
@@ -256,7 +256,7 @@ describe("testing index.js routes", () => {
     expect(date.getDate()).toEqual(19);
     expect(date.getFullYear()).toEqual(1923);
     expect(body.career[0].jobTitle).toEqual("Junior Software Engineer");
-    expect(body.career[0].organization.name).toEqual("RIT");
+    expect(body.career[0].organization.name).toEqual("BoigerKing");
     let startDate = new Date(body.career[0].startDate);
     expect(startDate.getMonth()).toEqual(8);
     expect(startDate.getDate()).toEqual(10);
@@ -327,7 +327,7 @@ describe("testing index.js routes", () => {
     expect(res.text).toEqual("Successfully removed skill.");
   });
 
-  it("GET /profile - added skill information", async () => {
+  it("GET /profile - removed skill information", async () => {
     const res = await request.get("/profile").set("Cookie", [session_info]);
     expect(res.statusCode).toEqual(200);
     let body = JSON.parse(res.text);

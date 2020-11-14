@@ -48,9 +48,7 @@ function Login(props) {
       .post(
         process.env.REACT_APP_SERVER_URL + "/Login",
         { email, password },
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       )
       .then((response) => {
         if (response.status === 200) {

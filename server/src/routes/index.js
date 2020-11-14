@@ -7,6 +7,7 @@ var express = require("express");
 var router = express.Router();
 var auth = require("../controllers/authcontroller.js");
 var profile = require("../controllers/profilecontroller.js");
+var job = require("../controllers/jobcontroller.js");
 var inputValidation = require("../services/inputValidation.js");
 var sessionValidation = require("../services/sessionValidation.js");
 
@@ -223,6 +224,61 @@ router.post(
 );
 
 /**
+ * Routing serving retrieving a job posting by id
+ * @name POST /jobs/jobposting
+ * @function
+ * @alias module:/routers/job
+ * @property {string} id -  the job posting id
+ * @returns {string} message - success message
+ */
+router.get("/jobs/jobposting", job.getJobPosting);
+
+/**
+ * Routing serving retrieving a job posting by id
+ * @name POST /jobs/createjobposting
+ * @function
+ * @alias module:/routers/job
+ * @property {string} id -  the job posting id
+ * @returns {string} message - success message
+ */
+router.post(
+  "/jobs/createjobposting",
+  sessionValidation,
+  [
+    check("jobTitle", "Must send a viable job title").not().isEmpty(),
+    check("pay", "Must send a viable pay").optional({ nullable: true }),
+    check("code", "Must send a viable code").optional({ nullable: true }),
+    check("description", "Must send a viable description").not().isEmpty(),
+    check("organization", "Must send a viable organization").not().isEmpty(),
+    check("qualifications", "Must send viable qualifications").not().isEmpty(),
+    check("skills", "Must send viable skills").not().isEmpty(),
+  ],
+  inputValidation,
+  job.createJobPosting
+);
+
+/**
+ * Routing serving retrieving a job posting by id
+ * @name POST /profile/career
+ * @function
+ * @alias module:/routers/job
+ * @property {string} zip_code -  the zip_code to search in
+ * @property {string} skills -  a list of skills string
+ * @returns {string} message - success message
+ */
+router.post(
+  "/JobSearch",
+  [
+    check("zipCode", "Must send a viable zipcode").not().isEmpty(),
+    check("skills", "Must send a viable skills list").optional({
+      nullable: true,
+    }),
+  ],
+  inputValidation,
+  job.searchJobPostings
+);
+
+/*
  * Routing serving removing a skill
  * @name DELETE /profile/skill
  * @function
