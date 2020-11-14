@@ -25,8 +25,9 @@ const useStyles = makeStyles((theme) => ({
 function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
   const classes = useStyles();
   const [allSkills, setAllSkills] = useState([]);
-  const [error, setError] = useState(null);
   const [currentSkill, setCurrentSkill] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     //TODO make API call to fetch skills list and update
@@ -35,12 +36,16 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
 
   function deleteSkill(skillToDelete) {
     if (onDelete !== undefined) {
+      setLoading(true);
       onDelete(skillToDelete)
         .then(() => {
           setError(null);
         })
         .catch((error) => {
           setError(error);
+        })
+        .finally(() => {
+          setLoading(false);
         });
     } else {
       setSkills((skills) => skills.filter((skill) => skill !== skillToDelete));
@@ -52,6 +57,7 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
       setError("Already in Skills");
     } else if (currentSkill !== "") {
       if (onAdd !== undefined) {
+        setLoading(true);
         onAdd(currentSkill)
           .then(() => {
             setError(null);
@@ -59,6 +65,9 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
           })
           .catch((error) => {
             setError(error);
+          })
+          .finally(() => {
+            setLoading(false);
           });
       } else {
         setSkills([...skills, currentSkill]);
@@ -124,7 +133,7 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
             fullWidth
             id="addSkill"
           >
-            Add Skill
+            {loading ? "Processing..." : "Add Skill"}
           </Button>
         </Box>
       )}

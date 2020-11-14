@@ -7,6 +7,7 @@ import Divider from "@material-ui/core/Divider";
 import CareerItemList from "../subcomponents/CareerItemList";
 import EducationItemList from "../subcomponents/EducationItemList";
 import { makeStyles } from "@material-ui/core/styles";
+import ProfileSkills from "../subcomponents/ProfileSkills";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -43,6 +44,8 @@ function Profile(props) {
   return (
     <Container className={classes.container}>
       <MainProfile />
+      <Divider className={classes.divider} variant="middle" />
+      <ProfileSkills />
       <Divider className={classes.divider} variant="middle" />
       <CareerItemList />
       <Divider className={classes.divider} variant="middle" />
