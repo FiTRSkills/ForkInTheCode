@@ -37,7 +37,7 @@ function Skills({skills, setSkills, editMode}) {
     if(editMode) {
       setSkills(chipData);
     }
-  }, [chipData, setSkills]);
+  }, [chipData, setSkills, editMode]);
   useEffect(() => {
     setChipData(skills);
   }, [skills]);

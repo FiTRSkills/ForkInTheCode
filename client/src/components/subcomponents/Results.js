@@ -18,9 +18,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Results(props) {
+function Results({results}) {
   const classes = useStyles();
-  const { results } = props;
   return (
     <Box className={classes.paper} id="results">
       <Typography component="h1" variant="h5">
