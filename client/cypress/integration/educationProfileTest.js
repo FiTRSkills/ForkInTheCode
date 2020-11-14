@@ -116,6 +116,7 @@ describe("Load profile educations", () => {
           {
             degree: "BS SE",
             major: "SE",
+            gradDate: "2020/01/01",
             organization: {
               _id: "id",
               name: "RIT",
@@ -124,6 +125,7 @@ describe("Load profile educations", () => {
           {
             degree: "BS CS",
             major: "CS",
+            gradDate: "2020/10/10",
             organization: {
               _id: "id",
               name: "PITT",
@@ -135,6 +137,7 @@ describe("Load profile educations", () => {
     cy.get("#addEducation").click();
     cy.get("#addEducationDegree").type("BS CS");
     cy.get("#addEducationMajor").type("CS");
+    cy.get("#addEducationGradDate").type("20201010");
     cy.get("#addEducationOrganization").type("PITT");
     cy.get("#addEducationSubmit").click();
     cy.wait("@addProfileCall");
@@ -143,6 +146,8 @@ describe("Load profile educations", () => {
     cy.get("#education1 [name='degree']").should("be.disabled");
     cy.get("#education1 [name='major']").should("have.value", "CS");
     cy.get("#education1 [name='major']").should("be.disabled");
+    cy.get("#education1 [name='gradDate']").should("have.value", "2020/10/10");
+    cy.get("#education1 [name='gradDate']").should("be.disabled");
     cy.get("#education1 [name='organization']").should("have.value", "PITT");
     cy.get("#education1 [name='organization']").should("be.disabled");
   });
@@ -159,6 +164,7 @@ describe("Load profile educations", () => {
     cy.get("#addEducation").click();
     cy.get("#addEducationDegree").type("newDev");
     cy.get("#addEducationMajor").type("newDev");
+    cy.get("#addEducationGradDate").type("20201010");
     cy.get("#addEducationOrganization").type("newOrg");
     cy.get("#addEducationSubmit").click();
     cy.wait("@addProfileCall");

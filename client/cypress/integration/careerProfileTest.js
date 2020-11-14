@@ -128,6 +128,8 @@ describe("Load profile careers", () => {
     }).as("profileCall");
     cy.get("#addCareer").click();
     cy.get("#addCareerJobTitle").type("newDev");
+    cy.get("#addCareerStartDate").type("20180101");
+    cy.get("#addCareerEndDate").type("20200101");
     cy.get("#addCareerOrganization").type("newOrg");
     cy.get("#addCareerSubmit").click();
     cy.wait("@addProfileCall");
@@ -149,6 +151,8 @@ describe("Load profile careers", () => {
     cy.wait("@profileCall");
     cy.get("#addCareer").click();
     cy.get("#addCareerJobTitle").type("newDev");
+    cy.get("#addCareerStartDate").type("20180101");
+    cy.get("#addCareerEndDate").type("20200101");
     cy.get("#addCareerOrganization").type("newOrg");
     cy.get("#addCareerSubmit").click();
     cy.wait("@addProfileCall");

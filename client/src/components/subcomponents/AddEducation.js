@@ -144,6 +144,7 @@ function AddEducation({ closePopup, updateEducation }) {
             <KeyboardDatePicker
               disableToolbar
               fullWidth
+              required
               inputVariant="outlined"
               variant="inline"
               format="yyyy/MM/dd"
@@ -179,7 +180,6 @@ function AddEducation({ closePopup, updateEducation }) {
           color="primary"
           className={classes.submit}
           id="addEducationSubmit"
-          onClick={submitEducationForm}
         >
           {!loading ? "Save" : "Processing..."}
         </Button>

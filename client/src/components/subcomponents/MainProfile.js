@@ -204,6 +204,7 @@ function MainProfile() {
               inputVariant={edit ? "outlined" : "standard"}
               fullWidth
               disableToolbar
+              required
               variant="inline"
               format="yyyy/MM/dd"
               placeholder="YYYY/MM/DD"
@@ -227,7 +228,6 @@ function MainProfile() {
             color="primary"
             className={classes.submit}
             id="submit"
-            onClick={saveProfile}
           >
             {!loading ? "Save" : "Processing..."}
           </Button>

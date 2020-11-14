@@ -132,6 +132,7 @@ function AddCareer({ closePopup, updateCareer }) {
             <KeyboardDatePicker
               disableToolbar
               fullWidth
+              required
               inputVariant="outlined"
               variant="inline"
               format="yyyy/MM/dd"
@@ -153,6 +154,7 @@ function AddCareer({ closePopup, updateCareer }) {
             <KeyboardDatePicker
               disableToolbar
               fullWidth
+              required
               inputVariant="outlined"
               variant="inline"
               format="yyyy/MM/dd"
@@ -188,7 +190,6 @@ function AddCareer({ closePopup, updateCareer }) {
           color="primary"
           className={classes.submit}
           id="addCareerSubmit"
-          onClick={submitCareerForm}
         >
           {!loading ? "Save" : "Processing..."}
         </Button>
