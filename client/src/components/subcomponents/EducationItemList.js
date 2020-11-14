@@ -151,9 +151,7 @@ function EducationItemList() {
       <Button className={classes.icon} onClick={toggleEdit} id="editEducations">
         <EditIcon />
       </Button>
-      <Typography className={classes.field} variant={"h5"}>
-        Education
-      </Typography>
+      <Typography variant={"h5"}>Education</Typography>
       {error && loading && <Alert severity={"error"}>{error}</Alert>}
       {education.map((educationItem, index) => (
         <ViewEditEducationItem
@@ -172,7 +170,6 @@ function EducationItemList() {
         onClick={() => {
           setShowAddEducationPopup(true);
         }}
-        className={classes.field}
         id="addEducation"
       >
         Add Education

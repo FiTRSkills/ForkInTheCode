@@ -144,9 +144,7 @@ function CareerItemList() {
       <Button className={classes.icon} onClick={toggleEdit} id="editCareers">
         <EditIcon />
       </Button>
-      <Typography className={classes.field} variant={"h5"}>
-        Careers
-      </Typography>
+      <Typography variant={"h5"}>Careers</Typography>
       {error && <Alert severity={"error"}>{error}</Alert>}
       {careers.map((careerItem, index) => (
         <ViewEditCareerItem
@@ -166,7 +164,6 @@ function CareerItemList() {
         onClick={() => {
           setShowAddCareerPopup(true);
         }}
-        className={classes.field}
       >
         Add career
       </Button>
