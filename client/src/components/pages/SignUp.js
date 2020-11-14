@@ -31,7 +31,7 @@ function SignUp(props) {
 
   useEffect(() => {
     if (props.user !== undefined && Object.keys(props.user).length > 0) {
-      props.history.push("/Home");
+      props.history.push("/JobSearch");
     }
     props.changeCurrentPage("Sign Up");
   });
