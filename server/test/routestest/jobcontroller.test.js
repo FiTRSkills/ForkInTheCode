@@ -85,8 +85,9 @@ describe("JobController Tests", () => {
 				zipCode: "12345",
 				skills: [],
 			});
-		expect(res.statusCode).toEqual(400);
-		expect(res.text).toEqual("No results");
+		expect(res.statusCode).toEqual(200);
+		let body = JSON.parse(res.text);
+		expect(body.length).toEqual(0);
 	});
 
 	it("POST /jobs/createjobposting - create a job posting", async () => {

@@ -93,7 +93,7 @@ jobController.searchJobPostings = async function (req, res) {
     zipCode: req.body.zipCode,
     skills: req.body.skills,
   });
-  if (searchResults == null || searchResults.length == 0) {
+  if (searchResults == null) {
     res.status(400).send("No results");
     return;
   }
