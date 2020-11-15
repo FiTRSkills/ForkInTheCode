@@ -38,7 +38,7 @@ function Login(props) {
 
   useEffect(() => {
     if (props.user !== undefined && Object.keys(props.user).length > 0) {
-      props.history.push("/Home");
+      props.history.push("/JobSearch");
     }
     props.changeCurrentPage("Login");
   });
@@ -52,8 +52,8 @@ function Login(props) {
       )
       .then((response) => {
         if (response.status === 200) {
-          props.updateUser(response.data);
-          props.history.push("/Home");
+          props.updateUser({ type: response.data });
+          props.history.push("/JobSearch");
         } else {
           setErrorMessage(
             "Your Email and/or Password was incorrect, please try again."

@@ -79,14 +79,15 @@ describe("JobController Tests", () => {
 
 	it("POST /jobs/search - search for job postings with no results", async () => {
 		const res = await request
-			.post("/jobs/search")
+			.post("/JobSearch")
 			.set("Cookie", [employer_session_info])
 			.send({
 				zipCode: "12345",
 				skills: [],
 			});
-		expect(res.statusCode).toEqual(400);
-		expect(res.text).toEqual("No results");
+		expect(res.statusCode).toEqual(200);
+		let body = JSON.parse(res.text);
+		expect(body.length).toEqual(0);
 	});
 
 	it("POST /jobs/createjobposting - create a job posting", async () => {
@@ -151,7 +152,7 @@ describe("JobController Tests", () => {
 
 	it("POST /jobs/search - search for job postings", async () => {
 		const res = await request
-			.post("/jobs/search")
+			.post("/JobSearch")
 			.set("Cookie", [employer_session_info])
 			.send({
 				zipCode: "12345",
@@ -211,7 +212,7 @@ describe("JobController Tests", () => {
 
 	it("POST /jobs/search - search for job postings 12345 zipcode", async () => {
 		const res = await request
-			.post("/jobs/search")
+			.post("/JobSearch")
 			.set("Cookie", [employer_session_info])
 			.send({
 				zipCode: "12345",
@@ -271,7 +272,7 @@ describe("JobController Tests", () => {
 
 	it("POST /jobs/search - search for job postings 12345 zipcode", async () => {
 		const res = await request
-			.post("/jobs/search")
+			.post("/JobSearch")
 			.set("Cookie", [employer_session_info])
 			.send({
 				zipCode: "12345",
