@@ -228,6 +228,7 @@ function MainProfile() {
             color="primary"
             className={classes.submit}
             id="submit"
+            disabled={loading}
           >
             {!loading ? "Save" : "Processing..."}
           </Button>

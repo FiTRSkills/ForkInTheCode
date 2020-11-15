@@ -134,6 +134,7 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
             color="primary"
             fullWidth
             id="addSkill"
+            disabled={loading}
           >
             {loading ? "Processing..." : "Add Skill"}
           </Button>

@@ -222,6 +222,7 @@ function ViewEditCareerItem({
           fullWidth
           onClick={submitEdit}
           name="updateCareer"
+          disabled={loading}
         >
           {loading ? "Processing..." : "Update Career"}
         </Button>

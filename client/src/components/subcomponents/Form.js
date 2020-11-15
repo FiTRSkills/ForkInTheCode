@@ -95,10 +95,6 @@ function Form({ apiCall, buttonTitle, errorMessage, isEmployer, isEducator }) {
           onChange={handleChange}
         />
       )}
-      {/*<FormControlLabel*/}
-      {/*control={<Checkbox value="remember" color="primary" />}*/}
-      {/*label="Remember me"*/}
-      {/*/> commenting out remember me*/}
       <Button
         type="submit"
         fullWidth
@@ -108,8 +104,7 @@ function Form({ apiCall, buttonTitle, errorMessage, isEmployer, isEducator }) {
         id="submit"
         disabled={loading}
       >
-        {loading && "Processing..."}
-        {!loading && buttonTitle}
+        {loading ? "Processing..." : buttonTitle}
       </Button>
     </form>
   );

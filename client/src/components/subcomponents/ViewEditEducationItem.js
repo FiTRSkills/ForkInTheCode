@@ -216,6 +216,7 @@ function ViewEditEducationItem({
           fullWidth
           onClick={submitEdit}
           name="updateEducation"
+          disabled={loading}
         >
           {loading ? "Processing..." : "Update Education"}
         </Button>
