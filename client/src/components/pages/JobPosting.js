@@ -21,8 +21,6 @@ const useStyles = makeStyles((theme) => ({
   },
   infoItem: {
     marginTop: theme.spacing(6),
-  },
-  footer: {
     marginBottom: theme.spacing(3),
   },
 }));
@@ -137,7 +135,6 @@ function JobPosting(props) {
               />
             ))}
           </Box>
-          <Box className={classes.footer} />
         </Box>
       )}
     </Container>
