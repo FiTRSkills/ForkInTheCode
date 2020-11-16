@@ -107,7 +107,7 @@ function JobPosting(props) {
           </Box>
           <Box className={classes.infoItem}>
             <Typography variant={"h6"}>Company</Typography>
-            <Typography>{organization.name}</Typography>}
+            <Typography>{organization.name}</Typography>
           </Box>
           <Box className={classes.infoItem}>
             <Typography variant={"h6"}>Pay range</Typography>
