@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     marginTop: theme.spacing(6),
   },
+  test: {
+    backgroundColor: "red",
+  },
 }));
 
 function JobPosting(props) {
@@ -33,6 +36,7 @@ function JobPosting(props) {
   const [description, setDescription] = useState("");
   const [qualifications, setQualifications] = useState("");
   const [organization, setOrganization] = useState({});
+  const [skills, setSkills] = useState([]);
 
   /**
    * Change the nav title to Job
@@ -52,11 +56,17 @@ function JobPosting(props) {
           withCredentials: true,
         })
         .then((res) => {
-          setOrganization(res.data.organization);
-          setJob(res.data.jobTitle);
-          setPay(res.data.pay);
-          setDescription(res.data.description);
-          setQualifications(res.data.qualifications);
+          if (res.data) {
+            setOrganization(res.data.organization);
+            setJob(res.data.jobTitle);
+            setPay(res.data.pay);
+            setDescription(res.data.description);
+            setQualifications(res.data.qualifications);
+            const skills = res.data.skills.map((skill) => {
+              return skill.name;
+            });
+            setSkills(skills);
+          }
         })
         .catch((error) => {
           if (error.response) {
@@ -103,7 +113,7 @@ function JobPosting(props) {
           <JobPostingInfoItem title={"Objectives"} description={description} />
           <JobPostingInfoItem
             title={"Skills Needed to Apply"}
-            skills={[]}
+            skills={skills}
             isSkills={true}
           />
           <JobPostingInfoItem

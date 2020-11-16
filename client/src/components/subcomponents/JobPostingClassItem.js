@@ -3,7 +3,7 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import JobPostingClassInfoItem from "./JobPostingClassInfoItem";
+import Skills from "./Skills";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -25,22 +25,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function JobPostingClassItem({ college, skills }) {
-  /**
-   * Get string of list of skills
-   * @returns {string}
-   */
-  function getSkillsString() {
-    let skillsString = "";
-    skills.forEach((skill, index) => {
-      if (index < skills.length - 1) {
-        skillsString += skill.name + ", ";
-      } else {
-        skillsString += skill.name;
-      }
-    });
-    return skillsString;
-  }
-
   const classes = useStyles();
 
   return (
@@ -52,11 +36,12 @@ function JobPostingClassItem({ college, skills }) {
         </Button>
       </Box>
       <Box className={classes.body}>
-        <JobPostingClassInfoItem title={"College"} description={college} />
-        <JobPostingClassInfoItem
-          title={"Skills will be achieved"}
-          description={getSkillsString()}
-        />
+        <Typography variant={"h6"}>{"College"}</Typography>
+        <Typography>{college}</Typography>
+      </Box>
+      <Box className={classes.body}>
+        <Typography variant={"h6"}>{"Skills Will Be Achieved"}</Typography>
+        <Skills skills={skills} />
       </Box>
     </Box>
   );

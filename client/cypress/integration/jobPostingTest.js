@@ -21,6 +21,7 @@ describe("Job Posting", () => {
         code: 14623,
         description: "Very difficult job",
         qualifications: "Good coder",
+        skills: [{ name: "Python" }, { name: "SQL" }],
       },
     }).as("jobPostingCall");
 
@@ -28,6 +29,7 @@ describe("Job Posting", () => {
     cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobPost/30");
     cy.wait("@jobPostingCall").its("status").should("eq", 200);
     cy.contains("Good coder");
+    cy.contains("Python");
   });
 
   it("Load job posting failure", () => {
