@@ -7,10 +7,11 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
-import JobPostingInfoItem from "../subcomponents/JobPostingInfoItem";
 import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Alert } from "@material-ui/lab";
+import Skills from "../subcomponents/Skills";
+import JobPostingClassItem from "../subcomponents/JobPostingClassItem";
 
 const useStyles = makeStyles((theme) => ({
   jobHeader: {
@@ -18,8 +19,11 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     marginTop: theme.spacing(6),
   },
-  test: {
-    backgroundColor: "red",
+  infoItem: {
+    marginTop: theme.spacing(6),
+  },
+  footer: {
+    marginBottom: theme.spacing(3),
   },
 }));
 
@@ -101,26 +105,39 @@ function JobPosting(props) {
               Apply For Job
             </Button>
           </Box>
-          <JobPostingInfoItem
-            title={"Company"}
-            description={organization.name}
-          />
-          <JobPostingInfoItem title={"Pay Range"} description={pay} />
-          <JobPostingInfoItem
-            title={"Requirements"}
-            description={qualifications}
-          />
-          <JobPostingInfoItem title={"Objectives"} description={description} />
-          <JobPostingInfoItem
-            title={"Skills Needed to Apply"}
-            skills={skills}
-            isSkills={true}
-          />
-          <JobPostingInfoItem
-            title={"Classes Available In Your Area"}
-            availableClasses={[]}
-            isClasses={true}
-          />
+          <Box className={classes.infoItem}>
+            <Typography variant={"h6"}>Company</Typography>
+            <Typography>{organization.name}</Typography>}
+          </Box>
+          <Box className={classes.infoItem}>
+            <Typography variant={"h6"}>Pay range</Typography>
+            <Typography>{pay}</Typography>
+          </Box>
+          <Box className={classes.infoItem}>
+            <Typography variant={"h6"}>Requirements</Typography>
+            <Typography>{qualifications}</Typography>
+          </Box>
+          <Box className={classes.infoItem}>
+            <Typography variant={"h6"}>Objectives</Typography>
+            <Typography>{description}</Typography>
+          </Box>
+          <Box className={classes.infoItem}>
+            <Typography variant={"h6"}>Skills Needed to Apply</Typography>
+            <Skills skills={skills} />
+          </Box>
+          <Box className={classes.infoItem}>
+            <Typography variant={"h6"}>
+              Classes Available In Your Area
+            </Typography>
+            {[].map((classItem) => (
+              <JobPostingClassItem
+                college={classItem.college}
+                skills={classItem.skills}
+                title={classItem.name}
+              />
+            ))}
+          </Box>
+          <Box className={classes.footer} />
         </Box>
       )}
     </Container>

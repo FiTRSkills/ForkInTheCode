@@ -24,13 +24,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function JobPostingClassItem({ college, skills }) {
+function JobPostingClassItem({ college, skills, title }) {
   const classes = useStyles();
 
   return (
     <Box className={classes.container}>
       <Box className={classes.header}>
-        <Typography variant={"h5"}>Special course of JAVA</Typography>
+        <Typography variant={"h5"}>{title}</Typography>
         <Button name={"readMore"} variant="contained" color="primary">
           Read More
         </Button>
