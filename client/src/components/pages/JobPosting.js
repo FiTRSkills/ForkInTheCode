@@ -145,9 +145,7 @@ function JobPosting(props) {
 }
 
 function mapStateToProps(state) {
-  return {
-    user: state.authentication,
-  };
+  return {};
 }
 
 function mapDispatchToProps(dispatch) {
