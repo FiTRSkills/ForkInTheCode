@@ -38,26 +38,35 @@ function Login(props) {
 
   useEffect(() => {
     if (props.user !== undefined && Object.keys(props.user).length > 0) {
-      props.history.push("/Home");
+      props.history.push("/JobSearch");
     }
     props.changeCurrentPage("Login");
   });
 
-  function attemptLogin({email, password}) {
+  function attemptLogin({ email, password }) {
     return axios
-      .post(process.env.REACT_APP_SERVER_URL + "/Login", { email, password })
+      .post(
+        process.env.REACT_APP_SERVER_URL + "/Login",
+        { email, password },
+        { withCredentials: true }
+      )
       .then((response) => {
         if (response.status === 200) {
-          props.updateUser({ email: response.data });
-          props.history.push("/Home");
+          props.updateUser({ type: response.data });
+          props.history.push("/JobSearch");
         } else {
-          setErrorMessage("Your Email and/or Password was incorrect, please try again.")
+          setErrorMessage(
+            "Your Email and/or Password was incorrect, please try again."
+          );
         }
       })
       .catch((error) => {
-        setErrorMessage("Your Email and/or Password was incorrect, please try again.")
+        setErrorMessage(
+          "Your Email and/or Password was incorrect, please try again."
+        );
         console.log(error);
-      });  }
+      });
+  }
 
   const classes = useStyles();
 
@@ -71,7 +80,11 @@ function Login(props) {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Form apiCall={attemptLogin} buttonTitle="Sign In" errorMessage={errorMessage} />
+        <Form
+          apiCall={attemptLogin}
+          buttonTitle="Sign In"
+          errorMessage={errorMessage}
+        />
         <Grid container>
           <Grid item xs>
             <Link href="#" variant="body2" to="#">

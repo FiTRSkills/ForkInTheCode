@@ -9,17 +9,16 @@
 // ***********************************************
 //
 //
+
 // -- This is a parent command --
 Cypress.Commands.add("fakeLogin", () => {
-  cy.visit("/Login");
+  cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/Login");
   cy.server();
   cy.route({
     method: "POST",
-    url: "http://localhost:9000/Login",
+    url: Cypress.env("REACT_APP_SERVER_URL") + "/Login",
     status: 200,
-    response: {
-      user: { id: 1 },
-    },
+    response: "JobSeekerProfile",
   }).as("loginCall");
   cy.get("#email").type("email@email.com");
   cy.get("#password").type("password");
@@ -28,28 +27,49 @@ Cypress.Commands.add("fakeLogin", () => {
 });
 
 Cypress.Commands.add("fakeProfile", () => {
+  cy.fakeLogin();
   // Stub get profile error response
   cy.route({
     method: "GET",
-    url: "http://localhost:9000/Profile",
+    url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
     status: 200,
     response: {
       firstname: "John",
-      lastname: "Appleseed",
+      lastname: "Apple",
       dob: "1998-01-05",
       education: [
         {
-          degree: "BS Software Engineering",
-          major: "Software Engineering",
-          organization: "RIT",
+          degree: "BS SE",
+          major: "SE",
+          organization: {
+            _id: "id",
+            name: "RIT",
+          },
         },
       ],
       career: [
         {
-          jobTitle: "Student",
+          jobTitle: "Dev",
           startDate: "2018-01-01",
           endDate: "2020-01-01",
-          organization: "Apple",
+          organization: {
+            _id: "id",
+            name: "Apple",
+          },
+        },
+      ],
+      skills: [
+        {
+          _id: "1",
+          name: "skill1",
+        },
+        {
+          _id: "2",
+          name: "skill2",
+        },
+        {
+          _id: "3",
+          name: "skill3",
         },
       ],
     },
@@ -57,8 +77,6 @@ Cypress.Commands.add("fakeProfile", () => {
 
   // Go to profile. Verify profile loaded success.
   cy.get("#Profile").click();
-  cy.wait("@profileCall").its("status").should("eq", 200);
-  cy.get("p[name='firstName']").should("contain", "John");
 });
 //
 //
