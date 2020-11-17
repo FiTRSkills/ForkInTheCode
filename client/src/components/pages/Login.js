@@ -52,7 +52,7 @@ function Login(props) {
       )
       .then((response) => {
         if (response.status === 200) {
-          props.updateUser(response.data);
+          props.updateUser({ type: response.data });
           props.history.push("/JobSearch");
         } else {
           setErrorMessage(

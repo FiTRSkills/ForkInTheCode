@@ -42,7 +42,6 @@ function JobSearchForm(props) {
             withCredentials: true,
           })
           .then((response) => {
-            console.log(response);
             if (response.status === 200) {
               setSkills(response.data.skills.map((skill) => skill.name));
             }

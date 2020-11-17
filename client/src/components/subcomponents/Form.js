@@ -11,10 +11,6 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
   form: {
     maxWidth: 480,
     marginTop: theme.spacing(1),
@@ -24,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Form({apiCall, buttonTitle, errorMessage, isEmployer, isEducator}) {
+function Form({ apiCall, buttonTitle, errorMessage, isEmployer, isEducator }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [organization, setOrganization] = useState("");
@@ -32,7 +28,7 @@ function Form({apiCall, buttonTitle, errorMessage, isEmployer, isEducator}) {
 
   function submit(event) {
     setLoading(true);
-    apiCall({email, password, organization}).finally(() => {
+    apiCall({ email, password, organization }).finally(() => {
       setLoading(false);
     });
     event.preventDefault();
@@ -58,9 +54,7 @@ function Form({apiCall, buttonTitle, errorMessage, isEmployer, isEducator}) {
 
   return (
     <form className={classes.form} onSubmit={submit}>
-      {errorMessage !== "" && (
-        <Alert severity="error">{errorMessage}</Alert>
-      )}
+      {errorMessage !== "" && <Alert severity="error">{errorMessage}</Alert>}
       <TextField
         variant="outlined"
         margin="normal"
@@ -101,10 +95,6 @@ function Form({apiCall, buttonTitle, errorMessage, isEmployer, isEducator}) {
           onChange={handleChange}
         />
       )}
-      {/*<FormControlLabel*/}
-      {/*control={<Checkbox value="remember" color="primary" />}*/}
-      {/*label="Remember me"*/}
-      {/*/> commenting out remember me*/}
       <Button
         type="submit"
         fullWidth
@@ -114,8 +104,7 @@ function Form({apiCall, buttonTitle, errorMessage, isEmployer, isEducator}) {
         id="submit"
         disabled={loading}
       >
-        {loading && ("Processing...")}
-        {!loading && buttonTitle}
+        {loading ? "Processing..." : buttonTitle}
       </Button>
     </form>
   );
