@@ -25,6 +25,12 @@ describe("testing index.js routes", () => {
     expect(res.text).toEqual("Access Denied.");
   });
 
+  it("GET /profile/usertype - no user session", async () => {
+    const res = await request.get("/profile");
+    expect(res.statusCode).toEqual(400);
+    expect(res.text).toEqual("Access Denied.");
+  });
+
   it("GET /profile - user session", async () => {
     const registerres = await request
       .post("/register")
@@ -338,5 +344,13 @@ describe("testing index.js routes", () => {
     expect(date.getDate()).toEqual(19);
     expect(date.getFullYear()).toEqual(1923);
     expect(body.skills).toEqual([]);
+  });
+
+  it("GET /profile/usertype", async () => {
+    const res = await request
+      .get("/profile/usertype")
+      .set("Cookie", [session_info]);
+    expect(res.statusCode).toEqual(200);
+    expect(res.text).toEqual("JobSeekerProfile");
   });
 });
