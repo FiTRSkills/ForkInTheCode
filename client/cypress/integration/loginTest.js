@@ -7,13 +7,13 @@ describe("Authentication", () => {
       method: "POST",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/Login",
       status: 200,
-      response: { type: "JobSeekerProfile" },
+      response: "JobSeekerProfile",
     }).as("loginCall");
     cy.get("#email").type("email@email.com");
     cy.get("#password").type("password");
     cy.get("#submit").click();
     cy.wait("@loginCall").its("status").should("eq", 200);
-    cy.get("#navBarTitle").should("contain", "Home");
+    cy.get("#navBarTitle").should("contain", "Job Search");
   });
 
   it("Fails to log in", () => {

@@ -5,11 +5,12 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import Home from "./components/pages/Home";
+import JobSearch from "./components/pages/JobSearch";
 import Login from "./components/pages/Login";
 import NavBar from "./components/subcomponents/NavBar";
 import SignUp from "./components/pages/SignUp";
 import Profile from "./components/pages/Profile";
+import JobPosting from "./components/pages/JobPosting";
 
 function App() {
   return (
@@ -17,14 +18,16 @@ function App() {
       <div>
         <NavBar />
         <Switch>
-          <Redirect exact from="/" to="/Home" />
-          <Route exact component={Home} path="/Home" />
+          <Redirect exact from="/" to="/JobSearch" />
+          <Redirect exact from="/Job Search" to="/JobSearch" />
+          <Route exact component={JobSearch} path="/JobSearch" />
           <Redirect exact from="/Sign Out" to="/Login" />
           <Redirect exact from="/Log In" to="/Login" />
           <Route exact component={Login} path="/Login" />
           <Redirect exact from="/Sign Up" to="/SignUp" />
           <Route exact component={SignUp} path="/SignUp" />
           <Route exact component={Profile} path="/Profile" />
+          <Route component={JobPosting} path="/JobPost/:id" />
         </Switch>
       </div>
     </Router>
