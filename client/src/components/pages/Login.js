@@ -10,8 +10,10 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { updateUser, changeCurrentPage } from "../../redux/actions";
 import "./Login.css";
-import { Grid } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
 import Form from "../subcomponents/Form";
+import { checkAndUpdateAuth } from "../../services/AuthService";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,13 +37,20 @@ const useStyles = makeStyles((theme) => ({
 
 function Login(props) {
   const [errorMessage, setErrorMessage] = useState("");
+  const [checkedAuth, setCheckedAuth] = useState(false);
 
   useEffect(() => {
-    if (props.user !== undefined && Object.keys(props.user).length > 0) {
-      props.history.push("/JobSearch");
+    async function asyncAuth() {
+      let response = await checkAndUpdateAuth(props.user.type);
+      if (response === undefined || response.length < 1) {
+        props.changeCurrentPage("Login");
+        setCheckedAuth(true);
+      } else {
+        props.history.push("/JobSearch");
+      }
     }
-    props.changeCurrentPage("Login");
-  });
+    asyncAuth();
+  }, []);
 
   function attemptLogin({ email, password }) {
     return axios
@@ -69,6 +78,10 @@ function Login(props) {
   }
 
   const classes = useStyles();
+
+  if (!checkedAuth) {
+    return <Box />;
+  }
 
   return (
     <Container component="main" maxWidth="xs">

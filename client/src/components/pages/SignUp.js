@@ -8,13 +8,15 @@ import SignUpTabPanel from "../subcomponents/SignUpTabPanel";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Box from "@material-ui/core/Box";
+import { checkAndUpdateAuth } from "../../services/AuthService";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-      marginTop: theme.spacing(4),
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
+    marginTop: theme.spacing(4),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
@@ -24,26 +26,37 @@ const useStyles = makeStyles((theme) => ({
 
 function SignUp(props) {
   const [tabIndex, setTabIndex] = useState(0);
+  const [checkedAuth, setCheckedAuth] = useState(false);
 
   function handleChange(event, newIndex) {
     setTabIndex(newIndex);
-  };
+  }
 
   useEffect(() => {
-    if (props.user !== undefined && Object.keys(props.user).length > 0) {
-      props.history.push("/JobSearch");
+    async function asyncAuth() {
+      let response = await checkAndUpdateAuth(props.user.type);
+      if (response === undefined || response.length < 1) {
+        props.changeCurrentPage("Sign Up");
+        setCheckedAuth(true);
+      } else {
+        props.history.push("/JobSearch");
+      }
     }
-    props.changeCurrentPage("Sign Up");
-  });
+    asyncAuth();
+  }, []);
 
   const classes = useStyles();
 
+  if (!checkedAuth) {
+    return <Box />;
+  }
+
   return (
     <Container>
-     <div className={classes.paper}>
-         <Avatar className={classes.avatar}>
-             <LockOutlinedIcon />
-         </Avatar>
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
         <Tabs
           value={tabIndex}
           onChange={handleChange}
@@ -53,9 +66,24 @@ function SignUp(props) {
           <Tab label="Employer" id="employerTab" />
           <Tab label="Educator" id="educatorTab" />
         </Tabs>
-        <SignUpTabPanel currentTab={tabIndex} index={0} typeTitle="Job Seeker" {...props} />
-        <SignUpTabPanel currentTab={tabIndex} index={1} typeTitle="Employer" {...props} />
-        <SignUpTabPanel currentTab={tabIndex} index={2} typeTitle="Educator" {...props} />
+        <SignUpTabPanel
+          currentTab={tabIndex}
+          index={0}
+          typeTitle="Job Seeker"
+          {...props}
+        />
+        <SignUpTabPanel
+          currentTab={tabIndex}
+          index={1}
+          typeTitle="Employer"
+          {...props}
+        />
+        <SignUpTabPanel
+          currentTab={tabIndex}
+          index={2}
+          typeTitle="Educator"
+          {...props}
+        />
       </div>
     </Container>
   );
