@@ -189,4 +189,16 @@ profileController.postSkill = async function (req, res) {
   res.status(200).send("Successfully added skill.");
 };
 
+/**
+ * functionality for getting the usertype
+ * @name getUserType
+ * @function
+ * @alias module:/controllers/profilecontroller
+ * @property {request} request - contains user
+ * @returns {string} response - the usertype
+ */
+profileController.getUserType = async function (req, res) {
+  res.status(200).send(req.user.type);
+};
+
 module.exports = profileController;
