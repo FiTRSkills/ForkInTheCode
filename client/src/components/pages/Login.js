@@ -50,6 +50,7 @@ function Login(props) {
       }
     }
     asyncAuth();
+    // eslint-disable-next-line
   }, []);
 
   function attemptLogin({ email, password }) {

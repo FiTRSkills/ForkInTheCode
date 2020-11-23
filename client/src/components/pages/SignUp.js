@@ -43,6 +43,7 @@ function SignUp(props) {
       }
     }
     asyncAuth();
+    // eslint-disable-next-line
   }, []);
 
   const classes = useStyles();

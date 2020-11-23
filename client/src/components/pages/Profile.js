@@ -48,6 +48,7 @@ function Profile(props) {
       }
     }
     asyncAuth();
+    // eslint-disable-next-line
   }, []);
 
   if (!authenticated) {
