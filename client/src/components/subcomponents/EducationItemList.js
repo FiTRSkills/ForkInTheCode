@@ -51,7 +51,6 @@ function EducationItemList() {
    */
   const [education, setEducation] = useState([]);
   const [showAddEducationPopup, setShowAddEducationPopup] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [edit, setEdit] = useState(false);
 
@@ -89,7 +88,6 @@ function EducationItemList() {
 
   function editEducation(editedEducation) {
     return new Promise((resolve, reject) => {
-      setLoading(true);
       axios
         .patch(url, editedEducation, { withCredentials: true })
         .then(() => {
@@ -103,16 +101,12 @@ function EducationItemList() {
           } else {
             reject("An error has occoured while trying to edit a education.");
           }
-        })
-        .finally(() => {
-          setLoading(false);
         });
     });
   }
 
   function deleteEducation(id) {
     return new Promise((resolve, reject) => {
-      setLoading(true);
       axios({
         method: "DELETE",
         url,
@@ -137,7 +131,6 @@ function EducationItemList() {
         })
         .finally(() => {
           updateEducation();
-          setLoading(false);
         });
     });
   }
@@ -152,7 +145,7 @@ function EducationItemList() {
         <EditIcon />
       </Button>
       <Typography variant={"h5"}>Education</Typography>
-      {error && loading && <Alert severity={"error"}>{error}</Alert>}
+      {error && <Alert severity={"error"}>{error}</Alert>}
       {education.map((educationItem, index) => (
         <ViewEditEducationItem
           key={index}

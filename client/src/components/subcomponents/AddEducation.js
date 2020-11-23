@@ -180,6 +180,7 @@ function AddEducation({ closePopup, updateEducation }) {
           color="primary"
           className={classes.submit}
           id="addEducationSubmit"
+          disabled={loading}
         >
           {!loading ? "Save" : "Processing..."}
         </Button>

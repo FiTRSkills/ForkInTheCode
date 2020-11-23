@@ -190,6 +190,7 @@ function AddCareer({ closePopup, updateCareer }) {
           color="primary"
           className={classes.submit}
           id="addCareerSubmit"
+          disabled={loading}
         >
           {!loading ? "Save" : "Processing..."}
         </Button>
