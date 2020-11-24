@@ -179,6 +179,8 @@ describe("Load profile careers", () => {
       },
     }).as("profileCall");
     cy.get("#career0 [name='deleteCareer']").click();
+    cy.contains("Are you sure you would like to delete this Career?");
+    cy.get("#confirmationConfirm").click();
     cy.wait("@deleteProfileCall");
     cy.wait("@profileCall");
     cy.get("#career0").should("not.exist");
@@ -197,9 +199,22 @@ describe("Load profile careers", () => {
     cy.wait(150);
     cy.get("#career0 [name='editCareer']").click();
     cy.get("#career0 [name='deleteCareer']").click();
+    cy.contains("Are you sure you would like to delete this Career?");
+    cy.get("#confirmationConfirm").click();
     cy.wait("@deleteProfileCall");
     cy.get("#career0").should("exist");
     cy.contains("An error has occoured while trying to delete a career.");
+  });
+
+  it("Delete career profile cancel", () => {
+    cy.fakeProfile();
+    cy.wait("@profileCall");
+    cy.get("#editCareers").click();
+    cy.get("#career0 [name='editCareer']").click();
+    cy.get("#career0 [name='deleteCareer']").click();
+    cy.contains("Are you sure you would like to delete this Career?");
+    cy.get("#confirmationCancel").click();
+    cy.get("#career0").should("exist");
   });
 
   it("Closing add career clears data", () => {

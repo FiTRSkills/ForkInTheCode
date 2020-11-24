@@ -192,6 +192,8 @@ describe("Load profile educations", () => {
       },
     }).as("profileCall");
     cy.get("#education0 [name='deleteEducation']").click();
+    cy.contains("Are you sure you would like to delete this Education?");
+    cy.get("#confirmationConfirm").click();
     cy.wait("@deleteProfileCall");
     cy.wait("@profileCall");
     cy.get("#education0").should("not.exist");
@@ -210,9 +212,23 @@ describe("Load profile educations", () => {
     cy.wait(150);
     cy.get("#education0 [name='editEducation']").click();
     cy.get("#education0 [name='deleteEducation']").click();
+    cy.contains("Are you sure you would like to delete this Education?");
+    cy.get("#confirmationConfirm").click();
     cy.wait("@deleteProfileCall");
     cy.get("#education0").should("exist");
     cy.contains("An error has occoured while trying to delete a education.");
+  });
+
+  it("Delete education profile cancel", () => {
+    cy.fakeProfile();
+    cy.wait("@profileCall");
+    cy.get("#editEducations").click();
+    cy.wait(150);
+    cy.get("#education0 [name='editEducation']").click();
+    cy.get("#education0 [name='deleteEducation']").click();
+    cy.contains("Are you sure you would like to delete this Education?");
+    cy.get("#confirmationCancel").click();
+    cy.get("#education0").should("exist");
   });
 
   it("Closing add education clears data", () => {
