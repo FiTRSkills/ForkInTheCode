@@ -3,7 +3,7 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
-import Form from "../subcomponents/Form";
+import Form from "../Shared/Form";
 
 const TAB_TYPES = ["JobSeekerProfile", "EmployerProfile", "EducatorProfile"];
 const useStyles = makeStyles((theme) => ({

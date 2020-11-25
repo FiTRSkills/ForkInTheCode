@@ -12,7 +12,7 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import { Alert } from "@material-ui/lab";
-import ConfirmationDialogue from "./ConfirmationDialogue";
+import ConfirmationDialogue from "../Shared/ConfirmationDialogue";
 
 const useStyles = makeStyles((theme) => ({
   field: {

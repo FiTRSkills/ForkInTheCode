@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import JobSearch from "./components/pages/JobSearch";
 import Login from "./components/pages/Login";
-import NavBar from "./components/subcomponents/NavBar";
+import NavBar from "./components/subcomponents/Shared/NavBar";
 import SignUp from "./components/pages/SignUp";
 import Profile from "./components/pages/Profile";
 import JobPosting from "./components/pages/JobPosting";

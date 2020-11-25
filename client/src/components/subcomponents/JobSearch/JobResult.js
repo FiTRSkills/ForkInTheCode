@@ -4,7 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from "react-router-dom";
-import Skills from "../subcomponents/Skills";
+import Skills from "../Shared/Skills";
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(4),

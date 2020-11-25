@@ -4,7 +4,7 @@ import { changeCurrentPage } from "../../redux/actions";
 import Container from "@material-ui/core/Container";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import SignUpTabPanel from "../subcomponents/SignUpTabPanel";
+import SignUpTabPanel from "../subcomponents/SignUp/SignUpTabPanel";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
