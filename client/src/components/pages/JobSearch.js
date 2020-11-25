@@ -11,7 +11,8 @@ function JobSearch(props) {
   const [errorMessage, setErrorMessage] = useState("");
   useEffect(() => {
     props.changeCurrentPage("Job Search");
-  });
+    // eslint-disable-next-line
+  }, []);
 
   function search(zipCode, skills) {
     return axios

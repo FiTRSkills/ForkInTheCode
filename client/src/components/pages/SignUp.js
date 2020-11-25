@@ -8,6 +8,8 @@ import SignUpTabPanel from "../subcomponents/SignUpTabPanel";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Box from "@material-ui/core/Box";
+import { checkAndUpdateAuth } from "../../services/AuthService";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -24,19 +26,31 @@ const useStyles = makeStyles((theme) => ({
 
 function SignUp(props) {
   const [tabIndex, setTabIndex] = useState(0);
+  const [checkedAuth, setCheckedAuth] = useState(false);
 
   function handleChange(event, newIndex) {
     setTabIndex(newIndex);
   }
 
   useEffect(() => {
-    if (props.user !== undefined && Object.keys(props.user).length > 0) {
-      props.history.push("/JobSearch");
+    async function asyncAuth() {
+      let response = await checkAndUpdateAuth(props.user.type);
+      if (response === undefined || response.length < 1) {
+        props.changeCurrentPage("Sign Up");
+        setCheckedAuth(true);
+      } else {
+        props.history.push("/JobSearch");
+      }
     }
-    props.changeCurrentPage("Sign Up");
-  });
+    asyncAuth();
+    // eslint-disable-next-line
+  }, []);
 
   const classes = useStyles();
+
+  if (!checkedAuth) {
+    return <Box />;
+  }
 
   return (
     <Container>
