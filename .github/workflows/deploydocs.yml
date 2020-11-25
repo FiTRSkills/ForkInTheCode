@@ -30,7 +30,7 @@ jobs:
           PORT: 22
           script: |
             cd /home/senior-projects/forkinthecode/public_html
-            rmdir /s docs
+            rmdir docs /s /q
             mv server/docs .
             rmdir server
             chmod -R g+w docs
