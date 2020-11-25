@@ -4,6 +4,7 @@ import { updateUser } from "../redux/actions";
 
 const endpoints = {
   GET_USER_TYPE: "/profile/usertype",
+  LOGOUT: "/logout",
 };
 
 export async function checkAndUpdateAuth(userType) {
@@ -25,4 +26,10 @@ export async function checkAndUpdateAuth(userType) {
       return undefined;
     });
   return result;
+}
+
+export function logOut() {
+  axios.get(process.env.REACT_APP_SERVER_URL + endpoints.LOGOUT, {
+    withCredentials: true,
+  });
 }
