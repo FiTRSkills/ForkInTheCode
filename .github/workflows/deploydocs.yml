@@ -31,7 +31,6 @@ jobs:
           script: |
             cd /home/senior-projects/forkinthecode/public_html
             rm -r docs
-            rmdir docs
             mv server/docs .
             rmdir server
             chmod -R g+w docs
