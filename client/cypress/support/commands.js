@@ -20,9 +20,21 @@ Cypress.Commands.add("fakeLogin", () => {
     status: 200,
     response: "JobSeekerProfile",
   }).as("loginCall");
+  cy.route({
+    method: "GET",
+    url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/usertype",
+    status: 200,
+    response: "",
+  }).as("userTypeCall");
   cy.get("#email").type("email@email.com");
   cy.get("#password").type("password");
   cy.get("#submit").click();
+  cy.route({
+    method: "GET",
+    url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/usertype",
+    status: 200,
+    response: "JobSeekerProfile",
+  }).as("userTypeCall");
   cy.wait("@loginCall");
 });
 

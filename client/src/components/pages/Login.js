@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { updateUser, changeCurrentPage } from "../../redux/actions";
 import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
 import Form from "../subcomponents/Form";
 import { checkAndUpdateAuth } from "../../services/AuthService";
 
@@ -81,7 +80,7 @@ function Login(props) {
   const classes = useStyles();
 
   if (!checkedAuth) {
-    return <Box />;
+    return <Box>Checking for previous session...</Box>;
   }
 
   return (
