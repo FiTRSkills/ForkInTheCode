@@ -12,6 +12,7 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import { Alert } from "@material-ui/lab";
+import ConfirmationDialogue from "./ConfirmationDialogue";
 
 const useStyles = makeStyles((theme) => ({
   field: {
@@ -49,6 +50,7 @@ function ViewEditEducationItem({
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showConfirmDialogue, setShowConfirmDialogue] = useState(false);
 
   // Whenever we swap between allowing editing and not make the individual items not in the edit state
   useEffect(() => {
@@ -96,6 +98,14 @@ function ViewEditEducationItem({
       .finally(setLoading(false));
   }
 
+  function cancelDelete() {
+    setShowConfirmDialogue(false);
+  }
+
+  function confirmDelete() {
+    setShowConfirmDialogue(true);
+  }
+
   function submitDelete() {
     setLoading(true);
     deleteEducation(educationItem._id)
@@ -132,7 +142,7 @@ function ViewEditEducationItem({
         <Button
           name="deleteEducation"
           className={classes.icon}
-          onClick={submitDelete}
+          onClick={confirmDelete}
         >
           <CloseIcon />
         </Button>
@@ -221,6 +231,12 @@ function ViewEditEducationItem({
           {loading ? "Processing..." : "Update Education"}
         </Button>
       )}
+      <ConfirmationDialogue
+        title="Are you sure you would like to delete this Education?"
+        open={showConfirmDialogue}
+        onCancel={cancelDelete}
+        onConfirm={submitDelete}
+      />
     </Box>
   );
 }
