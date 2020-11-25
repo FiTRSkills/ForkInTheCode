@@ -48,7 +48,7 @@ function NavBar(props) {
   useEffect(() => {
     assignBarContents(Object.keys(props.user).length > 0);
     // eslint-disable-next-line
-  }, [props.currentPage]);
+  }, [props.currentPage, props.user]);
 
   // Helper functions
   function assignBarContents(isAuthenticated) {

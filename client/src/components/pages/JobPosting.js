@@ -45,7 +45,8 @@ function JobPosting(props) {
    */
   useEffect(() => {
     props.changeCurrentPage("Job Post");
-  });
+    // eslint-disable-next-line
+  }, []);
 
   /**
    * Load the job posting on init

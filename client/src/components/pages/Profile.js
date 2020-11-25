@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "@material-ui/core/Container";
 import { changeCurrentPage } from "../../redux/actions";
 import { connect } from "react-redux";
@@ -8,6 +8,8 @@ import CareerItemList from "../subcomponents/CareerItemList";
 import EducationItemList from "../subcomponents/EducationItemList";
 import { makeStyles } from "@material-ui/core/styles";
 import ProfileSkills from "../subcomponents/ProfileSkills";
+import Box from "@material-ui/core/Box";
+import { checkAndUpdateAuth } from "../../services/AuthService";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -30,16 +32,28 @@ function Profile(props) {
   // Style hook
   const classes = useStyles();
 
+  const [authenticated, setAuthenticated] = useState(false);
+
   /**
    * Change the nav title to Profile, but if user is not signed in, redirect to login
    */
   useEffect(() => {
-    if (props.user !== undefined && Object.keys(props.user).length === 0) {
-      props.history.push("/Login");
-    } else {
-      props.changeCurrentPage("Profile");
+    async function asyncAuth() {
+      let response = await checkAndUpdateAuth(props.user.type);
+      if (response === undefined || response.length < 1) {
+        props.history.push("/Login");
+      } else {
+        props.changeCurrentPage("Profile");
+        setAuthenticated(true);
+      }
     }
-  });
+    asyncAuth();
+    // eslint-disable-next-line
+  }, []);
+
+  if (!authenticated) {
+    return <Box />;
+  }
 
   return (
     <Container className={classes.container}>
