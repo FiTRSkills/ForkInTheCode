@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Results({results}) {
+function Results({ results }) {
   const classes = useStyles();
   return (
     <Box className={classes.paper} id="results">
@@ -37,4 +37,5 @@ const mapStateToProps = (state) => {
     results: state.searchResults.results,
   };
 };
+
 export default connect(mapStateToProps)(Results);

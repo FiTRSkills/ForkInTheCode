@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { changeCurrentPage, logOut } from "../../redux/actions";
+import { logOut } from "../../redux/actions";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -113,10 +113,17 @@ function NavBar(props) {
   );
 }
 
-export default connect(
-  (state) => ({
+const mapStateToProps = (state) => {
+  return {
     user: state.authentication,
     currentPage: state.navigation.currentPage,
-  }),
-  { changeCurrentPage, logOut }
-)(NavBar);
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logOut: () => dispatch(logOut()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

@@ -105,9 +105,11 @@ function JobSearchForm(props) {
     </Box>
   );
 }
+
 const mapStateToProps = (state) => {
   return {
     user: state.authentication,
   };
 };
+
 export default connect(mapStateToProps)(JobSearchForm);

@@ -47,9 +47,9 @@ function JobSearch(props) {
     </Container>
   );
 }
+
 const mapStateToProps = (state) => {
   return {
-    user: state.authentication,
     results: state.searchResults.results,
   };
 };
@@ -60,4 +60,5 @@ const mapDispatchToProps = (dispatch) => {
     updateResults: (content) => dispatch(updateResults(content)),
   };
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(JobSearch);
