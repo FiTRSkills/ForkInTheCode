@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { changeCurrentPage, updateResults } from "../../redux/actions";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import JobSearchForm from "../subcomponents/JobSearchForm";
-import Results from "../subcomponents/Results";
+import JobSearchForm from "../subcomponents/JobSearch/JobSearchForm";
+import Results from "../subcomponents/JobSearch/Results";
 import axios from "axios";
 
 function JobSearch(props) {

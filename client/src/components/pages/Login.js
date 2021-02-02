@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { updateUser, changeCurrentPage } from "../../redux/actions";
 import Grid from "@material-ui/core/Grid";
-import Form from "../subcomponents/Form";
+import Form from "../subcomponents/Shared/Form";
 import { checkAndUpdateAuth } from "../../services/AuthService";
 
 const useStyles = makeStyles((theme) => ({

@@ -10,8 +10,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Alert } from "@material-ui/lab";
-import Skills from "../subcomponents/Skills";
-import JobPostingClassItem from "../subcomponents/JobPostingClassItem";
+import Skills from "../subcomponents/Shared/Skills";
+import JobPostingClassItem from "../subcomponents/JobPosting/JobPostingClassItem";
 
 const useStyles = makeStyles((theme) => ({
   jobHeader: {

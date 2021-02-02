@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import Container from "@material-ui/core/Container";
 import { changeCurrentPage } from "../../redux/actions";
 import { connect } from "react-redux";
-import MainProfile from "../subcomponents/MainProfile";
+import MainProfile from "../subcomponents/Profile/MainProfile";
 import Divider from "@material-ui/core/Divider";
-import CareerItemList from "../subcomponents/CareerItemList";
-import EducationItemList from "../subcomponents/EducationItemList";
+import CareerItemList from "../subcomponents/Profile/CareerItemList";
+import EducationItemList from "../subcomponents/Profile/EducationItemList";
 import { makeStyles } from "@material-ui/core/styles";
-import ProfileSkills from "../subcomponents/ProfileSkills";
+import ProfileSkills from "../subcomponents/Profile/ProfileSkills";
 import Box from "@material-ui/core/Box";
 import { checkAndUpdateAuth } from "../../services/AuthService";
 
