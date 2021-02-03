@@ -2,6 +2,7 @@ import Avatar from "@material-ui/core/Avatar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -9,9 +10,9 @@ import Container from "@material-ui/core/Container";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { updateUser, changeCurrentPage } from "../../redux/actions";
-import "./Login.css";
-import { Grid } from "@material-ui/core";
-import Form from "../subcomponents/Form";
+import Grid from "@material-ui/core/Grid";
+import Form from "../subcomponents/Shared/Form";
+import { checkAndUpdateAuth } from "../../services/AuthService";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,13 +36,21 @@ const useStyles = makeStyles((theme) => ({
 
 function Login(props) {
   const [errorMessage, setErrorMessage] = useState("");
+  const [checkedAuth, setCheckedAuth] = useState(false);
 
   useEffect(() => {
-    if (props.user !== undefined && Object.keys(props.user).length > 0) {
-      props.history.push("/JobSearch");
+    async function asyncAuth() {
+      let response = await checkAndUpdateAuth(props.user.type);
+      if (response === undefined || response.length < 1) {
+        props.changeCurrentPage("Login");
+        setCheckedAuth(true);
+      } else {
+        props.history.push("/JobSearch");
+      }
     }
-    props.changeCurrentPage("Login");
-  });
+    asyncAuth();
+    // eslint-disable-next-line
+  }, []);
 
   function attemptLogin({ email, password }) {
     return axios
@@ -70,10 +79,14 @@ function Login(props) {
 
   const classes = useStyles();
 
+  if (!checkedAuth) {
+    return <Box>Checking for previous session...</Box>;
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <div className={classes.paper}>
+      <Box className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
@@ -97,7 +110,7 @@ function Login(props) {
             </Link>
           </Grid>
         </Grid>
-      </div>
+      </Box>
     </Container>
   );
 }

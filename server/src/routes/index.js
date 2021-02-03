@@ -310,6 +310,15 @@ router.post(
   profile.postSkill
 );
 
+/**
+ * Routing serving retrieving logged in user's usertype
+ * @name GET /profile/usertype
+ * @function
+ * @alias module:/routers/profile
+ * @returns {string} message - the usertype
+ */
+router.get("/profile/usertype", sessionValidation, profile.getUserType);
+
 //The 404 Route handles returns on routes that don't exist
 router.all("*", function (req, res) {
   res.status(404).send("Not Found");

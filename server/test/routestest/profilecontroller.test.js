@@ -25,6 +25,12 @@ describe("testing index.js routes", () => {
     expect(res.text).toEqual("Access Denied.");
   });
 
+  it("GET /profile/usertype - no user session", async () => {
+    const res = await request.get("/profile");
+    expect(res.statusCode).toEqual(400);
+    expect(res.text).toEqual("Access Denied.");
+  });
+
   it("GET /profile - user session", async () => {
     const registerres = await request
       .post("/register")
@@ -193,6 +199,20 @@ describe("testing index.js routes", () => {
     expect(body.education).toEqual([]);
   });
 
+  it("POST /profile/career - earlier endDate than startDate", async () => {
+    const res = await request
+      .post("/profile/career")
+      .set("Cookie", [session_info])
+      .send({
+        jobTitle: "Senior Software Engineer",
+        startDate: "2012/09/10",
+        endDate: "2008/02/07",
+        organization: "RIT",
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.text).toEqual("End date cannot be before start date.");
+  });
+
   it("POST /profile/career - add career information", async () => {
     const res = await request
       .post("/profile/career")
@@ -228,6 +248,21 @@ describe("testing index.js routes", () => {
     expect(endDate.getMonth()).toEqual(1);
     expect(endDate.getDate()).toEqual(7);
     expect(endDate.getFullYear()).toEqual(2019);
+  });
+
+  it("PATCH /profile/career - startDate and endDate the same", async () => {
+    const res = await request
+      .patch("/profile/career")
+      .set("Cookie", [session_info])
+      .send({
+        id: career_id,
+        jobTitle: "Junior Software Engineer",
+        startDate: "2008/09/10",
+        endDate: "2008/09/10",
+        organization: "BoigerKing",
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.text).toEqual("End date cannot be before start date.");
   });
 
   it("PATCH /profile/career - change career information", async () => {
@@ -338,5 +373,13 @@ describe("testing index.js routes", () => {
     expect(date.getDate()).toEqual(19);
     expect(date.getFullYear()).toEqual(1923);
     expect(body.skills).toEqual([]);
+  });
+
+  it("GET /profile/usertype", async () => {
+    const res = await request
+      .get("/profile/usertype")
+      .set("Cookie", [session_info]);
+    expect(res.statusCode).toEqual(200);
+    expect(res.text).toEqual("JobSeekerProfile");
   });
 });

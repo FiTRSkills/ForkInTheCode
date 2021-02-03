@@ -3,15 +3,16 @@ import { connect } from "react-redux";
 import { changeCurrentPage, updateResults } from "../../redux/actions";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import JobSearchForm from "../subcomponents/JobSearchForm";
-import Results from "../subcomponents/Results";
+import JobSearchForm from "../subcomponents/JobSearch/JobSearchForm";
+import Results from "../subcomponents/JobSearch/Results";
 import axios from "axios";
 
 function JobSearch(props) {
   const [errorMessage, setErrorMessage] = useState("");
   useEffect(() => {
     props.changeCurrentPage("Job Search");
-  });
+    // eslint-disable-next-line
+  }, []);
 
   function search(zipCode, skills) {
     return axios
@@ -46,9 +47,9 @@ function JobSearch(props) {
     </Container>
   );
 }
+
 const mapStateToProps = (state) => {
   return {
-    user: state.authentication,
     results: state.searchResults.results,
   };
 };
@@ -59,4 +60,5 @@ const mapDispatchToProps = (dispatch) => {
     updateResults: (content) => dispatch(updateResults(content)),
   };
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(JobSearch);

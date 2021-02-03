@@ -3,10 +3,34 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import Box from "@material-ui/core/Box";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { changeCurrentPage, logOut } from "../../redux/actions";
-import "./NavBar.css";
+import { logOut } from "../../../redux/actions";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  navBar: {
+    height: "50px",
+  },
+
+  navBarSides: {
+    flexBasis: "0",
+    flexGrow: "1",
+  },
+
+  navBarRight: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+
+  navBarTitle: {
+    flexGrow: 1,
+    flexBasis: 0,
+    textAlign: "center",
+    display: "table-cell",
+  },
+}));
 
 const authLeftSide = ["Job Search", "Something Else"];
 const authRightSide = ["Sign Out"];
@@ -18,11 +42,13 @@ function NavBar(props) {
   const [navBarListLeft, editNavBarListLeft] = useState([]);
   const [navBarListRight, editNavBarListRight] = useState([]);
 
+  const classes = useStyles();
+
   // Lifecycle hooks
   useEffect(() => {
     assignBarContents(Object.keys(props.user).length > 0);
     // eslint-disable-next-line
-  }, [props.currentPage]);
+  }, [props.currentPage, props.user]);
 
   // Helper functions
   function assignBarContents(isAuthenticated) {
@@ -67,24 +93,37 @@ function NavBar(props) {
 
   // Renderer
   return (
-    <div>
+    <Box>
       <AppBar position="static">
-        <Toolbar className="navBar">
-          <div className="navBarSides">{navBarListLeft}</div>
-          <Typography variant="h6" className="navBarTitle" id="navBarTitle">
+        <Toolbar className={classes.navBar}>
+          <Box className={classes.navBarSides}>{navBarListLeft}</Box>
+          <Typography
+            variant="h6"
+            className={classes.navBarTitle}
+            id="navBarTitle"
+          >
             {props.currentPage}
           </Typography>
-          <div className="navBarSides navBarRight">{navBarListRight}</div>
+          <Box className={classes.navBarSides + " " + classes.navBarRight}>
+            {navBarListRight}
+          </Box>
         </Toolbar>
       </AppBar>
-    </div>
+    </Box>
   );
 }
 
-export default connect(
-  (state) => ({
+const mapStateToProps = (state) => {
+  return {
     user: state.authentication,
     currentPage: state.navigation.currentPage,
-  }),
-  { changeCurrentPage, logOut }
-)(NavBar);
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logOut: () => dispatch(logOut()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

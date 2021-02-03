@@ -5,7 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import Alert from "@material-ui/lab/Alert";
 import { connect } from "react-redux";
 import Typography from "@material-ui/core/Typography";
-import Skills from "./Skills";
+import Skills from "../Shared/Skills";
 import axios from "axios";
 import Box from "@material-ui/core/Box";
 
@@ -105,9 +105,11 @@ function JobSearchForm(props) {
     </Box>
   );
 }
+
 const mapStateToProps = (state) => {
   return {
     user: state.authentication,
   };
 };
+
 export default connect(mapStateToProps)(JobSearchForm);

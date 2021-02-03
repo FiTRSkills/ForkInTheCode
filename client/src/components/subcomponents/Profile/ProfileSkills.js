@@ -6,7 +6,7 @@ import Alert from "@material-ui/lab/Alert";
 import EditIcon from "@material-ui/icons/Edit";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-import Skills from "./Skills";
+import Skills from "../Shared/Skills";
 
 const useStyles = makeStyles((theme) => ({
   container: {

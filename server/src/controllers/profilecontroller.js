@@ -131,6 +131,13 @@ profileController.deleteCareer = async function (req, res) {
  * @returns {string} response - that profile was successfully updated
  */
 profileController.patchCareer = async function (req, res) {
+  let startDate = new Date(req.body.startDate);
+  let endDate = new Date(req.body.endDate);
+  // checks if endDate is after the date of the startdate
+  if (startDate.getTime() >= endDate.getTime()){
+    res.status(400).send("End date cannot be before start date.");
+    return;
+  }
   let profile = await req.user.getProfile();
   let career = {
     jobTitle: req.body.jobTitle,
@@ -151,6 +158,12 @@ profileController.patchCareer = async function (req, res) {
  * @returns {string} response - that profile was successfully updated
  */
 profileController.postCareer = async function (req, res) {
+  let startDate = new Date(req.body.startDate);
+  let endDate = new Date(req.body.endDate);
+  if (startDate.getTime() >= endDate.getTime()){
+    res.status(400).send("End date cannot be before start date.");
+    return;
+  }
   let profile = await req.user.getProfile();
   await profile.addCareer(
     req.body.jobTitle,
@@ -187,6 +200,18 @@ profileController.postSkill = async function (req, res) {
   let profile = await req.user.getProfile();
   await profile.addSkill(req.body.skill);
   res.status(200).send("Successfully added skill.");
+};
+
+/**
+ * functionality for getting the usertype
+ * @name getUserType
+ * @function
+ * @alias module:/controllers/profilecontroller
+ * @property {request} request - contains user
+ * @returns {string} response - the usertype
+ */
+profileController.getUserType = async function (req, res) {
+  res.status(200).send(req.user.type);
 };
 
 module.exports = profileController;

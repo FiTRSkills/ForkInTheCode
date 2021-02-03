@@ -12,6 +12,7 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import { Alert } from "@material-ui/lab";
+import ConfirmationDialogue from "../Shared/ConfirmationDialogue";
 
 const useStyles = makeStyles((theme) => ({
   field: {
@@ -49,6 +50,7 @@ function ViewEditCareerItem({
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showConfirmDialogue, setShowConfirmDialogue] = useState(false);
 
   // Whenever we swap between allowing editing and not make the individual items not in the edit state
   useEffect(() => {
@@ -97,6 +99,14 @@ function ViewEditCareerItem({
       .finally(setLoading(false));
   }
 
+  function cancelDelete() {
+    setShowConfirmDialogue(false);
+  }
+
+  function confirmDelete() {
+    setShowConfirmDialogue(true);
+  }
+
   function submitDelete() {
     setLoading(true);
     deleteCareer(careerItem._id)
@@ -133,7 +143,7 @@ function ViewEditCareerItem({
         <Button
           name="deleteCareer"
           className={classes.icon}
-          onClick={submitDelete}
+          onClick={confirmDelete}
         >
           <CloseIcon />
         </Button>
@@ -227,6 +237,12 @@ function ViewEditCareerItem({
           {loading ? "Processing..." : "Update Career"}
         </Button>
       )}
+      <ConfirmationDialogue
+        title="Are you sure you would like to delete this Career?"
+        open={showConfirmDialogue}
+        onCancel={cancelDelete}
+        onConfirm={submitDelete}
+      />
     </Box>
   );
 }
