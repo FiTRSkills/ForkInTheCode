@@ -90,6 +90,19 @@ describe("AuthController Tests", () => {
     );
   });
 
+  it("POST /register - Job Seeker with uppercase in email", async () => {
+    const res = await request
+      .post("/register")
+      .set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+      .send({
+        email: "NewTester@gmail.com",
+        password: "chicken",
+        usertype: "JobSeekerProfile",
+      });
+    expect(res.statusCode).toEqual(200);
+    expect(res.text).toEqual("Successfully created Job Seeker user");
+  });
+
   it("POST /register - Educator success", async () => {
     const res = await request
       .post("/register")
@@ -167,6 +180,20 @@ describe("AuthController Tests", () => {
       .post("/login")
       .set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
       .send({ email: "tester@gmail.com", password: "chicken" });
+    expect(res.statusCode).toEqual(200);
+    expect(res.text).toEqual(expect.anything());
+  });
+
+  it("GET /logout - success", async () => {
+    const res = await request.get("/logout");
+    expect(res.statusCode).toEqual(200);
+  });
+
+  it("POST /login - success uppercase user", async () => {
+    const res = await request
+      .post("/login")
+      .set("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+      .send({ email: "NewTester@gmail.com", password: "chicken" });
     expect(res.statusCode).toEqual(200);
     expect(res.text).toEqual(expect.anything());
   });
