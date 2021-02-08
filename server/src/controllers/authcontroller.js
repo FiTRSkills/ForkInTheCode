@@ -92,6 +92,10 @@ userController.doRegister = function (req, res) {
  * @returns {string} response - the user on successful login
  */
 userController.doLogin = function (req, res) {
+  //converts email to lowercase
+  if (typeof req.body.email !== "undefined") {
+    req.body.email = req.body.email.toLowerCase();
+  }
   passport.authenticate("local")(req, res, function () {
     res.send(req.user.type);
   });
