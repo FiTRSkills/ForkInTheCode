@@ -1,4 +1,5 @@
 const createError = require("http-errors");
+const subdomain = require("express-subdomain");
 const express = require("express");
 const path = require("path");
 
@@ -35,7 +36,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../../client/build")));
 
 const indexRouter = require("./routes/index");
-app.use("/", indexRouter);
+app.use(subdomain("api", indexRouter));
 
 // Web-server 404 handling
 app.use(function (req, res, next) {
