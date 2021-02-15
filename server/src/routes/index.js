@@ -195,6 +195,7 @@ router.patch(
     check("organization", "Must send a viable organization").not().isEmpty(),
   ],
   validation.validateInput,
+  validation.dateRange,
   profile.patchCareer
 );
 
@@ -219,6 +220,7 @@ router.post(
     check("organization", "Must send a viable organization").not().isEmpty(),
   ],
   validation.validateInput,
+  validation.dateRange,
   profile.postCareer
 );
 

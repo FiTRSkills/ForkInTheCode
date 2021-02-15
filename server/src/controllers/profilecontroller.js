@@ -131,13 +131,6 @@ profileController.deleteCareer = async function (req, res) {
  * @returns {string} response - that profile was successfully updated
  */
 profileController.patchCareer = async function (req, res) {
-  let startDate = new Date(req.body.startDate);
-  let endDate = new Date(req.body.endDate);
-  // checks if endDate is after the date of the startdate
-  if (startDate.getTime() >= endDate.getTime()){
-    res.status(400).send("End date cannot be before start date.");
-    return;
-  }
   let profile = await req.user.getProfile();
   let career = {
     jobTitle: req.body.jobTitle,
@@ -158,12 +151,6 @@ profileController.patchCareer = async function (req, res) {
  * @returns {string} response - that profile was successfully updated
  */
 profileController.postCareer = async function (req, res) {
-  let startDate = new Date(req.body.startDate);
-  let endDate = new Date(req.body.endDate);
-  if (startDate.getTime() >= endDate.getTime()){
-    res.status(400).send("End date cannot be before start date.");
-    return;
-  }
   let profile = await req.user.getProfile();
   await profile.addCareer(
     req.body.jobTitle,
