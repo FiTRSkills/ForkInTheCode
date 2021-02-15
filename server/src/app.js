@@ -35,7 +35,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../../client/build")));
 
 const indexRouter = require("./routes/index");
-app.use(indexRouter);
+app.use("/", indexRouter);
 
 // Web-server 404 handling
 app.use(function (req, res, next) {
