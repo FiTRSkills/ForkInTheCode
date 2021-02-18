@@ -8,8 +8,7 @@ var router = express.Router();
 var auth = require("../controllers/authcontroller.js");
 var profile = require("../controllers/profilecontroller.js");
 var job = require("../controllers/jobcontroller.js");
-var inputValidation = require("../services/inputValidation.js");
-var sessionValidation = require("../services/sessionValidation.js");
+var validation = require("../services/validation.js");
 
 /**
  * Routing serving registration
@@ -32,7 +31,7 @@ router.post(
     check("password", "Must send a password").not().isEmpty().trim().escape(),
     check("usertype", "Must send a usertype").not().isEmpty().trim().escape(),
   ],
-  inputValidation,
+  validation.validateInput,
   auth.doRegister
 );
 
@@ -65,7 +64,7 @@ router.get("/logout", auth.logout);
  * @returns {string} lastname - the last name
  * @returns {Date} dob - the date of birth
  */
-router.get("/profile", sessionValidation, profile.getProfile);
+router.get("/profile", validation.validateSession, profile.getProfile);
 
 /**
  * Routing serving updating profile information
@@ -79,7 +78,7 @@ router.get("/profile", sessionValidation, profile.getProfile);
  */
 router.post(
   "/profile",
-  sessionValidation,
+  validation.validateSession,
   [
     check("firstname", "Must send a viable firstname")
       .trim()
@@ -93,7 +92,7 @@ router.post(
       .isDate()
       .optional({ nullable: true }),
   ],
-  inputValidation,
+  validation.validateInput,
   profile.postProfile
 );
 
@@ -107,9 +106,9 @@ router.post(
  */
 router.delete(
   "/profile/education",
-  sessionValidation,
+  validation.validateSession,
   [check("id", "Must send a viable ID").not().isEmpty()],
-  inputValidation,
+  validation.validateInput,
   profile.deleteEducation
 );
 
@@ -124,7 +123,7 @@ router.delete(
  */
 router.patch(
   "/profile/education",
-  sessionValidation,
+  validation.validateSession,
   [
     check("id", "Must send a viable ID").not().isEmpty(),
     check("degree", "Must send a viable degree").not().isEmpty(),
@@ -132,7 +131,7 @@ router.patch(
     check("major", "Must send a viable major").not().isEmpty(),
     check("organization", "Must send a viable organization").not().isEmpty(),
   ],
-  inputValidation,
+  validation.validateInput,
   profile.patchEducation
 );
 
@@ -149,14 +148,14 @@ router.patch(
  */
 router.post(
   "/profile/education",
-  sessionValidation,
+  validation.validateSession,
   [
     check("degree", "Must send a viable degree").not().isEmpty(),
     check("gradDate", "Must send a viable gradDate").not().isEmpty(),
     check("major", "Must send a viable major").not().isEmpty(),
     check("organization", "Must send a viable organization").not().isEmpty(),
   ],
-  inputValidation,
+  validation.validateInput,
   profile.postEducation
 );
 
@@ -170,9 +169,9 @@ router.post(
  */
 router.delete(
   "/profile/career",
-  sessionValidation,
+  validation.validateSession,
   [check("id", "Must send a viable ID").not().isEmpty()],
-  inputValidation,
+  validation.validateInput,
   profile.deleteCareer
 );
 
@@ -187,7 +186,7 @@ router.delete(
  */
 router.patch(
   "/profile/career",
-  sessionValidation,
+  validation.validateSession,
   [
     check("id", "Must send a viable ID").not().isEmpty(),
     check("jobTitle", "Must send a viable job title").not().isEmpty(),
@@ -195,7 +194,8 @@ router.patch(
     check("startDate", "Must send a viable startDate").not().isEmpty(),
     check("organization", "Must send a viable organization").not().isEmpty(),
   ],
-  inputValidation,
+  validation.validateInput,
+  validation.dateRange,
   profile.patchCareer
 );
 
@@ -212,14 +212,15 @@ router.patch(
  */
 router.post(
   "/profile/career",
-  sessionValidation,
+  validation.validateSession,
   [
     check("jobTitle", "Must send a viable job title").not().isEmpty(),
     check("endDate", "Must send a viable endDate").not().isEmpty(),
     check("startDate", "Must send a viable startDate").not().isEmpty(),
     check("organization", "Must send a viable organization").not().isEmpty(),
   ],
-  inputValidation,
+  validation.validateInput,
+  validation.dateRange,
   profile.postCareer
 );
 
@@ -243,7 +244,7 @@ router.get("/jobs/jobposting", job.getJobPosting);
  */
 router.post(
   "/jobs/createjobposting",
-  sessionValidation,
+  validation.validateSession,
   [
     check("jobTitle", "Must send a viable job title").not().isEmpty(),
     check("pay", "Must send a viable pay").optional({ nullable: true }),
@@ -253,7 +254,7 @@ router.post(
     check("qualifications", "Must send viable qualifications").not().isEmpty(),
     check("skills", "Must send viable skills").not().isEmpty(),
   ],
-  inputValidation,
+  validation.validateInput,
   job.createJobPosting
 );
 
@@ -274,7 +275,7 @@ router.post(
       nullable: true,
     }),
   ],
-  inputValidation,
+  validation.validateInput,
   job.searchJobPostings
 );
 
@@ -288,9 +289,9 @@ router.post(
  */
 router.delete(
   "/profile/skill",
-  sessionValidation,
+  validation.validateSession,
   [check("id", "Must send a viable ID").not().isEmpty()],
-  inputValidation,
+  validation.validateInput,
   profile.deleteSkill
 );
 
@@ -304,9 +305,9 @@ router.delete(
  */
 router.post(
   "/profile/skill",
-  sessionValidation,
+  validation.validateSession,
   [check("skill", "Must send a viable skill").not().isEmpty()],
-  inputValidation,
+  validation.validateInput,
   profile.postSkill
 );
 
@@ -317,7 +318,11 @@ router.post(
  * @alias module:/routers/profile
  * @returns {string} message - the usertype
  */
-router.get("/profile/usertype", sessionValidation, profile.getUserType);
+router.get(
+  "/profile/usertype",
+  validation.validateSession,
+  profile.getUserType
+);
 
 //The 404 Route handles returns on routes that don't exist
 router.all("*", function (req, res) {

@@ -7,7 +7,9 @@
     "doc": "jsdoc -d docs --configure jsconf.json ./src/app.js",
     "test": "npm run test_model && npm run test_integration",
     "test_integration": "jest -i routestest",
-    "test_model": "jest -i modelstest"
+    "test_model": "jest -i modelstest",
+    "test_jobposting": "jest -i profilecontroller.test.js",
+    "test_authentication": "jest -i authcontroller.test.js"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
