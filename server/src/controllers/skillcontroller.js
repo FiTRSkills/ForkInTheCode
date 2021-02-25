@@ -18,7 +18,7 @@ const skillController = {};
  */
 skillController.skills = async function (req, res) {
 	let skills = await Skill.find();
-	if (!skills) {
+	if (skills === undefined || skills.length == 0) {
 		res.status(406).send("no skills exist");
 		return;
 	}
@@ -56,7 +56,13 @@ skillController.skillsSearch = async function (req, res) {
  * @returns {string} response - skill information
  */
 skillController.getSkill = async function (req, res) {
-	let skill = await Skill.findOne({ _id: req.body.id });
+	let skill = "";
+	try {
+		skill = await Skill.findOne({ _id: req.query.id });
+	} catch (CastError) {
+		res.status(406).send("skill does not exist");
+		return;
+	}
 	// if the skill does not exst return error
 	if (!skill) {
 		res.status(406).send("skill does not exist");

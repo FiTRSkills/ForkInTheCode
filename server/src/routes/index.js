@@ -2,7 +2,7 @@
  * @module routers/users
  * @requires express
  */
-const { check } = require("express-validator");
+const { check, oneOf } = require("express-validator");
 var express = require("express");
 var router = express.Router();
 var auth = require("../controllers/authcontroller.js");
@@ -339,7 +339,7 @@ router.get("/skills", skill.skills);
  * @name GET /skills
  * @function
  * @alias module:/routers/skill
- * @returns {Array} skills - all skills in database
+ * @returns {Array} skills - all skills in search results
  */
 router.get(
   "/skills/search",
@@ -359,13 +359,13 @@ router.get(
  * @name GET /skills/getSkills
  * @function
  * @alias module:/routers/skill
- * @returns {Array} skill - matching skill
+ * @returns {Object} skill - matching skill
  */
 router.get(
   "/skills/getSkill",
-  [check("id", "Must send a viable skill").not().isEmpty()],
+  [check("id", "Must send a viable skill id").not().isEmpty()],
   validation.validateInput,
-  skill.getSkills
+  skill.getSkill
 );
 
 //The 404 Route handles returns on routes that don't exist
