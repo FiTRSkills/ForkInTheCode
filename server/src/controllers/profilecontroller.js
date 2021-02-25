@@ -185,6 +185,8 @@ profileController.deleteSkill = async function (req, res) {
  */
 profileController.postSkill = async function (req, res) {
   let profile = await req.user.getProfile();
+
+  // only accept skills already created (/skills endpoint)
   await profile.addSkill(req.body.skill);
   res.status(200).send("Successfully added skill.");
 };

@@ -8,6 +8,7 @@ var router = express.Router();
 var auth = require("../controllers/authcontroller.js");
 var profile = require("../controllers/profilecontroller.js");
 var job = require("../controllers/jobcontroller.js");
+var skill = require("../controllers/skillcontroller.js");
 var validation = require("../services/validation.js");
 
 /**
@@ -322,6 +323,49 @@ router.get(
   "/profile/usertype",
   validation.validateSession,
   profile.getUserType
+);
+
+/**
+ * Routing serving adding a skill
+ * @name GET /skills
+ * @function
+ * @alias module:/routers/skill
+ * @returns {Array} skills - all skills in database
+ */
+router.get("/skills", skill.skills);
+
+/**
+ * Routing serving searching for skills
+ * @name GET /skills
+ * @function
+ * @alias module:/routers/skill
+ * @returns {Array} skills - all skills in database
+ */
+router.get(
+  "/skills/search",
+  oneOf(
+    // <-- one of the following must exist
+    [
+      check("zipcode", "Must send a viable zipcode").not().isEmpty(),
+      check("organization", "Must send a viable organization").not().isEmpty(),
+    ]
+  ),
+  validation.validateInput,
+  skill.skillsSearch
+);
+
+/**
+ * Routing serving getting singular skill by id
+ * @name GET /skills/getSkills
+ * @function
+ * @alias module:/routers/skill
+ * @returns {Array} skill - matching skill
+ */
+router.get(
+  "/skills/getSkill",
+  [check("id", "Must send a viable skill").not().isEmpty()],
+  validation.validateInput,
+  skill.getSkills
 );
 
 //The 404 Route handles returns on routes that don't exist
