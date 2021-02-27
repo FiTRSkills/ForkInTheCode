@@ -11,8 +11,6 @@ function SkillSearch(props) {
     props.changeCurrentPage("Skill Search");
   });
 
-  console.log(skills);
-
   return (
     <Container component="main" maxWidth="lg">
       <SkillSearchForm setSkills={setSkills} />

@@ -37,4 +37,35 @@ describe("Skill Search", () => {
     cy.get("#submit").click();
     cy.contains("Must be a 5-digit zip code");
   });
+
+  it("Skill search by organization SUCCESS", () => {
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/skills/search",
+      status: 200,
+      response: [
+        { name: "PHP", numJobs: 10, id: 1 },
+        { name: "MySQL", numJobs: 8, id: 2 },
+      ],
+    }).as("submitSearch");
+    cy.get('#organization-tab').click();
+    cy.get("#organization").type("Apple");
+    cy.get("#submit").click();
+    cy.wait("@submitSearch").its("status").should("eq", 200);
+  });
+
+  it("Skill search by organization FAILURE", () => {
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/skills/search",
+      status: 400,
+      response: "Bad request",
+    }).as("submitSearch");
+    cy.get('#organization-tab').click();
+    cy.get("#organization").type("Fake Company");
+    cy.get("#submit").click();
+    cy.wait("@submitSearch").its("status").should("eq", 400);
+    cy.contains("Bad request");
+  });
+
 });
