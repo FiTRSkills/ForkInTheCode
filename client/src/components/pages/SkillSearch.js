@@ -5,7 +5,7 @@ import Container from "@material-ui/core/Container";
 import SkillSearchForm from "../subcomponents/SkillSearch/SkillSearchForm";
 
 function SkillSearch(props) {
-  const [skills, setSkills] = useState([]);
+  const [, setSkills] = useState([]);
 
   useEffect(() => {
     props.changeCurrentPage("Skill Search");
