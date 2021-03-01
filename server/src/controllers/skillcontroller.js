@@ -5,6 +5,7 @@
 const mongoose = require("mongoose");
 const passport = require("passport");
 const Skill = require("../models/skill");
+const JobPosting = require("../models/jobPosting");
 
 const skillController = {};
 
@@ -35,16 +36,25 @@ skillController.skills = async function (req, res) {
  * @returns {string} response - skills and number of jobs skills are in
  */
 skillController.skillsSearch = async function (req, res) {
-	// can we have zipcodes and Jobnum associated with skils?
-	// for instance when a new jobposting is created it adds
-	// the zipcode to a list of zipcodes in the skills and if
-	// the zipcode is already there it +1s it
-	// so like zipcodes: {18938: 1, 12039: 5} etc
-	// for organization search based on string filter via Org job postings with skills
-	// search job postings with Org
-	// for posting in job postings
-	// add skills to skills list
-	// if skill exists update 1
+	let search_results = [];
+	// gets all skills with associated zipcodes
+	let skills = await Skills.find(req.query.zipcode);
+	if (skills === undefined || skills.length == 0) {
+		res.status(406).send("no skills exist");
+		return;
+	}
+	// gets all jobpostings with associated zipcodes
+	for(i = 0, i < skills.length, i++){
+		let result = {};
+		let skill = skills[i];
+		let posts = await JobPosting.search(req.query.zipcode, skill);
+		// adds to dict
+		result[name] = skill.name;
+		result[_id] = skill._id;
+		result[numJobs] = posts.length;
+		search_results.push(results);
+	}
+	res.status(200).send(search_results);
 };
 
 /**
