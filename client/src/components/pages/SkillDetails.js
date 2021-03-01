@@ -65,8 +65,8 @@ function SkillDetails(props) {
           if (error.response) {
             if (error.response.status === 400) {
               setError(error.response.data);
-            } else if (error.response.status === 404) {
-              setError("Skill not found");
+            } else if (error.response.status === 406) {
+              setError("Invalid Skill Id");
             }
           } else {
             setError("Failed to load Skill Details");
@@ -83,28 +83,34 @@ function SkillDetails(props) {
 
   return (
     <Container>
-      {error && <Alert severity={"error"}>{error}</Alert>}
+      {error && (
+        <Alert severity={"error"} id="error">
+          {error}
+        </Alert>
+      )}
       {loading ? (
         <CircularProgress />
       ) : (
         <Box>
           <Box className={classes.skillHeading}>
-            <Typography variant={"h4"}>{name}</Typography>
+            <Typography variant={"h4"} id="name">
+              {name}
+            </Typography>
           </Box>
           <Box className={classes.infoItem}>
             <Typography variant={"h6"}>Description</Typography>
-            <Typography>{description}</Typography>
+            <Typography id="description">{description}</Typography>
           </Box>
           <Box className={classes.infoItem}>
             <Typography variant={"h6"}>Aliases</Typography>
-            <Typography>{aliases.join(", ")}</Typography>
+            <Typography id="aliases">{aliases.join(", ")}</Typography>
           </Box>
           <Box className={classes.infoItem}>
             <Typography variant={"h6"}>
               Classes Associated With This Skill
             </Typography>
             {courses.map((courseItem) => (
-              <Box>TBD</Box>
+              <Box id={"courseNumber" + courseItem.id}>TBD</Box>
             ))}
           </Box>
         </Box>
