@@ -1,8 +1,9 @@
-describe("Authentication", () => {
+describe("Skills Details", () => {
   it("View Skill Details SUCCESS", () => {
+    cy.server();
     cy.route({
-      method: "POST",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/skills/getSkill",
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/skills/getSkill?id=1",
       status: 200,
       response: {
         name: "programming",
@@ -16,7 +17,6 @@ describe("Authentication", () => {
       },
     }).as("getSkill");
     cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/SkillDetails/1");
-    cy.server();
     cy.wait("@getSkill").its("status").should("eq", 200);
     cy.get("#name").should("contain", "programming");
     cy.get("#aliases").should("contain", "program, coding");
@@ -28,13 +28,14 @@ describe("Authentication", () => {
   });
 
   it("View Skill Details INVALID SKILL", () => {
+    cy.server();
     cy.route({
-      method: "POST",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/skills/getSkill",
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/skills/getSkill?id=1",
       status: 406,
+      response: "Invalid Skill",
     }).as("getSkill");
     cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/SkillDetails/1");
-    cy.server();
     cy.wait("@getSkill").its("status").should("eq", 406);
     cy.get("#error").should("contain", "Invalid Skill Id");
   });
