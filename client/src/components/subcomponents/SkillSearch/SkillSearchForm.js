@@ -31,18 +31,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SEARCH_BY_ZIPCODE = "SEARCH_BY_ZIPCODE";
-const SEARCH_BY_ORGANIZATION = "SEARCH_BY_ORGANIZATION";
-
 function SkillSearchForm(props) {
   const [zipCode, setZipCode] = useState("");
   const [organization, setOrganization] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [searchBy, setSearchBy] = useState(SEARCH_BY_ZIPCODE);
+  const [isSearchByZipCode, setSearchByZipCode] = useState(true);
 
   const classes = useStyles();
 
+  /**
+   * Search skills based on zip code or organization
+   */
   function searchSkills() {
     setLoading(true);
     axios
@@ -69,32 +69,39 @@ function SkillSearchForm(props) {
       });
   }
 
+  /**
+   * Submit the skill search form
+   *
+   * @param event
+   */
   function onSubmit(event) {
-    switch (searchBy) {
-      case SEARCH_BY_ZIPCODE:
-        if (zipCode.match("^\\d{5}$")) {
-          searchSkills();
-        } else {
-          setError("Must be a 5-digit zip code");
-        }
-        break;
-      case SEARCH_BY_ORGANIZATION:
+    if (isSearchByZipCode) {
+      // Validate that zip code is a 5-digit
+      if (zipCode.match("^\\d{5}$")) {
         searchSkills();
-        break;
-      default:
-        return null;
+      } else {
+        setError("Must be a 5-digit zip code");
+      }
+    } else {
+      searchSkills();
     }
     event.preventDefault();
   }
 
-  function switchTab(searchBy) {
-    switch (searchBy) {
-      case SEARCH_BY_ZIPCODE:
-        setSearchBy(SEARCH_BY_ZIPCODE);
+  /**
+   * Switch tab between zip code and organization
+   *
+   * @param event
+   * @returns {null}
+   */
+  function switchTab(event) {
+    switch (event.target.textContent.toLowerCase()) {
+      case "zip code":
+        setSearchByZipCode(true);
         setOrganization("");
         break;
-      case SEARCH_BY_ORGANIZATION:
-        setSearchBy(SEARCH_BY_ORGANIZATION);
+      case "organization":
+        setSearchByZipCode(false);
         setZipCode("");
         break;
       default:
@@ -112,19 +119,17 @@ function SkillSearchForm(props) {
         <Grid container justify={"center"}>
           <Button
             id={"zipcode-tab"}
-            onClick={() => {
-              switchTab(SEARCH_BY_ZIPCODE);
-            }}
-            color={searchBy === SEARCH_BY_ZIPCODE ? "primary" : "default"}
+            name={"zipcode-tab"}
+            onClick={switchTab}
+            color={isSearchByZipCode ? "primary" : "default"}
           >
             Zip Code
           </Button>
           <Button
             id={"organization-tab"}
-            onClick={() => {
-              switchTab(SEARCH_BY_ORGANIZATION);
-            }}
-            color={searchBy === SEARCH_BY_ORGANIZATION ? "primary" : "default"}
+            name={"organization-tab"}
+            onClick={switchTab}
+            color={!isSearchByZipCode ? "primary" : "default"}
           >
             Organization
           </Button>
@@ -132,7 +137,7 @@ function SkillSearchForm(props) {
       </Box>
       <form className={classes.form} onSubmit={onSubmit}>
         {error && <Alert severity="error">{error}</Alert>}
-        {searchBy === SEARCH_BY_ZIPCODE && (
+        {isSearchByZipCode && (
           <>
             <Typography variant="h6">Zipcode</Typography>
             <TextField
@@ -150,8 +155,8 @@ function SkillSearchForm(props) {
             />
             <Typography variant="h6">Radius</Typography>
             <Select
-              labelId="demo-simple-select-filled-label"
-              id="demo-simple-select-filled"
+              labelId="select-filled-label"
+              id="select-filled"
               variant={"outlined"}
               disabled
               fullWidth
@@ -159,7 +164,7 @@ function SkillSearchForm(props) {
             />
           </>
         )}
-        {searchBy === SEARCH_BY_ORGANIZATION && (
+        {!isSearchByZipCode && (
           <>
             <Typography variant="h6">Organization</Typography>
             <TextField
