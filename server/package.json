@@ -8,7 +8,8 @@
     "test": "npm run test_model && npm run test_integration",
     "test_integration": "jest -i routestest",
     "test_model": "jest -i modelstest",
-    "test_jobposting": "jest -i profilecontroller.test.js",
+    "test_profile": "jest -i profilecontroller.test.js",
+    "test_jobposting": "jest -i jobcontroller.test.js",
     "test_authentication": "jest -i authcontroller.test.js",
     "test_skills": "jest -i skillcontroller.test.js"
   },

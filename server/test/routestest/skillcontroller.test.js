@@ -4,12 +4,20 @@ const app = require("../../src/app");
 const Skill = require("../../src/models/skill");
 const request = supertest(app);
 
+let employer_session_info = "";
+
 describe("testing skill routes", () => {
 	beforeAll(connectDB);
 	afterAll(disconnectDB);
 
 	it("GET /skills - gets all skills when there are none", async () => {
 		const res = await request.get("/skills");
+		expect(res.statusCode).toEqual(406);
+		expect(res.text).toEqual("no skills exist");
+	});
+
+	it("GET /skills/search - gets all skills when there are none", async () => {
+		const res = await request.get("/skills/search?zipcode=12345");
 		expect(res.statusCode).toEqual(406);
 		expect(res.text).toEqual("no skills exist");
 	});
@@ -51,5 +59,60 @@ describe("testing skill routes", () => {
 		expect(res.statusCode).toEqual(200);
 		let body = JSON.parse(res.text);
 		expect(body.name).toEqual("Coding");
+	});
+
+	it("GET /profile - employer user session", async () => {
+		const registerres = await request
+			.post("/register")
+			.set(
+				"Content-Type",
+				"application/x-www-form-urlencoded; charset=UTF-8"
+			)
+			.send({
+				email: "testemprofile@gmail.com",
+				password: "chicken",
+				usertype: "EmployerProfile",
+			});
+		const loginres = await request
+			.post("/login")
+			.set(
+				"Content-Type",
+				"application/x-www-form-urlencoded; charset=UTF-8"
+			)
+			.send({ email: "testemprofile@gmail.com", password: "chicken" });
+		employer_session_info = loginres.header["set-cookie"];
+	});
+
+	it("GET /skills/search - get skills in zipcode", async () => {
+		await request
+			.post("/jobs/createjobposting")
+			.set("Cookie", [employer_session_info])
+			.send({
+				jobTitle: "Software Engineer",
+				pay: "$60,000",
+				code: "1",
+				zipCode: "12345",
+				description: "This is a posting for a SE.",
+				qualifications: "Don't suck at coding.",
+				organization: "Microsoft",
+				skills: ["Chicken", "Pizza"],
+			});
+		await request
+			.post("/jobs/createjobposting")
+			.set("Cookie", [employer_session_info])
+			.send({
+				jobTitle: "Software Engineer2",
+				pay: "$60,000",
+				code: "1",
+				zipCode: "12345",
+				description: "This is a posting for a SE.",
+				qualifications: "Don't suck at coding.",
+				organization: "Microsoft",
+				skills: ["Chicken", "Pepperoni"],
+			});
+		const res = await request.get("/skills/search?zipcode=12345");
+		expect(res.statusCode).toEqual(200);
+		let body = JSON.parse(res.text);
+		expect(body[0].name).toEqual("Chicken");
 	});
 });

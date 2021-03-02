@@ -5,7 +5,7 @@
 const mongoose = require("mongoose");
 const passport = require("passport");
 const Skill = require("../models/skill");
-const JobPosting = require("../models/jobPosting");
+const Search = require("../services/search");
 
 const skillController = {};
 
@@ -36,25 +36,13 @@ skillController.skills = async function (req, res) {
  * @returns {string} response - skills and number of jobs skills are in
  */
 skillController.skillsSearch = async function (req, res) {
-	let search_results = [];
-	// gets all skills with associated zipcodes
-	let skills = await Skills.find(req.query.zipcode);
-	if (skills === undefined || skills.length == 0) {
+	let results = await Search.findSkillsByZip(req.query.zipcode);
+	//console.log(results);
+	if (results === undefined || results.length == 0) {
 		res.status(406).send("no skills exist");
 		return;
 	}
-	// gets all jobpostings with associated zipcodes
-	for(i = 0; i < skills.length; i++){
-		let result = {};
-		let skill = skills[i];
-		let posts = await JobPosting.search(req.query.zipcode, skill);
-		// adds to dict
-		result[name] = skill.name;
-		result[_id] = skill._id;
-		result[numJobs] = posts.length;
-		search_results.push(results);
-	}
-	res.status(200).send(search_results);
+	res.status(200).send(results);
 };
 
 /**

@@ -307,7 +307,7 @@ router.delete(
 router.post(
   "/profile/skill",
   validation.validateSession,
-  [check("skill", "Must send a viable skill").not().isEmpty()],
+  [check("skills", "Must send a viable list of skill ids").not().isEmpty()],
   validation.validateInput,
   profile.postSkill
 );

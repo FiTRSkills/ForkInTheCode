@@ -94,8 +94,10 @@ JobPosting.methods.setOrganization = async function (organization) {
  * @returns {Promise<JobPosting>}
  */
 JobPosting.methods.addSkills = async function (skills) {
-  let skillEntries = await Skill.find({ _id: { $in: skills } });
-  this.skills = this.skills.concat(skillEntries);
+  for (let skill of skills) {
+    let skillEntry = await Skill.findOneOrCreate(skill);
+    await this.skills.push(skillEntry);
+  }
   await this.save();
   return this;
 };
