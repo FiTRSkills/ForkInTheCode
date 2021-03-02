@@ -32,12 +32,8 @@ const Course = new mongoose.Schema({
  * @returns {Promise<*>}
  */
 Course.statics.findAllBySkill = async function (skill) {
-  return await Course.find({ skills: skill }).exec();
+  return await this.find({ skills: skill }).exec();
   // TODO order by job recommendations
-};
-
-Course.methods.addSkills = async function(skills){
-
 };
 
 /**
