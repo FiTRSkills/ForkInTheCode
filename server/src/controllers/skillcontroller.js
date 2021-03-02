@@ -44,7 +44,7 @@ skillController.skillsSearch = async function (req, res) {
 		return;
 	}
 	// gets all jobpostings with associated zipcodes
-	for(i = 0, i < skills.length, i++){
+	for(i = 0; i < skills.length; i++){
 		let result = {};
 		let skill = skills[i];
 		let posts = await JobPosting.search(req.query.zipcode, skill);
