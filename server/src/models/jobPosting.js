@@ -90,14 +90,12 @@ JobPosting.methods.setOrganization = async function (organization) {
  * Add multiple required skills to this job posting.  Each skill will be a single
  * string and if that skill is not found in the system, a new one will be created.
  *
- * @param skills A list of strings corresponding to the skills that should be added.
+ * @param skills A list of object IDs corresponding to the skills that should be added.
  * @returns {Promise<JobPosting>}
  */
 JobPosting.methods.addSkills = async function (skills) {
-  for (let skill of skills) {
-    let skillEntry = await Skill.findOneOrCreate(skill);
-    await this.skills.push(skillEntry);
-  }
+  let skillEntries = await Skill.find({ _id: { $in: skills } });
+  this.skills = this.skills.concat(skillEntries);
   await this.save();
   return this;
 };
