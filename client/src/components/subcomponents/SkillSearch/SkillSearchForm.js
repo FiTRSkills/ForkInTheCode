@@ -7,7 +7,8 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
 import axios from "axios";
-import Grid from "@material-ui/core/Grid";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -36,7 +37,7 @@ function SkillSearchForm(props) {
   const [organization, setOrganization] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [isSearchByZipCode, setSearchByZipCode] = useState(true);
+  const [tabIndex, setTabIndex] = useState(0);
 
   const classes = useStyles();
 
@@ -70,44 +71,49 @@ function SkillSearchForm(props) {
   }
 
   /**
-   * Submit the skill search form
-   *
-   * @param event
-   */
-  function onSubmit(event) {
-    if (isSearchByZipCode) {
-      // Validate that zip code is a 5-digit
-      if (zipCode.match("^\\d{5}$")) {
-        searchSkills();
-      } else {
-        setError("Must be a 5-digit zip code");
-      }
-    } else {
-      searchSkills();
-    }
-    event.preventDefault();
-  }
-
-  /**
    * Switch tab between zip code and organization
    *
    * @param event
+   * @param newIndex: new tab index
    * @returns {null}
    */
-  function switchTab(event) {
-    switch (event.target.textContent.toLowerCase()) {
-      case "zip code":
-        setSearchByZipCode(true);
+  function switchTab(event, newIndex) {
+    switch (newIndex) {
+      case 0:
         setOrganization("");
         break;
-      case "organization":
-        setSearchByZipCode(false);
+      case 1:
         setZipCode("");
         break;
       default:
         return null;
     }
     setError(null);
+    setTabIndex(newIndex);
+  }
+
+  /**
+   * Submit the skill search form
+   *
+   * @param event
+   */
+  function onSubmit(event) {
+    switch (tabIndex) {
+      case 0:
+        // Validate that zip code is a 5-digit
+        if (zipCode.match("^\\d{5}$")) {
+          searchSkills();
+        } else {
+          setError("Must be a 5-digit zip code");
+        }
+        break;
+      case 1:
+        searchSkills();
+        break;
+      default:
+        return null;
+    }
+    event.preventDefault();
   }
 
   return (
@@ -116,28 +122,19 @@ function SkillSearchForm(props) {
         Skill Search
       </Typography>
       <Box className={classes.switch}>
-        <Grid container justify={"center"}>
-          <Button
-            id={"zipcode-tab"}
-            name={"zipcode-tab"}
-            onClick={switchTab}
-            color={isSearchByZipCode ? "primary" : "default"}
-          >
-            Zip Code
-          </Button>
-          <Button
-            id={"organization-tab"}
-            name={"organization-tab"}
-            onClick={switchTab}
-            color={!isSearchByZipCode ? "primary" : "default"}
-          >
-            Organization
-          </Button>
-        </Grid>
+        <Tabs
+          value={tabIndex}
+          onChange={switchTab}
+          aria-label="skill-search-by-tab-bar"
+          indicatorColor="primary"
+        >
+          <Tab label="Zip Code" id="zipcode-tab" />
+          <Tab label="Organization" id="organization-tab" />
+        </Tabs>
       </Box>
       <form className={classes.form} onSubmit={onSubmit}>
         {error && <Alert severity="error">{error}</Alert>}
-        {isSearchByZipCode && (
+        {tabIndex === 0 && (
           <>
             <Typography variant="h6">Zipcode</Typography>
             <TextField
@@ -164,7 +161,7 @@ function SkillSearchForm(props) {
             />
           </>
         )}
-        {!isSearchByZipCode && (
+        {tabIndex === 1 && (
           <>
             <Typography variant="h6">Organization</Typography>
             <TextField
