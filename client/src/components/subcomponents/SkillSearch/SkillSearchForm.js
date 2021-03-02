@@ -58,7 +58,7 @@ function SkillSearchForm(props) {
         }
       })
       .catch((error) => {
-        if (error.response.status === 400) {
+        if (error.response && error.response.status === 400) {
           setError(error.response.data);
         } else {
           setError("Failed to search for skills");
