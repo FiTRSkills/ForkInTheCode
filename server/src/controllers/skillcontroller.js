@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const Skill = require("../models/skill");
 const Search = require("../services/search");
+const Course = require("../models/course");
 
 const skillController = {};
 
@@ -51,7 +52,7 @@ skillController.skillsSearch = async function (req, res) {
  * @function
  * @alias module:/controllers/skillcontroller
  * @property {request} request - skill id
- * @returns {string} response - skill information
+ * @returns {string} response - skill information and related courses
  */
 skillController.getSkill = async function (req, res) {
 	let skill = "";
@@ -66,7 +67,13 @@ skillController.getSkill = async function (req, res) {
 		res.status(406).send("skill does not exist");
 		return;
 	}
-	res.status(200).send(skill);
+	// get courses associated with the skill
+	let courses = await Course.findAllBySkill(skill._id);
+	let skill_info = {
+		skill: skill,
+		courses: courses,
+	};
+	res.status(200).send(skill_info);
 };
 
 module.exports = skillController;

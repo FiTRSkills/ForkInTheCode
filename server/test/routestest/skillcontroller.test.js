@@ -2,6 +2,7 @@ const { connectDB, disconnectDB } = require("../util");
 const supertest = require("supertest");
 const app = require("../../src/app");
 const Skill = require("../../src/models/skill");
+const Course = require("../../src/models/course");
 const request = supertest(app);
 
 let employer_session_info = "";
@@ -55,10 +56,18 @@ describe("testing skill routes", () => {
 
 	it("GET /skills/getSkill - get skill", async () => {
 		let skill = await Skill.findOneOrCreate("Coding");
+		let course = new Course({
+			name: "Programming 101",
+			description: "How to code",
+			skills: [skill],
+		});
+		course.save();
 		const res = await request.get("/skills/getSkill?id=" + skill._id);
 		expect(res.statusCode).toEqual(200);
 		let body = JSON.parse(res.text);
-		expect(body.name).toEqual("Coding");
+		console.log(body);
+		expect(body.skill.name).toEqual("Coding");
+		expect(body.courses[0].name).toEqual("Programming 101");
 	});
 
 	it("GET /profile - employer user session", async () => {
