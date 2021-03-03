@@ -185,8 +185,19 @@ profileController.deleteSkill = async function (req, res) {
  */
 profileController.postSkill = async function (req, res) {
   let profile = await req.user.getProfile();
-  await profile.addSkill(req.body.skill);
-  res.status(200).send("Successfully added skill.");
+  for (i = 0; i < req.body.skills.length; i++) {
+    try {
+      await profile.addSkill(req.body.skills[i]);
+    } catch (error) {
+      res
+        .status(400)
+        .send(
+          "Failed to add skill: " + String(req.body.skills[i]) + ", aborting."
+        );
+      return;
+    }
+  }
+  res.status(200).send("Successfully added skills.");
 };
 
 /**
