@@ -17,23 +17,25 @@ describe("Job Search", () => {
   });
 
   it("Job Results Returned- SUCCESS", () => {
-    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
     cy.server();
     cy.route({
-          method: "POST",
-          url: Cypress.env("REACT_APP_SERVER_URL") + "/JobSearch",
-          status: 200,
-          response: [{
-              _id: "1234",
-              organization: { "_id": 123, "name": "Apple" },
-              jobTitle: "IT Admin",
-              pay: "$123",
-              code: "1223",
-              description: "This is a description",
-              qualifications: "qualification",
-              skills: [{ "name": "Networking" }, { "name": "IT" }]
-            }]
-        }).as("submitSearch");
+      method: "POST",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/JobSearch",
+      status: 200,
+      response: [
+        {
+          _id: "1234",
+          organization: { _id: 123, name: "Apple" },
+          jobTitle: "IT Admin",
+          pay: "$123",
+          code: "1223",
+          description: "This is a description",
+          qualifications: "qualification",
+          skills: [{ name: "Networking" }, { name: "IT" }],
+        },
+      ],
+    }).as("submitSearch");
+    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
     cy.get("#navBarTitle").should("contain", "Job Search");
     cy.get("#zipcode").type("1234");
     cy.get("#submit").click();
@@ -44,14 +46,14 @@ describe("Job Search", () => {
     cy.contains("Apple");
   });
   it("0 Results returned - SUCCESS", () => {
-    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
     cy.server();
     cy.route({
       method: "POST",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/JobSearch",
       status: 200,
-      response: []
+      response: [],
     }).as("submitSearch");
+    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
     cy.get("#navBarTitle").should("contain", "Job Search");
     cy.get("#zipcode").type("1234");
     cy.get("#submit").click();
@@ -59,14 +61,14 @@ describe("Job Search", () => {
     cy.contains("No Results");
   });
   it("Job Results 401- FAILURE", () => {
-    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
     cy.server();
     cy.route({
       method: "POST",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/JobSearch",
       status: 401,
-      response: []
+      response: [],
     }).as("submitSearch");
+    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
     cy.get("#navBarTitle").should("contain", "Job Search");
     cy.get("#zipcode").type("1234");
     cy.get("#submit").click();
@@ -74,8 +76,8 @@ describe("Job Search", () => {
     cy.contains("Please Try Again");
   });
   it("Attempt Job Search No Zipcode- FAILURE", () => {
-    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
     cy.server();
+    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
     cy.get("#navBarTitle").should("contain", "Job Search");
     cy.get("#submit").click();
     cy.should("not.have.value", "results");
@@ -86,8 +88,9 @@ describe("Job Search", () => {
       method: "GET",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
       status: 200,
-      response:{
-        skills: [{"name": "dev"},{"name": "hardware"}]}
+      response: {
+        skills: [{ name: "dev" }, { name: "hardware" }],
+      },
     }).as("getProfileSkills");
     cy.fakeLogin();
     cy.get("#navBarTitle").should("contain", "Job Search");
@@ -101,7 +104,7 @@ describe("Job Search", () => {
       method: "GET",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
       status: 401,
-      response:[]
+      response: [],
     }).as("getProfileSkills");
     cy.fakeLogin();
     cy.get("#navBarTitle").should("contain", "Job Search");
@@ -114,23 +117,26 @@ describe("Job Search", () => {
       method: "POST",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/JobSearch",
       status: 200,
-      response: [{
-        _id: "1234",
-        organization: { "_id": 123, "name": "Apple" },
-        jobTitle: "IT Admin",
-        pay: "$123",
-        code: "1223",
-        description: "This is a description",
-        qualifications: "qualification",
-        skills: [{ "name": "Networking" }, { "name": "IT" }]
-      }]
+      response: [
+        {
+          _id: "1234",
+          organization: { _id: 123, name: "Apple" },
+          jobTitle: "IT Admin",
+          pay: "$123",
+          code: "1223",
+          description: "This is a description",
+          qualifications: "qualification",
+          skills: [{ name: "Networking" }, { name: "IT" }],
+        },
+      ],
     }).as("submitSearch");
     cy.route({
       method: "GET",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
       status: 200,
-      response:{
-        skills: [{"name": "dev"},{"name": "hardware"}]}
+      response: {
+        skills: [{ name: "dev" }, { name: "hardware" }],
+      },
     }).as("getProfileSkills");
     cy.fakeLogin();
     cy.get("#navBarTitle").should("contain", "Job Search");
