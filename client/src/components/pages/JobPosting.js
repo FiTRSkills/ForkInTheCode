@@ -71,6 +71,7 @@ function JobPosting(props) {
             });
             setSkills(skills);
           }
+          setError(null);
         })
         .catch((error) => {
           if (error.response) {

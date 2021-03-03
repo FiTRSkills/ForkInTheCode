@@ -60,6 +60,7 @@ function SkillDetails(props) {
             setAliases(res.data.alias);
             setCourses(res.data.courses);
           }
+          setError(null);
         })
         .catch((error) => {
           if (error.response) {
