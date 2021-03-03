@@ -160,11 +160,11 @@ JobSeekerProfile.methods.removeEducation = async function (id) {
 /**
  * Adds a new skill to the profile, associating it with a current skill if it exists.
  *
- * @param skill The name of the skill to add, if it already exists, that skill will be used.
+ * @param skill The id of the skill to add.
  * @returns {Promise<JobSeekerProfile>}
  */
 JobSeekerProfile.methods.addSkill = async function (skill) {
-  let skillEntry = await Skill.findOneOrCreate(skill);
+  let skillEntry = await Skill.findById(skill);
   await this.skills.push(skillEntry);
   await this.save();
   return this;

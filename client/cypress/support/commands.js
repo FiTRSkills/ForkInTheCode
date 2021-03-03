@@ -12,7 +12,6 @@
 
 // -- This is a parent command --
 Cypress.Commands.add("fakeLogin", () => {
-  cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/Login");
   cy.server();
   cy.route({
     method: "POST",
@@ -26,6 +25,7 @@ Cypress.Commands.add("fakeLogin", () => {
     status: 200,
     response: "",
   }).as("userTypeCall");
+  cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/Login");
   cy.get("#email").type("email@email.com");
   cy.get("#password").type("password");
   cy.get("#submit").click();
