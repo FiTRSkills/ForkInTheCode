@@ -2,8 +2,6 @@
  * @module controllers/skillcontroller
  */
 
-const mongoose = require("mongoose");
-const passport = require("passport");
 const Skill = require("../models/skill");
 const Search = require("../services/search");
 const Course = require("../models/course");
