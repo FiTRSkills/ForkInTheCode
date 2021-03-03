@@ -1,24 +1,26 @@
 describe("Job Search", () => {
   it("Add Skill- SUCCESS", () => {
-    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
+    cy.SkillsDropdown();
     cy.get("#navBarTitle").should("contain", "Job Search");
     cy.get("#skillInput").type("developer");
+    cy.contains('developer').click()
     cy.get("#addSkill").click();
     cy.get("#skillList").should("contain", "developer");
   });
   it("Add Duplicate Skill- FAILURE", () => {
-    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
+    cy.SkillsDropdown();
     cy.get("#navBarTitle").should("contain", "Job Search");
     cy.get("#skillInput").type("developer");
+    cy.contains('developer').click()
     cy.get("#addSkill").click();
     cy.get("#skillInput").type("developer");
+    cy.contains('developer').click()
     cy.get("#addSkill").click();
     cy.get("#skillList").should("not.have.value", "developer");
   });
 
   it("Job Results Returned- SUCCESS", () => {
-    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
-    cy.server();
+    cy.SkillsDropdown();
     cy.route({
           method: "POST",
           url: Cypress.env("REACT_APP_SERVER_URL") + "/JobSearch",
@@ -44,7 +46,6 @@ describe("Job Search", () => {
     cy.contains("Apple");
   });
   it("0 Results returned - SUCCESS", () => {
-    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
     cy.server();
     cy.route({
       method: "POST",
@@ -59,7 +60,6 @@ describe("Job Search", () => {
     cy.contains("No Results");
   });
   it("Job Results 401- FAILURE", () => {
-    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
     cy.server();
     cy.route({
       method: "POST",
@@ -67,6 +67,7 @@ describe("Job Search", () => {
       status: 401,
       response: []
     }).as("submitSearch");
+    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
     cy.get("#navBarTitle").should("contain", "Job Search");
     cy.get("#zipcode").type("1234");
     cy.get("#submit").click();
@@ -75,7 +76,6 @@ describe("Job Search", () => {
   });
   it("Attempt Job Search No Zipcode- FAILURE", () => {
     cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
-    cy.server();
     cy.get("#navBarTitle").should("contain", "Job Search");
     cy.get("#submit").click();
     cy.should("not.have.value", "results");
@@ -142,14 +142,7 @@ describe("Job Search", () => {
     cy.url().should("contain", "1234");
   });
   it("Skills Populate Dropdown- SUCCESS", () => {
-    cy.server();
-    cy.route({
-      method: "GET",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/skills",
-      status: 200,
-      response:[{"name": "dev"},{"name": "hardware"}]}).as("getSkills");
-    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
-    cy.wait("@getSkills").its("status").should("eq", 200);
+    cy.SkillsDropdown()
     cy.get("#navBarTitle").should("contain", "Job Search");
     cy.get('#skillInput').click()
     cy.focused().type('de')
@@ -157,6 +150,20 @@ describe("Job Search", () => {
       .should('be.visible')
       .and('have.class', 'MuiAutocomplete-option')
       .click()
+  });
+
+  it("Skills Populate Dropdown- FAILURE", () => {
+    cy.SkillsDropdown(false);
+    cy.get("#navBarTitle").should("contain", "Job Search");
+    cy.contains('No Skills Found');
+  });
+  it("Skills Add Not Existing- FAILURE", () => {
+    cy.SkillsDropdown();
+    cy.get("#navBarTitle").should("contain", "Job Search");
+    cy.get('#skillInput').click()
+    cy.focused().type('mechanical')
+    cy.get("#addSkill").click();
+    cy.contains('Skill does not exist');
   });
 
 });

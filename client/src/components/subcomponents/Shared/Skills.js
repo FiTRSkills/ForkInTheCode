@@ -43,11 +43,12 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
       })
       .then((response) => {
         if (response.status === 200) {
+          setError(null);
           setAllSkills(response.data.map((skill) => skill.name));
         }
       })
       .catch((error) => {
-        console.error(error);
+        setError("No Skills Found");
       })
   }
 
@@ -72,7 +73,11 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
   function addSkill() {
     if (skills.indexOf(currentSkill) > -1) {
       setError("Already in Skills");
-    } else if (currentSkill !== "") {
+    }
+    else if(allSkills.indexOf(currentSkill) === -1){
+      setError("Skill does not exist")
+    }
+    else if(currentSkill !== "") {
       if (onAdd !== undefined) {
         setLoading(true);
         onAdd(currentSkill)

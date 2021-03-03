@@ -90,6 +90,25 @@ Cypress.Commands.add("fakeProfile", () => {
   // Go to profile. Verify profile loaded success.
   cy.get("#Profile").click();
 });
+Cypress.Commands.add("SkillsDropdown", (success=true)=>{
+  cy.server();
+  if(success){
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/skills",
+      status: 200,
+      response:[{"name": "developer"},{"name": "hardware"}, {"name": "test"}]}).as("getSkills");
+  }
+  else{
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/skills",
+      status: 401,
+      response:[]}).as("getSkills");
+  }
+  cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
+
+})
 //
 //
 // -- This is a child command --
