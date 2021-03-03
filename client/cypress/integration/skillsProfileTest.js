@@ -27,7 +27,7 @@ describe("Load skills profile", () => {
       method: "GET",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/skills",
       status: 200,
-      response:[{"name": "dev"},{"name": "hardware"}, {"name": "test"}]}).as("getSkills");
+      response:[{"name": "dev", "_id": "1" },{"name": "hardware", "_id": "2"}, {"name": "test", "_id": "3"}]}).as("getSkills");
     cy.get("#editSkills").click();
     cy.wait("@getSkills");
     cy.get("#skillInput").type("test");
@@ -81,7 +81,7 @@ describe("Load skills profile", () => {
       method: "GET",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/skills",
       status: 200,
-      response:[{"name": "dev"},{"name": "hardware"}, {"name": "test"}]}).as("getSkills");
+      response:[{"name": "dev", "_id": "1" },{"name": "hardware", "_id": "2"}, {"name": "test", "_id": "3"}]}).as("getSkills");
     cy.get("#editSkills").click();
     cy.get("#skillInput").type("test");
     cy.route({

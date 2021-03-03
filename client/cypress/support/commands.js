@@ -97,7 +97,7 @@ Cypress.Commands.add("SkillsDropdown", (success=true)=>{
       method: "GET",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/skills",
       status: 200,
-      response:[{"name": "developer"},{"name": "hardware"}, {"name": "test"}]}).as("getSkills");
+      response:[{"name": "developer", "_id": "1" },{"name": "hardware", "_id": "2"}, {"name": "test", "_id": "3"}]}).as("getSkills");
   }
   else{
     cy.route({
