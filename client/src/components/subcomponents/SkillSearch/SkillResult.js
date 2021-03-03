@@ -41,8 +41,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SkillResult({ skill, toggleAddToProfile, inProfile }) {
-  const [checked, setChecked] = useState(inProfile);
+function SkillResult({ skill, toggleAddToProfile }) {
+  const [checked, setChecked] = useState(skill.inProfile);
   const classes = useStyles();
 
   const handleToggle = (event) => {
@@ -64,7 +64,7 @@ function SkillResult({ skill, toggleAddToProfile, inProfile }) {
         <Checkbox
           checked={checked}
           onChange={handleToggle}
-          disabled={inProfile}
+          disabled={skill.inProfile}
           inputProps={{
             "aria-label":
               "Select for add to profile, disabled is already in profile",

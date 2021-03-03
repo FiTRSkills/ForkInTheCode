@@ -56,7 +56,8 @@ function SkillsSearchResults({ basicResults, user, location }) {
     setAllResults(
       basicResults.map((result) => {
         result.inProfile =
-          usersSkills.find((skill) => skill.id === result.id) !== undefined;
+          usersSkills.find((skill) => skill._id === result._id) !== undefined;
+        return result;
       })
     );
   }, [basicResults, usersSkills]);
@@ -118,6 +119,9 @@ function SkillsSearchResults({ basicResults, user, location }) {
   };
 
   const addSkillsToProfile = () => {
+    if (skillsToAdd.length < 1) {
+      return;
+    }
     setLoading(true);
     axios
       .post(
@@ -193,6 +197,7 @@ function SkillsSearchResults({ basicResults, user, location }) {
                 <SkillResult
                   skill={skill}
                   toggleAddToProfile={toggleAddToProfile}
+                  id={skill._id}
                 />
               );
             })
@@ -204,6 +209,7 @@ function SkillsSearchResults({ basicResults, user, location }) {
             className={classes.addSkillsButton}
             color="primary"
             variant="contained"
+            disabled={skillsToAdd.length < 1}
           >
             Add Skills To Profile
           </Button>
