@@ -346,7 +346,7 @@ router.get(
   oneOf(
     // <-- one of the following must exist
     [
-      check("zipcode", "Must send a viable zipcode").not().isEmpty(),
+      check("zipCode", "Must send a viable zipcode").not().isEmpty(),
       check("organization", "Must send a viable organization").not().isEmpty(),
     ]
   ),

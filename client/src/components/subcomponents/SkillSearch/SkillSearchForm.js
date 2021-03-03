@@ -47,19 +47,25 @@ function SkillSearchForm(props) {
   function searchSkills() {
     setLoading(true);
     axios
-      .get(process.env.REACT_APP_SERVER_URL + "/skills/search", {
-        withCredentials: true,
-        zipCode: zipCode,
-        organization: organization,
-      })
+      .get(
+        process.env.REACT_APP_SERVER_URL +
+          "/skills/search?zipCode=" +
+          zipCode +
+          "&organization=" +
+          organization,
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         if (response.status === 200) {
           props.setSkills(response.data);
+          props.setLocation(zipCode);
         }
       })
       .catch((error) => {
-        if (error.response && error.response.status === 400) {
-          setError(error.response.data);
+        if (error.response && error.response.status === 406) {
+          setError("No Skills Found");
         } else {
           setError("Failed to search for skills");
         }
