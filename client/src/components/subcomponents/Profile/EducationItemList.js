@@ -4,7 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-import { Alert } from "@material-ui/lab";
+import Alert from "@material-ui/lab/Alert";
 import ViewEditEducationItem from "./ViewEditEducationItem";
 import CloseIcon from "@material-ui/icons/Close";
 import EditIcon from "@material-ui/icons/Edit";
