@@ -1,6 +1,7 @@
 const { connectDB, disconnectDB } = require("../util");
 const supertest = require("supertest");
 const app = require("../../src/app");
+const Skill = require("../../src/models/skill");
 const request = supertest(app);
 
 var session_info = "";
@@ -8,6 +9,7 @@ var education_id = "";
 var career_id = "";
 var skill_id = "";
 var organization = "";
+var skills = "";
 
 describe("testing index.js routes", () => {
   beforeAll(connectDB);
@@ -326,15 +328,34 @@ describe("testing index.js routes", () => {
     expect(body.career).toEqual([]);
   });
 
-  it("POST /profile/skill - add skill information", async () => {
+  it("GET /skills - gets all skills", async () => {
+    await Skill.findOneOrCreate("C++");
+    await Skill.findOneOrCreate("Pizza");
+    const res = await request.get("/skills");
+    expect(res.statusCode).toEqual(200);
+    skills = JSON.parse(res.text);
+  });
+
+  it("POST /profile/skill - add skill information fail", async () => {
     const res = await request
       .post("/profile/skill")
       .set("Cookie", [session_info])
       .send({
-        skill: "C++",
+        skills: ["C++"],
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.text).toEqual("Failed to add skill: C++, aborting.");
+  });
+
+  it("POST /profile/skill - add skill information success", async () => {
+    const res = await request
+      .post("/profile/skill")
+      .set("Cookie", [session_info])
+      .send({
+        skills: [skills[0]._id],
       });
     expect(res.statusCode).toEqual(200);
-    expect(res.text).toEqual("Successfully added skill.");
+    expect(res.text).toEqual("Successfully added skills.");
   });
 
   it("GET /profile - added skill information", async () => {
