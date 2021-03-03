@@ -3,7 +3,7 @@ const search = require("../../src/services/search");
 const JobPosting = require("../../src/models/jobPosting");
 const Skill = require("../../src/models/skill");
 
-describe("JobPosting Model Test", () => {
+describe("Search service test", () => {
   beforeAll(connectDB);
   afterAll(disconnectDB);
 
