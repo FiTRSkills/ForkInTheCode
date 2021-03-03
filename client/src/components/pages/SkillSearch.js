@@ -3,9 +3,11 @@ import { changeCurrentPage } from "../../redux/actions";
 import { connect } from "react-redux";
 import Container from "@material-ui/core/Container";
 import SkillSearchForm from "../subcomponents/SkillSearch/SkillSearchForm";
+import SkillsSearchResults from "../subcomponents/SkillSearch/SkillsSearchResults";
 
 function SkillSearch(props) {
-  const [, setSkills] = useState([]);
+  const [skillsResults, setSkills] = useState([]);
+  const [location, setLocation] = useState("");
 
   useEffect(() => {
     props.changeCurrentPage("Skill Search");
@@ -13,7 +15,8 @@ function SkillSearch(props) {
 
   return (
     <Container component="main" maxWidth="lg">
-      <SkillSearchForm setSkills={setSkills} />
+      <SkillSearchForm setSkills={setSkills} setLocation={setLocation} />
+      <SkillsSearchResults basicResults={skillsResults} location={location} />
     </Container>
   );
 }
