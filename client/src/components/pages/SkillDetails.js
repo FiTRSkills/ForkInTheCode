@@ -8,7 +8,7 @@ import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { Alert } from "@material-ui/lab";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
   skillHeading: {
