@@ -19,6 +19,8 @@ describe("Skill Search", () => {
     cy.get("#zipcode").type("14623");
     cy.get("#submit").click();
     cy.wait("@submitSearch").its("status").should("eq", 200);
+    cy.contains("PHP");
+    cy.contains("MySQL");
   });
 
   it("Skill search by zip code FAILURE", () => {
@@ -58,6 +60,8 @@ describe("Skill Search", () => {
     cy.get("#organization").type("Apple");
     cy.get("#submit").click();
     cy.wait("@submitSearch").its("status").should("eq", 200);
+    cy.contains("PHP");
+    cy.contains("MySQL");
   });
 
   it("Skill search by organization FAILURE", () => {
