@@ -134,7 +134,7 @@ function JobPosting(props) {
             </Typography>
             {courses.map((classItem) => (
               <CourseItem
-                id={classItem.id}
+                id={classItem._id}
                 description={classItem.description}
                 skills={classItem.skills}
                 title={classItem.name}

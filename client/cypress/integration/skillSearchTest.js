@@ -10,8 +10,8 @@ describe("Skill Search", () => {
       url: Cypress.env("REACT_APP_SERVER_URL") + "/skills/search",
       status: 200,
       response: [
-        { name: "PHP", numJobs: 10, id: 1 },
-        { name: "MySQL", numJobs: 8, id: 2 },
+        { name: "PHP", numJobs: 10, _id: 1 },
+        { name: "MySQL", numJobs: 8, _id: 2 },
       ],
     }).as("submitSearch");
     cy.get("#zipcode").type("14623");
@@ -44,8 +44,8 @@ describe("Skill Search", () => {
       url: Cypress.env("REACT_APP_SERVER_URL") + "/skills/search",
       status: 200,
       response: [
-        { name: "PHP", numJobs: 10, id: 1 },
-        { name: "MySQL", numJobs: 8, id: 2 },
+        { name: "PHP", numJobs: 10, _id: 1 },
+        { name: "MySQL", numJobs: 8, _id: 2 },
       ],
     }).as("submitSearch");
     cy.get('#organization-tab').click();

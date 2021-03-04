@@ -24,7 +24,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CourseItem({ description, skills, title, id }) {
+function CourseItem(props) {
+  const {description, skills, title, id} = props;
   const classes = useStyles();
 
   return (
