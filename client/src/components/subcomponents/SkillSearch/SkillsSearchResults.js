@@ -47,7 +47,7 @@ function SkillsSearchResults({ basicResults, user, location }) {
   const [usersSkills, setUsersSkills] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const skillsToAdd = [];
+  const [skillsToAdd, setSkillsToAdd] = useState([]);
 
   /**
    * Whenever the given results change or the user's skills change update it to include if the skill is in the user's skills
@@ -113,8 +113,9 @@ function SkillsSearchResults({ basicResults, user, location }) {
     if (skillsToAdd.includes(skill)) {
       let index = skillsToAdd.indexOf(skill);
       skillsToAdd.splice(index, 1);
+      setSkillsToAdd(skillsToAdd);
     } else {
-      skillsToAdd.push(skill);
+      setSkillsToAdd([...skillsToAdd, skill]);
     }
   };
 
@@ -197,22 +198,24 @@ function SkillsSearchResults({ basicResults, user, location }) {
                 <SkillResult
                   skill={skill}
                   toggleAddToProfile={toggleAddToProfile}
-                  id={skill._id}
+                  key={skill._id}
                 />
               );
             })
           ) : (
             <Box style={{ textAlign: "center" }}>No Results Found</Box>
           )}
-          <Button
-            onClick={addSkillsToProfile}
-            className={classes.addSkillsButton}
-            color="primary"
-            variant="contained"
-            disabled={skillsToAdd.length < 1}
-          >
-            Add Skills To Profile
-          </Button>
+          {user !== undefined && Object.keys(user).length > 0 && (
+            <Button
+              onClick={addSkillsToProfile}
+              className={classes.addSkillsButton}
+              color="primary"
+              variant="contained"
+              disabled={skillsToAdd.length < 1}
+            >
+              Add Skills To Profile
+            </Button>
+          )}
         </Box>
       )}
     </Box>

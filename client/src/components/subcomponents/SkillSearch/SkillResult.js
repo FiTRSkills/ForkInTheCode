@@ -65,10 +65,12 @@ function SkillResult({ skill, toggleAddToProfile }) {
           checked={checked}
           onChange={handleToggle}
           disabled={skill.inProfile}
+          color="primary"
           inputProps={{
             "aria-label":
               "Select for add to profile, disabled is already in profile",
           }}
+          id={"addCheckbox" + skill._id}
         />
       </Grid>
     </Grid>

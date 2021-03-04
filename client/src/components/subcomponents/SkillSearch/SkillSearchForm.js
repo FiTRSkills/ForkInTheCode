@@ -160,10 +160,11 @@ function SkillSearchForm(props) {
             <Select
               labelId="select-filled-label"
               id="select-filled"
-              variant={"outlined"}
+              variant="outlined"
               disabled
               fullWidth
               className={classes.select}
+              value=""
             />
           </>
         )}
