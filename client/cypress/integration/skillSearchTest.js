@@ -115,4 +115,92 @@ describe("Skill Search", () => {
     cy.should("not.contain", "PHP");
     cy.contains("MySQL");
   });
+
+  it("Skill search add skills to profile SUCCESS", () => {
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
+      status: 200,
+      response: {
+        skills: [],
+      },
+    }).as("beforeProfile");
+    cy.fakeLogin();
+    cy.route({
+      method: "GET",
+      url:
+        Cypress.env("REACT_APP_SERVER_URL") +
+        "/skills/search?zipCode=12345&organization=",
+      status: 200,
+      response: [
+        { name: "PHP", numJobs: 10, _id: 1 },
+        { name: "MySQL", numJobs: 8, _id: 2 },
+      ],
+    }).as("submitSearch");
+    cy.route({
+      method: "post",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/skill",
+      status: 200,
+      response: "Success",
+    }).as("addSkillCall");
+    cy.get("#SkillSearch").click();
+    cy.get("#zipcode").type("12345");
+    cy.get("#submit").click();
+    cy.wait("@submitSearch").its("status").should("eq", 200);
+    cy.get("#addCheckbox1").click();
+    cy.get("#addCheckbox2").click();
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
+      status: 200,
+      response: {
+        skills: [
+          { name: "PHP", _id: 1 },
+          { name: "MySQL", _id: 2 },
+        ],
+      },
+    }).as("updatedProfileSkills");
+    cy.get("#addSkillsToProfileButton").click();
+    cy.wait("@addSkillCall").its("status").should("eq", 200);
+    cy.get("#results").should("not.contain", "PHP");
+    cy.get("#results").should("not.contain", "MySQL");
+  });
+
+  it("Skill search add skills to profile FAILURE", () => {
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
+      status: 200,
+      response: {
+        skills: [],
+      },
+    }).as("beforeProfile");
+    cy.fakeLogin();
+    cy.route({
+      method: "GET",
+      url:
+        Cypress.env("REACT_APP_SERVER_URL") +
+        "/skills/search?zipCode=12345&organization=",
+      status: 200,
+      response: [
+        { name: "PHP", numJobs: 10, _id: 1 },
+        { name: "MySQL", numJobs: 8, _id: 2 },
+      ],
+    }).as("submitSearch");
+    cy.route({
+      method: "post",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/skill",
+      status: 400,
+      response: "Failed to add skill: 1, aborting.",
+    }).as("addSkillCall");
+    cy.get("#SkillSearch").click();
+    cy.get("#zipcode").type("12345");
+    cy.get("#submit").click();
+    cy.wait("@submitSearch").its("status").should("eq", 200);
+    cy.get("#addCheckbox1").click();
+    cy.get("#addCheckbox2").click();
+    cy.get("#addSkillsToProfileButton").click();
+    cy.wait("@addSkillCall").its("status").should("eq", 400);
+    cy.contains("Failed to add skill: 1, aborting.");
+  });
 });

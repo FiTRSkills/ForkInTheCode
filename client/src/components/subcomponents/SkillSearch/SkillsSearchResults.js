@@ -133,6 +133,7 @@ function SkillsSearchResults({ basicResults, user, location }) {
         }
       )
       .then(() => {
+        updateUsersSkills();
         setError(null);
       })
       .catch((error) => {
@@ -144,7 +145,6 @@ function SkillsSearchResults({ basicResults, user, location }) {
         }
         console.error(error);
       });
-    updateUsersSkills();
     setLoading(false);
   };
 
@@ -213,6 +213,7 @@ function SkillsSearchResults({ basicResults, user, location }) {
               color="primary"
               variant="contained"
               disabled={skillsToAdd.length < 1}
+              id="addSkillsToProfileButton"
             >
               Add Skills To Profile
             </Button>
