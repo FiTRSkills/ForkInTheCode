@@ -65,11 +65,13 @@ function JobPosting(props) {
             setPay(res.data.pay);
             setDescription(res.data.description);
             setQualifications(res.data.qualifications);
+            // TODO: Make sure this and other similar spots change to using skill id and other skill info vs just the name
             const skills = res.data.skills.map((skill) => {
               return skill.name;
             });
             setSkills(skills);
           }
+          setError(null);
         })
         .catch((error) => {
           if (error.response) {
@@ -79,7 +81,7 @@ function JobPosting(props) {
               setError("Not found");
             }
           } else {
-            setError("Failed to load profile");
+            setError("Failed to load Job Posting");
           }
         })
         .finally(() => {
