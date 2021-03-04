@@ -39,6 +39,13 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: 1.6,
     letterSpacing: "0.0075rem",
   },
+  gridItem: {
+    alignItems: "center",
+    borderBottom: "1px solid grey",
+  },
+  numJobsColumn: {
+    textAlign: "center",
+  },
 }));
 
 function SkillResult({ skill, toggleAddToProfile }) {
@@ -51,13 +58,13 @@ function SkillResult({ skill, toggleAddToProfile }) {
   };
 
   return (
-    <Grid container>
+    <Grid container className={classes.gridItem}>
       <Grid item xs={8}>
         <Link className={classes.title} to={"/SkillsDetails/" + skill._id}>
           {skill.name}
         </Link>
       </Grid>
-      <Grid item xs={2}>
+      <Grid item xs={2} className={classes.numJobsColumn}>
         {skill.numJobs}
       </Grid>
       <Grid item xs={2}>

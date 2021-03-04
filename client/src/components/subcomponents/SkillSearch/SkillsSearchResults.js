@@ -48,6 +48,8 @@ function SkillsSearchResults({ basicResults, user, location }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [skillsToAdd, setSkillsToAdd] = useState([]);
+  let hadProfileError = false;
+  let hadSkillError = false;
 
   /**
    * Whenever the given results change or the user's skills change update it to include if the skill is in the user's skills
@@ -96,11 +98,15 @@ function SkillsSearchResults({ basicResults, user, location }) {
       .then((response) => {
         if (response.status === 200) {
           setUsersSkills(response.data.skills);
-          setError(null);
+          if (hadProfileError) {
+            setError(null);
+            hadProfileError = false;
+          }
         }
       })
       .catch((error) => {
         setError(error);
+        hadProfileError = true;
       })
       .finally(() => setLoading(false));
   };
@@ -133,17 +139,24 @@ function SkillsSearchResults({ basicResults, user, location }) {
         }
       )
       .then(() => {
-        updateUsersSkills();
-        setError(null);
+        if (hadSkillError) {
+          setError(null);
+          hadSkillError = false;
+        }
       })
       .catch((error) => {
         if (error?.response?.status === 400) {
-          //TODO: try again if a specific subset failed
-          setError(error.response.data);
+          setError(
+            "An error has occoured while trying to add a skill. Some skills may have been added, please try again."
+          );
         } else {
           setError("An error has occoured while trying to add a skill.");
         }
+        hadSkillError = true;
         console.error(error);
+      })
+      .finally(() => {
+        updateUsersSkills();
       });
     setLoading(false);
   };
@@ -184,9 +197,9 @@ function SkillsSearchResults({ basicResults, user, location }) {
         <CircularProgress />
       ) : (
         <Box className={classes.resultsContainer}>
-          <Grid container>
+          <Grid container style={{ marginBottom: 10 }}>
             <Grid item xs={8}></Grid>
-            <Grid item xs={2}>
+            <Grid item xs={2} style={{ textAlign: "center" }}>
               # Jobs
             </Grid>
             <Grid item xs={2}>

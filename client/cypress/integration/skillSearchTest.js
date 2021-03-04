@@ -191,7 +191,8 @@ describe("Skill Search", () => {
       method: "post",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/skill",
       status: 400,
-      response: "Failed to add skill: 1, aborting.",
+      response:
+        "An error has occoured while trying to add a skill. Some skills may have been added, please try again.",
     }).as("addSkillCall");
     cy.get("#SkillSearch").click();
     cy.get("#zipcode").type("12345");
@@ -201,6 +202,8 @@ describe("Skill Search", () => {
     cy.get("#addCheckbox2").click();
     cy.get("#addSkillsToProfileButton").click();
     cy.wait("@addSkillCall").its("status").should("eq", 400);
-    cy.contains("Failed to add skill: 1, aborting.");
+    cy.contains(
+      "An error has occoured while trying to add a skill. Some skills may have been added, please try again."
+    );
   });
 });
