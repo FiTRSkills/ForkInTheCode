@@ -48,6 +48,11 @@ search.findSkillsByZip = async function (zipCode) {
       $sort: { weight: -1 },
     },
     {
+      $set: {
+        "_id.numJobs": "$weight",
+      },
+    },
+    {
       // We only care about the skills, replace root with the skills from the group
       $replaceRoot: {
         newRoot: "$_id",
