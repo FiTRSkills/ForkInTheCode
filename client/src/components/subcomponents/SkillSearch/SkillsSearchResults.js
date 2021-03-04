@@ -176,6 +176,7 @@ function SkillsSearchResults({ basicResults, user, location }) {
           name="includeProfileSkills"
           inputProps={{ "aria-label": "Include Profile Skills" }}
           color="primary"
+          id="includeProfileSkillsToggle"
         />
       </Typography>
       {error && <Alert severity={"error"}>{error}</Alert>}

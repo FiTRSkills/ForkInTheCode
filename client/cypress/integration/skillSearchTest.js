@@ -79,4 +79,40 @@ describe("Skill Search", () => {
     cy.wait("@submitSearch").its("status").should("eq", 400);
     cy.contains("Failed to search for skills");
   });
+
+  it("Skill search toggle include skills from profile", () => {
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
+      status: 200,
+      response: {
+        skills: [{ name: "PHP", _id: 1 }],
+      },
+    }).as("updatedProfileSkills");
+    cy.fakeLogin();
+    cy.route({
+      method: "GET",
+      url:
+        Cypress.env("REACT_APP_SERVER_URL") +
+        "/skills/search?zipCode=12345&organization=",
+      status: 200,
+      response: [
+        { name: "PHP", numJobs: 10, _id: 1 },
+        { name: "MySQL", numJobs: 8, _id: 2 },
+      ],
+    }).as("submitSearch");
+    cy.get("#SkillSearch").click();
+    cy.get("#zipcode").type("12345");
+    cy.get("#submit").click();
+    cy.wait("@submitSearch").its("status").should("eq", 200);
+    cy.get("#results").should("not.contain", "PHP");
+    cy.contains("MySQL");
+    cy.get("#includeProfileSkillsToggle").click();
+    cy.contains("PHP");
+    cy.get("#addCheckbox1").should("be.disabled");
+    cy.contains("MySQL");
+    cy.get("#includeProfileSkillsToggle").click();
+    cy.should("not.contain", "PHP");
+    cy.contains("MySQL");
+  });
 });
