@@ -6,6 +6,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Alert from "@material-ui/lab/Alert";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,11 +30,27 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
+
   useEffect(() => {
-    //TODO make API call to fetch skills list and update
-    setAllSkills([]);
+    fetchSkills();
     setCurrentSkill("");
   }, [editMode]);
+
+  function fetchSkills(){
+    axios
+      .get(process.env.REACT_APP_SERVER_URL + "/skills", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          setError(null);
+          setAllSkills(response.data.map((skill) => skill.name));
+        }
+      })
+      .catch((error) => {
+        setError("No Skills Found");
+      })
+  }
 
   function deleteSkill(skillToDelete) {
     if (onDelete !== undefined) {
@@ -56,7 +73,11 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
   function addSkill() {
     if (skills.indexOf(currentSkill) > -1) {
       setError("Already in Skills");
-    } else if (currentSkill !== "") {
+    }
+    else if(allSkills.indexOf(currentSkill) === -1){
+      setError("Skill does not exist")
+    }
+    else if(currentSkill !== "") {
       if (onAdd !== undefined) {
         setLoading(true);
         onAdd(currentSkill)
