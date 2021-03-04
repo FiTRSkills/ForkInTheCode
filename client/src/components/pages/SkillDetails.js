@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
+import CourseItem from "../subcomponents/Shared/CourseItem";
 
 const useStyles = makeStyles((theme) => ({
   skillHeading: {
@@ -111,7 +112,11 @@ function SkillDetails(props) {
               Classes Associated With This Skill
             </Typography>
             {courses.map((courseItem) => (
-              <Box id={"courseNumber" + courseItem.id}>TBD</Box>
+              <CourseItem id={courseItem.id}
+                          description={courseItem.description}
+                          skills={courseItem.skills}
+                          title={courseItem.name}
+              />
             ))}
           </Box>
         </Box>

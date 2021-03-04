@@ -11,7 +11,7 @@ import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Alert } from "@material-ui/lab";
 import Skills from "../subcomponents/Shared/Skills";
-import JobPostingClassItem from "../subcomponents/JobPosting/JobPostingClassItem";
+import CourseItem from "../subcomponents/Shared/CourseItem";
 
 const useStyles = makeStyles((theme) => ({
   jobHeader: {
@@ -36,6 +36,7 @@ function JobPosting(props) {
   const [jobTitle, setJob] = useState("");
   const [pay, setPay] = useState("");
   const [description, setDescription] = useState("");
+  const [courses, setCourses] = useState([]);
   const [qualifications, setQualifications] = useState("");
   const [organization, setOrganization] = useState({});
   const [skills, setSkills] = useState([]);
@@ -65,6 +66,7 @@ function JobPosting(props) {
             setPay(res.data.pay);
             setDescription(res.data.description);
             setQualifications(res.data.qualifications);
+            setCourses(res.data.courses);
             // TODO: Make sure this and other similar spots change to using skill id and other skill info vs just the name
             const skills = res.data.skills.map((skill) => {
               return skill.name;
@@ -130,9 +132,10 @@ function JobPosting(props) {
             <Typography variant={"h6"}>
               Classes Available In Your Area
             </Typography>
-            {[].map((classItem) => (
-              <JobPostingClassItem
-                college={classItem.college}
+            {courses.map((classItem) => (
+              <CourseItem
+                id={classItem.id}
+                description={classItem.description}
                 skills={classItem.skills}
                 title={classItem.name}
               />

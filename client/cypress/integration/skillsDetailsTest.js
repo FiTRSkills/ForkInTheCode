@@ -12,6 +12,15 @@ describe("Skills Details", () => {
         courses: [
           {
             id: 1,
+            name:"Programming 101",
+            description: "This a wonderful class taught by yours truly. Wonderful absolutely wonderful. Will learn everything about programming and even build your own site so you can become the next Bill Gates",
+            skills: [{ "name": "Networking", "_id":1 }, { "name": "IT","_id":2 }]
+          },
+          {
+            id: 2,
+            name:"Intro to Software",
+            description: "Have you ever wanted to become a millionaire. This is the class you need to take.",
+            skills: [{ "name": "Fast Typing", "_id":3 }, { "name": "Programming","_id":4 }]
           },
         ], // This is not totally defined at the time of writing this
       },
@@ -24,7 +33,8 @@ describe("Skills Details", () => {
       "contain",
       "this is programming's description"
     );
-    cy.get("#courseNumber1").should("contain", "TBD"); // TODO: update when course content is defined
+    cy.get("#courseNumber1").should("contain", "Programming 101");
+    cy.get("#courseNumber2").should("contain", "Intro to Software");
   });
 
   it("View Skill Details INVALID SKILL", () => {
