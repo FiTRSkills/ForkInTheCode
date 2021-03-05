@@ -1,7 +1,5 @@
 describe("Sign Up", () => {
   it("Sign Up Job Seeker Success", () => {
-    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/SignUp");
-    cy.get("#navBarTitle").should("contain", "Sign Up");
     cy.server();
     cy.route({
       method: "POST",
@@ -11,6 +9,14 @@ describe("Sign Up", () => {
         data: "Successfully created user",
       },
     }).as("signUpCall");
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/usertype",
+      status: 200,
+      response: "",
+    }).as("userTypeCall");
+    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/SignUp");
+    cy.get("#navBarTitle").should("contain", "Sign Up");
     cy.get("#simple-tabpanel-0 form #email").type("email@email.com");
     cy.get("#simple-tabpanel-0 form #password").type("password");
     cy.get("#simple-tabpanel-0 form #submit").click();
@@ -19,8 +25,6 @@ describe("Sign Up", () => {
   });
 
   it("Sign Up Job Seeker Fails", () => {
-    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/SignUp");
-    cy.get("#navBarTitle").should("contain", "Sign Up");
     cy.server();
     cy.route({
       method: "POST",
@@ -31,6 +35,14 @@ describe("Sign Up", () => {
         message: "A user with the given username is already registered",
       },
     }).as("signUpCall");
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/usertype",
+      status: 200,
+      response: "",
+    }).as("userTypeCall");
+    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/SignUp");
+    cy.get("#navBarTitle").should("contain", "Sign Up");
     cy.get("#simple-tabpanel-0 form #email").type("email@email.com");
     cy.get("#simple-tabpanel-0 form #password").type("password");
     cy.get("#simple-tabpanel-0 form #submit").click();
@@ -39,8 +51,6 @@ describe("Sign Up", () => {
   });
 
   it("Sign Up Employer Success", () => {
-    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/SignUp");
-    cy.get("#navBarTitle").should("contain", "Sign Up");
     cy.server();
     cy.route({
       method: "POST",
@@ -50,6 +60,14 @@ describe("Sign Up", () => {
         data: "Successfully created user",
       },
     }).as("signUpCall");
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/usertype",
+      status: 200,
+      response: "",
+    }).as("userTypeCall");
+    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/SignUp");
+    cy.get("#navBarTitle").should("contain", "Sign Up");
     cy.get("#employerTab").click();
     cy.get("#simple-tabpanel-1 form #email").type("email@email.com");
     cy.get("#simple-tabpanel-1 form #password").type("password");
@@ -60,8 +78,6 @@ describe("Sign Up", () => {
   });
 
   it("Sign Up Employer Fails", () => {
-    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/SignUp");
-    cy.get("#navBarTitle").should("contain", "Sign Up");
     cy.server();
     cy.route({
       method: "POST",
@@ -72,6 +88,14 @@ describe("Sign Up", () => {
         message: "A user with the given username is already registered",
       },
     }).as("signUpCall");
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/usertype",
+      status: 200,
+      response: "",
+    }).as("userTypeCall");
+    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/SignUp");
+    cy.get("#navBarTitle").should("contain", "Sign Up");
     cy.get("#employerTab").click();
     cy.get("#simple-tabpanel-1 form #email").type("email@email.com");
     cy.get("#simple-tabpanel-1 form #password").type("password");
@@ -82,8 +106,6 @@ describe("Sign Up", () => {
   });
 
   it("Sign Up Educator Success", () => {
-    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/SignUp");
-    cy.get("#navBarTitle").should("contain", "Sign Up");
     cy.server();
     cy.route({
       method: "POST",
@@ -93,6 +115,14 @@ describe("Sign Up", () => {
         data: "Successfully created user",
       },
     }).as("signUpCall");
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/usertype",
+      status: 200,
+      response: "",
+    }).as("userTypeCall");
+    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/SignUp");
+    cy.get("#navBarTitle").should("contain", "Sign Up");
     cy.get("#educatorTab").click();
     cy.get("#simple-tabpanel-2 form #email").type("email@email.com");
     cy.get("#simple-tabpanel-2 form #password").type("password");
@@ -103,8 +133,6 @@ describe("Sign Up", () => {
   });
 
   it("Sign Up Educator Fails", () => {
-    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/SignUp");
-    cy.get("#navBarTitle").should("contain", "Sign Up");
     cy.server();
     cy.route({
       method: "POST",
@@ -115,6 +143,14 @@ describe("Sign Up", () => {
         message: "A user with the given username is already registered",
       },
     }).as("signUpCall");
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/usertype",
+      status: 200,
+      response: "",
+    }).as("userTypeCall");
+    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/SignUp");
+    cy.get("#navBarTitle").should("contain", "Sign Up");
     cy.get("#educatorTab").click();
     cy.get("#simple-tabpanel-2 form #email").type("email@email.com");
     cy.get("#simple-tabpanel-2 form #password").type("password");

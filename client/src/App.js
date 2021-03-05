@@ -11,6 +11,8 @@ import NavBar from "./components/subcomponents/Shared/NavBar";
 import SignUp from "./components/pages/SignUp";
 import Profile from "./components/pages/Profile";
 import JobPosting from "./components/pages/JobPosting";
+import SkillDetails from "./components/pages/SkillDetails";
+import SkillSearch from "./components/pages/SkillSearch";
 
 function App() {
   return (
@@ -28,6 +30,9 @@ function App() {
           <Route exact component={SignUp} path="/SignUp" />
           <Route exact component={Profile} path="/Profile" />
           <Route component={JobPosting} path="/JobPost/:id" />
+          <Route component={SkillDetails} path="/SkillDetails/:id" />
+          <Redirect exact from="/Skill Search" to={"/SkillSearch"} />
+          <Route component={SkillSearch} path={"/SkillSearch"} />
         </Switch>
       </div>
     </Router>

@@ -12,7 +12,6 @@
 
 // -- This is a parent command --
 Cypress.Commands.add("fakeLogin", () => {
-  cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/Login");
   cy.server();
   cy.route({
     method: "POST",
@@ -26,6 +25,7 @@ Cypress.Commands.add("fakeLogin", () => {
     status: 200,
     response: "",
   }).as("userTypeCall");
+  cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/Login");
   cy.get("#email").type("email@email.com");
   cy.get("#password").type("password");
   cy.get("#submit").click();
@@ -90,6 +90,25 @@ Cypress.Commands.add("fakeProfile", () => {
   // Go to profile. Verify profile loaded success.
   cy.get("#Profile").click();
 });
+Cypress.Commands.add("SkillsDropdown", (success=true)=>{
+  cy.server();
+  if(success){
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/skills",
+      status: 200,
+      response:[{"name": "developer", "_id": "1" },{"name": "hardware", "_id": "2"}, {"name": "test", "_id": "3"}]}).as("getSkills");
+  }
+  else{
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/skills",
+      status: 401,
+      response:[]}).as("getSkills");
+  }
+  cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
+
+})
 //
 //
 // -- This is a child command --

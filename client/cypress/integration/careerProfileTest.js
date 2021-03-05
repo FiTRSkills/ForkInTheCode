@@ -92,13 +92,13 @@ describe("Load profile careers", () => {
 
   it("Add career profile success", () => {
     cy.fakeProfile();
+    cy.wait("@profileCall");
     cy.route({
       method: "post",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/career",
       status: 200,
       response: "Success",
     }).as("addProfileCall");
-    cy.wait("@profileCall");
     cy.route({
       method: "GET",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",

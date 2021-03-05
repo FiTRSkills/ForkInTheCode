@@ -32,9 +32,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const authLeftSide = ["Job Search", "Something Else"];
+const authLeftSide = ["Job Search", "Skill Search"];
 const authRightSide = ["Sign Out"];
-const notAuthLeftSide = ["Job Search"];
+const notAuthLeftSide = ["Job Search", "Skill Search"];
 const notAuthRightSide = ["Log In", "Sign Up"];
 const jobSeekerRightSide = ["Profile"];
 
