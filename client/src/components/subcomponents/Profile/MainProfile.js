@@ -11,7 +11,7 @@ import {
 } from "@material-ui/pickers";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-import { Alert } from "@material-ui/lab";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
   container: {

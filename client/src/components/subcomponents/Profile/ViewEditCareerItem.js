@@ -11,7 +11,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-import { Alert } from "@material-ui/lab";
+import Alert from "@material-ui/lab/Alert";
 import ConfirmationDialogue from "../Shared/ConfirmationDialogue";
 
 const useStyles = makeStyles((theme) => ({
