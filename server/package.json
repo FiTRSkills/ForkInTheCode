@@ -12,7 +12,8 @@
     "test_profile": "jest -i profilecontroller.test.js",
     "test_jobposting": "jest -i jobcontroller.test.js",
     "test_authentication": "jest -i authcontroller.test.js",
-    "test_skills": "jest -i skillcontroller.test.js"
+    "test_skills": "jest -i skillcontroller.test.js",
+    "test_courses": "jest -i coursecontroller.test.js"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
