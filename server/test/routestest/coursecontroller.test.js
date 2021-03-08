@@ -105,4 +105,19 @@ describe("CourseController Tests", () => {
 		expect(res.statusCode).toEqual(400);
 		expect(res.text).toEqual("Invalid usertype.");
 	});
+
+	it("PATCH /courses/course - doesn't have optional data", async () => {
+		const res = await request
+			.patch("/courses/course")
+			.set("Cookie", [session_info])
+			.send({
+				location: "1",
+				name: "Name",
+				skills: ["123", "567"],
+			});
+		expect(res.statusCode).toEqual(400);
+		expect(res.text).toEqual(
+			'{"errors":[{"msg":"Contact must exist","param":"contact","location":"body"},{"msg":"Period must exist","param":"period","location":"body"},{"msg":"Times must exist","param":"times","location":"body"},{"msg":"Description must exist","param":"description","location":"body"},{"msg":"moneyCost must exist","param":"moneyCost","location":"body"},{"msg":"timeCost must exist","param":"timeCost","location":"body"},{"msg":"requiredEquipment must exist","param":"requiredEquipment","location":"body"}]}'
+		);
+	});
 });
