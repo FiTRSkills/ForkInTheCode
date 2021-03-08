@@ -9,6 +9,7 @@ var auth = require("../controllers/authcontroller.js");
 var profile = require("../controllers/profilecontroller.js");
 var job = require("../controllers/jobcontroller.js");
 var skill = require("../controllers/skillcontroller.js");
+var course = require("../controllers/coursecontroller.js");
 var validation = require("../services/validation.js");
 
 /**
@@ -366,6 +367,65 @@ router.get(
   [check("id", "Must send a viable skill id").not().isEmpty()],
   validation.validateInput,
   skill.getSkill
+);
+
+/**
+ * Routing serving viewing all the user's courses (educator only)
+ * @name POST /courses
+ * @function
+ * @alias module:/routers/course
+ * @returns {List} courses - list of course objects
+ */
+router.get(
+  "/courses",
+  validation.validateSession,
+  validation.validateInput,
+  course.viewCourses
+);
+
+/**
+ * Routing serving adding a course
+ * @name POST /courses/course
+ * @function
+ * @alias module:/routers/course
+ * @returns {String} msg - success or failure
+ */
+router.post(
+  "/courses/course",
+  validation.validateSession,
+  [check("id", "Must send a viable skill id").not().isEmpty()],
+  validation.validateInput,
+  course.addCourse
+);
+
+/**
+ * Routing serving updating a course
+ * @name PATCH /courses/course
+ * @function
+ * @alias module:/routers/course
+ * @returns {String} msg - success or failure
+ */
+router.patch(
+  "/courses/course",
+  validation.validateSession,
+  [check("id", "Must send a viable skill id").not().isEmpty()],
+  validation.validateInput,
+  course.updateCourse
+);
+
+/**
+ * Routing serving deleting a course
+ * @name DELETE /courses/course
+ * @function
+ * @alias module:/routers/course
+ * @returns {String} msg - success or failure
+ */
+router.delete(
+  "/courses/course",
+  validation.validateSession,
+  [check("id", "Must send a viable skill id").not().isEmpty()],
+  validation.validateInput,
+  course.deleteCourse
 );
 
 //The 404 Route handles returns on routes that don't exist
