@@ -376,12 +376,7 @@ router.get(
  * @alias module:/routers/course
  * @returns {List} courses - list of course objects
  */
-router.get(
-  "/courses",
-  validation.validateSession,
-  validation.validateInput,
-  course.viewCourses
-);
+router.get("/courses", validation.validateSession, course.viewCourses);
 
 /**
  * Routing serving adding a course
@@ -393,7 +388,11 @@ router.get(
 router.post(
   "/courses/course",
   validation.validateSession,
-  [check("id", "Must send a viable skill id").not().isEmpty()],
+  [
+    check("location", "Must send a viable location").not().isEmpty(),
+    check("name", "Must send a viable name").not().isEmpty(),
+    check("skills", "Must send a viable list of skills").not().isEmpty(),
+  ],
   validation.validateInput,
   course.addCourse
 );
@@ -408,7 +407,18 @@ router.post(
 router.patch(
   "/courses/course",
   validation.validateSession,
-  [check("id", "Must send a viable skill id").not().isEmpty()],
+  [
+    check("location", "Must send a viable location").not().isEmpty(),
+    check("name", "Must send a viable name").not().isEmpty(),
+    check("skills", "Must send a viable list of skills").not().isEmpty(),
+    check("contact", "Contact must exist").not().isEmpty(),
+    check("period", "Period must exist").not().isEmpty(),
+    check("times", "Times must exist").not().isEmpty(),
+    check("description", "Description must exist").not().isEmpty(),
+    check("moneyCost", "moneyCost must exist").not().isEmpty(),
+    check("timeCost", "timeCost must exist").not().isEmpty(),
+    check("requiredEquipment", "requiredEquipment must exist").not().isEmpty(),
+  ],
   validation.validateInput,
   course.updateCourse
 );
@@ -423,7 +433,7 @@ router.patch(
 router.delete(
   "/courses/course",
   validation.validateSession,
-  [check("id", "Must send a viable skill id").not().isEmpty()],
+  [check("_id", "Must send a viable course id").not().isEmpty()],
   validation.validateInput,
   course.deleteCourse
 );
