@@ -48,7 +48,7 @@ search.findSkillsByZip = async function (zipCode) {
       $sort: { weight: -1 },
     },
     {
-      $set: {
+      $addFields: {
         "_id.numJobs": "$weight",
       },
     },
