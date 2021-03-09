@@ -39,6 +39,7 @@ skillController.skillsSearch = async function (req, res) {
     let results = await Search.findSkillsByZip(req.query.zipCode);
   } catch (error) {
     res.status(406).send("no skills exist");
+    return;
   }
   if (results === undefined || results.length == 0) {
     res.status(406).send("no skills exist");
