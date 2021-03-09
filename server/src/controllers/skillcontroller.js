@@ -35,8 +35,9 @@ skillController.skills = async function (req, res) {
  * @returns {string} response - skills and number of jobs skills are in
  */
 skillController.skillsSearch = async function (req, res) {
+  let results = undefined;
   try {
-    let results = await Search.findSkillsByZip(req.query.zipCode);
+    results = await Search.findSkillsByZip(req.query.zipCode);
   } catch (error) {
     res.status(406).send("no skills exist");
     return;

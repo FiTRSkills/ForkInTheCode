@@ -65,7 +65,6 @@ describe("testing skill routes", () => {
     const res = await request.get("/skills/getSkill?id=" + skill._id);
     expect(res.statusCode).toEqual(200);
     let body = JSON.parse(res.text);
-    console.log(body);
     expect(body.skill.name).toEqual("Coding");
     expect(body.courses[0].name).toEqual("Programming 101");
   });
