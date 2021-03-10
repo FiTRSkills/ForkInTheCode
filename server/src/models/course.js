@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Skill = require("./skill");
+const Organization = require("./organization");
 
 /**
  * A course as defined by an educator that can be referenced by job postings and be found
@@ -22,6 +23,39 @@ const Course = new mongoose.Schema({
       autopopulate: true,
     },
   ],
+  organization: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: Organization.modelName,
+    autopopulate: true,
+  },
+  location: {
+    type: String,
+    default: ""
+  },
+  contact: {
+    type: String,
+    default: ""
+  },
+  period: {
+    type: String,
+    default: ""
+  },
+  times: {
+    type: String,
+    default: ""
+  },
+  moneyCost: {
+    type: String,
+    default: ""
+  },
+  timeCost: {
+    type: String,
+    default: ""
+  },
+  requiredEquipment: {
+    type: String,
+    default: ""
+  }
 });
 
 /**
@@ -37,6 +71,20 @@ Course.statics.findAllBySkill = async function (skill) {
 };
 
 /**
+ * Sets the organization or creates a new one if the name is not found.
+ *
+ * @param name The name of the organization to match or create
+ * @returns {Promise<EducatorProfile>}
+ */
+Course.methods.setOrganization = async function (name) {
+  let org = await Organization.findOneOrCreate(name);
+  this.organization = org._id;
+  await this.save();
+  // Mongoose doesn't like to populate after the query is executed with the document method.
+  return await this.constructor.populate(this, "organization");
+};
+
+/**
  * Add skills that this course teaches by their IDs.
  *
  * @param skills A list of object IDs corresponding to the skills that should be added.
@@ -45,6 +93,18 @@ Course.statics.findAllBySkill = async function (skill) {
 Course.methods.addSkills = async function (skills) {
   let skillEntries = await Skill.find({ _id: { $in: skills } });
   this.skills = this.skills.concat(skillEntries);
+  await this.save();
+  return this;
+};
+
+/**
+ * Removes a skill from the course by the given id.  This does not delete the skill from the system.
+ *
+ * @param id The id of the skill to remove from the course
+ * @returns {Promise<JobSeekerProfile>}
+ */
+Course.methods.removeSkill = async function (id) {
+  await this.skills.pull(id);
   await this.save();
   return this;
 };
