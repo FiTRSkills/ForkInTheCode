@@ -104,8 +104,10 @@ function SkillDetails(props) {
             <Typography id="description">{description}</Typography>
           </Box>
           <Box className={classes.infoItem}>
-            <Typography variant={"h6"}>Aliases</Typography>
-            <Typography id="aliases">{aliases.join(", ")}</Typography>
+             <Typography variant={"h6"}>Aliases</Typography>
+            {aliases &&
+              <Typography id="aliases">{aliases.join(", ")}</Typography>
+            }
           </Box>
           <Box className={classes.infoItem}>
             <Typography variant={"h6"}>

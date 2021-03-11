@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Checkbox from "@material-ui/core/Checkbox";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -60,7 +60,7 @@ function SkillResult({ skill, toggleAddToProfile }) {
   return (
     <Grid container className={classes.gridItem}>
       <Grid item xs={8}>
-        <Link className={classes.title} to={"/SkillsDetails/" + skill._id}>
+        <Link className={classes.title} to={"/SkillDetails/" + skill._id}>
           {skill.name}
         </Link>
       </Grid>
