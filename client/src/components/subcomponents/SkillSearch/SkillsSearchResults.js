@@ -161,6 +161,9 @@ function SkillsSearchResults({ basicResults, user, location }) {
     setLoading(false);
   };
 
+  const addSkillsToJobSearch = () =>{
+    //TODO for Jordan :)
+  }
   const classes = useStyles();
 
   return (
@@ -177,6 +180,7 @@ function SkillsSearchResults({ basicResults, user, location }) {
           Location {location} needs the following skills.
         </Typography>
       )}
+      {user !== undefined && Object.keys(user).length > 0 && (
       <Typography
         component="p"
         variant="subtitle1"
@@ -192,6 +196,7 @@ function SkillsSearchResults({ basicResults, user, location }) {
           id="includeProfileSkillsToggle"
         />
       </Typography>
+      )}
       {error && <Alert severity={"error"}>{error}</Alert>}
       {loading ? (
         <CircularProgress />
@@ -229,6 +234,18 @@ function SkillsSearchResults({ basicResults, user, location }) {
               id="addSkillsToProfileButton"
             >
               Add Skills To Profile
+            </Button>
+          )}
+          {(user === undefined || Object.keys(user).length === 0) && (
+            <Button
+              onClick={addSkillsToJobSearch}
+              className={classes.addSkillsButton}
+              color="primary"
+              variant="contained"
+              disabled={skillsToAdd.length < 1}
+              id="addSkillsToProfileButton"
+            >
+              Add Skills To Job Search
             </Button>
           )}
         </Box>
