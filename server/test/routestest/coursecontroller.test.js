@@ -6,6 +6,7 @@ const app = require("../../src/app");
 const request = supertest(app);
 
 let session_info = "";
+let course_id = "";
 
 describe("CourseController Tests", () => {
 	beforeAll(connectDB);
@@ -87,6 +88,7 @@ describe("CourseController Tests", () => {
 				location: "1",
 				name: "Name",
 				skills: ["123", "567"],
+				_id: "1123",
 				contact: "",
 				period: "",
 				times: "",
@@ -116,6 +118,7 @@ describe("CourseController Tests", () => {
 				location: "1",
 				name: "Name",
 				skills: ["123", "567"],
+				_id: "Ree",
 			});
 		expect(res.statusCode).toEqual(400);
 		expect(res.text).toEqual(
@@ -196,5 +199,107 @@ describe("CourseController Tests", () => {
 			});
 		expect(res.statusCode).toEqual(200);
 		expect(res.text).toEqual("Successfully created course.");
+	});
+
+	it("GET /courses - success", async () => {
+		const res = await request.get("/courses").set("Cookie", [session_info]);
+		expect(res.statusCode).toEqual(200);
+		let body = JSON.parse(res.text);
+		expect(body[0].name).toEqual("How to Get Away with Murder");
+		course_id = body[0]._id;
+		expect(body.length).toEqual(1);
+	});
+
+	it("PATCH /courses/course - success", async () => {
+		let skill = await Skill.findOneOrCreate("Coding");
+		const res = await request
+			.patch("/courses/course")
+			.set("Cookie", [session_info])
+			.send({
+				_id: course_id,
+				location: "1313 Dead End Drive",
+				name: "How to Get Away with Murder 2",
+				skills: [skill._id],
+				description: "This is a course",
+				times: "12-13",
+				period: "Monday",
+				contact: "215-234-5678",
+				moneyCost: "$4200",
+				timeCost: "4 hours a week",
+				requiredEquipment: "Mask",
+			});
+		expect(res.statusCode).toEqual(200);
+		expect(res.text).toEqual("Successfully created course.");
+	});
+
+	it("GET /courses - success changed course information", async () => {
+		const res = await request.get("/courses").set("Cookie", [session_info]);
+		expect(res.statusCode).toEqual(200);
+		let body = JSON.parse(res.text);
+		expect(body[0].name).toEqual("How to Get Away with Murder 2");
+		expect(body[0].times).toEqual("12-13");
+		expect(body.length).toEqual(1);
+	});
+
+	it("DELETE /courses/course - success", async () => {
+		const res = await request
+			.delete("/courses/course")
+			.set("Cookie", [session_info])
+			.send({ _id: course_id });
+		expect(res.statusCode).toEqual(200);
+		expect(res.text).toEqual("Successfully deleted course.");
+	});
+
+	it("GET /courses - no courses", async () => {
+		const res = await request.get("/courses").set("Cookie", [session_info]);
+		expect(res.statusCode).toEqual(200);
+		let body = JSON.parse(res.text);
+		expect(body.length).toEqual(0);
+	});
+
+	it("DELETE /courses/course - error deleting", async () => {
+		const res = await request
+			.delete("/courses/course")
+			.set("Cookie", [session_info])
+			.send({ _id: "12312412" });
+		expect(res.statusCode).toEqual(400);
+		expect(res.text).toEqual("Error deleting course.");
+	});
+
+	it("PATCH /courses/course - error editing", async () => {
+		let skill = await Skill.findOneOrCreate("Coding");
+		const res = await request
+			.patch("/courses/course")
+			.set("Cookie", [session_info])
+			.send({
+				_id: "12312412",
+				location: "1313 Dead End Drive",
+				name: "How to Get Away with Murder 2",
+				skills: [skill._id],
+				description: "This is a course",
+				times: "12-13",
+				period: "Monday",
+				contact: "215-234-5678",
+				moneyCost: "$4200",
+				timeCost: "4 hours a week",
+				requiredEquipment: "Mask",
+			});
+		expect(res.statusCode).toEqual(400);
+		expect(res.text).toEqual("Error editing course.");
+	});
+
+	it("POST /courses/course - error adding skills", async () => {
+		let skill = await Skill.findOneOrCreate("Coding");
+		const res = await request
+			.post("/courses/course")
+			.set("Cookie", [session_info])
+			.send({
+				location: "1313 Dead End Drive",
+				name: "How to Get Away with Murder",
+				skills: ["12312412"],
+				description: "This is a course",
+			});
+		expect(res.statusCode).toEqual(400);
+		expect(res.text).toEqual("Error adding skills.");
 	});
 });

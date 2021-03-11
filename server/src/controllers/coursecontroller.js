@@ -59,7 +59,25 @@ courseController.addCourse = async function (req, res) {
  */
 courseController.updateCourse = async function (req, res) {
 	if (req.user.type == "EducatorProfile") {
-		return;
+		try {
+			let course = await Course.findById(req.body._id);
+			// iterates through given information to add to course
+			Object.keys(req.body).forEach(function (key) {
+				if (key != "_id" && key != "skills") {
+					course[key] = req.body[key];
+				}
+			});
+			await course.addSkills(req.body.skills);
+			course.save(function (err) {
+				if (err) {
+					res.status(400).send(err);
+					return;
+				}
+				res.status(200).send("Successfully created course.");
+			});
+		} catch (error) {
+			res.status(400).send("Error editing course.");
+		}
 	} else {
 		res.status(400).send("Invalid usertype.");
 	}
@@ -76,10 +94,10 @@ courseController.updateCourse = async function (req, res) {
 courseController.deleteCourse = async function (req, res) {
 	if (req.user.type == "EducatorProfile") {
 		try {
-			await Course.remove(req.body._id);
+			await (await Course.findById(req.body._id)).remove();
+			res.status(200).send("Successfully deleted course.");
 		} catch (error) {
 			res.status(400).send("Error deleting course.");
-			console.log(error);
 			return;
 		}
 	} else {
@@ -97,7 +115,15 @@ courseController.deleteCourse = async function (req, res) {
  */
 courseController.viewCourses = async function (req, res) {
 	if (req.user.type == "EducatorProfile") {
-		return;
+		try {
+			let profile = await req.user.getProfile();
+			courses = await Course.find({
+				organization: profile.organization._id,
+			}).exec();
+			res.status(200).send(courses);
+		} catch (error) {
+			res.status(400).send("Error getting courses.");
+		}
 	} else {
 		res.status(400).send("Invalid usertype.");
 	}
