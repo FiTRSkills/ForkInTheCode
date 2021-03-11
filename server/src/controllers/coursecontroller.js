@@ -73,7 +73,7 @@ courseController.updateCourse = async function (req, res) {
 					res.status(400).send(err);
 					return;
 				}
-				res.status(200).send("Successfully created course.");
+				res.status(200).send("Successfully updated course.");
 			});
 		} catch (error) {
 			res.status(400).send("Error editing course.");

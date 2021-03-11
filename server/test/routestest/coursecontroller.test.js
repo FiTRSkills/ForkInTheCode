@@ -229,7 +229,7 @@ describe("CourseController Tests", () => {
 				requiredEquipment: "Mask",
 			});
 		expect(res.statusCode).toEqual(200);
-		expect(res.text).toEqual("Successfully created course.");
+		expect(res.text).toEqual("Successfully updated course.");
 	});
 
 	it("GET /courses - success changed course information", async () => {
