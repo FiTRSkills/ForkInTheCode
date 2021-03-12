@@ -408,6 +408,7 @@ router.patch(
   "/courses/course",
   validation.validateSession,
   [
+    check("_id", "Must send a viable course _id").not().isEmpty(),
     check("location", "Must send a viable location").not().isEmpty(),
     check("name", "Must send a viable name").not().isEmpty(),
     check("skills", "Must send a viable list of skills").not().isEmpty(),
