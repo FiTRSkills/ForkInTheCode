@@ -30,32 +30,32 @@ const Course = new mongoose.Schema({
   },
   location: {
     type: String,
-    default: ""
+    default: "",
   },
   contact: {
     type: String,
-    default: ""
+    default: "",
   },
   period: {
     type: String,
-    default: ""
+    default: "",
   },
   times: {
     type: String,
-    default: ""
+    default: "",
   },
   moneyCost: {
     type: String,
-    default: ""
+    default: "",
   },
   timeCost: {
     type: String,
-    default: ""
+    default: "",
   },
   requiredEquipment: {
     type: String,
-    default: ""
-  }
+    default: "",
+  },
 });
 
 /**
@@ -104,7 +104,11 @@ Course.methods.addSkills = async function (skills) {
  * @returns {Promise<JobSeekerProfile>}
  */
 Course.methods.removeSkill = async function (id) {
-  await this.skills.pull(id);
+  // Handle both the auto-populated object and the non auto-populated one.
+  this.skills = this.skills.filter((skill) => {
+    if (skill._id) return !skill._id.equals(id);
+    return !skill.equals(id);
+  });
   await this.save();
   return this;
 };
