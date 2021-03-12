@@ -9,6 +9,7 @@ var auth = require("../controllers/authcontroller.js");
 var profile = require("../controllers/profilecontroller.js");
 var job = require("../controllers/jobcontroller.js");
 var skill = require("../controllers/skillcontroller.js");
+var course = require("../controllers/coursecontroller.js");
 var validation = require("../services/validation.js");
 
 /**
@@ -366,6 +367,76 @@ router.get(
   [check("id", "Must send a viable skill id").not().isEmpty()],
   validation.validateInput,
   skill.getSkill
+);
+
+/**
+ * Routing serving viewing all the user's courses (educator only)
+ * @name POST /courses
+ * @function
+ * @alias module:/routers/course
+ * @returns {List} courses - list of course objects
+ */
+router.get("/courses", validation.validateSession, course.viewCourses);
+
+/**
+ * Routing serving adding a course
+ * @name POST /courses/course
+ * @function
+ * @alias module:/routers/course
+ * @returns {String} msg - success or failure
+ */
+router.post(
+  "/courses/course",
+  validation.validateSession,
+  [
+    check("location", "Must send a viable location").not().isEmpty(),
+    check("name", "Must send a viable name").not().isEmpty(),
+    check("skills", "Must send a viable list of skills").not().isEmpty(),
+  ],
+  validation.validateInput,
+  course.addCourse
+);
+
+/**
+ * Routing serving updating a course
+ * @name PATCH /courses/course
+ * @function
+ * @alias module:/routers/course
+ * @returns {String} msg - success or failure
+ */
+router.patch(
+  "/courses/course",
+  validation.validateSession,
+  [
+    check("_id", "Must send a viable course _id").not().isEmpty(),
+    check("location", "Must send a viable location").not().isEmpty(),
+    check("name", "Must send a viable name").not().isEmpty(),
+    check("skills", "Must send a viable list of skills").not().isEmpty(),
+    check("contact", "Contact must exist").exists(),
+    check("period", "Period must exist").exists(),
+    check("times", "Times must exist").exists(),
+    check("description", "Description must exist").exists(),
+    check("moneyCost", "moneyCost must exist").exists(),
+    check("timeCost", "timeCost must exist").exists(),
+    check("requiredEquipment", "requiredEquipment must exist").exists(),
+  ],
+  validation.validateInput,
+  course.updateCourse
+);
+
+/**
+ * Routing serving deleting a course
+ * @name DELETE /courses/course
+ * @function
+ * @alias module:/routers/course
+ * @returns {String} msg - success or failure
+ */
+router.delete(
+  "/courses/course",
+  validation.validateSession,
+  [check("_id", "Must send a viable course id").not().isEmpty()],
+  validation.validateInput,
+  course.deleteCourse
 );
 
 //The 404 Route handles returns on routes that don't exist

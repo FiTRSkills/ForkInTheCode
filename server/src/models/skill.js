@@ -6,6 +6,10 @@ const mongoose = require("mongoose");
  */
 const Skill = new mongoose.Schema({
   name: String,
+  description: {
+    type: String,
+    default: "",
+  },
 });
 
 /**
