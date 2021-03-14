@@ -161,6 +161,10 @@ function SkillsSearchResults({ basicResults, user, location }) {
     setLoading(false);
   };
 
+  const sendSkillToJobSearch = () => {
+    props.storeSkills(skillsToAdd);
+  };
+
   const classes = useStyles();
 
   return (
@@ -243,4 +247,13 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(SkillsSearchResults);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    storeSkills: (content) => dispatch(storeSkills(content)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SkillsSearchResults);
