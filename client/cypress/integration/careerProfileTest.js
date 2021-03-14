@@ -1,28 +1,19 @@
 describe("Load profile careers", () => {
   it("Load careers profile success", () => {
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     cy.wait("@profileCall").its("status").should("eq", 200);
     cy.get("#career0 [name='jobTitle']").should("have.value", "Dev");
   });
 
   it("Load careers profile failure", () => {
-    cy.fakeLogin();
-    // Stub get profile error response
-    cy.route({
-      method: "GET",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
-      status: 400,
-      response: "Access denied",
-    }).as("profileCall");
-    // Go to profile. Verify profile loaded failed.
-    cy.get("#Profile").click();
-    cy.get("#navBarTitle").should("contain", "Profile");
+    cy.fakeProfile(false);
+    // Verify profile loaded failed.
     cy.wait("@profileCall").its("status").should("eq", 400);
     cy.contains("Access denied");
   });
 
   it("Edit career profile success", () => {
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     cy.route({
       method: "patch",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/career",
@@ -68,7 +59,7 @@ describe("Load profile careers", () => {
 
   it("Edit career profile failure", () => {
     // Stub get profile success response
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     cy.route({
       method: "patch",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/career",
@@ -91,7 +82,7 @@ describe("Load profile careers", () => {
   });
 
   it("Add career profile success", () => {
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     cy.wait("@profileCall");
     cy.route({
       method: "post",
@@ -141,7 +132,7 @@ describe("Load profile careers", () => {
   });
 
   it("Add career profile failure", () => {
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     cy.route({
       method: "post",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/career",
@@ -160,7 +151,7 @@ describe("Load profile careers", () => {
   });
 
   it("Delete career profile success", () => {
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     cy.route({
       method: "delete",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/career",
@@ -187,7 +178,7 @@ describe("Load profile careers", () => {
   });
 
   it("Delete career profile failure", () => {
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     cy.route({
       method: "delete",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/career",
@@ -207,7 +198,7 @@ describe("Load profile careers", () => {
   });
 
   it("Delete career profile cancel", () => {
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     cy.wait("@profileCall");
     cy.get("#editCareers").click();
     cy.get("#career0 [name='editCareer']").click();
@@ -218,7 +209,7 @@ describe("Load profile careers", () => {
   });
 
   it("Closing add career clears data", () => {
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     cy.wait("@profileCall");
     cy.get("#addCareer").click();
     cy.get("#addCareerJobTitle").type("newDev");
@@ -230,7 +221,7 @@ describe("Load profile careers", () => {
   });
 
   it("Cancel edit resets content", () => {
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     // Go to profile. Verify profile loaded success.
     cy.get("#Profile").click();
     cy.wait("@profileCall");
@@ -250,7 +241,7 @@ describe("Load profile careers", () => {
   });
 
   it("Cancel overall edit cancels individual edit", () => {
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     // Go to profile. Verify profile loaded success.
     cy.get("#Profile").click();
     cy.wait("@profileCall");

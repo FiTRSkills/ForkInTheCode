@@ -1,6 +1,6 @@
 describe("Load profile educations", () => {
   it("Load educations profile success", () => {
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     cy.wait("@profileCall").its("status").should("eq", 200);
     cy.get("#education0 [name='degree']").should("have.value", "BS SE");
   });
@@ -22,7 +22,7 @@ describe("Load profile educations", () => {
   });
 
   it("Edit education profile success", () => {
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     cy.route({
       method: "patch",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/education",
@@ -74,7 +74,7 @@ describe("Load profile educations", () => {
 
   it("Edit education profile failure", () => {
     // Stub get profile success response
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     cy.route({
       method: "patch",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/education",
@@ -99,7 +99,7 @@ describe("Load profile educations", () => {
   });
 
   it("Add education profile success", () => {
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     cy.route({
       method: "post",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/education",
@@ -153,7 +153,7 @@ describe("Load profile educations", () => {
   });
 
   it("Add education profile failure", () => {
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     cy.route({
       method: "post",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/education",
@@ -172,7 +172,7 @@ describe("Load profile educations", () => {
   });
 
   it("Delete education profile success", () => {
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     cy.route({
       method: "delete",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/education",
@@ -200,7 +200,7 @@ describe("Load profile educations", () => {
   });
 
   it("Delete education profile failure", () => {
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     cy.route({
       method: "delete",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/education",
@@ -220,7 +220,7 @@ describe("Load profile educations", () => {
   });
 
   it("Delete education profile cancel", () => {
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     cy.wait("@profileCall");
     cy.get("#editEducations").click();
     cy.wait(150);
@@ -232,7 +232,7 @@ describe("Load profile educations", () => {
   });
 
   it("Closing add education clears data", () => {
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     cy.wait("@profileCall");
     cy.get("#addEducation").click();
     cy.get("#addEducationDegree").type("newDev");
@@ -246,7 +246,7 @@ describe("Load profile educations", () => {
   });
 
   it("Cancel edit resets content", () => {
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     // Go to profile. Verify profile loaded success.
     cy.get("#Profile").click();
     cy.wait("@profileCall");
@@ -271,7 +271,7 @@ describe("Load profile educations", () => {
   });
 
   it("Cancel overall edit cancels individual edit", () => {
-    cy.fakeProfile();
+    cy.fakeProfile(true);
     // Go to profile. Verify profile loaded success.
     cy.get("#Profile").click();
     cy.wait("@profileCall");
