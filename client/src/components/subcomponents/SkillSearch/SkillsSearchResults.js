@@ -10,6 +10,7 @@ import Box from "@material-ui/core/Box";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
 import axios from "axios";
+import { storeSkills } from "../../../redux/actions";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -40,7 +41,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SkillsSearchResults({ basicResults, user, location }) {
+function SkillsSearchResults({
+  basicResults,
+  user,
+  location,
+  storeSkills,
+  history,
+}) {
   const [allResults, setAllResults] = useState([]);
   const [filteredResults, setFilteredResults] = useState([]);
   const [includeProfileSkills, setIncludeProfileSkills] = useState(false);
@@ -162,7 +169,8 @@ function SkillsSearchResults({ basicResults, user, location }) {
   };
 
   const addSkillsToJobSearch = () => {
-    props.storeSkills(skillsToAdd);
+    storeSkills(skillsToAdd);
+    history.push("/JobSearch");
   };
 
   const classes = useStyles();
@@ -244,7 +252,7 @@ function SkillsSearchResults({ basicResults, user, location }) {
               color="primary"
               variant="contained"
               disabled={skillsToAdd.length < 1}
-              id="addSkillsToProfileButton"
+              id="addSkillsToJobSearchButton"
             >
               Add Skills To Job Search
             </Button>

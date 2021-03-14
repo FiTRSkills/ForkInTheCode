@@ -55,6 +55,12 @@ function JobSearchForm(props) {
     loadSkills();
   }, [props.user]);
 
+  useEffect(() => {
+    if (props.sharedSkills && props.sharedSkills.length !== 0) {
+      setSkills(props.sharedSkills.map((skill) => skill.name));
+    }
+  }, [props.sharedSkills]);
+
   function submit(event) {
     setLoading(true);
     props.apiCall(zipCode, skills).finally(() => {
@@ -109,6 +115,7 @@ function JobSearchForm(props) {
 const mapStateToProps = (state) => {
   return {
     user: state.authentication,
+    sharedSkills: state.storedSkills.skills,
   };
 };
 

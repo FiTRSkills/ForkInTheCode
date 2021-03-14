@@ -1,16 +1,16 @@
 import { STORE_SKILLS } from "../ActionTypes";
 
-export const initialState = { results: [] };
-let skills = (state = initialState, action) => {
+export const initialState = { storedSkills: [] };
+let storedSkills = (state = initialState, action) => {
   switch (action.type) {
     case STORE_SKILLS:
       return {
         ...state,
-        results: action.payload.content,
+        skills: action.payload.content,
       };
     default:
       return state;
   }
 };
 
-export default skills;
+export default storedSkills;
