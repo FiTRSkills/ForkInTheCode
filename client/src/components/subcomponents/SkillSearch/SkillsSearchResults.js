@@ -161,7 +161,7 @@ function SkillsSearchResults({ basicResults, user, location }) {
     setLoading(false);
   };
 
-  const sendSkillToJobSearch = () => {
+  const addSkillsToJobSearch = () => {
     props.storeSkills(skillsToAdd);
   };
 
@@ -181,21 +181,23 @@ function SkillsSearchResults({ basicResults, user, location }) {
           Location {location} needs the following skills.
         </Typography>
       )}
-      <Typography
-        component="p"
-        variant="subtitle1"
-        className={classes.lineSpacing}
-      >
-        Include Skills From Profile:
-        <Switch
-          checked={includeProfileSkills}
-          onChange={toggleIncludeProfileSkills}
-          name="includeProfileSkills"
-          inputProps={{ "aria-label": "Include Profile Skills" }}
-          color="primary"
-          id="includeProfileSkillsToggle"
-        />
-      </Typography>
+      {user !== undefined && Object.keys(user).length > 0 && (
+        <Typography
+          component="p"
+          variant="subtitle1"
+          className={classes.lineSpacing}
+        >
+          Include Skills From Profile:
+          <Switch
+            checked={includeProfileSkills}
+            onChange={toggleIncludeProfileSkills}
+            name="includeProfileSkills"
+            inputProps={{ "aria-label": "Include Profile Skills" }}
+            color="primary"
+            id="includeProfileSkillsToggle"
+          />
+        </Typography>
+      )}
       {error && <Alert severity={"error"}>{error}</Alert>}
       {loading ? (
         <CircularProgress />
@@ -233,6 +235,18 @@ function SkillsSearchResults({ basicResults, user, location }) {
               id="addSkillsToProfileButton"
             >
               Add Skills To Profile
+            </Button>
+          )}
+          {(user === undefined || Object.keys(user).length === 0) && (
+            <Button
+              onClick={addSkillsToJobSearch}
+              className={classes.addSkillsButton}
+              color="primary"
+              variant="contained"
+              disabled={skillsToAdd.length < 1}
+              id="addSkillsToProfileButton"
+            >
+              Add Skills To Job Search
             </Button>
           )}
         </Box>
