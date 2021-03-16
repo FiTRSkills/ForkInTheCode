@@ -31,7 +31,6 @@ function Skills({
   editMode,
   onAdd,
   onDelete,
-  user,
   setSkillObjects,
   skillObjects,
 }) {
@@ -141,11 +140,7 @@ function Skills({
   }
 
   function allowCreate() {
-    return (
-      (user === "EmployerProfile" || user === "EducatorProfile") &&
-      currentSkill.trim() !== "" &&
-      allSkills.indexOf(currentSkill.trim()) === -1
-    );
+    return false;
   }
 
   return (
