@@ -73,10 +73,9 @@ function AddEditCourse(props) {
         skills: [
           { description: "", name: "saad", _id: "6025b1e9f39a82004cff0fd4" },
         ],
-        contact: "Parker",
+        contact: "Jake Rossi: 567-019-2345",
         period: "3 Months",
-        method: "In Person",
-        times: "Monday, Sunday",
+        times: "Monday: 15:00 - 18:00",
         description: "Java class",
         moneyCost: "10000",
         timeCost: "03/02/2021 - 05/02/2022",
@@ -90,7 +89,11 @@ function AddEditCourse(props) {
         setTimeCost(object.timeCost);
         setPeriod(object.period);
         setTimes(object.times);
-        setMethod(object.method);
+        if (object.location === "Online") {
+          setMethod("Online");
+        } else {
+          setMethod("In Person");
+        }
         setLocation(object.location);
         setRequiredEquipment(object.requiredEquipment);
         setContact(object.contact);
@@ -307,7 +310,6 @@ function AddEditCourse(props) {
               name="moneyCost"
               value={moneyCost}
               onChange={handleChange}
-              multiline
             />
           </Box>
           <Box className={classes.field}>
@@ -322,7 +324,6 @@ function AddEditCourse(props) {
               name="timeCost"
               value={timeCost}
               onChange={handleChange}
-              multiline
             />
           </Box>
           <Box className={classes.field}>
@@ -402,7 +403,6 @@ function AddEditCourse(props) {
               name="requiredEquipment"
               value={requiredEquipment}
               onChange={handleChange}
-              multiline
             />
           </Box>
           <Box className={classes.field}>
@@ -415,7 +415,6 @@ function AddEditCourse(props) {
               name="contact"
               value={contact}
               onChange={handleChange}
-              multiline
             />
           </Box>
           <Box className={classes.field}>
@@ -451,6 +450,7 @@ function AddEditCourse(props) {
                 color={"primary"}
                 fullWidth
                 type={"submit"}
+                id="submit"
               >
                 {loading ? "Processing..." : "Submit"}
               </Button>
