@@ -10,6 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
+import { checkAndUpdateAuth } from "../../services/AuthService";
 
 const useStyles = makeStyles((theme) => ({
   skillHeading: {
@@ -31,11 +32,35 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     textDecoration: "none",
   },
+  itemContainer: {
+    backgroundColor: "#F6F6F6",
+    padding: 20,
+    borderRadius: 6,
+    marginTop: theme.spacing(3),
+  },
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  body: {
+    marginTop: theme.spacing(3),
+  },
+  row: {
+    display: "flex",
+  },
+  title: {
+    textAlign: "center",
+  },
+  value: {
+    fontWeight: "normal",
+  },
+  item: {},
 }));
 
-function ViewCourses(props) {
+function ViewCourses({ changeCurrentPage, user, history }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [authenticated, setAuthenticated] = useState(false);
   const [courses, setCourses] = useState([]);
 
   const classes = useStyles();
@@ -70,12 +95,25 @@ function ViewCourses(props) {
    * Change the nav title to Courses and getCourses
    */
   useEffect(() => {
-    props.changeCurrentPage("Courses");
-    getCourses();
+    async function asyncAuth() {
+      let response = await checkAndUpdateAuth(user.type);
+      if (response === undefined || response.length < 1) {
+        history.push("/Login");
+      } else {
+        changeCurrentPage("Courses");
+        getCourses();
+        setAuthenticated(true);
+      }
+    }
+    asyncAuth();
     // eslint-disable-next-line
   }, []);
 
   const deleteCourse = () => {};
+
+  if (!authenticated) {
+    return <Box />;
+  }
 
   return (
     <Container className={classes.container}>
@@ -89,7 +127,7 @@ function ViewCourses(props) {
           Add Course
         </Button>
       </Link>
-      <Typography className={classes.field} variant={"h5"}>
+      <Typography className={classes.title} variant={"h5"}>
         Manage Courses
       </Typography>
       {error && (
@@ -103,8 +141,9 @@ function ViewCourses(props) {
         <Box>
           {courses.map((courseItem) => (
             <Box
-              className={classes.container}
+              className={classes.itemContainer}
               id={"courseNumber" + courseItem._id}
+              key={courseItem._id}
             >
               <Box className={classes.header}>
                 <Typography variant={"h5"}>{courseItem.name}</Typography>
@@ -118,17 +157,41 @@ function ViewCourses(props) {
                 </Button>
               </Box>
               <Box className={classes.body}>
-                <Typography variant={"h6"}>Organization:</Typography>
-                <Typography>{courseItem.Organization.name}</Typography>
+                <Typography variant={"h6"} component="span">
+                  Organization:{" "}
+                  <Typography
+                    variant={"h6"}
+                    component="span"
+                    className={classes.value}
+                  >
+                    {courseItem.organization.name}
+                  </Typography>
+                </Typography>
               </Box>
               <Box className={classes.body}>
-                <Typography variant={"h6"}>Location:</Typography>
-                <Typography>{courseItem.location}</Typography>
+                <Typography variant={"h6"} component="span">
+                  Location:{" "}
+                  <Typography
+                    variant={"h6"}
+                    component="span"
+                    className={classes.value}
+                  >
+                    {courseItem.location}
+                  </Typography>
+                </Typography>
               </Box>
               {courseItem.period && (
                 <Box className={classes.body}>
-                  <Typography variant={"h6"}>Period:</Typography>
-                  <Typography>{courseItem.period}</Typography>
+                  <Typography className={classes.item} component="span">
+                    Period:{" "}
+                    <Typography
+                      variant={"h6"}
+                      component="span"
+                      className={classes.value}
+                    >
+                      {courseItem.period}
+                    </Typography>
+                  </Typography>
                 </Box>
               )}
               {courseItem.times && (
@@ -152,7 +215,7 @@ function ViewCourses(props) {
 }
 
 function mapStateToProps(state) {
-  return {};
+  return { user: state.authentication };
 }
 
 function mapDispatchToProps(dispatch) {

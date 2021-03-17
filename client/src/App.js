@@ -34,6 +34,7 @@ function App() {
           <Route component={SkillDetails} path="/SkillDetails/:id" />
           <Redirect exact from="/Skill Search" to={"/SkillSearch"} />
           <Route component={SkillSearch} path={"/SkillSearch"} />
+          <Redirect exact from="/My Courses" to={"/Courses"} />
           <Route component={ViewCourses} path={"/Courses"} />
         </Switch>
       </div>
