@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { changeCurrentPage } from "../../redux/actions";
+import { changeCurrentPage, setCourseToEdit } from "../../redux/actions";
 import Container from "@material-ui/core/Container";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
@@ -11,6 +11,7 @@ import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
 import { checkAndUpdateAuth } from "../../services/AuthService";
+import ConfirmationDialogue from "../subcomponents/Shared/ConfirmationDialogue";
 
 const useStyles = makeStyles((theme) => ({
   skillHeading: {
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   body: {
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(2),
   },
   row: {
     display: "flex",
@@ -54,14 +55,26 @@ const useStyles = makeStyles((theme) => ({
   value: {
     fontWeight: "normal",
   },
-  item: {},
+  item: {
+    fontSize: "1.25rem",
+    fontWeight: "bold",
+  },
+  button: {
+    margin: 10,
+    float: "right",
+  },
+  buttonContainer: {
+    height: 0,
+  },
 }));
 
-function ViewCourses({ changeCurrentPage, user, history }) {
+function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
+  const [showConfirmDialogue, setShowConfirmDialogue] = useState(false);
   const [courses, setCourses] = useState([]);
+  let courseToDeleteId = undefined;
 
   const classes = useStyles();
 
@@ -92,7 +105,7 @@ function ViewCourses({ changeCurrentPage, user, history }) {
   };
 
   /**
-   * Change the nav title to Courses and getCourses
+   * Check for authenticated user, and if so change the nav title to Courses and getCourses, otherwise go to Login
    */
   useEffect(() => {
     async function asyncAuth() {
@@ -109,7 +122,38 @@ function ViewCourses({ changeCurrentPage, user, history }) {
     // eslint-disable-next-line
   }, []);
 
-  const deleteCourse = () => {};
+  const confirmDelete = (courseItem) => {
+    courseToDeleteId = courseItem._id;
+    setShowConfirmDialogue();
+  };
+
+  const submitDelete = () => {
+    axios({
+      method: "DELETE",
+      url: process.env.REACT_APP_SERVER_URL + "/Courses/Course",
+      data: {
+        _id: courseToDeleteId,
+      },
+      withCredentials: true,
+    })
+      .catch((error) => {
+        if (error?.response?.message?.length > 0) {
+          setError(error.response.data.message);
+        } else {
+          setError("An error has occoured while trying to delete a course.");
+        }
+        console.error(error);
+      })
+      .finally(() => {
+        setShowConfirmDialogue(false);
+        getCourses();
+      });
+  };
+
+  const editCourse = (courseItem) => {
+    setCourseToEdit(courseItem);
+    history.push("/Course/Edit");
+  };
 
   if (!authenticated) {
     return <Box />;
@@ -117,7 +161,7 @@ function ViewCourses({ changeCurrentPage, user, history }) {
 
   return (
     <Container className={classes.container}>
-      <Link className={classes.addButtonLink} to="/AddCourse">
+      <Link className={classes.addButtonLink} to="/Course/Add">
         <Button
           className={classes.addButton}
           id="addCourseButton"
@@ -127,7 +171,7 @@ function ViewCourses({ changeCurrentPage, user, history }) {
           Add Course
         </Button>
       </Link>
-      <Typography className={classes.title} variant={"h5"}>
+      <Typography className={classes.title} variant="h5" component="h1">
         Manage Courses
       </Typography>
       {error && (
@@ -146,68 +190,82 @@ function ViewCourses({ changeCurrentPage, user, history }) {
               key={courseItem._id}
             >
               <Box className={classes.header}>
-                <Typography variant={"h5"}>{courseItem.name}</Typography>
-                <Button
-                  name="DeleteCourse"
-                  variant="contained"
-                  color="primary"
-                  onClick={deleteCourse(courseItem)}
-                >
-                  Delete
-                </Button>
+                <Typography variant="h5" component="h2">
+                  {courseItem.name}
+                </Typography>
+                <Box className={classes.buttonContainer}>
+                  <Button
+                    className={classes.button}
+                    name="DeleteCourse"
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      confirmDelete(courseItem);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                  <br />
+                  <Button
+                    className={classes.button}
+                    name="EditCourse"
+                    variant="contained"
+                    onClick={() => {
+                      editCourse(courseItem);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                </Box>
               </Box>
               <Box className={classes.body}>
-                <Typography variant={"h6"} component="span">
+                <Typography className={classes.item} component="div">
                   Organization:{" "}
-                  <Typography
-                    variant={"h6"}
-                    component="span"
-                    className={classes.value}
-                  >
+                  <span className={classes.value}>
                     {courseItem.organization.name}
-                  </Typography>
+                  </span>
                 </Typography>
               </Box>
               <Box className={classes.body}>
-                <Typography variant={"h6"} component="span">
+                <Typography className={classes.item} component="div">
                   Location:{" "}
-                  <Typography
-                    variant={"h6"}
-                    component="span"
-                    className={classes.value}
-                  >
-                    {courseItem.location}
-                  </Typography>
+                  <span className={classes.value}>{courseItem.location}</span>
                 </Typography>
               </Box>
               {courseItem.period && (
                 <Box className={classes.body}>
-                  <Typography className={classes.item} component="span">
+                  <Typography className={classes.item} component="div">
                     Period:{" "}
-                    <Typography
-                      variant={"h6"}
-                      component="span"
-                      className={classes.value}
-                    >
-                      {courseItem.period}
-                    </Typography>
+                    <span className={classes.value}>{courseItem.period}</span>
                   </Typography>
                 </Box>
               )}
               {courseItem.times && (
                 <Box className={classes.body}>
-                  <Typography variant={"h6"}>Times:</Typography>
-                  <Typography>{courseItem.times}</Typography>
+                  <Typography className={classes.item} component="div">
+                    Times:{" "}
+                    <span className={classes.value}>{courseItem.times}</span>
+                  </Typography>
                 </Box>
               )}
               <Box className={classes.body}>
-                <Typography variant={"h6"}>Skills Will Be Achieved</Typography>
-                <Typography>
-                  {courseItem.skills.map((skill) => skill.name).join(", ")}
+                <Typography className={classes.item} component="div">
+                  Skills Will Be Achieved:{" "}
+                  <span className={classes.value}>
+                    {courseItem.skills.map((skill) => skill.name).join(", ")}
+                  </span>
                 </Typography>
               </Box>
             </Box>
           ))}
+          <ConfirmationDialogue
+            title="Are you sure you would like to delete this Course?"
+            open={showConfirmDialogue}
+            onCancel={() => {
+              setShowConfirmDialogue(false);
+            }}
+            onConfirm={submitDelete}
+          />
         </Box>
       )}
     </Container>
@@ -215,12 +273,15 @@ function ViewCourses({ changeCurrentPage, user, history }) {
 }
 
 function mapStateToProps(state) {
-  return { user: state.authentication };
+  return {
+    user: state.authentication,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     changeCurrentPage: (content) => dispatch(changeCurrentPage(content)),
+    setCourseToEdit: (content) => dispatch(setCourseToEdit(content)),
   };
 }
 
