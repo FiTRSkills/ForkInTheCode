@@ -57,7 +57,7 @@ function JobSearchForm(props) {
 
   useEffect(() => {
     if (props.sharedSkills && props.sharedSkills.length !== 0) {
-      setSkills(props.sharedSkills.map((skill) => skill.name));
+      setSkills([...skills, ...props.sharedSkills.map((skill) => skill.name)]);
     }
   }, [props.sharedSkills]);
 
