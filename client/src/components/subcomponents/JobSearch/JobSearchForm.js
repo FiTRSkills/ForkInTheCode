@@ -59,6 +59,7 @@ function JobSearchForm(props) {
     if (props.sharedSkills && props.sharedSkills.length !== 0) {
       setSkills([...skills, ...props.sharedSkills.map((skill) => skill.name)]);
     }
+    // eslint-disable-next-line
   }, [props.sharedSkills]);
 
   function submit(event) {
