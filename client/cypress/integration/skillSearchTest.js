@@ -206,4 +206,29 @@ describe("Skill Search", () => {
       "An error has occoured while trying to add a skill. Some skills may have been added, please try again."
     );
   });
+
+  it("Skill search add skills to Job Search SUCCESS", () => {
+    cy.server();
+    cy.route({
+      method: "GET",
+      url:
+        Cypress.env("REACT_APP_SERVER_URL") +
+        "/skills/search?zipCode=12345&organization=",
+      status: 200,
+      response: [
+        { name: "PHP", numJobs: 10, _id: 1 },
+        { name: "MySQL", numJobs: 8, _id: 2 },
+      ],
+    }).as("submitSearch");
+    cy.get("#SkillSearch").click();
+    cy.get("#zipcode").type("12345");
+    cy.get("#submit").click();
+    cy.wait("@submitSearch").its("status").should("eq", 200);
+    cy.get("#addCheckbox1").click();
+    cy.get("#addCheckbox2").click();
+    cy.get("#addSkillsToJobSearchButton").click();
+    cy.contains("Job Search");
+    cy.contains("PHP");
+    cy.contains("MySQL");
+  });
 });
