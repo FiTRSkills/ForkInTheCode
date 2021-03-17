@@ -99,6 +99,7 @@ Cypress.Commands.add("fakeProfile", (success = true) => {
   // Go to profile. Verify profile loaded success.
   cy.get("#Profile").click();
 });
+
 Cypress.Commands.add("SkillsDropdown", (success = true) => {
   cy.server();
   if (success) {

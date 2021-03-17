@@ -1,6 +1,6 @@
 describe("Load profile careers", () => {
   it("Load careers profile success", () => {
-    cy.fakeProfile(true);
+    cy.fakeProfile();
     cy.wait("@profileCall").its("status").should("eq", 200);
     cy.get("#career0 [name='jobTitle']").should("have.value", "Dev");
   });
@@ -13,7 +13,7 @@ describe("Load profile careers", () => {
   });
 
   it("Edit career profile success", () => {
-    cy.fakeProfile(true);
+    cy.fakeProfile();
     cy.route({
       method: "patch",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/career",
@@ -59,7 +59,7 @@ describe("Load profile careers", () => {
 
   it("Edit career profile failure", () => {
     // Stub get profile success response
-    cy.fakeProfile(true);
+    cy.fakeProfile();
     cy.route({
       method: "patch",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/career",
@@ -82,7 +82,7 @@ describe("Load profile careers", () => {
   });
 
   it("Add career profile success", () => {
-    cy.fakeProfile(true);
+    cy.fakeProfile();
     cy.wait("@profileCall");
     cy.route({
       method: "post",
@@ -132,7 +132,7 @@ describe("Load profile careers", () => {
   });
 
   it("Add career profile failure", () => {
-    cy.fakeProfile(true);
+    cy.fakeProfile();
     cy.route({
       method: "post",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/career",
@@ -151,7 +151,7 @@ describe("Load profile careers", () => {
   });
 
   it("Delete career profile success", () => {
-    cy.fakeProfile(true);
+    cy.fakeProfile();
     cy.route({
       method: "delete",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/career",
@@ -178,7 +178,7 @@ describe("Load profile careers", () => {
   });
 
   it("Delete career profile failure", () => {
-    cy.fakeProfile(true);
+    cy.fakeProfile();
     cy.route({
       method: "delete",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/career",
@@ -198,7 +198,7 @@ describe("Load profile careers", () => {
   });
 
   it("Delete career profile cancel", () => {
-    cy.fakeProfile(true);
+    cy.fakeProfile();
     cy.wait("@profileCall");
     cy.get("#editCareers").click();
     cy.get("#career0 [name='editCareer']").click();
@@ -209,7 +209,7 @@ describe("Load profile careers", () => {
   });
 
   it("Closing add career clears data", () => {
-    cy.fakeProfile(true);
+    cy.fakeProfile();
     cy.wait("@profileCall");
     cy.get("#addCareer").click();
     cy.get("#addCareerJobTitle").type("newDev");
@@ -221,7 +221,7 @@ describe("Load profile careers", () => {
   });
 
   it("Cancel edit resets content", () => {
-    cy.fakeProfile(true);
+    cy.fakeProfile();
     // Go to profile. Verify profile loaded success.
     cy.get("#Profile").click();
     cy.wait("@profileCall");
@@ -241,7 +241,7 @@ describe("Load profile careers", () => {
   });
 
   it("Cancel overall edit cancels individual edit", () => {
-    cy.fakeProfile(true);
+    cy.fakeProfile();
     // Go to profile. Verify profile loaded success.
     cy.get("#Profile").click();
     cy.wait("@profileCall");

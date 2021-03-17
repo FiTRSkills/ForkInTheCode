@@ -1,6 +1,6 @@
 describe("Load skills profile", () => {
   it("Load skills success", () => {
-    cy.fakeProfile(true);
+    cy.fakeProfile();
     cy.wait("@profileCall").its("status").should("eq", 200);
     cy.get("#skillList").contains("skill1");
     cy.get("#skillList").contains("skill2");
@@ -15,7 +15,7 @@ describe("Load skills profile", () => {
   });
 
   it("Add skill success", () => {
-    cy.fakeProfile(true);
+    cy.fakeProfile();
     cy.route({
       method: "GET",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/skills",
@@ -74,7 +74,7 @@ describe("Load skills profile", () => {
   });
 
   it("Add skill failure", () => {
-    cy.fakeProfile(true);
+    cy.fakeProfile();
     cy.route({
       method: "GET",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/skills",
@@ -103,7 +103,7 @@ describe("Load skills profile", () => {
   });
 
   it("Delete skill success", () => {
-    cy.fakeProfile(true);
+    cy.fakeProfile();
     cy.get("#editSkills").click();
     cy.route({
       method: "GET",
@@ -142,7 +142,7 @@ describe("Load skills profile", () => {
   });
 
   it("Delete skill failure", () => {
-    cy.fakeProfile(true);
+    cy.fakeProfile();
     cy.get("#editSkills").click();
     cy.route({
       method: "delete",
@@ -158,7 +158,7 @@ describe("Load skills profile", () => {
   });
 
   it("Cancel basic profile edit", () => {
-    cy.fakeProfile(true);
+    cy.fakeProfile();
     cy.get("#editSkills").click();
     cy.get("#skillInput").type("test");
     cy.get("#editSkills").click();
