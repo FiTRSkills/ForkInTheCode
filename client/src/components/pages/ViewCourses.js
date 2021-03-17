@@ -110,7 +110,7 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit }) {
   useEffect(() => {
     async function asyncAuth() {
       let response = await checkAndUpdateAuth(user.type);
-      if (response === undefined || response.length < 1) {
+      if (response === undefined || response !== "EducatorProfile") {
         history.push("/Login");
       } else {
         changeCurrentPage("Courses");
