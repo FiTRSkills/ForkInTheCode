@@ -72,7 +72,7 @@ describe("View Courses", () => {
     cy.contains("Failed to load Courses");
   });
 
-  it.skip("Navigate to Add Course SUCCESS", () => {
+  it("Navigate to Add Course SUCCESS", () => {
     cy.route({
       method: "GET",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses",
@@ -85,7 +85,7 @@ describe("View Courses", () => {
     cy.contains("Add Course");
   });
 
-  it.skip("Navigate to Edit Course SUCCESS", () => {
+  it("Navigate to Edit Course SUCCESS", () => {
     cy.route({
       method: "GET",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses",
