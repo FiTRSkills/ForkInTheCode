@@ -309,7 +309,7 @@ function AddEditCourse(props) {
           </Box>
           <Box className={classes.field}>
             <Typography>
-              Description - <i>Optional</i>
+              Description - <em>Optional</em>
             </Typography>
             <TextField
               variant={"outlined"}
@@ -325,7 +325,7 @@ function AddEditCourse(props) {
           </Box>
           <Box className={classes.field}>
             <Typography>
-              Cost - <i>Optional</i>
+              Cost - <em>Optional</em>
             </Typography>
             <TextField
               variant={"outlined"}
@@ -340,7 +340,7 @@ function AddEditCourse(props) {
           <Box className={classes.field}>
             <Typography>
               Start and End Date (Format: DD/MM/YYYY - DD/MM/YYYY) -{" "}
-              <i>Optional</i>
+              <em>Optional</em>
             </Typography>
             <TextField
               variant={"outlined"}
@@ -354,7 +354,7 @@ function AddEditCourse(props) {
           </Box>
           <Box className={classes.field}>
             <Typography>
-              Period - <i>Optional</i>
+              Period - <em>Optional</em>
             </Typography>
             <Select
               native
@@ -375,7 +375,7 @@ function AddEditCourse(props) {
           </Box>
           <Box className={classes.field}>
             <Typography>
-              Times (Format: Day: Start - End) - <i>Optional</i>
+              Times (Format: Day: Start - End) - <em>Optional</em>
             </Typography>
             <TextField
               variant={"outlined"}
@@ -425,7 +425,7 @@ function AddEditCourse(props) {
           )}
           <Box className={classes.field}>
             <Typography>
-              Equipment - <i>Optional</i>
+              Equipment - <em>Optional</em>
             </Typography>
             <TextField
               variant={"outlined"}
@@ -441,7 +441,7 @@ function AddEditCourse(props) {
           </Box>
           <Box className={classes.field}>
             <Typography>
-              Contact - <i>Optional</i>
+              Contact - <em>Optional</em>
             </Typography>
             <TextField
               variant={"outlined"}
