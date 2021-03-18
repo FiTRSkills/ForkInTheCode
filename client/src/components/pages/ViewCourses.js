@@ -124,18 +124,21 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit }) {
 
   const confirmDelete = (courseItem) => {
     courseToDeleteId = courseItem._id;
-    setShowConfirmDialogue();
+    setShowConfirmDialogue(true);
   };
 
   const submitDelete = () => {
     axios({
       method: "DELETE",
-      url: process.env.REACT_APP_SERVER_URL + "/Courses/Course",
+      url: process.env.REACT_APP_SERVER_URL + "/courses/course",
       data: {
         _id: courseToDeleteId,
       },
       withCredentials: true,
     })
+      .then(() => {
+        getCourses();
+      })
       .catch((error) => {
         if (error?.response?.message?.length > 0) {
           setError(error.response.data.message);
@@ -146,7 +149,6 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit }) {
       })
       .finally(() => {
         setShowConfirmDialogue(false);
-        getCourses();
       });
   };
 
@@ -197,6 +199,7 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit }) {
                   <Button
                     className={classes.button}
                     name="DeleteCourse"
+                    id={"DeleteCourse" + courseItem._id}
                     variant="contained"
                     color="primary"
                     onClick={() => {
@@ -209,6 +212,7 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit }) {
                   <Button
                     className={classes.button}
                     name="EditCourse"
+                    id={"EditCourse" + courseItem._id}
                     variant="contained"
                     onClick={() => {
                       editCourse(courseItem);
