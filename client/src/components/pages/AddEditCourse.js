@@ -271,7 +271,9 @@ function AddEditCourse(props) {
         {error && <Alert severity="error">{error}</Alert>}
         <form onSubmit={onSubmit}>
           <Box className={classes.field}>
-            <Typography variant={"h5"}>Add Course</Typography>
+            <Typography variant={"h5"}>
+              {mode === "Add" ? "Add Course" : "Edit Course"}
+            </Typography>
           </Box>
           <Box className={classes.field}>
             <Typography>Title</Typography>
