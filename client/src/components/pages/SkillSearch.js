@@ -17,7 +17,11 @@ function SkillSearch(props) {
     <Container component="main" maxWidth="lg">
       <SkillSearchForm setSkills={setSkills} setLocation={setLocation} />
       {skillsResults.length > 0 && skillsResults.length > 0 && (
-        <SkillsSearchResults basicResults={skillsResults} location={location} />
+        <SkillsSearchResults
+          basicResults={skillsResults}
+          location={location}
+          history={props.history}
+        />
       )}
     </Container>
   );
