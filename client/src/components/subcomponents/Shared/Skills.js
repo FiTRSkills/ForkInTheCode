@@ -7,6 +7,8 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Alert from "@material-ui/lab/Alert";
 import axios from "axios";
+import { Tooltip } from "@material-ui/core";
+import CreateSkillDialog from "./CreateSkillDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,20 +25,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
+function Skills({
+  skills,
+  setSkills,
+  editMode,
+  onAdd,
+  onDelete,
+  setSkillObjects,
+  skillObjects,
+}) {
   const classes = useStyles();
   const [allSkills, setAllSkills] = useState([]);
+  const [allSkillObjects, setAllSkillObjects] = useState([]);
   const [currentSkill, setCurrentSkill] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const [isOpenCreateSkillDialog, setOpenCreateSkillDialog] = useState(false);
 
   useEffect(() => {
     fetchSkills();
     setCurrentSkill("");
   }, [editMode]);
 
-  function fetchSkills(){
+  function fetchSkills() {
     axios
       .get(process.env.REACT_APP_SERVER_URL + "/skills", {
         withCredentials: true,
@@ -45,11 +56,12 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
         if (response.status === 200) {
           setError(null);
           setAllSkills(response.data.map((skill) => skill.name));
+          setAllSkillObjects(response.data.map((skill) => skill));
         }
       })
       .catch((error) => {
         setError("No Skills Found");
-      })
+      });
   }
 
   function deleteSkill(skillToDelete) {
@@ -66,18 +78,25 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
           setLoading(false);
         });
     } else {
-      setSkills((skills) => skills.filter((skill) => skill !== skillToDelete));
+      if (setSkills !== undefined) {
+        setSkills((skills) =>
+          skills.filter((skill) => skill !== skillToDelete)
+        );
+      }
+      if (setSkillObjects !== undefined) {
+        setSkillObjects((skillObjects) =>
+          skillObjects.filter((skill) => skill.name !== skillToDelete)
+        );
+      }
     }
   }
 
   function addSkill() {
     if (skills.indexOf(currentSkill) > -1) {
       setError("Already in Skills");
-    }
-    else if(allSkills.indexOf(currentSkill) === -1){
-      setError("Skill does not exist")
-    }
-    else if(currentSkill !== "") {
+    } else if (allSkills.indexOf(currentSkill) === -1) {
+      setError("Skill does not exist");
+    } else if (currentSkill !== "") {
       if (onAdd !== undefined) {
         setLoading(true);
         onAdd(currentSkill)
@@ -92,7 +111,17 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
             setLoading(false);
           });
       } else {
-        setSkills([...skills, currentSkill]);
+        if (setSkills !== undefined) {
+          setSkills([...skills, currentSkill]);
+        }
+        if (setSkillObjects !== undefined) {
+          const currentSkillObject = allSkillObjects.find(
+            (skillOption) => skillOption.name === currentSkill
+          );
+          if (currentSkillObject) {
+            setSkillObjects([...skillObjects, currentSkillObject]);
+          }
+        }
         setError(null);
         setCurrentSkill("");
       }
@@ -106,27 +135,46 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
     }
   }
 
+  function handleCreateSKillDialog() {
+    setOpenCreateSkillDialog(!isOpenCreateSkillDialog);
+  }
+
+  function allowCreate() {
+    return false;
+  }
+
   return (
     <Box>
       {error && <Alert severity="error">{error}</Alert>}
       <Box className={classes.root} id="skillList">
         {skills.map((skill, index) => {
+          // Get skill description for tooltip
+          let title = "";
+          const skillObject = allSkillObjects.find(
+            (skillOption) => skillOption.name === skill
+          );
+          if (skillObject) {
+            title = skillObject.description;
+          }
+
           return (
             <li key={index}>
-              <Chip
-                color="primary"
-                variant="outlined"
-                label={skill}
-                name={skill}
-                onDelete={
-                  editMode
-                    ? () => {
-                        deleteSkill(skill);
-                      }
-                    : undefined
-                }
-                className={classes.chip}
-              />
+              <Tooltip title={title}>
+                <Chip
+                  color="primary"
+                  variant="outlined"
+                  label={skill}
+                  name={skill}
+                  onDelete={
+                    editMode
+                      ? () => {
+                          deleteSkill(skill);
+                        }
+                      : undefined
+                  }
+                  className={classes.chip}
+                />
+              </Tooltip>
             </li>
           );
         })}
@@ -149,16 +197,35 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
               />
             )}
           />
-          <Button
-            onClick={addSkill}
-            variant="outlined"
-            color="primary"
-            fullWidth
-            id="addSkill"
-            disabled={loading}
-          >
-            {loading ? "Processing..." : "Add Skill"}
-          </Button>
+          {allowCreate() ? (
+            <Button
+              onClick={handleCreateSKillDialog}
+              variant="outlined"
+              color="primary"
+              fullWidth
+              id="createSkill"
+              disabled={loading}
+            >
+              {loading ? "Processing..." : "Create Skill"}
+            </Button>
+          ) : (
+            <Button
+              onClick={addSkill}
+              variant="outlined"
+              color="primary"
+              fullWidth
+              id="addSkill"
+              disabled={loading}
+            >
+              {loading ? "Processing..." : "Add Skill"}
+            </Button>
+          )}
+          <CreateSkillDialog
+            open={isOpenCreateSkillDialog}
+            closeDialog={handleCreateSKillDialog}
+            skillName={currentSkill}
+            onCreateSuccess={fetchSkills}
+          />
         </Box>
       )}
     </Box>

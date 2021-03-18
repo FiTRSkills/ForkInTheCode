@@ -8,15 +8,8 @@ describe("Load skills profile", () => {
   });
 
   it("Load skills failure", () => {
-    cy.fakeLogin();
-    cy.route({
-      method: "GET",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
-      status: 400,
-      response: "Access denied",
-    }).as("profileCall");
+    cy.fakeProfile(false);
     // Go to profile. Verify profile loaded failed.
-    cy.get("#Profile").click();
     cy.wait("@profileCall").its("status").should("eq", 400);
     cy.contains("Access denied");
   });
@@ -27,7 +20,12 @@ describe("Load skills profile", () => {
       method: "GET",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/skills",
       status: 200,
-      response:[{"name": "dev", "_id": "1" },{"name": "hardware", "_id": "2"}, {"name": "test", "_id": "3"}]}).as("getSkills");
+      response: [
+        { name: "dev", _id: "1" },
+        { name: "hardware", _id: "2" },
+        { name: "test", _id: "3" },
+      ],
+    }).as("getSkills");
     cy.get("#editSkills").click();
     cy.wait("@getSkills");
     cy.get("#skillInput").type("test");
@@ -62,10 +60,10 @@ describe("Load skills profile", () => {
       status: 200,
       response: "Success",
     }).as("addSkillCall");
-    cy.contains('test')
-        .should('be.visible')
-        .and('have.class', 'MuiAutocomplete-option')
-        .click()
+    cy.contains("test")
+      .should("be.visible")
+      .and("have.class", "MuiAutocomplete-option")
+      .click();
     cy.get("#addSkill").click();
     cy.wait("@addSkillCall");
     cy.wait("@profileCall");
@@ -81,7 +79,12 @@ describe("Load skills profile", () => {
       method: "GET",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/skills",
       status: 200,
-      response:[{"name": "dev", "_id": "1" },{"name": "hardware", "_id": "2"}, {"name": "test", "_id": "3"}]}).as("getSkills");
+      response: [
+        { name: "dev", _id: "1" },
+        { name: "hardware", _id: "2" },
+        { name: "test", _id: "3" },
+      ],
+    }).as("getSkills");
     cy.get("#editSkills").click();
     cy.get("#skillInput").type("test");
     cy.route({
@@ -90,10 +93,10 @@ describe("Load skills profile", () => {
       status: 401,
       response: "An error has occoured while trying to add a skill.",
     }).as("addSkillCall");
-    cy.contains('test')
-      .should('be.visible')
-      .and('have.class', 'MuiAutocomplete-option')
-      .click()
+    cy.contains("test")
+      .should("be.visible")
+      .and("have.class", "MuiAutocomplete-option")
+      .click();
     cy.get("#addSkill").click();
     cy.wait("@addSkillCall");
     cy.contains("An error has occoured while trying to add a skill.");

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Link from "@material-ui/core/Link";
+import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Checkbox from "@material-ui/core/Checkbox";
 
@@ -60,7 +60,11 @@ function SkillResult({ skill, toggleAddToProfile }) {
   return (
     <Grid container className={classes.gridItem}>
       <Grid item xs={8}>
-        <Link className={classes.title} to={"/SkillsDetails/" + skill._id}>
+        <Link
+          id={"skillDetailsLink" + skill._id}
+          className={classes.title}
+          to={"/SkillDetails/" + skill._id}
+        >
           {skill.name}
         </Link>
       </Grid>

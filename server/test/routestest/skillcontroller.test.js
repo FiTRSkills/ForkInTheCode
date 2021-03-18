@@ -18,7 +18,7 @@ describe("testing skill routes", () => {
   });
 
   it("GET /skills/search - gets all skills when there are none", async () => {
-    const res = await request.get("/skills/search?zipCode=12345");
+    const res = await request.get("/skills/search?zipCode=12345&organization=");
     expect(res.statusCode).toEqual(406);
     expect(res.text).toEqual("no skills exist");
   });
@@ -65,7 +65,6 @@ describe("testing skill routes", () => {
     const res = await request.get("/skills/getSkill?id=" + skill._id);
     expect(res.statusCode).toEqual(200);
     let body = JSON.parse(res.text);
-    console.log(body);
     expect(body.skill.name).toEqual("Coding");
     expect(body.courses[0].name).toEqual("Programming 101");
   });

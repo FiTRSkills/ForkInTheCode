@@ -10,6 +10,7 @@ import Box from "@material-ui/core/Box";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
 import axios from "axios";
+import { storeSkills } from "../../../redux/actions";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -40,7 +41,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SkillsSearchResults({ basicResults, user, location }) {
+function SkillsSearchResults({
+  basicResults,
+  user,
+  location,
+  storeSkills,
+  history,
+}) {
   const [allResults, setAllResults] = useState([]);
   const [filteredResults, setFilteredResults] = useState([]);
   const [includeProfileSkills, setIncludeProfileSkills] = useState(false);
@@ -161,6 +168,11 @@ function SkillsSearchResults({ basicResults, user, location }) {
     setLoading(false);
   };
 
+  const addSkillsToJobSearch = () => {
+    storeSkills(skillsToAdd);
+    history.push("/JobSearch");
+  };
+
   const classes = useStyles();
 
   return (
@@ -177,21 +189,23 @@ function SkillsSearchResults({ basicResults, user, location }) {
           Location {location} needs the following skills.
         </Typography>
       )}
-      <Typography
-        component="p"
-        variant="subtitle1"
-        className={classes.lineSpacing}
-      >
-        Include Skills From Profile:
-        <Switch
-          checked={includeProfileSkills}
-          onChange={toggleIncludeProfileSkills}
-          name="includeProfileSkills"
-          inputProps={{ "aria-label": "Include Profile Skills" }}
-          color="primary"
-          id="includeProfileSkillsToggle"
-        />
-      </Typography>
+      {user !== undefined && Object.keys(user).length > 0 && (
+        <Typography
+          component="p"
+          variant="subtitle1"
+          className={classes.lineSpacing}
+        >
+          Include Skills From Profile:
+          <Switch
+            checked={includeProfileSkills}
+            onChange={toggleIncludeProfileSkills}
+            name="includeProfileSkills"
+            inputProps={{ "aria-label": "Include Profile Skills" }}
+            color="primary"
+            id="includeProfileSkillsToggle"
+          />
+        </Typography>
+      )}
       {error && <Alert severity={"error"}>{error}</Alert>}
       {loading ? (
         <CircularProgress />
@@ -231,6 +245,18 @@ function SkillsSearchResults({ basicResults, user, location }) {
               Add Skills To Profile
             </Button>
           )}
+          {(user === undefined || Object.keys(user).length === 0) && (
+            <Button
+              onClick={addSkillsToJobSearch}
+              className={classes.addSkillsButton}
+              color="primary"
+              variant="contained"
+              disabled={skillsToAdd.length < 1}
+              id="addSkillsToJobSearchButton"
+            >
+              Add Skills To Job Search
+            </Button>
+          )}
         </Box>
       )}
     </Box>
@@ -243,4 +269,13 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(SkillsSearchResults);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    storeSkills: (content) => dispatch(storeSkills(content)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SkillsSearchResults);
