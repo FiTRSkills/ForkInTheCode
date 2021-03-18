@@ -1,7 +1,10 @@
 describe("Add Edit Course", () => {
+  beforeEach(() => {
+    cy.fakeLogin("EducatorProfile");
+  });
+
   it("Add ONLINE course SUCCESS", () => {
-    cy.fakeLogin('EducatorProfile');
-    cy.SkillsDropdown(true, '/Course/Add');
+    cy.SkillsDropdown(true, "/Course/Add");
     cy.route({
       method: "POST",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
@@ -38,8 +41,7 @@ describe("Add Edit Course", () => {
   });
 
   it("Add IN PERSON course SUCCESS", () => {
-    cy.fakeLogin('EducatorProfile');
-    cy.SkillsDropdown(true, '/Course/Add');
+    cy.SkillsDropdown(true, "/Course/Add");
     cy.route({
       method: "POST",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
@@ -75,8 +77,7 @@ describe("Add Edit Course", () => {
   });
 
   it("Add ONLINE course FAILURE", () => {
-    cy.fakeLogin('EducatorProfile');
-    cy.SkillsDropdown(true, '/Course/Add');
+    cy.SkillsDropdown(true, "/Course/Add");
     cy.route({
       method: "POST",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
@@ -117,8 +118,7 @@ describe("Add Edit Course", () => {
   });
 
   it("Add IN PERSON course FAILURE", () => {
-    cy.fakeLogin('EducatorProfile');
-    cy.SkillsDropdown(true, '/Course/Add');
+    cy.SkillsDropdown(true, "/Course/Add");
     cy.route({
       method: "POST",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
@@ -154,8 +154,7 @@ describe("Add Edit Course", () => {
   });
 
   it("Edit course SUCCESS", () => {
-    cy.fakeLogin('EducatorProfile');
-    cy.SkillsDropdown(true, '/Course/Edit');
+    cy.SkillsDropdown(true, "/Course/Edit");
     cy.route({
       method: "PATCH",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
@@ -188,8 +187,7 @@ describe("Add Edit Course", () => {
   });
 
   it("Edit course FAILURE", () => {
-    cy.fakeLogin('EducatorProfile');
-    cy.SkillsDropdown(true, '/Course/Edit');
+    cy.SkillsDropdown(true, "/Course/Edit");
     cy.route({
       method: "PATCH",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
