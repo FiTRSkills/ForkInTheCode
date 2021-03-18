@@ -11,13 +11,13 @@
 //
 
 // -- This is a parent command --
-Cypress.Commands.add("fakeLogin", () => {
+Cypress.Commands.add("fakeLogin", (usertype = "JobSeekerProfile") => {
   cy.server();
   cy.route({
     method: "POST",
     url: Cypress.env("REACT_APP_SERVER_URL") + "/Login",
     status: 200,
-    response: "JobSeekerProfile",
+    response: usertype,
   }).as("loginCall");
   cy.route({
     method: "GET",
@@ -28,13 +28,13 @@ Cypress.Commands.add("fakeLogin", () => {
   cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/Login");
   cy.get("#email").type("email@email.com");
   cy.get("#password").type("password");
-  cy.get("#submit").click();
   cy.route({
     method: "GET",
     url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/usertype",
     status: 200,
-    response: "JobSeekerProfile",
+    response: usertype,
   }).as("userTypeCall");
+  cy.get("#submit").click();
   cy.wait("@loginCall");
 });
 
@@ -100,7 +100,7 @@ Cypress.Commands.add("fakeProfile", (success = true) => {
   cy.get("#Profile").click();
 });
 
-Cypress.Commands.add("SkillsDropdown", (success = true) => {
+Cypress.Commands.add("SkillsDropdown", (success = true, url = "/JobSearch") => {
   cy.server();
   if (success) {
     cy.route({
@@ -121,7 +121,7 @@ Cypress.Commands.add("SkillsDropdown", (success = true) => {
       response: [],
     }).as("getSkills");
   }
-  cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
+  cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + url);
 });
 //
 //
