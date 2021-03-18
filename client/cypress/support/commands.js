@@ -38,54 +38,63 @@ Cypress.Commands.add("fakeLogin", (usertype = "JobSeekerProfile") => {
   cy.wait("@loginCall");
 });
 
-Cypress.Commands.add("fakeProfile", () => {
+Cypress.Commands.add("fakeProfile", (success = true) => {
   cy.fakeLogin();
   // Stub get profile error response
-  cy.route({
-    method: "GET",
-    url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
-    status: 200,
-    response: {
-      firstname: "John",
-      lastname: "Apple",
-      dob: "1998-01-05",
-      education: [
-        {
-          degree: "BS SE",
-          major: "SE",
-          organization: {
-            _id: "id",
-            name: "RIT",
+  if (success) {
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
+      status: 200,
+      response: {
+        firstname: "John",
+        lastname: "Apple",
+        dob: "1998-01-05",
+        education: [
+          {
+            degree: "BS SE",
+            major: "SE",
+            organization: {
+              _id: "id",
+              name: "RIT",
+            },
           },
-        },
-      ],
-      career: [
-        {
-          jobTitle: "Dev",
-          startDate: "2018-01-01",
-          endDate: "2020-01-01",
-          organization: {
-            _id: "id",
-            name: "Apple",
+        ],
+        career: [
+          {
+            jobTitle: "Dev",
+            startDate: "2018-01-01",
+            endDate: "2020-01-01",
+            organization: {
+              _id: "id",
+              name: "Apple",
+            },
           },
-        },
-      ],
-      skills: [
-        {
-          _id: "1",
-          name: "skill1",
-        },
-        {
-          _id: "2",
-          name: "skill2",
-        },
-        {
-          _id: "3",
-          name: "skill3",
-        },
-      ],
-    },
-  }).as("profileCall");
+        ],
+        skills: [
+          {
+            _id: "1",
+            name: "skill1",
+          },
+          {
+            _id: "2",
+            name: "skill2",
+          },
+          {
+            _id: "3",
+            name: "skill3",
+          },
+        ],
+      },
+    }).as("profileCall");
+  } else {
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
+      status: 400,
+      response: "Access denied",
+    }).as("profileCall");
+  }
 
   // Go to profile. Verify profile loaded success.
   cy.get("#Profile").click();

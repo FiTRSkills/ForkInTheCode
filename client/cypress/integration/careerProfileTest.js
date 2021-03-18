@@ -6,17 +6,8 @@ describe("Load profile careers", () => {
   });
 
   it("Load careers profile failure", () => {
-    cy.fakeLogin();
-    // Stub get profile error response
-    cy.route({
-      method: "GET",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/Profile",
-      status: 400,
-      response: "Access denied",
-    }).as("profileCall");
-    // Go to profile. Verify profile loaded failed.
-    cy.get("#Profile").click();
-    cy.get("#navBarTitle").should("contain", "Profile");
+    cy.fakeProfile(false);
+    // Verify profile loaded failed.
     cy.wait("@profileCall").its("status").should("eq", 400);
     cy.contains("Access denied");
   });
