@@ -307,7 +307,9 @@ function AddEditCourse(props) {
             />
           </Box>
           <Box className={classes.field}>
-            <Typography>Description - Optional</Typography>
+            <Typography>
+              Description - <i>Optional</i>
+            </Typography>
             <TextField
               variant={"outlined"}
               margin="normal"
@@ -321,7 +323,9 @@ function AddEditCourse(props) {
             />
           </Box>
           <Box className={classes.field}>
-            <Typography>Cost - Optional</Typography>
+            <Typography>
+              Cost - <i>Optional</i>
+            </Typography>
             <TextField
               variant={"outlined"}
               margin="normal"
@@ -334,7 +338,8 @@ function AddEditCourse(props) {
           </Box>
           <Box className={classes.field}>
             <Typography>
-              Start and End Date (Format: DD/MM/YYYY - DD/MM/YYYY) - Optional
+              Start and End Date (Format: DD/MM/YYYY - DD/MM/YYYY) -{" "}
+              <i>Optional</i>
             </Typography>
             <TextField
               variant={"outlined"}
@@ -347,7 +352,9 @@ function AddEditCourse(props) {
             />
           </Box>
           <Box className={classes.field}>
-            <Typography>Period - Optional</Typography>
+            <Typography>
+              Period - <i>Optional</i>
+            </Typography>
             <Select
               native
               labelId="select-filled-label"
@@ -366,7 +373,9 @@ function AddEditCourse(props) {
             </Select>
           </Box>
           <Box className={classes.field}>
-            <Typography>Times (Format: Day: Start - End) - Optional</Typography>
+            <Typography>
+              Times (Format: Day: Start - End) - <i>Optional</i>
+            </Typography>
             <TextField
               variant={"outlined"}
               margin="normal"
@@ -414,7 +423,9 @@ function AddEditCourse(props) {
             </Box>
           )}
           <Box className={classes.field}>
-            <Typography>Equipment - Optional</Typography>
+            <Typography>
+              Equipment - <i>Optional</i>
+            </Typography>
             <TextField
               variant={"outlined"}
               margin="normal"
@@ -423,10 +434,14 @@ function AddEditCourse(props) {
               name="requiredEquipment"
               value={requiredEquipment}
               onChange={handleChange}
+              multiline
+              row={4}
             />
           </Box>
           <Box className={classes.field}>
-            <Typography>Contact - Optional</Typography>
+            <Typography>
+              Contact - <i>Optional</i>
+            </Typography>
             <TextField
               variant={"outlined"}
               margin="normal"
