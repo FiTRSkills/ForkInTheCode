@@ -13,6 +13,7 @@ import Grid from "@material-ui/core/Grid";
 import axios from "axios";
 import Alert from "@material-ui/lab/Alert";
 import { useParams } from "react-router-dom";
+import { checkAndUpdateAuth } from "../../services/AuthService";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -53,6 +54,7 @@ function AddEditCourse(props) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
+  const [authenticated, setAuthenticated] = useState(false);
 
   const { mode } = useParams();
 
@@ -60,7 +62,20 @@ function AddEditCourse(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    props.changeCurrentPage("Courses");
+    async function asyncAuth() {
+      let response = await checkAndUpdateAuth(props.user.type);
+      if (
+        response === undefined ||
+        response.length < 1 ||
+        response !== "EducatorProfile"
+      ) {
+        props.history.push("/Login");
+      } else {
+        props.changeCurrentPage("Courses");
+        setAuthenticated(true);
+      }
+    }
+    asyncAuth();
     // eslint-disable-next-line
   }, []);
 
@@ -249,6 +264,10 @@ function AddEditCourse(props) {
     event.preventDefault();
   }
 
+  if (!authenticated) {
+    return <Box />;
+  }
+
   return (
     <Container className={classes.container}>
       <Box className={classes.subContainer}>
@@ -256,7 +275,9 @@ function AddEditCourse(props) {
         {error && <Alert severity="error">{error}</Alert>}
         <form onSubmit={onSubmit}>
           <Box className={classes.field}>
-            <Typography variant={"h5"}>Add Course</Typography>
+            <Typography variant={"h5"}>
+              {mode === "Add" ? "Add Course" : "Edit Course"}
+            </Typography>
           </Box>
           <Box className={classes.field}>
             <Typography>Title</Typography>
@@ -272,7 +293,9 @@ function AddEditCourse(props) {
             />
           </Box>
           <Box className={classes.field}>
-            <Typography>Description - Optional</Typography>
+            <Typography>
+              Description - <i>Optional</i>
+            </Typography>
             <TextField
               variant={"outlined"}
               margin="normal"
@@ -286,7 +309,9 @@ function AddEditCourse(props) {
             />
           </Box>
           <Box className={classes.field}>
-            <Typography>Cost - Optional</Typography>
+            <Typography>
+              Cost - <i>Optional</i>
+            </Typography>
             <TextField
               variant={"outlined"}
               margin="normal"
@@ -299,7 +324,8 @@ function AddEditCourse(props) {
           </Box>
           <Box className={classes.field}>
             <Typography>
-              Start and End Date (Format: DD/MM/YYYY - DD/MM/YYYY) - Optional
+              Start and End Date (Format: DD/MM/YYYY - DD/MM/YYYY) -{" "}
+              <i>Optional</i>
             </Typography>
             <TextField
               variant={"outlined"}
@@ -312,7 +338,9 @@ function AddEditCourse(props) {
             />
           </Box>
           <Box className={classes.field}>
-            <Typography>Period - Optional</Typography>
+            <Typography>
+              Period - <i>Optional</i>
+            </Typography>
             <Select
               native
               labelId="select-filled-label"
@@ -331,7 +359,9 @@ function AddEditCourse(props) {
             </Select>
           </Box>
           <Box className={classes.field}>
-            <Typography>Times (Format: Day: Start - End) - Optional</Typography>
+            <Typography>
+              Times (Format: Day: Start - End) - <i>Optional</i>
+            </Typography>
             <TextField
               variant={"outlined"}
               margin="normal"
@@ -379,7 +409,9 @@ function AddEditCourse(props) {
             </Box>
           )}
           <Box className={classes.field}>
-            <Typography>Equipment - Optional</Typography>
+            <Typography>
+              Equipment - <i>Optional</i>
+            </Typography>
             <TextField
               variant={"outlined"}
               margin="normal"
@@ -388,10 +420,14 @@ function AddEditCourse(props) {
               name="requiredEquipment"
               value={requiredEquipment}
               onChange={handleChange}
+              multiline
+              row={4}
             />
           </Box>
           <Box className={classes.field}>
-            <Typography>Contact - Optional</Typography>
+            <Typography>
+              Contact - <i>Optional</i>
+            </Typography>
             <TextField
               variant={"outlined"}
               margin="normal"
