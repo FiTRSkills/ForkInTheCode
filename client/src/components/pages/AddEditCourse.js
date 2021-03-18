@@ -13,6 +13,7 @@ import Grid from "@material-ui/core/Grid";
 import axios from "axios";
 import Alert from "@material-ui/lab/Alert";
 import { useParams } from "react-router-dom";
+import { checkAndUpdateAuth } from "../../services/AuthService";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -53,6 +54,7 @@ function AddEditCourse(props) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
+  const [authenticated, setAuthenticated] = useState(false);
 
   const { mode } = useParams();
 
@@ -60,8 +62,20 @@ function AddEditCourse(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    props.changeCurrentPage("Courses");
-    // eslint-disable-next-line
+    async function asyncAuth() {
+      let response = await checkAndUpdateAuth(props.user.type);
+      if (
+        response === undefined ||
+        response.length < 1 ||
+        response !== "EducatorProfile"
+      ) {
+        props.history.push("/Login");
+      } else {
+        props.changeCurrentPage("Courses");
+        setAuthenticated(true);
+      }
+    }
+    asyncAuth();
   }, []);
 
   useEffect(() => {
@@ -262,6 +276,10 @@ function AddEditCourse(props) {
       }
     }
     event.preventDefault();
+  }
+
+  if (!authenticated) {
+    return <Box />;
   }
 
   return (
