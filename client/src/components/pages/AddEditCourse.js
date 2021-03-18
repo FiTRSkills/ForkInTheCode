@@ -76,6 +76,7 @@ function AddEditCourse(props) {
       }
     }
     asyncAuth();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
