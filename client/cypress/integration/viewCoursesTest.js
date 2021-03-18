@@ -96,12 +96,11 @@ describe("View Courses", () => {
     cy.wait("@getCoursesCall").its("status").should("eq", 200);
     cy.get("#EditCourse1").click();
     cy.contains("Edit Course");
-    cy.contains("Java 101");
-    cy.contains("Harvard");
-    cy.contains("3 Months");
-    cy.contains("Monday: 15:00 - 18:00");
+    cy.get("#title").should("have.value", "Java 101");
+    cy.get("#location").should("have.value", "Harvard");
+    cy.get("#period").should("have.value", "3 Months");
+    cy.get("#times").should("have.value", "Monday: 15:00 - 18:00");
     cy.contains("skill1");
-    cy.contains("org1");
   });
 
   it("Delete Course CONFIRM SUCCESS", () => {
