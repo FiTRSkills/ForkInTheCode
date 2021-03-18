@@ -1,4 +1,42 @@
 describe("Add Edit Course", () => {
+  const getCoursesSuccessResponse = [
+    {
+      _id: "1",
+      location: "Harvard",
+      name: "Java 101",
+      skills: [
+        {
+          description: "desc",
+          name: "saad",
+          _id: "1",
+        },
+      ],
+      period: "3 Months",
+      times: "Monday: 15:00 - 18:00",
+      organization: { name: "org1" },
+      description: "Java class",
+      moneyCost: "10000",
+      timeCost: "03/02/2021 - 05/02/2022",
+      requiredEquipment: "Computer",
+      contact: "Jake Rossi: 567-019-2345",
+    },
+    {
+      _id: "2",
+      location: "RIT",
+      name: "Python 101",
+      skills: [
+        {
+          description: "desc",
+          name: "skill2",
+          _id: "2",
+        },
+      ],
+      period: "6 Months",
+      times: "Tuesday: 10:00 - 12:00",
+      organization: { name: "org2" },
+    },
+  ];
+
   beforeEach(() => {
     cy.fakeLogin("EducatorProfile");
   });
@@ -162,6 +200,16 @@ describe("Add Edit Course", () => {
       response: "Successfully updated course",
     }).as("editCourse");
 
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/courses",
+      status: 200,
+      response: getCoursesSuccessResponse,
+    }).as("getCoursesCall");
+    cy.get("#MyCourses").click();
+    cy.wait("@getCoursesCall").its("status").should("eq", 200);
+    cy.get("#EditCourse1").click();
+
     cy.get("#navBarTitle").should("contain", "Courses");
 
     cy.get("#title").should("have.value", "Java 101");
@@ -199,6 +247,16 @@ describe("Add Edit Course", () => {
         ],
       },
     }).as("editCourse");
+
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/courses",
+      status: 200,
+      response: getCoursesSuccessResponse,
+    }).as("getCoursesCall");
+    cy.get("#MyCourses").click();
+    cy.wait("@getCoursesCall").its("status").should("eq", 200);
+    cy.get("#EditCourse1").click();
 
     cy.get("#navBarTitle").should("contain", "Courses");
 
