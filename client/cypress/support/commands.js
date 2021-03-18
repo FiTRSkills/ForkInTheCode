@@ -28,13 +28,13 @@ Cypress.Commands.add("fakeLogin", (usertype = "JobSeekerProfile") => {
   cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/Login");
   cy.get("#email").type("email@email.com");
   cy.get("#password").type("password");
-  cy.get("#submit").click();
   cy.route({
     method: "GET",
     url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/usertype",
     status: 200,
     response: usertype,
   }).as("userTypeCall");
+  cy.get("#submit").click();
   cy.wait("@loginCall");
 });
 
@@ -90,6 +90,7 @@ Cypress.Commands.add("fakeProfile", () => {
   // Go to profile. Verify profile loaded success.
   cy.get("#Profile").click();
 });
+
 Cypress.Commands.add("SkillsDropdown", (success = true, url = "/JobSearch") => {
   cy.server();
   if (success) {

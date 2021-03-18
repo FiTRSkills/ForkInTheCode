@@ -13,6 +13,7 @@ import Profile from "./components/pages/Profile";
 import JobPosting from "./components/pages/JobPosting";
 import SkillDetails from "./components/pages/SkillDetails";
 import SkillSearch from "./components/pages/SkillSearch";
+import ViewCourses from "./components/pages/ViewCourses";
 import AddEditCourse from "./components/pages/AddEditCourse";
 
 function App() {
@@ -34,6 +35,8 @@ function App() {
           <Route component={SkillDetails} path="/SkillDetails/:id" />
           <Redirect exact from="/Skill Search" to={"/SkillSearch"} />
           <Route component={SkillSearch} path={"/SkillSearch"} />
+          <Redirect exact from="/My Courses" to={"/Courses"} />
+          <Route component={ViewCourses} path={"/Courses"} />
           <Route component={AddEditCourse} path={"/Course/:mode"} />
         </Switch>
       </div>

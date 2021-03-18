@@ -81,42 +81,27 @@ function AddEditCourse(props) {
 
   useEffect(() => {
     if (mode === "Edit") {
-      let object = {
-        _id: "1",
-        location: "Harvard",
-        name: "Java 101",
-        skills: [
-          { description: "", name: "saad", _id: "6025b1e9f39a82004cff0fd4" },
-        ],
-        contact: "Jake Rossi: 567-019-2345",
-        period: "3 Months",
-        times: "Monday: 15:00 - 18:00",
-        description: "Java class",
-        moneyCost: "10000",
-        timeCost: "03/02/2021 - 05/02/2022",
-        requiredEquipment: "Computer",
-      };
-      if (object) {
-        setId(object._id);
-        setTitle(object.name);
-        setDescription(object.description);
-        setMoneyCost(object.moneyCost);
-        setTimeCost(object.timeCost);
-        setPeriod(object.period);
-        setTimes(object.times);
-        if (object.location === "Online") {
+      if (props.courseToEdit) {
+        setId(props.courseToEdit._id);
+        setTitle(props.courseToEdit.name);
+        setDescription(props.courseToEdit.description);
+        setMoneyCost(props.courseToEdit.moneyCost);
+        setTimeCost(props.courseToEdit.timeCost);
+        setPeriod(props.courseToEdit.period);
+        setTimes(props.courseToEdit.times);
+        if (props.courseToEdit.location === "Online") {
           setMethod("Online");
         } else {
           setMethod("In Person");
         }
-        setLocation(object.location);
-        setRequiredEquipment(object.requiredEquipment);
-        setContact(object.contact);
-        setSkillObjects(object.skills);
-        setSkillStrs(object.skills.map((skill) => skill.name));
+        setLocation(props.courseToEdit.location);
+        setRequiredEquipment(props.courseToEdit.requiredEquipment);
+        setContact(props.courseToEdit.contact);
+        setSkillObjects(props.courseToEdit.skills);
+        setSkillStrs(props.courseToEdit.skills.map((skill) => skill.name));
       }
     }
-  }, [mode]);
+  }, [mode, props.courseToEdit]);
 
   /**
    * Handle change of text fields to local states
@@ -229,7 +214,7 @@ function AddEditCourse(props) {
             .patch(
               process.env.REACT_APP_SERVER_URL + "/courses/course",
               {
-                id: id,
+                _id: id,
                 location: location,
                 name: title,
                 skills: skillObjects,
@@ -457,9 +442,9 @@ function AddEditCourse(props) {
             <Typography>Skills</Typography>
             <Skills
               skills={skillStrs}
+              setSkills={setSkillStrs}
               skillObjects={skillObjects}
               setSkillObjects={setSkillObjects}
-              setSkills={setSkillStrs}
               editMode={true}
               user={props.user.type}
             />
@@ -501,6 +486,7 @@ function AddEditCourse(props) {
 function mapStateToProps(state) {
   return {
     user: state.authentication,
+    courseToEdit: state.courses.courseToEdit,
   };
 }
 
