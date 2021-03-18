@@ -201,7 +201,7 @@ describe("Add Edit Course", () => {
         ],
       },
     }).as("editCourse");
-    
+
     cy.get("#navBarTitle").should("contain", "Courses");
 
     cy.get("#title").should("have.value", "Java 101");
