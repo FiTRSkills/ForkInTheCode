@@ -34,7 +34,7 @@ describe("View Courses", () => {
 
   beforeEach(() => {
     // Login first
-    cy.fakeEducatorLogin();
+    cy.fakeLogin("EducatorProfile");
   });
 
   it("View Courses SUCCESS", () => {
