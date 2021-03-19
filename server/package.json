@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./src/bin/www",
+    "populate": "node ./src/bin/populate.js",
     "doc": "jsdoc -d docs --configure jsconf.json ./src/app.js",
     "test": "npm run test_model && npm run test_service && npm run test_integration",
     "test_integration": "jest -i routestest",
