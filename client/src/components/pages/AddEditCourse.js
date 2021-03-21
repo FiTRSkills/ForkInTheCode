@@ -423,7 +423,7 @@ function AddEditCourse(props) {
               value={requiredEquipment}
               onChange={handleChange}
               multiline
-              row={4}
+              rows={4}
             />
           </Box>
           <Box className={classes.field}>
