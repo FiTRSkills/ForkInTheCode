@@ -113,7 +113,7 @@ function SkillDetails(props) {
             <Typography variant={"h6"}>
               Classes Associated With This Skill
             </Typography>
-            {courses.map((courseItem) => (
+            {courses && courses.map((courseItem) => (
               <CourseItem id={courseItem._id}
                           description={courseItem.description}
                           skills={courseItem.skills}
