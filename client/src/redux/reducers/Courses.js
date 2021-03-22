@@ -1,6 +1,6 @@
-import { SET_COURSE_TO_EDIT } from "../ActionTypes";
+import { SET_COURSE_TO_EDIT, SET_COURSE_SUCCESS_MESSAGE } from "../ActionTypes";
 
-export const initialState = { course: {} };
+export const initialState = { courseToEdit: {}, successMessage : "" };
 
 let courses = (state = initialState, action) => {
   switch (action.type) {
@@ -8,6 +8,11 @@ let courses = (state = initialState, action) => {
       return {
         ...state,
         courseToEdit: action.payload.course,
+      };
+    case SET_COURSE_SUCCESS_MESSAGE:
+      return {
+        ...state,
+        successMessage: action.payload.message,
       };
     default:
       return state;

@@ -181,8 +181,8 @@ function AddEditCourse(props) {
             )
             .then((response) => {
               if (response.status === 200) {
-                setMessage(response.data);
-                setError(null);
+                props.setCourseSuccessMessage("Successfully Created Course");
+                props.history.push("/Courses");
               }
             })
             .catch((error) => {
@@ -199,10 +199,8 @@ function AddEditCourse(props) {
               } else {
                 setError("Failed to add course");
               }
-            })
-            .finally(() => {
               setLoading(false);
-            });
+            })
           break;
         case "Edit":
           axios
@@ -227,8 +225,8 @@ function AddEditCourse(props) {
             )
             .then((response) => {
               if (response.status === 200) {
-                setMessage(response.data);
-                setError(null);
+                props.setCourseSuccessMessage("Successfully Edited Course")
+                props.history.push("/Courses");
               }
             })
             .catch((error) => {
@@ -245,10 +243,9 @@ function AddEditCourse(props) {
               } else {
                 setError("Failed to update course");
               }
-            })
-            .finally(() => {
               setLoading(false);
-            });
+            })
+
           break;
         default:
           break;
@@ -478,7 +475,7 @@ function AddEditCourse(props) {
 function mapStateToProps(state) {
   return {
     user: state.authentication,
-    courseToEdit: state.courses.courseToEdit,
+    courseToEdit: state.courses.courseToEdit
   };
 }
 

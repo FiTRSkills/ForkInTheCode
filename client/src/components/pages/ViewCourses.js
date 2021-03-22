@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { changeCurrentPage, setCourseToEdit } from "../../redux/actions";
+import { changeCurrentPage, setCourseToEdit, setCourseSuccessMessage } from "../../redux/actions";
 import Container from "@material-ui/core/Container";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit }) {
+function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit, setCourseSuccessMessage, successMessage }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
@@ -115,6 +115,11 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit }) {
       } else {
         changeCurrentPage("Courses");
         getCourses();
+        if(successMessage !== ""){
+          setTimeout(() => {
+            setCourseSuccessMessage('');
+          }, 5000);
+        }
         setAuthenticated(true);
       }
     }
@@ -181,6 +186,7 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit }) {
           {error}
         </Alert>
       )}
+      {successMessage && <Alert severity="success">{successMessage}</Alert>}
       {loading ? (
         <CircularProgress />
       ) : (
@@ -279,6 +285,7 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit }) {
 function mapStateToProps(state) {
   return {
     user: state.authentication,
+    successMessage: state.courses.successMessage
   };
 }
 
@@ -286,6 +293,7 @@ function mapDispatchToProps(dispatch) {
   return {
     changeCurrentPage: (content) => dispatch(changeCurrentPage(content)),
     setCourseToEdit: (content) => dispatch(setCourseToEdit(content)),
+    setCourseSuccessMessage: (content) => dispatch(setCourseSuccessMessage(content))
   };
 }
 
