@@ -181,7 +181,8 @@ function AddEditCourse(props) {
             )
             .then((response) => {
               if (response.status === 200) {
-                props.history.push("/Courses");
+                setMessage(response.data);
+                setError(null);
               }
             })
             .catch((error) => {
@@ -226,7 +227,8 @@ function AddEditCourse(props) {
             )
             .then((response) => {
               if (response.status === 200) {
-                props.history.push("/Courses");
+                setMessage(response.data);
+                setError(null);
               }
             })
             .catch((error) => {
