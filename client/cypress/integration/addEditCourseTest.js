@@ -75,6 +75,7 @@ describe("Add Edit Course", () => {
     cy.get("#submit").click();
 
     cy.wait("@addCourse").its("status").should("eq", 200);
+    cy.contains("Successfully created course");
   });
 
   it("Add IN PERSON course SUCCESS", () => {
@@ -110,6 +111,7 @@ describe("Add Edit Course", () => {
     cy.get("#submit").click();
 
     cy.wait("@addCourse").its("status").should("eq", 200);
+    cy.contains("Successfully created course");
   });
 
   it("Add ONLINE course FAILURE", () => {
@@ -229,6 +231,7 @@ describe("Add Edit Course", () => {
     cy.get("#submit").click();
 
     cy.wait("@editCourse").its("status").should("eq", 200);
+    cy.contains("Successfully updated course");
   });
 
   it("Edit course FAILURE", () => {
