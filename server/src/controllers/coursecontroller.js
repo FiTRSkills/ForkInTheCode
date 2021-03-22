@@ -63,11 +63,10 @@ courseController.updateCourse = async function (req, res) {
 			let course = await Course.findById(req.body._id);
 			// iterates through given information to add to course
 			Object.keys(req.body).forEach(function (key) {
-				if (key != "_id" && key != "skills") {
+				if (key != "_id") {
 					course[key] = req.body[key];
 				}
 			});
-			await course.addSkills(req.body.skills);
 			course.save(function (err) {
 				if (err) {
 					res.status(400).send(err);

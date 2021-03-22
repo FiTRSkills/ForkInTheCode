@@ -219,7 +219,30 @@ describe("CourseController Tests", () => {
 				_id: course_id,
 				location: "1313 Dead End Drive",
 				name: "How to Get Away with Murder 2",
-				skills: [skill._id],
+				skills: [skill],
+				description: "This is a course",
+				times: "12-13",
+				period: "Monday",
+				contact: "215-234-5678",
+				moneyCost: "$4200",
+				timeCost: "4 hours a week",
+				requiredEquipment: "Mask",
+			});
+		expect(res.statusCode).toEqual(200);
+		expect(res.text).toEqual("Successfully updated course.");
+	});
+
+	it("PATCH /courses/course - success adding another skill", async () => {
+		let skill = await Skill.findOneOrCreate("Avacado");
+		let skill2 = await Skill.findOneOrCreate("Nuggets");
+		const res = await request
+			.patch("/courses/course")
+			.set("Cookie", [session_info])
+			.send({
+				_id: course_id,
+				location: "1313 Dead End Drive",
+				name: "How to Get Away with Murder 2",
+				skills: [skill, skill2],
 				description: "This is a course",
 				times: "12-13",
 				period: "Monday",
@@ -238,6 +261,7 @@ describe("CourseController Tests", () => {
 		let body = JSON.parse(res.text);
 		expect(body[0].name).toEqual("How to Get Away with Murder 2");
 		expect(body[0].times).toEqual("12-13");
+		expect(body[0].skills.length).toEqual(2);
 		expect(body.length).toEqual(1);
 	});
 
