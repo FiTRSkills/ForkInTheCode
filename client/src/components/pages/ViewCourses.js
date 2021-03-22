@@ -74,7 +74,7 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit }) {
   const [authenticated, setAuthenticated] = useState(false);
   const [showConfirmDialogue, setShowConfirmDialogue] = useState(false);
   const [courses, setCourses] = useState([]);
-  let courseToDeleteId = undefined;
+  const [courseToDeleteId,setCourseToDeleteId]  = useState(null);
 
   const classes = useStyles();
 
@@ -123,7 +123,7 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit }) {
   }, []);
 
   const confirmDelete = (courseItem) => {
-    courseToDeleteId = courseItem._id;
+    setCourseToDeleteId(courseItem._id);
     setShowConfirmDialogue(true);
   };
 
@@ -143,7 +143,7 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit }) {
         if (error?.response?.message?.length > 0) {
           setError(error.response.data.message);
         } else {
-          setError("An error has occoured while trying to delete a course.");
+          setError("An error has occurred while trying to delete a course.");
         }
         console.error(error);
       })
