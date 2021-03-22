@@ -183,7 +183,7 @@ describe("CourseController Tests", () => {
 				description: "This is a course",
 			});
 		expect(res.statusCode).toEqual(400);
-		expect(res.text).toEqual("Error adding skills.");
+		expect(res.text).toEqual("Error on course creation.");
 	});
 
 	it("POST /courses/course - success", async () => {
@@ -194,7 +194,7 @@ describe("CourseController Tests", () => {
 			.send({
 				location: "1313 Dead End Drive",
 				name: "How to Get Away with Murder",
-				skills: [skill._id],
+				skills: [skill],
 				description: "This is a course",
 			});
 		expect(res.statusCode).toEqual(200);
@@ -324,6 +324,6 @@ describe("CourseController Tests", () => {
 				description: "This is a course",
 			});
 		expect(res.statusCode).toEqual(400);
-		expect(res.text).toEqual("Error adding skills.");
+		expect(res.text).toEqual("Error on course creation.");
 	});
 });
