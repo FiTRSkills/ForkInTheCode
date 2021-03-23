@@ -17,11 +17,11 @@ const courseController = {};
  * @returns {string} response - success or failure
  */
 courseController.addCourse = async function (req, res) {
-	if (req.user.type == "EducatorProfile") {
+	if (req.user.type == User.Type.EDUCATOR) {
 		let course = new Course({});
 		// iterates through given information to add to course
 		Object.keys(req.body).forEach(function (key) {
-				course[key] = req.body[key];
+			course[key] = req.body[key];
 		});
 		try {
 			let profile = await req.user.getProfile();
@@ -54,7 +54,7 @@ courseController.addCourse = async function (req, res) {
  * @returns {string} response - success or failure
  */
 courseController.updateCourse = async function (req, res) {
-	if (req.user.type == "EducatorProfile") {
+	if (req.user.type == User.Type.EDUCATOR) {
 		try {
 			let course = await Course.findById(req.body._id);
 			// iterates through given information to add to course
@@ -87,7 +87,7 @@ courseController.updateCourse = async function (req, res) {
  * @returns {string} response - success or failure
  */
 courseController.deleteCourse = async function (req, res) {
-	if (req.user.type == "EducatorProfile") {
+	if (req.user.type == User.Type.EDUCATOR) {
 		try {
 			await (await Course.findById(req.body._id)).remove();
 			res.status(200).send("Successfully deleted course.");
@@ -109,7 +109,7 @@ courseController.deleteCourse = async function (req, res) {
  * @returns {string} response - list of courses
  */
 courseController.viewCourses = async function (req, res) {
-	if (req.user.type == "EducatorProfile") {
+	if (req.user.type == User.Type.EDUCATOR) {
 		try {
 			let profile = await req.user.getProfile();
 			courses = await Course.find({

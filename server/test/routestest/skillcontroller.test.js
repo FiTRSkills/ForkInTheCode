@@ -117,4 +117,42 @@ describe("testing skill routes", () => {
     let body = JSON.parse(res.text);
     expect(body[0].name).toEqual("Chicken");
   });
+
+  it("POST /skills/createSkill - invalid information sent", async () => {
+    const res = await request
+      .post("/skills/createSkill")
+      .set("Cookie", [employer_session_info])
+      .send({
+        name: "Chicken Noodle Soup",
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.text).toEqual(
+      '{"errors":[{"msg":"Must send a skill description","param":"description","location":"body"}]}'
+    );
+  });
+
+  it("POST /skills/createSkill - success", async () => {
+    const res = await request
+      .post("/skills/createSkill")
+      .set("Cookie", [employer_session_info])
+      .send({
+        name: "Chicken Noodle Soup",
+        description: "The best soup of all time",
+      });
+    expect(res.statusCode).toEqual(200);
+    let body = JSON.parse(res.text);
+    expect(body._id.length).toEqual(24);
+  });
+
+  it("POST /skills/createSkill - skill already exists", async () => {
+    const res = await request
+      .post("/skills/createSkill")
+      .set("Cookie", [employer_session_info])
+      .send({
+        name: "Chicken Noodle Soup",
+        description: "The best soup of all time",
+      });
+    expect(res.statusCode).toEqual(400);
+    expect(res.text).toEqual("Skill with that name already exists.");
+  });
 });

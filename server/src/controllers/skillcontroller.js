@@ -5,6 +5,7 @@
 const Skill = require("../models/skill");
 const Search = require("../services/search");
 const Course = require("../models/course");
+const User = require("../models/user");
 
 const skillController = {};
 
@@ -77,6 +78,47 @@ skillController.getSkill = async function (req, res) {
     courses: courses,
   };
   res.status(200).send(skill_info);
+};
+
+/**
+ * functionality for creating a specific skill
+ * @name skills
+ * @function
+ * @alias module:/controllers/skillcontroller
+ * @property {request} request - skill name, skill description
+ * @returns {string} response - success and skill _id
+ */
+skillController.createSkill = async function (req, res) {
+  // only employers and educators can create skills
+  if (
+    req.user.type == User.Type.EMPLOYER ||
+    req.user.type == User.Type.EDUCATOR
+  ) {
+    try {
+      let skill = await Skill.findOne({ name: req.body.name });
+      // if the skill already exists in the database
+      if (skill) {
+        res.status(400).send("Skill with that name already exists.");
+        return;
+      }
+      skill = new Skill({
+        name: req.body.name,
+        description: req.body.description,
+      });
+      skill.save(function (err) {
+        if (err) {
+          res.status(400).send(err);
+          return;
+        }
+        res.status(200).send({ _id: skill._id });
+      });
+    } catch (error) {
+      res.status(400).send("Error on skill creation.");
+      return;
+    }
+  } else {
+    res.status(400).send("Invalid usertype.");
+  }
 };
 
 module.exports = skillController;
