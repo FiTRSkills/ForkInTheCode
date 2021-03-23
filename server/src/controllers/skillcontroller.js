@@ -95,7 +95,7 @@ skillController.createSkill = async function (req, res) {
     req.user.type == User.Type.EDUCATOR
   ) {
     try {
-      let skill = await Skill.findOne({ name: req.body.name });
+      let skill = await Skill.findOne({ name: req.body.name }).exec();
       // if the skill already exists in the database
       if (skill) {
         res.status(400).send("Skill with that name already exists.");
