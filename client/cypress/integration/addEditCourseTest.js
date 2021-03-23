@@ -192,7 +192,7 @@ describe("Add Edit Course", () => {
   });
 
   it("Edit course SUCCESS", () => {
-    cy.SkillsDropdown(true, "/Course/Edit");
+    cy.SkillsDropdown(true, "/Courses");
     cy.route({
       method: "PATCH",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
@@ -235,7 +235,7 @@ describe("Add Edit Course", () => {
   });
 
   it("Edit course FAILURE", () => {
-    cy.SkillsDropdown(true, "/Course/Edit");
+    cy.SkillsDropdown(true, "/Courses");
     cy.route({
       method: "PATCH",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
