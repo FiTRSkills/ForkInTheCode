@@ -225,7 +225,7 @@ function AddEditCourse(props) {
             )
             .then((response) => {
               if (response.status === 200) {
-                props.setCourseSuccessMessage("Successfully Edited Course")
+                props.setCourseSuccessMessage("Successfully Updated Course")
                 props.history.push("/Courses");
               }
             })
