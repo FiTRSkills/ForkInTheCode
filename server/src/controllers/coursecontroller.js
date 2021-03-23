@@ -21,12 +21,9 @@ courseController.addCourse = async function (req, res) {
 		let course = new Course({});
 		// iterates through given information to add to course
 		Object.keys(req.body).forEach(function (key) {
-			if (key != "skills") {
 				course[key] = req.body[key];
-			}
 		});
 		try {
-			await course.addSkills(req.body.skills);
 			let profile = await req.user.getProfile();
 			await course.setOrganization(profile.organization.name);
 			course.save(function (err) {
@@ -42,7 +39,6 @@ courseController.addCourse = async function (req, res) {
 				return;
 			}
 			res.status(400).send("Error on course creation.");
-			console.log(error);
 		}
 	} else {
 		res.status(400).send("Invalid usertype.");
@@ -63,11 +59,10 @@ courseController.updateCourse = async function (req, res) {
 			let course = await Course.findById(req.body._id);
 			// iterates through given information to add to course
 			Object.keys(req.body).forEach(function (key) {
-				if (key != "_id" && key != "skills") {
+				if (key != "_id") {
 					course[key] = req.body[key];
 				}
 			});
-			await course.addSkills(req.body.skills);
 			course.save(function (err) {
 				if (err) {
 					res.status(400).send(err);
