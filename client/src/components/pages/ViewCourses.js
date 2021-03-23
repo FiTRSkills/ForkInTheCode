@@ -116,9 +116,7 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit, setCou
         changeCurrentPage("Courses");
         getCourses();
         if(successMessage !== ""){
-          setTimeout(() => {
-            setCourseSuccessMessage('');
-          }, 5000);
+          clearCourseMessage();
         }
         setAuthenticated(true);
       }
@@ -127,6 +125,11 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit, setCou
     // eslint-disable-next-line
   }, []);
 
+  const clearCourseMessage = () =>{
+    setTimeout(() => {
+      setCourseSuccessMessage('');
+    }, 5000);
+  }
   const confirmDelete = (courseItem) => {
     setCourseToDeleteId(courseItem._id);
     setShowConfirmDialogue(true);
@@ -143,6 +146,9 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit, setCou
     })
       .then(() => {
         getCourses();
+        setError(null);
+        setCourseSuccessMessage("Successfully Deleted Course");
+        clearCourseMessage();
       })
       .catch((error) => {
         if (error?.response?.message?.length > 0) {
