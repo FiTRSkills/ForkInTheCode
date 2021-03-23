@@ -75,7 +75,7 @@ describe("Add Edit Course", () => {
     cy.get("#submit").click();
 
     cy.wait("@addCourse").its("status").should("eq", 200);
-    cy.contains("Successfully created course");
+    cy.contains("Successfully Created Course");
   });
 
   it("Add IN PERSON course SUCCESS", () => {
@@ -111,7 +111,7 @@ describe("Add Edit Course", () => {
     cy.get("#submit").click();
 
     cy.wait("@addCourse").its("status").should("eq", 200);
-    cy.contains("Successfully created course");
+    cy.contains("Successfully Created Course");
   });
 
   it("Add ONLINE course FAILURE", () => {
@@ -192,7 +192,7 @@ describe("Add Edit Course", () => {
   });
 
   it("Edit course SUCCESS", () => {
-    cy.SkillsDropdown(true, "/Course/Edit");
+    cy.SkillsDropdown(true, "/Courses");
     cy.route({
       method: "PATCH",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
@@ -231,11 +231,11 @@ describe("Add Edit Course", () => {
     cy.get("#submit").click();
 
     cy.wait("@editCourse").its("status").should("eq", 200);
-    cy.contains("Successfully updated course");
+    cy.contains("Successfully Updated Course");
   });
 
   it("Edit course FAILURE", () => {
-    cy.SkillsDropdown(true, "/Course/Edit");
+    cy.SkillsDropdown(true, "/Courses");
     cy.route({
       method: "PATCH",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
