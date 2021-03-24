@@ -2,7 +2,7 @@ const express = require("express");
 const subdomain = require("express-subdomain");
 
 const app = express();
-const page = require("./page");
+const page = require("./client");
 const api = require("./api");
 
 if (process.env.NODE_ENV === "production") {
