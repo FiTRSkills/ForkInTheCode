@@ -1,12 +1,17 @@
 {
   "scripts": {
-    "postinstall": "cd client && npm install --only=prod && cd ../server && npm install",
-    "build": "cd client && npm run build --if-present && cd ../server && npm run build --if-present",
+    "install": "submodules-install",
+    "build": "cd client && npm run build",
     "start": "cd server && npm start",
-    "rebuildAndStart": "npm install && npm run build && npm run start"
+    "rebuildAndStart": "npm run build && npm run start"
   },
+  "submodules": [
+    "client",
+    "server"
+  ],
   "dependencies": {
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "submodules-install": "^1.0.1"
   },
   "devDependencies": {
     "prettier": "2.1.2"
