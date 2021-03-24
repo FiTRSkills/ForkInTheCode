@@ -25,7 +25,12 @@ api.use(passport.session());
 //web server config
 api.use(logger("dev"));
 api.use(express.json());
-api.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+api.use(
+  cors({
+    credentials: true,
+    origin: new RegExp(`https?:\\/\\/(api.)?${process.env.DOMAIN}(:\\d+)?`),
+  })
+);
 api.use(express.urlencoded({ extended: false }));
 api.use(cookieParser());
 
