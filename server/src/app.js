@@ -6,8 +6,8 @@ const page = require("./page");
 const api = require("./api");
 
 if (process.env.NODE_ENV === "production") {
-  app.use(page);
   app.use(subdomain("api", api));
+  app.use(page);
 } else {
   app.use(api);
 }
