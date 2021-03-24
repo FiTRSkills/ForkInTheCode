@@ -370,6 +370,23 @@ router.get(
 );
 
 /**
+ * Routing serving getting singular skill by id
+ * @name GET /skills/getSkills
+ * @function
+ * @alias module:/routers/skill
+ * @returns {Object} skill - matching skill
+ */
+router.post(
+  "/skills/createSkill",
+  [
+    check("name", "Must send a viable skill name").not().isEmpty(),
+    check("description", "Must send a skill description").not().isEmpty(),
+  ],
+  validation.validateInput,
+  skill.createSkill
+);
+
+/**
  * Routing serving viewing all the user's courses (educator only)
  * @name POST /courses
  * @function
