@@ -28,7 +28,7 @@ api.use(express.json());
 api.use(
   cors({
     credentials: true,
-    origin: new RegExp(`https?:\\/\\/(api.)?${process.env.DOMAIN}(:\\d+)?`),
+    origin: new RegExp(`https?:\\/\\/(api.)?${process.env.DOMAIN || "localhost"}(:\\d+)?`),
   })
 );
 api.use(express.urlencoded({ extended: false }));
