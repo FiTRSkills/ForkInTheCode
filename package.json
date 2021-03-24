@@ -2,7 +2,7 @@
   "scripts": {
     "install": "submodules-install",
     "build": "cd client && npm run build",
-    "start": "cd server && npm start",
+    "start":  "cd server && cross-env NODE_ENV=production npm start",
     "rebuildAndStart": "npm run build && npm run start"
   },
   "submodules": [
@@ -10,6 +10,7 @@
     "server"
   ],
   "dependencies": {
+    "cross-env": "^7.0.3",
     "dotenv": "^8.2.0",
     "submodules-install": "^1.0.1"
   },
