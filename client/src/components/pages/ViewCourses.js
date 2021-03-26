@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { changeCurrentPage, setCourseToEdit } from "../../redux/actions";
+import { changeCurrentPage, setCourseToEdit, setCourseSuccessMessage } from "../../redux/actions";
 import Container from "@material-ui/core/Container";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
@@ -68,13 +68,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit }) {
+function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit, setCourseSuccessMessage, successMessage }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
   const [showConfirmDialogue, setShowConfirmDialogue] = useState(false);
   const [courses, setCourses] = useState([]);
-  let courseToDeleteId = undefined;
+  const [courseToDeleteId,setCourseToDeleteId]  = useState(null);
 
   const classes = useStyles();
 
@@ -115,6 +115,11 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit }) {
       } else {
         changeCurrentPage("Courses");
         getCourses();
+        if(successMessage !== ""){
+          setTimeout(() => {
+            setCourseSuccessMessage('');
+          }, 5000);
+        }
         setAuthenticated(true);
       }
     }
@@ -123,7 +128,7 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit }) {
   }, []);
 
   const confirmDelete = (courseItem) => {
-    courseToDeleteId = courseItem._id;
+    setCourseToDeleteId(courseItem._id);
     setShowConfirmDialogue(true);
   };
 
@@ -143,7 +148,7 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit }) {
         if (error?.response?.message?.length > 0) {
           setError(error.response.data.message);
         } else {
-          setError("An error has occoured while trying to delete a course.");
+          setError("An error has occurred while trying to delete a course.");
         }
         console.error(error);
       })
@@ -181,6 +186,7 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit }) {
           {error}
         </Alert>
       )}
+      {successMessage && <Alert severity="success">{successMessage}</Alert>}
       {loading ? (
         <CircularProgress />
       ) : (
@@ -279,6 +285,7 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit }) {
 function mapStateToProps(state) {
   return {
     user: state.authentication,
+    successMessage: state.courses.successMessage
   };
 }
 
@@ -286,6 +293,7 @@ function mapDispatchToProps(dispatch) {
   return {
     changeCurrentPage: (content) => dispatch(changeCurrentPage(content)),
     setCourseToEdit: (content) => dispatch(setCourseToEdit(content)),
+    setCourseSuccessMessage: (content) => dispatch(setCourseSuccessMessage(content))
   };
 }
 
