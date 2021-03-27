@@ -1,6 +1,6 @@
 describe("Job Search", () => {
   it("Add Skill- SUCCESS", () => {
-    cy.SkillsDropdown();
+    cy.InitializeSkills();
     cy.get("#navBarTitle").should("contain", "Job Search");
     cy.get("#skillInput").type("developer");
     cy.contains('developer').click()
@@ -8,7 +8,7 @@ describe("Job Search", () => {
     cy.get("#skillList").should("contain", "developer");
   });
   it("Add Duplicate Skill- FAILURE", () => {
-    cy.SkillsDropdown();
+    cy.InitializeSkills();
     cy.get("#navBarTitle").should("contain", "Job Search");
     cy.get("#skillInput").type("developer");
     cy.contains('developer').click()
@@ -20,7 +20,7 @@ describe("Job Search", () => {
   });
 
   it("Job Results Returned- SUCCESS", () => {
-    cy.SkillsDropdown();
+    cy.InitializeSkills();
     cy.route({
           method: "POST",
           url: Cypress.env("REACT_APP_SERVER_URL") + "/JobSearch",
@@ -142,7 +142,7 @@ describe("Job Search", () => {
     cy.url().should("contain", "1234");
   });
   it("Skills Populate Dropdown- SUCCESS", () => {
-    cy.SkillsDropdown()
+    cy.InitializeSkills()
     cy.get("#navBarTitle").should("contain", "Job Search");
     cy.get('#skillInput').click()
     cy.focused().type('de')
@@ -153,12 +153,12 @@ describe("Job Search", () => {
   });
 
   it("Skills Populate Dropdown- FAILURE", () => {
-    cy.SkillsDropdown(false);
+    cy.InitializeSkills(false);
     cy.get("#navBarTitle").should("contain", "Job Search");
     cy.contains('No Skills Found');
   });
   it("Skills Add Not Existing- FAILURE", () => {
-    cy.SkillsDropdown();
+    cy.InitializeSkills();
     cy.get("#navBarTitle").should("contain", "Job Search");
     cy.get('#skillInput').click()
     cy.focused().type('mechanical')

@@ -36,7 +36,6 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
 
   useEffect(() => {
     fetchSkills();
-    // setCurrentSkill("");
   }, [editMode]);
 
   function fetchSkills() {

@@ -42,7 +42,7 @@ describe("Add Edit Course", () => {
   });
 
   it("Add ONLINE course SUCCESS", () => {
-    cy.SkillsDropdown(true, "/Course/Add");
+    cy.InitializeSkills(true, "/Course/Add");
     cy.route({
       method: "POST",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
@@ -79,7 +79,7 @@ describe("Add Edit Course", () => {
   });
 
   it("Add IN PERSON course SUCCESS", () => {
-    cy.SkillsDropdown(true, "/Course/Add");
+    cy.InitializeSkills(true, "/Course/Add");
     cy.route({
       method: "POST",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
@@ -115,7 +115,7 @@ describe("Add Edit Course", () => {
   });
 
   it("Add ONLINE course FAILURE", () => {
-    cy.SkillsDropdown(true, "/Course/Add");
+    cy.InitializeSkills(true, "/Course/Add");
     cy.route({
       method: "POST",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
@@ -156,7 +156,7 @@ describe("Add Edit Course", () => {
   });
 
   it("Add IN PERSON course FAILURE", () => {
-    cy.SkillsDropdown(true, "/Course/Add");
+    cy.InitializeSkills(true, "/Course/Add");
     cy.route({
       method: "POST",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
@@ -192,7 +192,7 @@ describe("Add Edit Course", () => {
   });
 
   it("Edit course SUCCESS", () => {
-    cy.SkillsDropdown(true, "/Course/Edit");
+    cy.InitializeSkills(true, "/Course/Edit");
     cy.route({
       method: "PATCH",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
@@ -235,7 +235,7 @@ describe("Add Edit Course", () => {
   });
 
   it("Edit course FAILURE", () => {
-    cy.SkillsDropdown(true, "/Course/Edit");
+    cy.InitializeSkills(true, "/Course/Edit");
     cy.route({
       method: "PATCH",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",

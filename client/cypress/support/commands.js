@@ -100,7 +100,7 @@ Cypress.Commands.add("fakeProfile", (success = true) => {
   cy.get("#Profile").click();
 });
 
-Cypress.Commands.add("SkillsDropdown", (success = true, url = "/JobSearch") => {
+Cypress.Commands.add("InitializeSkills", (success = true, url = "/JobSearch") => {
   cy.server();
   if (success) {
     cy.route({

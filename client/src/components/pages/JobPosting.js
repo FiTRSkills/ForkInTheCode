@@ -66,12 +66,8 @@ function JobPosting(props) {
             setPay(res.data.pay);
             setDescription(res.data.description);
             setQualifications(res.data.qualifications);
-            setCourses(res.data.courses);
-            // TODO: Make sure this and other similar spots change to using skill id and other skill info vs just the name
-            const skills = res.data.skills.map((skill) => {
-              return skill.name;
-            });
-            setSkills(skills);
+            // setCourses(res.data.courses); TODO: extract courses from job posting in the future, currently undefined
+            setSkills(res.data.skills);
           }
           setError(null);
         })
