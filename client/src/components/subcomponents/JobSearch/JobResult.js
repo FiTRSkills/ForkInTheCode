@@ -34,12 +34,13 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
-  boldText:{
+  boldText: {
     fontSize: "1.25rem",
     fontWeight: 500,
     lineHeight: 1.6,
-    letterSpacing: "0.0075rem"
-}}));
+    letterSpacing: "0.0075rem",
+  },
+}));
 
 function JobResult({ jobInfo }) {
   const classes = useStyles();
@@ -57,12 +58,12 @@ function JobResult({ jobInfo }) {
         {jobInfo.jobTitle}
       </Link>
       <Typography variant="h5">{jobInfo.organization.name}</Typography>
-      <Typography className = {classes.boldText}>{jobInfo.pay}</Typography>
-      <Typography  className={classes.smalltext}>
+      <Typography className={classes.boldText}>{jobInfo.pay}</Typography>
+      <Typography className={classes.smalltext}>
         {jobInfo.description}
       </Typography>
-      <Typography className = {classes.boldText}>Skills:</Typography>
-      <Skills skills = {jobInfo.skills.map(skill =>skill.name)} editMode = {false}/>
+      <Typography className={classes.boldText}>Skills:</Typography>
+      <Skills skills={jobInfo.skills} editMode={false} />
     </ButtonBase>
   );
 }

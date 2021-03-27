@@ -57,17 +57,17 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
 
   function deleteSkill(skillToDelete) {
     if (onDelete !== undefined) {
-      // setLoading(true);
-      // onDelete(skillToDelete)
-      //   .then(() => {
-      //     setError(null);
-      //   })
-      //   .catch((error) => {
-      //     setError(error);
-      //   })
-      //   .finally(() => {
-      //     setLoading(false);
-      //   });
+      setLoading(true);
+      onDelete(skillToDelete)
+        .then(() => {
+          setError(null);
+        })
+        .catch((error) => {
+          setError(error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     } else {
       if (setSkills !== undefined) {
         setSkills((skills) =>
@@ -88,18 +88,17 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
         setError("Already in Skills");
       } else {
         if (onAdd !== undefined) {
-          // setLoading(true);
-          // onAdd(currentSkill)
-          //   .then(() => {
-          //     setError(null);
-          //     setCurrentSkill("");
-          //   })
-          //   .catch((error) => {
-          //     setError(error);
-          //   })
-          //   .finally(() => {
-          //     setLoading(false);
-          //   });
+          setLoading(true);
+          onAdd(currentSkill)
+            .then(() => {
+              setError(null);
+            })
+            .catch((error) => {
+              setError(error);
+            })
+            .finally(() => {
+              setLoading(false);
+            });
         } else {
           if (setSkills !== undefined) {
             setSkills([...skills, currentSkill]);
@@ -187,7 +186,7 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
             onInputChange={onChangeInput}
             onChange={onSelectSkill}
             options={allSkills}
-            blurOnSelect={'mouse'}
+            blurOnSelect={"mouse"}
             getOptionLabel={(option) => option.name}
             id="skillInput"
             renderInput={(params) => (
