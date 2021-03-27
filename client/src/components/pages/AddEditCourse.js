@@ -49,8 +49,7 @@ function AddEditCourse(props) {
   const [location, setLocation] = useState("");
   const [requiredEquipment, setRequiredEquipment] = useState("");
   const [contact, setContact] = useState("");
-  const [skillObjects, setSkillObjects] = useState([]);
-  const [skillStrs, setSkillStrs] = useState([]);
+  const [skills, setSkills] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
@@ -97,8 +96,7 @@ function AddEditCourse(props) {
         setLocation(props.courseToEdit.location);
         setRequiredEquipment(props.courseToEdit.requiredEquipment);
         setContact(props.courseToEdit.contact);
-        setSkillObjects(props.courseToEdit.skills);
-        setSkillStrs(props.courseToEdit.skills.map((skill) => skill.name));
+        setSkills(props.courseToEdit.skills);
       }
     }
   }, [mode, props.courseToEdit]);
@@ -156,7 +154,7 @@ function AddEditCourse(props) {
    * @param event
    */
   function onSubmit(event) {
-    if (skillObjects.length === 0) {
+    if (skills.length === 0) {
       setError("Skills are required");
       setMessage(null);
     } else {
@@ -169,7 +167,7 @@ function AddEditCourse(props) {
               {
                 location: location,
                 name: title,
-                skills: skillObjects,
+                skills: skills,
                 contact: contact,
                 period: period,
                 times: times,
@@ -217,7 +215,7 @@ function AddEditCourse(props) {
                 _id: id,
                 location: location,
                 name: title,
-                skills: skillObjects,
+                skills: skills,
                 contact: contact,
                 period: period,
                 times: times,
@@ -441,10 +439,8 @@ function AddEditCourse(props) {
           <Box className={classes.field}>
             <Typography>Skills</Typography>
             <Skills
-              skills={skillStrs}
-              setSkills={setSkillStrs}
-              skillObjects={skillObjects}
-              setSkillObjects={setSkillObjects}
+              skills={skills}
+              setSkills={setSkills}
               editMode={true}
               user={props.user.type}
             />
