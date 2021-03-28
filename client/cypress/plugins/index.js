@@ -11,17 +11,37 @@
 
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
-// const db = require("../../server/src/db");
+const mongoose = require("../../../server/node_modules/mongoose");
+const User = require("../../../server/src/models/user");
+
 /**
  * @type {Cypress.PluginConfig}
  */
 module.exports = (on, config) => {
-  on("task",{
-    'adduser':()=>{
-      return db.seed()
-    }
+  mongoose.connect(config.env.DB_CONN, {
+    auth: {
+      user: config.env.DB_USER,
+      password: config.env.DB_PW,
+    },
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    retryWrites: false,
+  });
 
-  })
+  on("task", {
+    adduser: async () => {
+      let user = new User({
+        email: "hello@rit.edu",
+        type: User.Type.JOB_SEEKER,
+      });
+      try {
+        await User.register(user, "1234");
+      } catch {
+        // User already in database
+      }
+      return true;
+    },
+  });
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
-}
+};
