@@ -35,6 +35,7 @@ api.use(express.urlencoded({ extended: false }));
 api.use(cookieParser());
 
 const indexRouter = require("./routes/index");
+api.use("/", (req, res) => res.status(200).json("success"));
 api.use("/", indexRouter);
 
 // 404 - Not Found Fallback
