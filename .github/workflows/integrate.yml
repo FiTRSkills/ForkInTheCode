@@ -20,8 +20,8 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           record: true
-          start: npm start
-          wait-on: "http://localhost:3000"
+          start: npm start, npm startserver
+          wait-on: "http://localhost:3000, http://localhost:9000"
           working-directory: client
         env:
           CYPRESS_RECORD_KEY: 2b71c803-ef27-425a-b947-72b0d0dfdf25
