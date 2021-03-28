@@ -12,9 +12,13 @@ jobs:
     env:
       REACT_APP_SERVER_URL: "http://localhost:9000"
       REACT_APP_CLIENT_URL: "http://localhost:3000"
+      DB_CONN: mongodb://fitr-db:WnVRobIRHxd42cFG6GId1GiNU1NC4fzuBkIOiAGiMhkioMrXVeGvY7jIXLdo43WbHFBmFQiLmr0O23edjDjORw==@fitr-db.mongo.cosmos.azure.com:10255/prod?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@fitr-db@
+      DB_USER: fitr-db
+      DB_PW: WnVRobIRHxd42cFG6GId1GiNU1NC4fzuBkIOiAGiMhkioMrXVeGvY7jIXLdo43WbHFBmFQiLmr0O23edjDjORw==
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
+      - run: npm ci --prefix server
       - run: npm ci --prefix client
       - name: cypress run
         uses: cypress-io/github-action@v2
