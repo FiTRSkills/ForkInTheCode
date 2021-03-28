@@ -132,14 +132,17 @@ function JobPosting(props) {
             <Typography variant={"h6"}>
               Classes Available In Your Area
             </Typography>
-            {courses.map((classItem) => (
-              <CourseItem
-                id={classItem._id}
-                description={classItem.description}
-                skills={classItem.skills}
-                title={classItem.name}
-              />
-            ))}
+            {courses &&
+              courses.map((classItem) => (
+                <CourseItem
+                  id={classItem._id}
+                  description={classItem.description}
+                  skills={classItem.skills}
+                  title={classItem.name}
+                />
+              ))
+
+            }
           </Box>
         </Box>
       )}
