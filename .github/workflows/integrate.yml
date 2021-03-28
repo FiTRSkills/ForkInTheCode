@@ -20,7 +20,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           record: true
-          start: npm start, npm startserver
+          start: npm start, npm run startserver
           wait-on: "http://localhost:3000, http://localhost:9000"
           working-directory: client
         env:
