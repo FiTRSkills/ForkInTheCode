@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ 12.x, 14.x ]
-        mongodb-version: [ 4.0, 4.2, 4.4 ]
+        node-version: [ 14.x ]
+        mongodb-version: [ 4.4 ]
     env:
       REACT_APP_SERVER_URL: "http://localhost:9000"
       REACT_APP_CLIENT_URL: "http://localhost:3000"
