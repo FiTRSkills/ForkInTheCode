@@ -2,7 +2,7 @@
   "scripts": {
     "install": "submodules-install",
     "build": "cd client && npm run build",
-    "start":  "cd server && cross-env NODE_ENV=production npm start",
+    "start": "cd server && cross-env NODE_ENV=production npm start",
     "rebuildAndStart": "npm run build && npm run start"
   },
   "submodules": [
@@ -15,7 +15,6 @@
     "submodules-install": "^1.0.1"
   },
   "devDependencies": {
-    "prettier": "2.1.2",
-    "mongoose": "~5.9.7"
+    "prettier": "2.1.2"
   }
 }
