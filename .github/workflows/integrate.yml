@@ -44,6 +44,7 @@ jobs:
         env:
           CYPRESS_RECORD_KEY: 2b71c803-ef27-425a-b947-72b0d0dfdf25
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DB_CONN: "mongodb://localhost"
       - run: npm run build --if-present --prefix client
   server_ci:
     runs-on: ubuntu-latest
