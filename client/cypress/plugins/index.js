@@ -22,23 +22,28 @@ module.exports = (on, config) => {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     retryWrites: false,
-  });
+  },
+    (err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
   console.log(mongoose.connection.readyState);
-  // on("task", {
-  //   adduser: async () => {
-  //     let user = new User({
-  //       email: "hello@rit.edu",
-  //       type: User.Type.JOB_SEEKER,
-  //     });
-  //     try {
-  //       await User.register(user, "1234");
-  //     } catch {
-  //       // User already in database
-  //     }
-  //     return true;
-  //   },
-  // }
-  // );
+  on("task", {
+    adduser: async () => {
+      let user = new User({
+        email: "hello@rit.edu",
+        type: User.Type.JOB_SEEKER,
+      });
+      try {
+        await User.register(user, "1234");
+      } catch {
+        // User already in database
+      }
+      return true;
+    },
+  }
+  );
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
 };

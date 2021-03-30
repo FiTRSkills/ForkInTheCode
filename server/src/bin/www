@@ -29,7 +29,12 @@ mongoose.connect(process.env.DB_CONN, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   retryWrites: false,
-});
+},
+  (err) => {
+    if (err) {
+      console.error(err);
+    }
+  });
 
 console.log(mongoose.connection.readyState);
 
