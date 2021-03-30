@@ -16,7 +16,7 @@ jobs:
     env:
       REACT_APP_SERVER_URL: "http://localhost:9000"
       REACT_APP_CLIENT_URL: "http://localhost:3000"
-      DB_CONN: "mongodb://localhost"
+      DB_CONN: "mongodb://localhost:27017/data"
     steps:
       - name: Git checkout
         uses: actions/checkout@v2
