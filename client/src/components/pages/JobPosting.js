@@ -67,6 +67,7 @@ function JobPosting(props) {
             setDescription(res.data.description);
             setQualifications(res.data.qualifications);
             // setCourses(res.data.courses); TODO: extract courses from job posting in the future, currently undefined
+            setCourses([]);
             setSkills(res.data.skills);
           }
           setError(null);
