@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { changeCurrentPage, setCourseToEdit, setCourseSuccessMessage } from "../../redux/actions";
+import {
+  changeCurrentPage,
+  setCourseToEdit,
+  setCourseSuccessMessage,
+} from "../../redux/actions";
 import Container from "@material-ui/core/Container";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
@@ -68,13 +72,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit, setCourseSuccessMessage, successMessage }) {
+function ViewCourses({
+  changeCurrentPage,
+  user,
+  history,
+  setCourseToEdit,
+  setCourseSuccessMessage,
+  incomingSuccessMessage,
+}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
   const [showConfirmDialogue, setShowConfirmDialogue] = useState(false);
   const [courses, setCourses] = useState([]);
-  const [courseToDeleteId,setCourseToDeleteId]  = useState(null);
+  const [courseToDeleteId, setCourseToDeleteId] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   const classes = useStyles();
 
@@ -115,9 +127,11 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit, setCou
       } else {
         changeCurrentPage("Courses");
         getCourses();
-        if(successMessage !== ""){
+        setSuccessMessage(incomingSuccessMessage);
+        if (incomingSuccessMessage !== "") {
           setTimeout(() => {
-            setCourseSuccessMessage('');
+            setSuccessMessage("");
+            setCourseSuccessMessage("");
           }, 5000);
         }
         setAuthenticated(true);
@@ -142,6 +156,7 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit, setCou
       withCredentials: true,
     })
       .then(() => {
+        setSuccessMessage("A course has been successfully deleted!");
         getCourses();
       })
       .catch((error) => {
@@ -285,7 +300,7 @@ function ViewCourses({ changeCurrentPage, user, history, setCourseToEdit, setCou
 function mapStateToProps(state) {
   return {
     user: state.authentication,
-    successMessage: state.courses.successMessage
+    incomingSuccessMessage: state.courses.successMessage,
   };
 }
 
@@ -293,7 +308,8 @@ function mapDispatchToProps(dispatch) {
   return {
     changeCurrentPage: (content) => dispatch(changeCurrentPage(content)),
     setCourseToEdit: (content) => dispatch(setCourseToEdit(content)),
-    setCourseSuccessMessage: (content) => dispatch(setCourseSuccessMessage(content))
+    setCourseSuccessMessage: (content) =>
+      dispatch(setCourseSuccessMessage(content)),
   };
 }
 
