@@ -70,7 +70,7 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
     } else {
       if (setSkills !== undefined) {
         setSkills((skills) =>
-          skills.filter((skill) => skill.name !== skillToDelete.name)
+          skills.filter((skill) => skill._id !== skillToDelete._id)
         );
       }
     }
