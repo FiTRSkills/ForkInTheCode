@@ -7,6 +7,7 @@ import Box from "@material-ui/core/Box";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { logOut } from "../../../redux/actions";
+import { logOut as axiosLogOut } from "../../../services/AuthService";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -91,7 +92,9 @@ function NavBar(props) {
 
   function onButtonClick(item) {
     if (item === "Sign Out") {
-      props.logOut();
+      axiosLogOut().then(() => {
+        props.logOut();
+      });
     }
   }
 
