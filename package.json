@@ -15,6 +15,7 @@
     "submodules-install": "^1.0.1"
   },
   "devDependencies": {
-    "prettier": "2.1.2"
+    "prettier": "2.1.2",
+    "mongoose": "~5.9.7"
   }
 }
