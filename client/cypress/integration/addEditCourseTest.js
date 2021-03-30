@@ -49,9 +49,8 @@ describe("Add Edit Course", () => {
       status: 200,
       response: "Successfully created course",
     }).as("addCourse");
-    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/Course/Add");
 
-    // cy.get("#navBarTitle").should("contain", "Courses");
+    cy.get("#navBarTitle").should("contain", "Courses");
 
     cy.get("#title").type("Java 101");
     cy.get("#description").type("This is a Java class");
