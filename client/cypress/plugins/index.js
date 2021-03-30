@@ -11,7 +11,7 @@
 
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
-const mongoose = require("../../../server/node_modules/mongoose");
+const mongoose = require('mongoose');
 const User = require("../../../server/src/models/user");
 
 /**
@@ -19,10 +19,6 @@ const User = require("../../../server/src/models/user");
  */
 module.exports = (on, config) => {
   mongoose.connect(config.env.DB_CONN, {
-    auth: {
-      user: config.env.DB_USER,
-      password: config.env.DB_PW,
-    },
     useNewUrlParser: true,
     useUnifiedTopology: true,
     retryWrites: false,
