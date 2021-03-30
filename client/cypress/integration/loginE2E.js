@@ -1,7 +1,7 @@
 describe("Authentication", () => {
-  beforeEach(() => {
-    cy.task("adduser");
-  });
+  // beforeEach(() => {
+  //   cy.task("adduser");
+  // });
   it("Logs in", () => {
     cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/Login");
     cy.get("#navBarTitle").should("contain", "Login");

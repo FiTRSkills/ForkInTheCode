@@ -23,21 +23,22 @@ module.exports = (on, config) => {
     useUnifiedTopology: true,
     retryWrites: false,
   });
-
-  on("task", {
-    adduser: async () => {
-      let user = new User({
-        email: "hello@rit.edu",
-        type: User.Type.JOB_SEEKER,
-      });
-      try {
-        await User.register(user, "1234");
-      } catch {
-        // User already in database
-      }
-      return true;
-    },
-  });
+  console.log(mongoose.connection.readyState);
+  // on("task", {
+  //   adduser: async () => {
+  //     let user = new User({
+  //       email: "hello@rit.edu",
+  //       type: User.Type.JOB_SEEKER,
+  //     });
+  //     try {
+  //       await User.register(user, "1234");
+  //     } catch {
+  //       // User already in database
+  //     }
+  //     return true;
+  //   },
+  // }
+  // );
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
 };
