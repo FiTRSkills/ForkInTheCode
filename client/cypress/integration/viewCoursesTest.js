@@ -160,12 +160,12 @@ describe("View Courses", () => {
       method: "DELETE",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
       status: 400,
-      response: "An error has occoured while trying to delete a course.",
+      response: "An error has occurred while trying to delete a course.",
     }).as("deleteCourseCall");
     cy.get("#MyCourses").click();
     cy.wait("@getCoursesCall").its("status").should("eq", 200);
     cy.get("#DeleteCourse1").click();
     cy.get("#confirmationConfirm").click();
-    cy.contains("An error has occoured while trying to delete a course.");
+    cy.contains("An error has occurred while trying to delete a course.");
   });
 });

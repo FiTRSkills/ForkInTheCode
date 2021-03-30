@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { changeCurrentPage } from "../../redux/actions";
+import { changeCurrentPage, setCourseSuccessMessage } from "../../redux/actions";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
@@ -52,9 +52,7 @@ function AddEditCourse(props) {
   const [skills, setSkills] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
-
   const { mode } = useParams();
 
   // Style hook
@@ -156,7 +154,6 @@ function AddEditCourse(props) {
   function onSubmit(event) {
     if (skills.length === 0) {
       setError("Skills are required");
-      setMessage(null);
     } else {
       setLoading(true);
       switch (mode) {
@@ -182,8 +179,8 @@ function AddEditCourse(props) {
             )
             .then((response) => {
               if (response.status === 200) {
-                setMessage(response.data);
-                setError(null);
+                props.setCourseSuccessMessage("Successfully Created Course");
+                props.history.push("/Courses");
               }
             })
             .catch((error) => {
@@ -200,12 +197,8 @@ function AddEditCourse(props) {
               } else {
                 setError("Failed to add course");
               }
-              setMessage(null);
-              console.log(error);
-            })
-            .finally(() => {
               setLoading(false);
-            });
+            })
           break;
         case "Edit":
           axios
@@ -230,8 +223,8 @@ function AddEditCourse(props) {
             )
             .then((response) => {
               if (response.status === 200) {
-                setMessage(response.data);
-                setError(null);
+                props.setCourseSuccessMessage("Successfully Updated Course")
+                props.history.push("/Courses");
               }
             })
             .catch((error) => {
@@ -248,12 +241,9 @@ function AddEditCourse(props) {
               } else {
                 setError("Failed to update course");
               }
-              setMessage(null);
-              console.log(error);
-            })
-            .finally(() => {
               setLoading(false);
-            });
+            })
+
           break;
         default:
           break;
@@ -269,7 +259,6 @@ function AddEditCourse(props) {
   return (
     <Container className={classes.container}>
       <Box className={classes.subContainer}>
-        {message && <Alert severity="success">{message}</Alert>}
         {error && <Alert severity="error">{error}</Alert>}
         <form onSubmit={onSubmit}>
           <Box className={classes.field}>
@@ -419,7 +408,7 @@ function AddEditCourse(props) {
               value={requiredEquipment}
               onChange={handleChange}
               multiline
-              row={4}
+              rows={4}
             />
           </Box>
           <Box className={classes.field}>
@@ -482,13 +471,14 @@ function AddEditCourse(props) {
 function mapStateToProps(state) {
   return {
     user: state.authentication,
-    courseToEdit: state.courses.courseToEdit,
+    courseToEdit: state.courses.courseToEdit
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     changeCurrentPage: (content) => dispatch(changeCurrentPage(content)),
+    setCourseSuccessMessage: (content) => dispatch(setCourseSuccessMessage(content))
   };
 }
 
