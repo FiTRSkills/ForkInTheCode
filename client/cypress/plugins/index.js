@@ -18,17 +18,19 @@ const User = require("../../../server/src/models/user");
  * @type {Cypress.PluginConfig}
  */
 module.exports = (on, config) => {
-  mongoose.connect(config.env.DB_CONN, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    retryWrites: false,
-  },
-    (err) => {
-      if (err) {
-        console.error(err);
-      }
-    });
-  console.log(mongoose.connection.readyState);
+  (async () => {
+    try {
+      await mongoose.connect(config.env.DB_CONN, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      retryWrites: false,
+        }
+      );
+    } catch (err) {
+      console.log('error: ' + err)
+    }
+    console.log(mongoose.connection.readyState);
+    })();
   on("task", {
     adduser: async () => {
       let user = new User({
