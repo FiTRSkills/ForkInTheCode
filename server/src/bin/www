@@ -31,17 +31,15 @@ app.set('port', port);
       useNewUrlParser: true,
       useUnifiedTopology: true,
       retryWrites: false,
-    },(err) => {
-      if (err) {
-        console.error(err);
-      }
-    });
+    }
+    );
   } catch (err) {
     console.log('error: ' + err)
   }
+  console.log(mongoose.connection.readyState);
+
 })()
 
-console.log(mongoose.connection.readyState);
 
 
 /**
