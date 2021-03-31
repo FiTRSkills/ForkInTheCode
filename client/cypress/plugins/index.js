@@ -27,8 +27,8 @@ module.exports = (on, config) => {
     try {
       await mongoose.connect(config.env.DB_CONN, {
         auth: {
-          user: config.env.DB_USER,
-          password: config.env.DB_PW,
+          user: config.env.DB_USER ? config.env.DB_USER: "",
+          password: config.env.DB_PW ? config.env.DB_PW: "",
         },
           useNewUrlParser: true,
           useUnifiedTopology: true,
