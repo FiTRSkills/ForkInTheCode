@@ -81,7 +81,7 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
       (skill) => skill.name === currentSkill
     );
     // Check if skill exists in database
-    if (skillToBeAdded !== null) {
+    if (skillToBeAdded) {
       // Check if skills already added
       const existedSkill = skills.find(
         (skill) => skill.name === skillToBeAdded.name
