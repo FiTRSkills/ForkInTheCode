@@ -86,29 +86,6 @@ function Skills({
     }
   }
 
-  function onAddSkill(skillToBeAdded) {
-    if (onAdd !== undefined) {
-      setLoading(true);
-      onAdd(skillToBeAdded)
-        .then(() => {
-          setError(null);
-          setCurrentSkill("");
-        })
-        .catch((error) => {
-          setError(error);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    } else {
-      if (setSkills !== undefined) {
-        setSkills([...skills, skillToBeAdded]);
-      }
-      setError(null);
-      setCurrentSkill("");
-    }
-  }
-
   function addSkill() {
     const skillToBeAdded = allSkills.find(
       (skill) => skill.name === currentSkill
@@ -122,7 +99,26 @@ function Skills({
       if (existedSkill) {
         setError("Already in Skills");
       } else {
-        onAddSkill(skillToBeAdded);
+        if (onAdd !== undefined) {
+          setLoading(true);
+          onAdd(skillToBeAdded)
+            .then(() => {
+              setError(null);
+              setCurrentSkill("");
+            })
+            .catch((error) => {
+              setError(error);
+            })
+            .finally(() => {
+              setLoading(false);
+            });
+        } else {
+          if (setSkills !== undefined) {
+            setSkills([...skills, skillToBeAdded]);
+          }
+          setError(null);
+          setCurrentSkill("");
+        }
       }
     } else {
       setError("Skill does not exist");
@@ -153,8 +149,20 @@ function Skills({
   }, [currentSkill]);
 
   async function updateOnCreate(id) {
-    await fetchSkills();
-    onAddSkill(allSkills.find((skill) => skill._id === id));
+    axios
+      .get(process.env.REACT_APP_SERVER_URL + "/skills", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          setError(null);
+          setAllSkills(response.data.map((skill) => skill));
+          onAddSkill(response.data.find((skill) => skill._id === id));
+        }
+      })
+      .catch((error) => {
+        setError("No Skills Found");
+      });
   }
 
   return (
@@ -163,26 +171,28 @@ function Skills({
       <Box className={classes.root} id="skillList">
         {skills &&
           skills.map((skill, index) => {
-            return (
-              <li key={index}>
-                <Tooltip title={skill.description}>
-                  <Chip
-                    color="primary"
-                    variant="outlined"
-                    label={skill.name}
-                    name={skill.name}
-                    onDelete={
-                      editMode
-                        ? () => {
-                            deleteSkill(skill);
-                          }
-                        : undefined
-                    }
-                    className={classes.chip}
-                  />
-                </Tooltip>
-              </li>
-            );
+            if (skill) {
+              return (
+                <li key={index}>
+                  <Tooltip title={skill.description}>
+                    <Chip
+                      color="primary"
+                      variant="outlined"
+                      label={skill.name}
+                      name={skill.name}
+                      onDelete={
+                        editMode
+                          ? () => {
+                              deleteSkill(skill);
+                            }
+                          : undefined
+                      }
+                      className={classes.chip}
+                    />
+                  </Tooltip>
+                </li>
+              );
+            }
           })}
       </Box>
       {editMode && (

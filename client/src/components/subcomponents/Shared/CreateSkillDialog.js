@@ -78,8 +78,10 @@ function CreateSkillDialog({ open, closeDialog, skillName, onCreateSuccess }) {
       )
       .then((response) => {
         if (response.status === 200) {
+          setTitle("");
+          setDescription("");
           closeDialog();
-          onCreateSuccess(response.data);
+          onCreateSuccess(response.data._id);
         }
       })
       .catch((error) => {
