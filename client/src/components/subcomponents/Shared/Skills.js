@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Chip from "@material-ui/core/Chip";
 import Box from "@material-ui/core/Box";
@@ -7,7 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Alert from "@material-ui/lab/Alert";
 import axios from "axios";
-import { Tooltip } from "@material-ui/core";
+import Tooltip from "@material-ui/core/Tooltip";
 import CreateSkillDialog from "./CreateSkillDialog";
 
 const useStyles = makeStyles((theme) => ({
@@ -25,13 +26,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
+function Skills({
+  skills,
+  setSkills,
+  editMode,
+  onAdd,
+  onDelete,
+  user,
+  allowCreate,
+}) {
   const classes = useStyles();
   const [allSkills, setAllSkills] = useState([]);
   const [currentSkill, setCurrentSkill] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isOpenCreateSkillDialog, setOpenCreateSkillDialog] = useState(false);
+  const [shouldAllowCreate, setShouldAllowCreate] = useState(false);
 
   useEffect(() => {
     fetchSkills();
@@ -39,7 +49,7 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
   }, [editMode]);
 
   function fetchSkills() {
-    axios
+    return axios
       .get(process.env.REACT_APP_SERVER_URL + "/skills", {
         withCredentials: true,
       })
@@ -76,6 +86,29 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
     }
   }
 
+  function onAddSkill(skillToBeAdded) {
+    if (onAdd !== undefined) {
+      setLoading(true);
+      onAdd(skillToBeAdded)
+        .then(() => {
+          setError(null);
+          setCurrentSkill("");
+        })
+        .catch((error) => {
+          setError(error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      if (setSkills !== undefined) {
+        setSkills([...skills, skillToBeAdded]);
+      }
+      setError(null);
+      setCurrentSkill("");
+    }
+  }
+
   function addSkill() {
     const skillToBeAdded = allSkills.find(
       (skill) => skill.name === currentSkill
@@ -89,26 +122,7 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
       if (existedSkill) {
         setError("Already in Skills");
       } else {
-        if (onAdd !== undefined) {
-          setLoading(true);
-          onAdd(skillToBeAdded)
-            .then(() => {
-              setError(null);
-              setCurrentSkill("");
-            })
-            .catch((error) => {
-              setError(error);
-            })
-            .finally(() => {
-              setLoading(false);
-            });
-        } else {
-          if (setSkills !== undefined) {
-            setSkills([...skills, skillToBeAdded]);
-          }
-          setError(null);
-          setCurrentSkill("");
-        }
+        onAddSkill(skillToBeAdded);
       }
     } else {
       setError("Skill does not exist");
@@ -126,36 +140,50 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
     setOpenCreateSkillDialog(!isOpenCreateSkillDialog);
   }
 
-  function allowCreate() {
-    return false;
+  function calculateShouldAllowCreate() {
+    return (
+      allowCreate === true &&
+      (user.type === "EducatorProfile" || user.type === "EmployerProfile") &&
+      allSkills.filter((skill) => skill.name === currentSkill).length < 1
+    );
+  }
+
+  useEffect(() => {
+    setShouldAllowCreate(calculateShouldAllowCreate());
+  }, [currentSkill]);
+
+  async function updateOnCreate(id) {
+    await fetchSkills();
+    onAddSkill(allSkills.find((skill) => skill._id === id));
   }
 
   return (
     <Box>
       {error && <Alert severity="error">{error}</Alert>}
       <Box className={classes.root} id="skillList">
-        {skills.map((skill, index) => {
-          return (
-            <li key={index}>
-              <Tooltip title={skill.description}>
-                <Chip
-                  color="primary"
-                  variant="outlined"
-                  label={skill.name}
-                  name={skill.name}
-                  onDelete={
-                    editMode
-                      ? () => {
-                          deleteSkill(skill);
-                        }
-                      : undefined
-                  }
-                  className={classes.chip}
-                />
-              </Tooltip>
-            </li>
-          );
-        })}
+        {skills &&
+          skills.map((skill, index) => {
+            return (
+              <li key={index}>
+                <Tooltip title={skill.description}>
+                  <Chip
+                    color="primary"
+                    variant="outlined"
+                    label={skill.name}
+                    name={skill.name}
+                    onDelete={
+                      editMode
+                        ? () => {
+                            deleteSkill(skill);
+                          }
+                        : undefined
+                    }
+                    className={classes.chip}
+                  />
+                </Tooltip>
+              </li>
+            );
+          })}
       </Box>
       {editMode && (
         <Box>
@@ -176,7 +204,7 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
               />
             )}
           />
-          {allowCreate() ? (
+          {shouldAllowCreate ? (
             <Button
               onClick={handleCreateSKillDialog}
               variant="outlined"
@@ -203,11 +231,22 @@ function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
             open={isOpenCreateSkillDialog}
             closeDialog={handleCreateSKillDialog}
             skillName={currentSkill}
-            onCreateSuccess={fetchSkills}
+            onCreateSuccess={updateOnCreate}
           />
         </Box>
       )}
     </Box>
   );
 }
-export default Skills;
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.authentication,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Skills);

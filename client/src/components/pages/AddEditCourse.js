@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { changeCurrentPage, setCourseSuccessMessage } from "../../redux/actions";
+import {
+  changeCurrentPage,
+  setCourseSuccessMessage,
+} from "../../redux/actions";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
@@ -198,7 +201,7 @@ function AddEditCourse(props) {
                 setError("Failed to add course");
               }
               setLoading(false);
-            })
+            });
           break;
         case "Edit":
           axios
@@ -223,7 +226,7 @@ function AddEditCourse(props) {
             )
             .then((response) => {
               if (response.status === 200) {
-                props.setCourseSuccessMessage("Successfully Updated Course")
+                props.setCourseSuccessMessage("Successfully Updated Course");
                 props.history.push("/Courses");
               }
             })
@@ -242,7 +245,7 @@ function AddEditCourse(props) {
                 setError("Failed to update course");
               }
               setLoading(false);
-            })
+            });
 
           break;
         default:
@@ -432,6 +435,7 @@ function AddEditCourse(props) {
               setSkills={setSkills}
               editMode={true}
               user={props.user.type}
+              allowCreate
             />
           </Box>
           <Grid
@@ -471,14 +475,15 @@ function AddEditCourse(props) {
 function mapStateToProps(state) {
   return {
     user: state.authentication,
-    courseToEdit: state.courses.courseToEdit
+    courseToEdit: state.courses.courseToEdit,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     changeCurrentPage: (content) => dispatch(changeCurrentPage(content)),
-    setCourseSuccessMessage: (content) => dispatch(setCourseSuccessMessage(content))
+    setCourseSuccessMessage: (content) =>
+      dispatch(setCourseSuccessMessage(content)),
   };
 }
 
