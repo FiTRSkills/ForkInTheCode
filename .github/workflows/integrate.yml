@@ -30,8 +30,7 @@ jobs:
         uses: supercharge/mongodb-github-action@1.3.0
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
-
-      - run: npm install
+      - run: db.createUser({user:"admin", pwd:"password", roles:[]})
       - run: npm ci --prefix server
       - run: npm ci --prefix client
       - name: cypress run
