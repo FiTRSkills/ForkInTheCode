@@ -3,6 +3,7 @@
  */
 
 const Skill = require("../models/skill");
+const SkillHistory = require("../models/skillHistory");
 const Search = require("../services/search");
 const Course = require("../models/course");
 const User = require("../models/user");
@@ -105,14 +106,11 @@ skillController.createSkill = async function (req, res) {
         name: req.body.name,
         description: req.body.description,
       });
-      skill.save(function (err) {
-        if (err) {
-          res.status(400).send(err);
-          return;
-        }
-        res.status(200).send({ _id: skill._id });
-      });
+      await skill.save();
+      await SkillHistory.logNew(req.user, skill);
+      res.status(200).send({ _id: skill._id });
     } catch (error) {
+      console.log(error);
       res.status(400).send("Error on skill creation.");
       return;
     }
