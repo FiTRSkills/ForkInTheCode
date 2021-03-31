@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "install": "submodules-install",
+    "install": "cross-env CYPRESS_INSTALL_BINARY=0 submodules-install --only=production",
     "build": "cd client && npm run build",
-    "start":  "cd server && cross-env NODE_ENV=production npm start",
+    "start": "cd server && cross-env NODE_ENV=production npm start",
     "rebuildAndStart": "npm run build && npm run start"
   },
   "submodules": [
