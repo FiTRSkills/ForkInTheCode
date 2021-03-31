@@ -6,8 +6,13 @@ const page = require("./client");
 const api = require("./api");
 
 if (process.env.NODE_ENV === "production") {
-  app.use(subdomain("api", api));
-  app.use(page);
+  if (process.env.DOMAIN) {
+    app.use(subdomain("api", api));
+    app.use(page);
+  } else {
+    app.use("/api", api);
+    app.use(page);
+  }
 } else {
   app.use(api);
 }
