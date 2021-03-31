@@ -86,6 +86,29 @@ function Skills({
     }
   }
 
+  function onAddSkill(skillToBeAdded) {
+    if (onAdd !== undefined) {
+      setLoading(true);
+      onAdd(skillToBeAdded)
+        .then(() => {
+          setError(null);
+          setCurrentSkill("");
+        })
+        .catch((error) => {
+          setError(error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      if (setSkills !== undefined) {
+        setSkills([...skills, skillToBeAdded]);
+      }
+      setError(null);
+      setCurrentSkill("");
+    }
+  }
+
   function addSkill() {
     const skillToBeAdded = allSkills.find(
       (skill) => skill.name === currentSkill
@@ -99,26 +122,7 @@ function Skills({
       if (existedSkill) {
         setError("Already in Skills");
       } else {
-        if (onAdd !== undefined) {
-          setLoading(true);
-          onAdd(skillToBeAdded)
-            .then(() => {
-              setError(null);
-              setCurrentSkill("");
-            })
-            .catch((error) => {
-              setError(error);
-            })
-            .finally(() => {
-              setLoading(false);
-            });
-        } else {
-          if (setSkills !== undefined) {
-            setSkills([...skills, skillToBeAdded]);
-          }
-          setError(null);
-          setCurrentSkill("");
-        }
+        onAddSkill(skillToBeAdded);
       }
     } else {
       setError("Skill does not exist");
