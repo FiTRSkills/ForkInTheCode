@@ -89,15 +89,20 @@ jobController.createJobPosting = async function (req, res) {
  * @returns {string} response - the created job posting id
  */
 jobController.searchJobPostings = async function (req, res) {
-  let searchResults = await JobPosting.search({
-    zipCode: req.body.zipCode,
-    skills: req.body.skills,
-  });
-  if (searchResults == null) {
-    res.status(400).send("No results");
-    return;
+  try {
+    let searchResults = await JobPosting.search({
+      zipCode: req.body.zipCode,
+      skills: req.body.skills,
+    });
+    if (searchResults == null) {
+      res.status(400).send("No results");
+      return;
+    }
+    res.status(200).send(searchResults);
+  } catch (e) {
+    console.log(e);
+    res.status(400).send("Unable to search for skills.");
   }
-  res.status(200).send(searchResults);
 };
 
 module.exports = jobController;
