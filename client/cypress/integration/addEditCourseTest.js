@@ -62,7 +62,6 @@ describe("Add Edit Course", () => {
     cy.get("#times").type("Monday: 15:00 - 18:00");
 
     cy.get("#method").select("Online");
-    cy.get("#location").should("not.be.visible");
 
     cy.get("#requiredEquipment").type("Computer");
     cy.get("#contact").type("Jake Rossi: 567-019-2345");
@@ -139,7 +138,6 @@ describe("Add Edit Course", () => {
     cy.get("#times").type("Monday: 15:00 - 18:00");
 
     cy.get("#method").select("Online");
-    cy.get("#location").should("not.be.visible");
 
     cy.get("#requiredEquipment").type("Computer");
     cy.get("#contact").type("Jake Rossi: 567-019-2345");
