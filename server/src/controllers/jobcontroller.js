@@ -98,12 +98,11 @@ jobController.searchJobPostings = async function (req, res) {
       res.status(400).send("No results");
       return;
     }
+    res.status(200).send(searchResults);
   } catch (e) {
     console.log(e);
     res.status(400).send("Unable to search for skills.");
-    return;
   }
-  res.status(200).send(searchResults);
 };
 
 module.exports = jobController;
