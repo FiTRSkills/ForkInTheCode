@@ -29,7 +29,7 @@ export async function checkAndUpdateAuth(userType) {
 }
 
 export function logOut() {
-  axios.get(process.env.REACT_APP_SERVER_URL + endpoints.LOGOUT, {
+  return axios.get(process.env.REACT_APP_SERVER_URL + endpoints.LOGOUT, {
     withCredentials: true,
   });
 }
