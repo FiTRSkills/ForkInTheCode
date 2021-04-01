@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
 
 function ProfileSkills() {
   const [skills, setSkills] = useState([]);
-  const [skillObjects, setSkillObjects] = useState([]); // Used to get id of skill to be able to delete
   const [edit, setEdit] = useState(false);
   const [error, setError] = useState(null);
 
@@ -36,8 +35,7 @@ function ProfileSkills() {
         withCredentials: true,
       })
       .then((response) => {
-        setSkills(response.data.skills.map((skill) => skill.name));
-        setSkillObjects(response.data.skills);
+        setSkills(response.data.skills);
       })
       .catch((error) => {
         if (error?.response?.status === 400) {
@@ -54,7 +52,7 @@ function ProfileSkills() {
       axios
         .post(
           process.env.REACT_APP_SERVER_URL + "/profile/skill",
-          { skill },
+          { skills: [skill] },
           {
             withCredentials: true,
           }
@@ -74,16 +72,13 @@ function ProfileSkills() {
     });
   }
 
-  function deleteSkill(skillDeleteString) {
-    let skillDeleteId = skillObjects.find(
-      (skillObject) => skillObject.name === skillDeleteString
-    )._id;
+  function deleteSkill(skillDelete) {
     return new Promise((resolve, reject) => {
       axios({
         method: "DELETE",
         url: process.env.REACT_APP_SERVER_URL + "/profile/skill",
         data: {
-          id: skillDeleteId,
+          id: skillDelete._id,
         },
         withCredentials: true,
       })

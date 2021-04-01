@@ -100,29 +100,34 @@ Cypress.Commands.add("fakeProfile", (success = true) => {
   cy.get("#Profile").click();
 });
 
-Cypress.Commands.add("SkillsDropdown", (success = true, url = "/JobSearch") => {
-  cy.server();
-  if (success) {
-    cy.route({
-      method: "GET",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/skills",
-      status: 200,
-      response: [
-        { name: "developer", _id: "1" },
-        { name: "hardware", _id: "2" },
-        { name: "test", _id: "3" },
-      ],
-    }).as("getSkills");
-  } else {
-    cy.route({
-      method: "GET",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/skills",
-      status: 401,
-      response: [],
-    }).as("getSkills");
+Cypress.Commands.add(
+  "InitializeSkills",
+  (success = true, url = "/JobSearch") => {
+    cy.server();
+    if (success) {
+      cy.route({
+        method: "GET",
+        url: Cypress.env("REACT_APP_SERVER_URL") + "/skills",
+        status: 200,
+        response: [
+          { name: "developer", _id: "1" },
+          { name: "hardware", _id: "2" },
+          { name: "test", _id: "3" },
+        ],
+      }).as("getSkills");
+    } else {
+      cy.route({
+        method: "GET",
+        url: Cypress.env("REACT_APP_SERVER_URL") + "/skills",
+        status: 401,
+        response: [],
+      }).as("getSkills");
+    }
+    if (url) {
+      cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + url);
+    }
   }
-  cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + url);
-});
+);
 //
 //
 // -- This is a child command --

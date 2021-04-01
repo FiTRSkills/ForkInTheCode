@@ -25,18 +25,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Skills({
-  skills,
-  setSkills,
-  editMode,
-  onAdd,
-  onDelete,
-  setSkillObjects,
-  skillObjects,
-}) {
+function Skills({ skills, setSkills, editMode, onAdd, onDelete }) {
   const classes = useStyles();
   const [allSkills, setAllSkills] = useState([]);
-  const [allSkillObjects, setAllSkillObjects] = useState([]);
   const [currentSkill, setCurrentSkill] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -55,8 +46,7 @@ function Skills({
       .then((response) => {
         if (response.status === 200) {
           setError(null);
-          setAllSkills(response.data.map((skill) => skill.name));
-          setAllSkillObjects(response.data.map((skill) => skill));
+          setAllSkills(response.data.map((skill) => skill));
         }
       })
       .catch((error) => {
@@ -80,51 +70,48 @@ function Skills({
     } else {
       if (setSkills !== undefined) {
         setSkills((skills) =>
-          skills.filter((skill) => skill !== skillToDelete)
-        );
-      }
-      if (setSkillObjects !== undefined) {
-        setSkillObjects((skillObjects) =>
-          skillObjects.filter((skill) => skill.name !== skillToDelete)
+          skills.filter((skill) => skill._id !== skillToDelete._id)
         );
       }
     }
   }
 
   function addSkill() {
-    if (skills.indexOf(currentSkill) > -1) {
-      setError("Already in Skills");
-    } else if (allSkills.indexOf(currentSkill) === -1) {
-      setError("Skill does not exist");
-    } else if (currentSkill !== "") {
-      if (onAdd !== undefined) {
-        setLoading(true);
-        onAdd(currentSkill)
-          .then(() => {
-            setError(null);
-            setCurrentSkill("");
-          })
-          .catch((error) => {
-            setError(error);
-          })
-          .finally(() => {
-            setLoading(false);
-          });
+    const skillToBeAdded = allSkills.find(
+      (skill) => skill.name === currentSkill
+    );
+    // Check if skill exists in database
+    if (skillToBeAdded) {
+      // Check if skills already added
+      const existedSkill = skills.find(
+        (skill) => skill.name === skillToBeAdded.name
+      );
+      if (existedSkill) {
+        setError("Already in Skills");
       } else {
-        if (setSkills !== undefined) {
-          setSkills([...skills, currentSkill]);
-        }
-        if (setSkillObjects !== undefined) {
-          const currentSkillObject = allSkillObjects.find(
-            (skillOption) => skillOption.name === currentSkill
-          );
-          if (currentSkillObject) {
-            setSkillObjects([...skillObjects, currentSkillObject]);
+        if (onAdd !== undefined) {
+          setLoading(true);
+          onAdd(skillToBeAdded)
+            .then(() => {
+              setError(null);
+              setCurrentSkill("");
+            })
+            .catch((error) => {
+              setError(error);
+            })
+            .finally(() => {
+              setLoading(false);
+            });
+        } else {
+          if (setSkills !== undefined) {
+            setSkills([...skills, skillToBeAdded]);
           }
+          setError(null);
+          setCurrentSkill("");
         }
-        setError(null);
-        setCurrentSkill("");
       }
+    } else {
+      setError("Skill does not exist");
     }
   }
 
@@ -148,23 +135,14 @@ function Skills({
       {error && <Alert severity="error">{error}</Alert>}
       <Box className={classes.root} id="skillList">
         {skills.map((skill, index) => {
-          // Get skill description for tooltip
-          let title = "";
-          const skillObject = allSkillObjects.find(
-            (skillOption) => skillOption.name === skill
-          );
-          if (skillObject) {
-            title = skillObject.description;
-          }
-
           return (
             <li key={index}>
-              <Tooltip title={title}>
+              <Tooltip title={skill.description}>
                 <Chip
                   color="primary"
                   variant="outlined"
-                  label={skill}
-                  name={skill}
+                  label={skill.name}
+                  name={skill.name}
                   onDelete={
                     editMode
                       ? () => {
@@ -185,7 +163,8 @@ function Skills({
             inputValue={currentSkill}
             freeSolo
             onInputChange={(event, value) => setCurrentSkill(value)}
-            options={allSkills.map((option) => option)}
+            options={allSkills.map((item) => item.name)}
+            blurOnSelect={"mouse"}
             id="skillInput"
             renderInput={(params) => (
               <TextField

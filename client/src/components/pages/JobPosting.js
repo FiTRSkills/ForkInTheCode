@@ -67,11 +67,7 @@ function JobPosting(props) {
             setDescription(res.data.description);
             setQualifications(res.data.qualifications);
             setCourses(res.data.courses);
-            // TODO: Make sure this and other similar spots change to using skill id and other skill info vs just the name
-            const skills = res.data.skills.map((skill) => {
-              return skill.name;
-            });
-            setSkills(skills);
+            setSkills(res.data.skills);
           }
           setError(null);
         })
@@ -140,9 +136,7 @@ function JobPosting(props) {
                   skills={classItem.skills}
                   title={classItem.name}
                 />
-              ))
-
-            }
+              ))}
           </Box>
         </Box>
       )}

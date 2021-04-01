@@ -42,7 +42,7 @@ function CourseItem(props) {
       </Box>
       <Box className={classes.body}>
         <Typography variant={"h6"}>{"Skills Will Be Achieved"}</Typography>
-        <Skills skills={skills.map((skill) => skill.name)} />
+        <Skills skills={skills} />
       </Box>
     </Box>
   );
