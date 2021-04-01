@@ -150,6 +150,7 @@ function Skills({
 
   useEffect(() => {
     setShouldAllowCreate(calculateShouldAllowCreate());
+    // eslint-disable-next-line
   }, [currentSkill]);
 
   async function updateOnCreate(id) {
@@ -197,6 +198,7 @@ function Skills({
                 </li>
               );
             }
+            return <span></span>; // so nothing happens if somehow the skill itself is unidentified
           })}
       </Box>
       {editMode && (
