@@ -1,5 +1,4 @@
 import { UPDATE_USER, LOG_OUT } from "../ActionTypes";
-import { logOut } from "../../services/AuthService";
 
 export const initialState = {};
 
@@ -8,7 +7,6 @@ let authentication = (state = initialState, action) => {
     case UPDATE_USER:
       return { ...state, ...action.payload.user };
     case LOG_OUT:
-      logOut();
       return {};
     default:
       return state;

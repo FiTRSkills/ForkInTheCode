@@ -7,7 +7,9 @@ import Box from "@material-ui/core/Box";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { logOut } from "../../../redux/actions";
+import { logOut as axiosLogOut } from "../../../services/AuthService";
 import { makeStyles } from "@material-ui/core/styles";
+import { withRouter } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   navBar: {
@@ -73,26 +75,40 @@ function NavBar(props) {
   }
 
   function getButtonArray(labelList) {
-    return labelList.map((item) => (
-      <Button
-        color="inherit"
-        key={item}
-        onClick={() => {
-          onButtonClick(item);
-        }}
-        component={Link}
-        to={"/" + item}
-        id={item.replace(" ", "")}
-      >
-        {item}
-      </Button>
-    ));
+    return labelList.map((item) => {
+      if (item === "Sign Out") {
+        return (
+          <Button
+            color="inherit"
+            key="Sign Out"
+            onClick={() => {
+              clickLogOut();
+            }}
+            id="SignOut"
+          >
+            Sign Out
+          </Button>
+        );
+      }
+      return (
+        <Button
+          color="inherit"
+          key={item}
+          component={Link}
+          to={"/" + item}
+          id={item.replace(" ", "")}
+        >
+          {item}
+        </Button>
+      );
+    });
   }
 
-  function onButtonClick(item) {
-    if (item === "Sign Out") {
+  function clickLogOut() {
+    axiosLogOut().then(() => {
       props.logOut();
-    }
+      props.history.push("/Login");
+    });
   }
 
   // Renderer
@@ -130,4 +146,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NavBar));

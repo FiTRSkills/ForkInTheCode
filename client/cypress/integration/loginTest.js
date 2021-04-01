@@ -49,6 +49,12 @@ describe("Authentication", () => {
     cy.fakeLogin();
     cy.route({
       method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/logout",
+      status: 200,
+      response: "",
+    }).as("logout");
+    cy.route({
+      method: "GET",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/profile/usertype",
       status: 200,
       response: "",

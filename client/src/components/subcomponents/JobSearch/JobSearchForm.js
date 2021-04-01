@@ -43,7 +43,7 @@ function JobSearchForm(props) {
           })
           .then((response) => {
             if (response.status === 200) {
-              setSkills(response.data.skills.map((skill) => skill.name));
+              setSkills(response.data.skills);
             }
           })
           .catch((error) => {
@@ -57,7 +57,7 @@ function JobSearchForm(props) {
 
   useEffect(() => {
     if (props.sharedSkills && props.sharedSkills.length !== 0) {
-      setSkills([...skills, ...props.sharedSkills.map((skill) => skill.name)]);
+      setSkills([...skills, ...props.sharedSkills]);
     }
     // eslint-disable-next-line
   }, [props.sharedSkills]);

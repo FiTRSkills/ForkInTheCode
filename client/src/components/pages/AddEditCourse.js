@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { changeCurrentPage, setCourseSuccessMessage } from "../../redux/actions";
+import {
+  changeCurrentPage,
+  setCourseSuccessMessage,
+} from "../../redux/actions";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
@@ -49,8 +52,7 @@ function AddEditCourse(props) {
   const [location, setLocation] = useState("");
   const [requiredEquipment, setRequiredEquipment] = useState("");
   const [contact, setContact] = useState("");
-  const [skillObjects, setSkillObjects] = useState([]);
-  const [skillStrs, setSkillStrs] = useState([]);
+  const [skills, setSkills] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
@@ -95,8 +97,7 @@ function AddEditCourse(props) {
         setLocation(props.courseToEdit.location);
         setRequiredEquipment(props.courseToEdit.requiredEquipment);
         setContact(props.courseToEdit.contact);
-        setSkillObjects(props.courseToEdit.skills);
-        setSkillStrs(props.courseToEdit.skills.map((skill) => skill.name));
+        setSkills(props.courseToEdit.skills);
       }
     }
   }, [mode, props.courseToEdit]);
@@ -154,7 +155,7 @@ function AddEditCourse(props) {
    * @param event
    */
   function onSubmit(event) {
-    if (skillObjects.length === 0) {
+    if (skills.length === 0) {
       setError("Skills are required");
     } else {
       setLoading(true);
@@ -166,7 +167,7 @@ function AddEditCourse(props) {
               {
                 location: location,
                 name: title,
-                skills: skillObjects,
+                skills: skills,
                 contact: contact,
                 period: period,
                 times: times,
@@ -200,7 +201,7 @@ function AddEditCourse(props) {
                 setError("Failed to add course");
               }
               setLoading(false);
-            })
+            });
           break;
         case "Edit":
           axios
@@ -210,7 +211,7 @@ function AddEditCourse(props) {
                 _id: id,
                 location: location,
                 name: title,
-                skills: skillObjects,
+                skills: skills,
                 contact: contact,
                 period: period,
                 times: times,
@@ -225,7 +226,7 @@ function AddEditCourse(props) {
             )
             .then((response) => {
               if (response.status === 200) {
-                props.setCourseSuccessMessage("Successfully Updated Course")
+                props.setCourseSuccessMessage("Successfully Updated Course");
                 props.history.push("/Courses");
               }
             })
@@ -244,7 +245,7 @@ function AddEditCourse(props) {
                 setError("Failed to update course");
               }
               setLoading(false);
-            })
+            });
 
           break;
         default:
@@ -430,12 +431,11 @@ function AddEditCourse(props) {
           <Box className={classes.field}>
             <Typography>Skills</Typography>
             <Skills
-              skills={skillStrs}
-              setSkills={setSkillStrs}
-              skillObjects={skillObjects}
-              setSkillObjects={setSkillObjects}
+              skills={skills}
+              setSkills={setSkills}
               editMode={true}
               user={props.user.type}
+              allowCreate
             />
           </Box>
           <Grid
@@ -475,14 +475,15 @@ function AddEditCourse(props) {
 function mapStateToProps(state) {
   return {
     user: state.authentication,
-    courseToEdit: state.courses.courseToEdit
+    courseToEdit: state.courses.courseToEdit,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     changeCurrentPage: (content) => dispatch(changeCurrentPage(content)),
-    setCourseSuccessMessage: (content) => dispatch(setCourseSuccessMessage(content))
+    setCourseSuccessMessage: (content) =>
+      dispatch(setCourseSuccessMessage(content)),
   };
 }
 

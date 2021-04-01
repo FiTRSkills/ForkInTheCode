@@ -42,16 +42,15 @@ describe("Add Edit Course", () => {
   });
 
   it("Add ONLINE course SUCCESS", () => {
-    cy.SkillsDropdown(true, "/Course/Add");
+    cy.InitializeSkills(true, "/Course/Add");
     cy.route({
       method: "POST",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
       status: 200,
       response: "Successfully created course",
     }).as("addCourse");
-    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/Course/Add");
 
-    // cy.get("#navBarTitle").should("contain", "Courses");
+    cy.get("#navBarTitle").should("contain", "Courses");
 
     cy.get("#title").type("Java 101");
     cy.get("#description").type("This is a Java class");
@@ -62,7 +61,6 @@ describe("Add Edit Course", () => {
     cy.get("#times").type("Monday: 15:00 - 18:00");
 
     cy.get("#method").select("Online");
-    cy.get("#location").should("not.be.visible");
 
     cy.get("#requiredEquipment").type("Computer");
     cy.get("#contact").type("Jake Rossi: 567-019-2345");
@@ -79,7 +77,7 @@ describe("Add Edit Course", () => {
   });
 
   it("Add IN PERSON course SUCCESS", () => {
-    cy.SkillsDropdown(true, "/Course/Add");
+    cy.InitializeSkills(true, "/Course/Add");
     cy.route({
       method: "POST",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
@@ -115,7 +113,7 @@ describe("Add Edit Course", () => {
   });
 
   it("Add ONLINE course FAILURE", () => {
-    cy.SkillsDropdown(true, "/Course/Add");
+    cy.InitializeSkills(true, "/Course/Add");
     cy.route({
       method: "POST",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
@@ -139,7 +137,6 @@ describe("Add Edit Course", () => {
     cy.get("#times").type("Monday: 15:00 - 18:00");
 
     cy.get("#method").select("Online");
-    cy.get("#location").should("not.be.visible");
 
     cy.get("#requiredEquipment").type("Computer");
     cy.get("#contact").type("Jake Rossi: 567-019-2345");
@@ -156,7 +153,7 @@ describe("Add Edit Course", () => {
   });
 
   it("Add IN PERSON course FAILURE", () => {
-    cy.SkillsDropdown(true, "/Course/Add");
+    cy.InitializeSkills(true, "/Course/Add");
     cy.route({
       method: "POST",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
@@ -192,7 +189,6 @@ describe("Add Edit Course", () => {
   });
 
   it("Edit course SUCCESS", () => {
-    cy.SkillsDropdown(true, "/Courses");
     cy.route({
       method: "PATCH",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
@@ -209,6 +205,8 @@ describe("Add Edit Course", () => {
     cy.get("#MyCourses").click();
     cy.wait("@getCoursesCall").its("status").should("eq", 200);
     cy.get("#EditCourse1").click();
+
+    cy.InitializeSkills(true, null);
 
     cy.get("#navBarTitle").should("contain", "Courses");
 
@@ -235,7 +233,6 @@ describe("Add Edit Course", () => {
   });
 
   it("Edit course FAILURE", () => {
-    cy.SkillsDropdown(true, "/Courses");
     cy.route({
       method: "PATCH",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/course",
@@ -257,6 +254,8 @@ describe("Add Edit Course", () => {
     cy.get("#MyCourses").click();
     cy.wait("@getCoursesCall").its("status").should("eq", 200);
     cy.get("#EditCourse1").click();
+
+    cy.InitializeSkills(true, null);
 
     cy.get("#navBarTitle").should("contain", "Courses");
 
