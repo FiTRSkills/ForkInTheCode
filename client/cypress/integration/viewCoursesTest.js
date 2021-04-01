@@ -127,7 +127,7 @@ describe("View Courses", () => {
     cy.get("#DeleteCourse1").click();
     cy.get("#confirmationConfirm").click();
     cy.get("body").should("not.contain", "Java 101");
-    cy.contains("Successfully Deleted Course");
+    cy.contains("A course has been successfully deleted!");
   });
 
   it("Delete Course CANCEL SUCCESS", () => {
