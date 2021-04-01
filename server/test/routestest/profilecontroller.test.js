@@ -344,7 +344,7 @@ describe("testing index.js routes", () => {
         skills: ["C++"],
       });
     expect(res.statusCode).toEqual(400);
-    expect(res.text).toEqual("Failed to add skill: C++, aborting.");
+    expect(res.text).toEqual("Failed to add skills: C++, aborting.");
   });
 
   it("POST /profile/skill - add skill information success", async () => {

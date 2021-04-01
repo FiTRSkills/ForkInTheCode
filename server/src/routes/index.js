@@ -456,9 +456,4 @@ router.delete(
   course.deleteCourse
 );
 
-//The 404 Route handles returns on routes that don't exist
-router.all("*", function (req, res) {
-  res.status(404).send("Not Found");
-});
-
 module.exports = router;

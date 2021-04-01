@@ -56,9 +56,9 @@ function SkillDetails(props) {
         })
         .then((res) => {
           if (res.data) {
-            setName(res.data.name);
-            setDescription(res.data.description);
-            setAliases(res.data.alias);
+            setName(res.data.skill.name);
+            setDescription(res.data.skill.description);
+            setAliases(res.data.skill.alias);
             setCourses(res.data.courses);
           }
           setError(null);
@@ -113,13 +113,15 @@ function SkillDetails(props) {
             <Typography variant={"h6"}>
               Classes Associated With This Skill
             </Typography>
-            {courses && courses.map((courseItem) => (
-              <CourseItem id={courseItem._id}
-                          description={courseItem.description}
-                          skills={courseItem.skills}
-                          title={courseItem.name}
-              />
-            ))}
+            {courses &&
+              courses.map((courseItem) => (
+                <CourseItem
+                  id={courseItem._id}
+                  description={courseItem.description}
+                  skills={courseItem.skills}
+                  title={courseItem.name}
+                />
+              ))}
           </Box>
         </Box>
       )}

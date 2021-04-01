@@ -23,6 +23,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "startserver": "cd ../server && npm start",
     "build": "react-scripts build",
     "test:reactScripts": "react-scripts test",
     "eject": "react-scripts eject",
@@ -44,6 +45,6 @@
     ]
   },
   "devDependencies": {
-    "cypress": "^5.4.0"
+    "cypress": "^6.0.0"
   }
 }
