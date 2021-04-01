@@ -6,9 +6,11 @@ describe("Skills Details", () => {
       url: Cypress.env("REACT_APP_SERVER_URL") + "/skills/getSkill?id=1",
       status: 200,
       response: {
-        name: "programming",
-        alias: ["program", "coding"],
-        description: "this is programming's description",
+        skill: {
+          name: "programming",
+          alias: ["program", "coding"],
+          description: "this is programming's description",
+        },
         courses: [
           {
             _id: 1,
@@ -76,9 +78,11 @@ describe("Skills Details", () => {
       url: Cypress.env("REACT_APP_SERVER_URL") + "/skills/getSkill?id=1",
       status: 200,
       response: {
-        name: "programming",
-        alias: ["program", "coding"],
-        description: "this is programming's description",
+        skill: {
+          name: "programming",
+          alias: ["program", "coding"],
+          description: "this is programming's description",
+        },
         courses: [
           {
             _id: 1,
