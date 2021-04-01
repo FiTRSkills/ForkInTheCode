@@ -129,10 +129,8 @@ function ViewCourses({
         getCourses();
         setSuccessMessage(incomingSuccessMessage);
         if (incomingSuccessMessage !== "") {
-          setTimeout(() => {
-            setSuccessMessage("");
-            setCourseSuccessMessage("");
-          }, 5000);
+          setCourseSuccessMessage("");
+          clearSuccessMessageTimeout();
         }
         setAuthenticated(true);
       }
@@ -140,6 +138,12 @@ function ViewCourses({
     asyncAuth();
     // eslint-disable-next-line
   }, []);
+
+  const clearSuccessMessageTimeout = () => {
+    setTimeout(() => {
+      setSuccessMessage("");
+    }, 5000);
+  };
 
   const confirmDelete = (courseItem) => {
     setCourseToDeleteId(courseItem._id);
@@ -157,6 +161,7 @@ function ViewCourses({
     })
       .then(() => {
         setSuccessMessage("A course has been successfully deleted!");
+        clearSuccessMessageTimeout();
         getCourses();
       })
       .catch((error) => {
