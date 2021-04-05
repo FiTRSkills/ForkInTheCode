@@ -87,7 +87,7 @@ describe("testing skill routes", () => {
 
   it("GET /skills/search - get skills in zipcode", async () => {
     await request
-      .post("/jobs/createjobposting")
+      .post("/jobPosting")
       .set("Cookie", [employer_session_info])
       .send({
         jobTitle: "Software Engineer",
@@ -100,7 +100,7 @@ describe("testing skill routes", () => {
         skills: ["Chicken", "Pizza"],
       });
     await request
-      .post("/jobs/createjobposting")
+      .post("/jobPosting")
       .set("Cookie", [employer_session_info])
       .send({
         jobTitle: "Software Engineer2",

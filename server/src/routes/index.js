@@ -228,13 +228,74 @@ router.post(
 
 /**
  * Routing serving retrieving a job posting by id
- * @name POST /jobs/jobposting
+ * @name GET /jobs/jobposting
  * @function
  * @alias module:/routers/job
  * @property {string} id -  the job posting id
  * @returns {string} message - success message
  */
 router.get("/jobs/jobposting", job.getJobPosting);
+
+/**
+ * Routing serving retrieving an organization's job postings
+ * @name GET /jobPostings
+ * @function
+ * @alias module:/routers/job
+ * @property {string} user -  the user session
+ * @returns {string} array - job postings
+ */
+router.get("/jobPostings", validation.validateSession, job.viewJobPostings);
+
+/**
+ * Routing serving retrieving a job posting by id
+ * @name POST /jobPosting
+ * @function
+ * @alias module:/routers/job
+ * @property {string} id -  the job posting id
+ * @returns {string} message - success message
+ */
+router.get("/jobPosting", validation.validateSession, 
+  [check("_id", "Must send a viable ID").not().isEmpty()],
+  validation.validateInput, 
+  job.getMyJobPosting);
+
+/**
+ * Routing serving retrieving a job posting by id
+ * @name PATCH /jobPosting
+ * @function
+ * @alias module:/routers/job
+ * @property {string} id -  the job posting id and edits
+ * @returns {string} message - success message
+ */
+router.patch("/jobPosting", validation.validateSession, 
+  [
+    check("_id", "Must send a viable course _id").not().isEmpty(),
+    check("location", "Must send a viable location").not().isEmpty(),
+    check("name", "Must send a viable name").not().isEmpty(),
+    check("skills", "Must send a viable list of skills").not().isEmpty(),
+    check("contact", "Contact must exist").exists(),
+    check("period", "Period must exist").exists(),
+    check("times", "Times must exist").exists(),
+    check("description", "Description must exist").exists(),
+    check("moneyCost", "moneyCost must exist").exists(),
+    check("timeCost", "timeCost must exist").exists(),
+    check("requiredEquipment", "requiredEquipment must exist").exists(),
+  ],
+  validation.validateInput,
+  job.editMyJobPosting);
+
+/**
+ * Routing serving retrieving a job posting by id
+ * @name DELETE /jobPosting
+ * @function
+ * @alias module:/routers/job
+ * @property {string} id -  the job posting id
+ * @returns {string} message - success message
+ */
+router.delete("/jobPosting", validation.validateSession, 
+  [check("_id", "Must send a viable ID").not().isEmpty()],
+  validation.validateInput, 
+  job.deleteMyJobPosting);
 
 /**
  * Routing serving retrieving a job posting by id
@@ -245,7 +306,7 @@ router.get("/jobs/jobposting", job.getJobPosting);
  * @returns {string} message - success message
  */
 router.post(
-  "/jobs/createjobposting",
+  "/jobPosting",
   validation.validateSession,
   [
     check("jobTitle", "Must send a viable job title").not().isEmpty(),

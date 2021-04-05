@@ -34,9 +34,9 @@ describe("JobController Tests", () => {
 		employer_session_info = loginres.header["set-cookie"];
 	});
 
-	it("POST /jobs/createjobposting - create a job posting as not an employer", async () => {
+	it("POST /jobPosting - create a job posting as not an employer", async () => {
 		const res = await request
-			.post("/jobs/createjobposting")
+			.post("/jobPosting")
 			.set("Cookie", [employer_session_info])
 			.send({
 				jobTitle: "Software Engineer",
@@ -90,9 +90,9 @@ describe("JobController Tests", () => {
 		expect(body.length).toEqual(0);
 	});
 
-	it("POST /jobs/createjobposting - create a job posting", async () => {
+	it("POST /jobPosting - create a job posting", async () => {
 		const res = await request
-			.post("/jobs/createjobposting")
+			.post("/jobPosting")
 			.set("Cookie", [employer_session_info])
 			.send({
 				jobTitle: "Software Engineer",
@@ -163,9 +163,9 @@ describe("JobController Tests", () => {
 		expect(body.length).toEqual(1);
 	});
 
-	it("POST /jobs/createjobposting - create another job posting", async () => {
+	it("POST /jobPosting - create another job posting", async () => {
 		const res = await request
-			.post("/jobs/createjobposting")
+			.post("/jobPosting")
 			.set("Cookie", [employer_session_info])
 			.send({
 				jobTitle: "Plumber",
@@ -223,9 +223,9 @@ describe("JobController Tests", () => {
 		expect(res.statusCode).toEqual(200);
 	});
 
-	it("POST /jobs/createjobposting - create another job posting", async () => {
+	it("POST /jobPosting - create another job posting", async () => {
 		const res = await request
-			.post("/jobs/createjobposting")
+			.post("/jobPosting")
 			.set("Cookie", [employer_session_info])
 			.send({
 				jobTitle: "Plumber",

@@ -3,6 +3,7 @@
  */
 const mongoose = require("mongoose");
 const passport = require("passport");
+const User = require("../models/user");
 const JobPosting = require("../models/jobPosting");
 
 const jobController = {};
@@ -46,7 +47,7 @@ jobController.getJobPosting = async function (req, res) {
  * @returns {string} response - the created job posting id
  */
 jobController.createJobPosting = async function (req, res) {
-  if (req.user.type == "EmployerProfile") {
+  if (req.user.type == User.Type.EMPLOYER) {
     let jobPost = new JobPosting({
       jobTitle: req.body.jobTitle,
       pay: req.body.pay,
@@ -77,6 +78,94 @@ jobController.createJobPosting = async function (req, res) {
     });
   } else {
     res.status(400).send("Invalid usertype to create job postings.");
+  }
+};
+
+/**
+ * functionality for viewing all created job postings
+ * @name viewJobPostings
+ * @function
+ * @alias module:/controllers/jobcontroller
+ * @property {request} request - contains user
+ * @returns {string} response - the job postings
+ */
+jobController.viewJobPostings = async function (req, res) {
+  if (req.user.type == User.Type.EMPLOYER) {
+    let org = req.user.organization;
+    try{
+      let jobpostings = await JobPosting.search({organization: org})
+      res.status(200).send(org);
+    }catch (e){
+      res.status.send("Issue retrieving jobpostings");
+    }
+  } else {
+    res.status(400).send("Invalid usertype to view job postings.");
+  }
+};
+
+/**
+ * functionality for getting a jobposting user created
+ * @name getMyJobPostings
+ * @function
+ * @alias module:/controllers/jobcontroller
+ * @property {request} request - id
+ * @returns {string} response - the job posting
+ */
+jobController.getMyJobPosting = async function (req, res) {
+  if (req.user.type == User.Type.EMPLOYER) {
+    let org = req.user.organization;
+    try{
+      let jobpostings = await JobPosting.search({organization: org})
+      res.status(200).send(org);
+    }catch (e){
+      res.status.send("Issue retrieving jobpostings");
+    }
+  } else {
+    res.status(400).send("Invalid usertype to view job postings.");
+  }
+};
+
+/**
+ * functionality for editing a jobposting user created
+ * @name editMyJobPostings
+ * @function
+ * @alias module:/controllers/jobcontroller
+ * @property {request} request - job posting
+ * @returns {string} response - success msg
+ */
+jobController.editMyJobPosting = async function (req, res) {
+  if (req.user.type == User.Type.EMPLOYER) {
+    let org = req.user.organization;
+    try{
+      let jobpostings = await JobPosting.search({organization: org})
+      res.status(200).send(org);
+    }catch (e){
+      res.status.send("Issue retrieving jobpostings");
+    }
+  } else {
+    res.status(400).send("Invalid usertype to view job postings.");
+  }
+};
+
+/**
+ * functionality for deleting a jobposting user created
+ * @name deleteMyJobPostings
+ * @function
+ * @alias module:/controllers/jobcontroller
+ * @property {request} request - id
+ * @returns {string} response - success msg
+ */
+jobController.deleteMyJobPosting = async function (req, res) {
+  if (req.user.type == User.Type.EMPLOYER) {
+    let org = req.user.organization;
+    try{
+      let jobpostings = await JobPosting.search({organization: org})
+      res.status(200).send(org);
+    }catch (e){
+      res.status.send("Issue retrieving jobpostings");
+    }
+  } else {
+    res.status(400).send("Invalid usertype to view job postings.");
   }
 };
 
