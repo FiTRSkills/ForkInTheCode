@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: "wrap",
     listStyle: "none",
     margin: 0,
+    maxWidth:680
   },
   chip: {
     marginRight: theme.spacing(1),
@@ -216,7 +217,7 @@ function Skills({
                 label="New Skill"
                 margin="normal"
                 variant="outlined"
-                onKeyPress={handleSubmit}
+                onKeyDown={handleSubmit}
               />
             )}
           />
