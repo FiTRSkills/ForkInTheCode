@@ -65,7 +65,7 @@ function CreateSkillDialog({ open, closeDialog, skillName, onCreateSuccess }) {
     }
   }
 
-  function createSkill(event) {
+  function createSkill() {
     setLoading(true);
     axios
       .post(
@@ -89,7 +89,6 @@ function CreateSkillDialog({ open, closeDialog, skillName, onCreateSuccess }) {
         console.log(error);
       })
       .finally(() => setLoading(false));
-    event.preventDefault();
   }
 
   return (
@@ -108,7 +107,7 @@ function CreateSkillDialog({ open, closeDialog, skillName, onCreateSuccess }) {
           </Typography>
         </Box>
         {error && <Alert severity="error">{error}</Alert>}
-        <form className={classes.form} onSubmit={createSkill}>
+        <form className={classes.form}>
           <Box className={classes.field}>
             <Typography>Title</Typography>
             <TextField
@@ -137,7 +136,8 @@ function CreateSkillDialog({ open, closeDialog, skillName, onCreateSuccess }) {
             />
           </Box>
           <Button
-            type="submit"
+            type="button"
+            onClick={createSkill}
             fullWidth
             variant="contained"
             color="primary"
