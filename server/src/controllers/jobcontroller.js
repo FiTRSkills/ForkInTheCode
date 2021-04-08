@@ -87,12 +87,14 @@ jobController.createJobPosting = async function (req, res) {
  */
 jobController.viewJobPostings = async function (req, res) {
   if (req.user.type == User.Type.EMPLOYER) {
-    let org = req.user.organization;
+    let profile = await req.user.getProfile();
     try {
-      let jobpostings = await JobPosting.search({ organization: org });
-      res.status(200).send(org);
+      let jobpostings = await JobPosting.find({
+        organization: profile.organization._id,
+      }).exec();
+      res.status(200).send(jobpostings);
     } catch (e) {
-      res.status.send("Issue retrieving jobpostings");
+      res.status(400).send("Issue retrieving jobpostings");
     }
   } else {
     res.status(400).send("Invalid usertype to view job postings.");
@@ -109,12 +111,19 @@ jobController.viewJobPostings = async function (req, res) {
  */
 jobController.getMyJobPosting = async function (req, res) {
   if (req.user.type == User.Type.EMPLOYER) {
-    let org = req.user.organization;
+    let profile = await req.user.getProfile();
     try {
-      let jobpostings = await JobPosting.search({ organization: org });
-      res.status(200).send(org);
+      let jobposting = await JobPosting.findById(req.query._id);
+      if (
+        profile.organization._id.toString() ==
+        jobposting.organization._id.toString()
+      ) {
+        res.status(200).send(jobposting);
+      } else {
+        res.status(400).send("User does not own this jobposting.");
+      }
     } catch (e) {
-      res.status.send("Issue retrieving jobpostings");
+      res.status(400).send("Issue retrieving jobpostings");
     }
   } else {
     res.status(400).send("Invalid usertype to view job postings.");
@@ -131,15 +140,34 @@ jobController.getMyJobPosting = async function (req, res) {
  */
 jobController.editMyJobPosting = async function (req, res) {
   if (req.user.type == User.Type.EMPLOYER) {
-    let org = req.user.organization;
+    let profile = await req.user.getProfile();
     try {
-      let jobpostings = await JobPosting.search({ organization: org });
-      res.status(200).send(org);
-    } catch (e) {
-      res.status.send("Issue retrieving jobpostings");
+      let jobpost = await JobPosting.findById(req.body._id);
+      if (
+        profile.organization._id.toString() !=
+        jobpost.organization._id.toString()
+      ) {
+        res.status(400).send("User does not own this jobposting.");
+        return;
+      }
+      // iterates through given information to add to course
+      Object.keys(req.body).forEach(function (key) {
+        if (key != "_id") {
+          jobpost[key] = req.body[key];
+        }
+      });
+      jobpost.save(function (err) {
+        if (err) {
+          res.status(400).send(err);
+          return;
+        }
+        res.status(200).send("Successfully updated jobposting.");
+      });
+    } catch (error) {
+      res.status(400).send("Error editing jobposting.");
     }
   } else {
-    res.status(400).send("Invalid usertype to view job postings.");
+    res.status(400).send("Invalid usertype.");
   }
 };
 
@@ -153,15 +181,23 @@ jobController.editMyJobPosting = async function (req, res) {
  */
 jobController.deleteMyJobPosting = async function (req, res) {
   if (req.user.type == User.Type.EMPLOYER) {
-    let org = req.user.organization;
+    let profile = await req.user.getProfile();
     try {
-      let jobpostings = await JobPosting.search({ organization: org });
-      res.status(200).send(org);
-    } catch (e) {
-      res.status.send("Issue retrieving jobpostings");
+      let post = await JobPosting.findById(req.body._id);
+      if (
+        profile.organization._id.toString() != post.organization._id.toString()
+      ) {
+        res.status(400).send("User does not own this jobposting.");
+        return;
+      }
+      await post.remove();
+      res.status(200).send("Successfully deleted jobposting.");
+    } catch (error) {
+      res.status(400).send("Error deleting jobposting.");
+      return;
     }
   } else {
-    res.status(400).send("Invalid usertype to view job postings.");
+    res.status(400).send("Invalid usertype.");
   }
 };
 

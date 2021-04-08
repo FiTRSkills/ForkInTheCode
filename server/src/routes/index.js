@@ -275,16 +275,18 @@ router.patch(
   validation.validateSession,
   [
     check("_id", "Must send a viable course _id").not().isEmpty(),
-    check("location", "Must send a viable location").not().isEmpty(),
-    check("name", "Must send a viable name").not().isEmpty(),
-    check("skills", "Must send a viable list of skills").not().isEmpty(),
-    check("contact", "Contact must exist").exists(),
-    check("period", "Period must exist").exists(),
-    check("times", "Times must exist").exists(),
-    check("description", "Description must exist").exists(),
-    check("moneyCost", "moneyCost must exist").exists(),
-    check("timeCost", "timeCost must exist").exists(),
-    check("requiredEquipment", "requiredEquipment must exist").exists(),
+    check("jobTitle", "Must send a viable job title").exists(),
+    check("salary", "Must send a viable salary").exists(),
+    check("zipCode", "Must send a viable zipcode").exists(),
+    check("description", "Must send a viable description").exists(),
+    check("amountOfJobs", "Must send a viable amountOfJobs").exists(),
+    check("jobTimeline", "Must send a viable jobTimeline").exists(),
+    check("benefits", "Must send a viable benefits").exists(),
+    check("responsibilities", "Must send viable responsibilities")
+      .not()
+      .isEmpty(),
+    check("skills", "Must send viable skills").exists(),
+    check("courses", "Must send viable courses").exists(),
   ],
   validation.validateInput,
   job.editMyJobPosting
