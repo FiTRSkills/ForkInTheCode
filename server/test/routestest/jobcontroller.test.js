@@ -336,7 +336,7 @@ describe("JobController Tests", () => {
 			.get("/jobPosting?_id=" + job_posting_id)
 			.set("Cookie", [employer_session_info]);
 		expect(res.statusCode).toEqual(400);
-		expect(res.text).toEqual("Issue retrieving jobpostings");
+		expect(res.text).toEqual("Issue retrieving jobposting.");
 	});
 
 	it("GET /profile - employer user session", async () => {
