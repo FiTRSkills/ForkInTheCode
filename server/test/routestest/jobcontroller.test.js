@@ -1,5 +1,6 @@
 const { connectDB, disconnectDB } = require("../util");
 const supertest = require("supertest");
+const Skill = require("../../src/models/skill");
 const app = require("../../src/app");
 const request = supertest(app);
 
@@ -35,21 +36,25 @@ describe("JobController Tests", () => {
 	});
 
 	it("POST /jobPosting - create a job posting as not an employer", async () => {
+		let skill = await Skill.findOneOrCreate("Coding");
+		let skill2 = await Skill.findOneOrCreate("Communication");
+		let skill3 = await Skill.findOneOrCreate("C");
 		const res = await request
 			.post("/jobPosting")
 			.set("Cookie", [employer_session_info])
 			.send({
 				jobTitle: "Software Engineer",
-				pay: "$60,000",
-				code: "1",
+				salary: "$60,000",
+				benefits: "Healthcare",
+				amountOfJobs: "2",
 				zipCode: "12345",
 				description: "This is a posting for a SE.",
-				qualifications: "Don't suck at coding.",
-				organization: "Microsoft",
-				skills: ["Coding", "Communication", "C"],
+				responsibilities: "Don't suck at coding.",
+				jobTimeline: "6 months",
+				skills: [skill, skill2, skill3],
 			});
 		expect(res.statusCode).toEqual(400);
-		expect(res.text).toEqual("Invalid usertype to create job postings.");
+		expect(res.text).toEqual("Invalid usertype.");
 		const logoutres = await request.get("/logout");
 		expect(logoutres.statusCode).toEqual(200);
 		expect(logoutres.text).toEqual("Successfully logged out");
@@ -66,6 +71,7 @@ describe("JobController Tests", () => {
 				email: "testemprofile@gmail.com",
 				password: "chicken",
 				usertype: "EmployerProfile",
+				organization: "Microsoft",
 			});
 		const loginres = await request
 			.post("/login")
@@ -91,52 +97,25 @@ describe("JobController Tests", () => {
 	});
 
 	it("POST /jobPosting - create a job posting", async () => {
+		let skill123 = await Skill.findOneOrCreate("Coding");
+		let skill234 = await Skill.findOneOrCreate("Communication");
+		let skill345 = await Skill.findOneOrCreate("C");
 		const res = await request
 			.post("/jobPosting")
 			.set("Cookie", [employer_session_info])
 			.send({
 				jobTitle: "Software Engineer",
-				pay: "$60,000",
-				code: "1",
+				salary: "$60,000",
+				benefits: "Healthcare",
+				amountOfJobs: "2",
 				zipCode: "12345",
 				description: "This is a posting for a SE.",
-				qualifications: "Don't suck at coding.",
-				organization: "Microsoft",
-				skills: ["Coding", "Communication", "C"],
+				responsibilities: "Don't suck at coding.",
+				jobTimeline: "6 months",
+				skills: [skill123, skill234, skill345],
 			});
-		let body = JSON.parse(res.text);
-		job_posting_id = body.id;
 		expect(res.statusCode).toEqual(200);
-		expect(body.organization.name).toEqual("Microsoft");
-		expect(body.jobTitle).toEqual("Software Engineer");
-		expect(body.pay).toEqual("$60,000");
-		expect(body.code).toEqual("1");
-		expect(body.zipCode).toEqual("12345");
-		expect(body.description).toEqual("This is a posting for a SE.");
-		expect(body.qualifications).toEqual("Don't suck at coding.");
-		expect(body.skills[0].name).toEqual("Coding");
-		expect(body.skills[1].name).toEqual("Communication");
-		c_skill = body.skills[2];
-		expect(body.skills[2].name).toEqual("C");
-	});
-
-	it("GET /jobs/jobposting - get a job posting", async () => {
-		const res = await request
-			.get("/jobs/jobposting")
-			.query({ id: job_posting_id })
-			.set("Cookie", [employer_session_info]);
-		let body = JSON.parse(res.text);
-		expect(res.statusCode).toEqual(200);
-		expect(body.organization.name).toEqual("Microsoft");
-		expect(body.jobTitle).toEqual("Software Engineer");
-		expect(body.pay).toEqual("$60,000");
-		expect(body.code).toEqual("1");
-		expect(body.zipCode).toEqual("12345");
-		expect(body.description).toEqual("This is a posting for a SE.");
-		expect(body.qualifications).toEqual("Don't suck at coding.");
-		expect(body.skills[0].name).toEqual("Coding");
-		expect(body.skills[1].name).toEqual("Communication");
-		expect(body.skills[2].name).toEqual("C");
+		expect(res.text).toEqual("Successfully created jobposting.");
 	});
 
 	it("GET /jobs/jobposting - get a job posting that doesn't exist", async () => {
@@ -151,45 +130,51 @@ describe("JobController Tests", () => {
 	});
 
 	it("POST /jobs/search - search for job postings", async () => {
+		let skillc = await Skill.findOneOrCreate("C");
 		const res = await request
 			.post("/JobSearch")
 			.set("Cookie", [employer_session_info])
 			.send({
 				zipCode: "12345",
-				skills: [c_skill],
+				skills: [skillc],
 			});
 		expect(res.statusCode).toEqual(200);
 		let body = JSON.parse(res.text);
+		job_posting_id = body._id;
 		expect(body.length).toEqual(1);
 	});
 
 	it("POST /jobPosting - create another job posting", async () => {
+		let skill9 = await Skill.findOneOrCreate("Plumbing");
+		let skill0 = await Skill.findOneOrCreate("Communication");
 		const res = await request
 			.post("/jobPosting")
 			.set("Cookie", [employer_session_info])
 			.send({
 				jobTitle: "Plumber",
-				pay: "$80,000",
-				code: "2",
+				salary: "$80,000",
 				zipCode: "12346",
 				description: "Fix piping.",
-				qualifications: "2 years experience.",
-				organization: "Happy Plumbers Inc",
-				skills: ["Plumbing", "Communication"],
+				responsibilities: "2 years experience.",
+				skills: [skill9, skill0],
+			});
+		expect(res.statusCode).toEqual(200);
+		expect(res.text).toEqual("Successfully created jobposting.");
+	});
+
+	it("POST /jobs/search - search for job postings 12346 zipcode", async () => {
+		let skill92 = await Skill.findOneOrCreate("Plumbing");
+		const res = await request
+			.post("/JobSearch")
+			.set("Cookie", [employer_session_info])
+			.send({
+				zipCode: "12346",
+				skills: [skill92],
 			});
 		let body = JSON.parse(res.text);
-		job_posting_id = body.id;
+		expect(body.length).toEqual(1);
+		job_posting_id = body[0]._id;
 		expect(res.statusCode).toEqual(200);
-		expect(body.organization.name).toEqual("Happy Plumbers Inc");
-		expect(body.jobTitle).toEqual("Plumber");
-		expect(body.pay).toEqual("$80,000");
-		expect(body.code).toEqual("2");
-		expect(body.zipCode).toEqual("12346");
-		expect(body.description).toEqual("Fix piping.");
-		expect(body.qualifications).toEqual("2 years experience.");
-		expect(body.skills[0].name).toEqual("Plumbing");
-		expect(body.skills[1].name).toEqual("Communication");
-		com_skill = body.skills[1];
 	});
 
 	it("GET /jobs/jobposting - get another job posting", async () => {
@@ -199,57 +184,48 @@ describe("JobController Tests", () => {
 			.set("Cookie", [employer_session_info]);
 		let body = JSON.parse(res.text);
 		expect(res.statusCode).toEqual(200);
-		expect(body.organization.name).toEqual("Happy Plumbers Inc");
+		expect(body.organization.name).toEqual("Microsoft");
 		expect(body.jobTitle).toEqual("Plumber");
-		expect(body.pay).toEqual("$80,000");
-		expect(body.code).toEqual("2");
+		expect(body.salary).toEqual("$80,000");
 		expect(body.zipCode).toEqual("12346");
 		expect(body.description).toEqual("Fix piping.");
-		expect(body.qualifications).toEqual("2 years experience.");
+		expect(body.responsibilities).toEqual("2 years experience.");
 		expect(body.skills[0].name).toEqual("Plumbing");
 		expect(body.skills[1].name).toEqual("Communication");
 	});
 
-	it("POST /jobs/search - search for job postings 12345 zipcode", async () => {
-		const res = await request
-			.post("/JobSearch")
-			.set("Cookie", [employer_session_info])
-			.send({
-				zipCode: "12345",
-				skills: [com_skill],
-			});
-		let body = JSON.parse(res.text);
-		expect(body.length).toEqual(1);
-		expect(res.statusCode).toEqual(200);
-	});
-
 	it("POST /jobPosting - create another job posting", async () => {
+		let skill6 = await Skill.findOneOrCreate("Plumbing");
+		let skill7 = await Skill.findOneOrCreate("Communication");
 		const res = await request
 			.post("/jobPosting")
 			.set("Cookie", [employer_session_info])
 			.send({
 				jobTitle: "Plumber",
-				pay: "$80,000",
-				code: "2",
+				salary: "$80,000",
+				amountOfJobs: "2",
 				zipCode: "12345",
 				description: "Fix piping.",
-				qualifications: "2 years experience.",
-				organization: "Happy Plumbers Inc",
-				skills: ["Plumbing", "Communication"],
+				responsibilities: "2 years experience.",
+				skills: [skill6, skill7],
+			});
+		expect(res.text).toEqual("Successfully created jobposting.");
+		expect(res.statusCode).toEqual(200);
+	});
+
+	it("POST /jobs/search - search for job postings 12346 zipcode", async () => {
+		let skill92 = await Skill.findOneOrCreate("Plumbing");
+		const res = await request
+			.post("/JobSearch")
+			.set("Cookie", [employer_session_info])
+			.send({
+				zipCode: "12345",
+				skills: [skill92],
 			});
 		let body = JSON.parse(res.text);
-		job_posting_id = body.id;
+		expect(body.length).toEqual(1);
+		job_posting_id = body[0]._id;
 		expect(res.statusCode).toEqual(200);
-		expect(body.organization.name).toEqual("Happy Plumbers Inc");
-		expect(body.jobTitle).toEqual("Plumber");
-		expect(body.pay).toEqual("$80,000");
-		expect(body.code).toEqual("2");
-		expect(body.zipCode).toEqual("12345");
-		expect(body.description).toEqual("Fix piping.");
-		expect(body.qualifications).toEqual("2 years experience.");
-		expect(body.skills[0].name).toEqual("Plumbing");
-		expect(body.skills[1].name).toEqual("Communication");
-		com_skill = body.skills[1];
 	});
 
 	it("GET /jobs/jobposting - get another job posting", async () => {
@@ -259,13 +235,12 @@ describe("JobController Tests", () => {
 			.set("Cookie", [employer_session_info]);
 		let body = JSON.parse(res.text);
 		expect(res.statusCode).toEqual(200);
-		expect(body.organization.name).toEqual("Happy Plumbers Inc");
+		expect(body.organization.name).toEqual("Microsoft");
 		expect(body.jobTitle).toEqual("Plumber");
-		expect(body.pay).toEqual("$80,000");
-		expect(body.code).toEqual("2");
+		expect(body.salary).toEqual("$80,000");
 		expect(body.zipCode).toEqual("12345");
 		expect(body.description).toEqual("Fix piping.");
-		expect(body.qualifications).toEqual("2 years experience.");
+		expect(body.responsibilities).toEqual("2 years experience.");
 		expect(body.skills[0].name).toEqual("Plumbing");
 		expect(body.skills[1].name).toEqual("Communication");
 	});
@@ -276,7 +251,6 @@ describe("JobController Tests", () => {
 			.set("Cookie", [employer_session_info])
 			.send({
 				zipCode: "12345",
-				skills: [com_skill],
 			});
 		let body = JSON.parse(res.text);
 		expect(body.length).toEqual(2);

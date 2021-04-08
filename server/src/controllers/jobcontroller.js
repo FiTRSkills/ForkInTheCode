@@ -27,11 +27,13 @@ jobController.getJobPosting = async function (req, res) {
   data = {
     id: jobPost._id,
     jobTitle: jobPost.jobTitle,
-    pay: jobPost.pay,
-    code: jobPost.code,
+    salary: jobPost.salary,
+    benefits: jobPost.benefits,
     zipCode: jobPost.zipCode,
     description: jobPost.description,
-    qualifications: jobPost.qualifications,
+    responsibilities: jobPost.responsibilities,
+    amountOfJobs: jobPost.amountOfJobs,
+    jobTimeline: jobPost.jobTimeline,
     organization: jobPost.organization,
     skills: jobPost.skills,
   };
@@ -48,36 +50,30 @@ jobController.getJobPosting = async function (req, res) {
  */
 jobController.createJobPosting = async function (req, res) {
   if (req.user.type == User.Type.EMPLOYER) {
-    let jobPost = new JobPosting({
-      jobTitle: req.body.jobTitle,
-      pay: req.body.pay,
-      code: req.body.code,
-      zipCode: req.body.zipCode,
-      description: req.body.description,
-      qualifications: req.body.qualifications,
+    let jobPost = new JobPosting({});
+    // iterates through given information to add to course
+    Object.keys(req.body).forEach(function (key) {
+      jobPost[key] = req.body[key];
     });
-    await jobPost.setOrganization(req.body.organization);
-    await jobPost.addSkills(req.body.skills);
-    jobPost.save(function (err) {
-      if (err) {
-        res.status(400).send(err);
+    try {
+      let profile = await req.user.getProfile();
+      await jobPost.setOrganization(profile.organization.name);
+      jobPost.save(function (err) {
+        if (err) {
+          res.status(400).send(err);
+          return;
+        }
+        res.status(200).send("Successfully created jobposting.");
+      });
+    } catch (error) {
+      if (error instanceof mongoose.Error.CastError) {
+        res.status(400).send("Error adding skills.");
         return;
       }
-      data = {
-        id: jobPost._id,
-        jobTitle: jobPost.jobTitle,
-        pay: jobPost.pay,
-        code: jobPost.code,
-        zipCode: jobPost.zipCode,
-        description: jobPost.description,
-        qualifications: jobPost.qualifications,
-        organization: jobPost.organization,
-        skills: jobPost.skills,
-      };
-      res.status(200).send(data);
-    });
+      res.status(400).send("Error on jobposting creation.");
+    }
   } else {
-    res.status(400).send("Invalid usertype to create job postings.");
+    res.status(400).send("Invalid usertype.");
   }
 };
 
@@ -92,10 +88,10 @@ jobController.createJobPosting = async function (req, res) {
 jobController.viewJobPostings = async function (req, res) {
   if (req.user.type == User.Type.EMPLOYER) {
     let org = req.user.organization;
-    try{
-      let jobpostings = await JobPosting.search({organization: org})
+    try {
+      let jobpostings = await JobPosting.search({ organization: org });
       res.status(200).send(org);
-    }catch (e){
+    } catch (e) {
       res.status.send("Issue retrieving jobpostings");
     }
   } else {
@@ -114,10 +110,10 @@ jobController.viewJobPostings = async function (req, res) {
 jobController.getMyJobPosting = async function (req, res) {
   if (req.user.type == User.Type.EMPLOYER) {
     let org = req.user.organization;
-    try{
-      let jobpostings = await JobPosting.search({organization: org})
+    try {
+      let jobpostings = await JobPosting.search({ organization: org });
       res.status(200).send(org);
-    }catch (e){
+    } catch (e) {
       res.status.send("Issue retrieving jobpostings");
     }
   } else {
@@ -136,10 +132,10 @@ jobController.getMyJobPosting = async function (req, res) {
 jobController.editMyJobPosting = async function (req, res) {
   if (req.user.type == User.Type.EMPLOYER) {
     let org = req.user.organization;
-    try{
-      let jobpostings = await JobPosting.search({organization: org})
+    try {
+      let jobpostings = await JobPosting.search({ organization: org });
       res.status(200).send(org);
-    }catch (e){
+    } catch (e) {
       res.status.send("Issue retrieving jobpostings");
     }
   } else {
@@ -158,10 +154,10 @@ jobController.editMyJobPosting = async function (req, res) {
 jobController.deleteMyJobPosting = async function (req, res) {
   if (req.user.type == User.Type.EMPLOYER) {
     let org = req.user.organization;
-    try{
-      let jobpostings = await JobPosting.search({organization: org})
+    try {
+      let jobpostings = await JobPosting.search({ organization: org });
       res.status(200).send(org);
-    }catch (e){
+    } catch (e) {
       res.status.send("Issue retrieving jobpostings");
     }
   } else {

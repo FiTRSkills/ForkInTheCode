@@ -254,10 +254,13 @@ router.get("/jobPostings", validation.validateSession, job.viewJobPostings);
  * @property {string} id -  the job posting id
  * @returns {string} message - success message
  */
-router.get("/jobPosting", validation.validateSession, 
+router.get(
+  "/jobPosting",
+  validation.validateSession,
   [check("_id", "Must send a viable ID").not().isEmpty()],
-  validation.validateInput, 
-  job.getMyJobPosting);
+  validation.validateInput,
+  job.getMyJobPosting
+);
 
 /**
  * Routing serving retrieving a job posting by id
@@ -267,7 +270,9 @@ router.get("/jobPosting", validation.validateSession,
  * @property {string} id -  the job posting id and edits
  * @returns {string} message - success message
  */
-router.patch("/jobPosting", validation.validateSession, 
+router.patch(
+  "/jobPosting",
+  validation.validateSession,
   [
     check("_id", "Must send a viable course _id").not().isEmpty(),
     check("location", "Must send a viable location").not().isEmpty(),
@@ -282,7 +287,8 @@ router.patch("/jobPosting", validation.validateSession,
     check("requiredEquipment", "requiredEquipment must exist").exists(),
   ],
   validation.validateInput,
-  job.editMyJobPosting);
+  job.editMyJobPosting
+);
 
 /**
  * Routing serving retrieving a job posting by id
@@ -292,10 +298,13 @@ router.patch("/jobPosting", validation.validateSession,
  * @property {string} id -  the job posting id
  * @returns {string} message - success message
  */
-router.delete("/jobPosting", validation.validateSession, 
+router.delete(
+  "/jobPosting",
+  validation.validateSession,
   [check("_id", "Must send a viable ID").not().isEmpty()],
-  validation.validateInput, 
-  job.deleteMyJobPosting);
+  validation.validateInput,
+  job.deleteMyJobPosting
+);
 
 /**
  * Routing serving retrieving a job posting by id
@@ -310,12 +319,25 @@ router.post(
   validation.validateSession,
   [
     check("jobTitle", "Must send a viable job title").not().isEmpty(),
-    check("pay", "Must send a viable pay").optional({ nullable: true }),
-    check("code", "Must send a viable code").optional({ nullable: true }),
+    check("salary", "Must send a viable salary").optional({ nullable: true }),
+    check("zipCode", "Must send a viable zipcode").not().isEmpty(),
     check("description", "Must send a viable description").not().isEmpty(),
-    check("organization", "Must send a viable organization").not().isEmpty(),
-    check("qualifications", "Must send viable qualifications").not().isEmpty(),
+    check("amountOfJobs", "Must send a viable amountOfJobs").optional({
+      nullable: true,
+    }),
+    check("jobTimeline", "Must send a viable jobTimeline").optional({
+      nullable: true,
+    }),
+    check("benefits", "Must send a viable benefits").optional({
+      nullable: true,
+    }),
+    check("responsibilities", "Must send viable responsibilities").optional({
+      nullable: true,
+    }),
     check("skills", "Must send viable skills").not().isEmpty(),
+    check("courses", "Must send viable courses").optional({
+      nullable: true,
+    }),
   ],
   validation.validateInput,
   job.createJobPosting
