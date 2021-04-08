@@ -123,7 +123,7 @@ jobController.getMyJobPosting = async function (req, res) {
         res.status(400).send("User does not own this jobposting.");
       }
     } catch (e) {
-      res.status(400).send("Issue retrieving jobpostings");
+      res.status(400).send("Issue retrieving jobposting.");
     }
   } else {
     res.status(400).send("Invalid usertype to view job postings.");
