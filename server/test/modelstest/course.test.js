@@ -148,7 +148,7 @@ describe("Course Model Test", () => {
     let savedCourse = await Course.findById(course._id).exec();
     await savedCourse.removeSkill(skills[0]._id);
 
-    expect(course.skills.length).toEqual(1);
-    expect(course.skills[0]._id).toEqual(skills[1]._id);
+    expect(savedCourse.skills.length).toEqual(1);
+    expect(savedCourse.skills[0]._id).toEqual(skills[1]._id);
   });
 });
