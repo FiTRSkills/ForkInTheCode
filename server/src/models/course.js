@@ -74,7 +74,7 @@ Course.statics.findAllBySkill = async function (skill) {
  * Sets the organization or creates a new one if the name is not found.
  *
  * @param name The name of the organization to match or create
- * @returns {Promise<EducatorProfile>}
+ * @returns {Promise<Course>}
  */
 Course.methods.setOrganization = async function (name) {
   let org = await Organization.findOneOrCreate(name);
@@ -88,7 +88,7 @@ Course.methods.setOrganization = async function (name) {
  * Add skills that this course teaches by their IDs.
  *
  * @param skills A list of object IDs corresponding to the skills that should be added.
- * @returns {Promise<JobPosting>}
+ * @returns {Promise<Course>}
  */
 Course.methods.addSkills = async function (skills) {
   let skillEntries = await Skill.find({ _id: { $in: skills } });
@@ -101,7 +101,7 @@ Course.methods.addSkills = async function (skills) {
  * Removes a skill from the course by the given id.  This does not delete the skill from the system.
  *
  * @param id The id of the skill to remove from the course
- * @returns {Promise<JobSeekerProfile>}
+ * @returns {Promise<Course>}
  */
 Course.methods.removeSkill = async function (id) {
   // Handle both the auto-populated object and the non auto-populated one.
