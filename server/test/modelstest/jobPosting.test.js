@@ -34,10 +34,12 @@ describe("JobPosting Model Test", () => {
     let jobPosting = new JobPosting({
       jobTitle: "Job 1",
       zipCode: "12345",
-      pay: "$1",
-      code: "abc-123",
+      salary: "$1",
+      benefits: "15 Vacation Days",
       description: "Job 1 Description",
-      qualifications: "Experience",
+      amountOfJobs: "3 Positions",
+      jobTimeline: "Start in 2 weeks",
+      responsibilities: "A, B, C",
       organization: organization._id,
       skills: skills.map((skill) => skill._id),
     });
@@ -47,10 +49,12 @@ describe("JobPosting Model Test", () => {
 
     expect(jobPosting.jobTitle).toEqual("Job 1");
     expect(jobPosting.zipCode).toEqual("12345");
-    expect(jobPosting.pay).toEqual("$1");
-    expect(jobPosting.code).toEqual("abc-123");
+    expect(jobPosting.salary).toEqual("$1");
+    expect(jobPosting.benefits).toEqual("15 Vacation Days");
     expect(jobPosting.description).toEqual("Job 1 Description");
-    expect(jobPosting.qualifications).toEqual("Experience");
+    expect(jobPosting.amountOfJobs).toEqual("3 Positions");
+    expect(jobPosting.jobTimeline).toEqual("Start in 2 weeks");
+    expect(jobPosting.responsibilities).toEqual("A, B, C");
     expect(jobPosting.organization.name).toEqual(organization.name);
     expect(jobPosting.organization._id).toEqual(organization._id);
     expect(jobPosting.skills.length).toEqual(skills.length);

@@ -20,11 +20,11 @@ const JobPosting = new mongoose.Schema({
     type: String,
     default: "",
   },
-  pay: {
+  salary: {
     type: String,
     default: "",
   },
-  code: {
+  benefits: {
     type: String,
     default: "",
   },
@@ -32,7 +32,15 @@ const JobPosting = new mongoose.Schema({
     type: String,
     default: "",
   },
-  qualifications: {
+  amountOfJobs: {
+    type: String,
+    default: "",
+  },
+  jobTimeline: {
+    type: String,
+    default: "",
+  },
+  responsibilities: {
     type: String,
     default: "",
   },
