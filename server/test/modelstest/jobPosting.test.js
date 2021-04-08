@@ -174,7 +174,7 @@ describe("JobPosting Model Test", () => {
   it("add skills - single skill", async () => {
     let skills = await makeSkills();
     let jobPosting = new JobPosting();
-    await jobPosting.addSkills(["S1"]);
+    await jobPosting.addSkills(skills[0]._id.toString());
 
     let savedJobPosting = await JobPosting.getJobPosting(jobPosting._id);
     expect(savedJobPosting.skills.length).toEqual(1);
@@ -186,12 +186,41 @@ describe("JobPosting Model Test", () => {
   it("add skills - multiple skills", async () => {
     let skills = await makeSkills();
     let jobPosting = new JobPosting();
-    await jobPosting.addSkills(["S1", "S4"]);
+    await jobPosting.addSkills([
+      skills[0]._id.toString(),
+      skills[1]._id.toString(),
+    ]);
 
     let savedJobPosting = await JobPosting.getJobPosting(jobPosting._id);
     expect(savedJobPosting.skills.length).toEqual(2);
     expect(savedJobPosting.skills[0]._id).toEqual(skills[0]._id);
-    let savedSkills = await Skill.find({}).exec();
-    expect(savedSkills.length).toEqual(4);
+    expect(savedJobPosting.skills[1]._id).toEqual(skills[1]._id);
+  });
+
+  it("remove skill - existing skill", async () => {
+    let skills = await makeSkills();
+    let jobPosting = new JobPosting();
+    await jobPosting.addSkills([
+      skills[0]._id.toString(),
+      skills[1]._id.toString(),
+    ]);
+
+    let savedJobPosting = await JobPosting.findById(jobPosting._id).exec();
+    await savedJobPosting.removeSkill(skills[0]._id);
+
+    expect(savedJobPosting.skills.length).toEqual(1);
+    expect(savedJobPosting.skills[0]._id).toEqual(skills[1]._id);
+  });
+
+  it("remove skill - non existent skill", async () => {
+    let skills = await makeSkills();
+    let jobPosting = new JobPosting();
+    await jobPosting.addSkills([skills[1]._id.toString()]);
+
+    let savedJobPosting = await JobPosting.findById(jobPosting._id).exec();
+    await savedJobPosting.removeSkill(skills[0]._id);
+
+    expect(savedJobPosting.skills.length).toEqual(1);
+    expect(savedJobPosting.skills[0]._id).toEqual(skills[1]._id);
   });
 });
