@@ -110,7 +110,6 @@ skillController.createSkill = async function (req, res) {
       await SkillHistory.logNew(req.user, skill);
       res.status(200).send({ _id: skill._id });
     } catch (error) {
-      console.log(error);
       res.status(400).send("Error on skill creation.");
       return;
     }
