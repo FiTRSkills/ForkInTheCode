@@ -3,6 +3,7 @@
  */
 const mongoose = require("mongoose");
 const passport = require("passport");
+const User = require("../models/user");
 const JobPosting = require("../models/jobPosting");
 
 const jobController = {};
@@ -26,11 +27,13 @@ jobController.getJobPosting = async function (req, res) {
   data = {
     id: jobPost._id,
     jobTitle: jobPost.jobTitle,
-    pay: jobPost.pay,
-    code: jobPost.code,
+    salary: jobPost.salary,
+    benefits: jobPost.benefits,
     zipCode: jobPost.zipCode,
     description: jobPost.description,
-    qualifications: jobPost.qualifications,
+    responsibilities: jobPost.responsibilities,
+    amountOfJobs: jobPost.amountOfJobs,
+    jobTimeline: jobPost.jobTimeline,
     organization: jobPost.organization,
     skills: jobPost.skills,
   };
@@ -46,37 +49,155 @@ jobController.getJobPosting = async function (req, res) {
  * @returns {string} response - the created job posting id
  */
 jobController.createJobPosting = async function (req, res) {
-  if (req.user.type == "EmployerProfile") {
-    let jobPost = new JobPosting({
-      jobTitle: req.body.jobTitle,
-      pay: req.body.pay,
-      code: req.body.code,
-      zipCode: req.body.zipCode,
-      description: req.body.description,
-      qualifications: req.body.qualifications,
+  if (req.user.type == User.Type.EMPLOYER) {
+    let jobPost = new JobPosting({});
+    // iterates through given information to add to course
+    Object.keys(req.body).forEach(function (key) {
+      jobPost[key] = req.body[key];
     });
-    await jobPost.setOrganization(req.body.organization);
-    await jobPost.addSkills(req.body.skills);
-    jobPost.save(function (err) {
-      if (err) {
-        res.status(400).send(err);
+    try {
+      let profile = await req.user.getProfile();
+      await jobPost.setOrganization(profile.organization.name);
+      jobPost.save(function (err) {
+        if (err) {
+          res.status(400).send(err);
+          return;
+        }
+        res.status(200).send("Successfully created jobposting.");
+      });
+    } catch (error) {
+      if (error instanceof mongoose.Error.CastError) {
+        res.status(400).send("Error adding skills.");
         return;
       }
-      data = {
-        id: jobPost._id,
-        jobTitle: jobPost.jobTitle,
-        pay: jobPost.pay,
-        code: jobPost.code,
-        zipCode: jobPost.zipCode,
-        description: jobPost.description,
-        qualifications: jobPost.qualifications,
-        organization: jobPost.organization,
-        skills: jobPost.skills,
-      };
-      res.status(200).send(data);
-    });
+      res.status(400).send("Error on jobposting creation.");
+    }
   } else {
-    res.status(400).send("Invalid usertype to create job postings.");
+    res.status(400).send("Invalid usertype.");
+  }
+};
+
+/**
+ * functionality for viewing all created job postings
+ * @name viewJobPostings
+ * @function
+ * @alias module:/controllers/jobcontroller
+ * @property {request} request - contains user
+ * @returns {string} response - the job postings
+ */
+jobController.viewJobPostings = async function (req, res) {
+  if (req.user.type == User.Type.EMPLOYER) {
+    let profile = await req.user.getProfile();
+    try {
+      let jobpostings = await JobPosting.find({
+        organization: profile.organization._id,
+      }).exec();
+      res.status(200).send(jobpostings);
+    } catch (e) {
+      res.status(400).send("Issue retrieving jobpostings");
+    }
+  } else {
+    res.status(400).send("Invalid usertype to view job postings.");
+  }
+};
+
+/**
+ * functionality for getting a jobposting user created
+ * @name getMyJobPostings
+ * @function
+ * @alias module:/controllers/jobcontroller
+ * @property {request} request - id
+ * @returns {string} response - the job posting
+ */
+jobController.getMyJobPosting = async function (req, res) {
+  if (req.user.type == User.Type.EMPLOYER) {
+    let profile = await req.user.getProfile();
+    try {
+      let jobposting = await JobPosting.findById(req.query._id);
+      if (
+        profile.organization._id.toString() ==
+        jobposting.organization._id.toString()
+      ) {
+        res.status(200).send(jobposting);
+      } else {
+        res.status(400).send("User does not own this jobposting.");
+      }
+    } catch (e) {
+      res.status(400).send("Issue retrieving jobposting.");
+    }
+  } else {
+    res.status(400).send("Invalid usertype to view job postings.");
+  }
+};
+
+/**
+ * functionality for editing a jobposting user created
+ * @name editMyJobPostings
+ * @function
+ * @alias module:/controllers/jobcontroller
+ * @property {request} request - job posting
+ * @returns {string} response - success msg
+ */
+jobController.editMyJobPosting = async function (req, res) {
+  if (req.user.type == User.Type.EMPLOYER) {
+    let profile = await req.user.getProfile();
+    try {
+      let jobpost = await JobPosting.findById(req.body._id);
+      if (
+        profile.organization._id.toString() !=
+        jobpost.organization._id.toString()
+      ) {
+        res.status(400).send("User does not own this jobposting.");
+        return;
+      }
+      // iterates through given information to add to course
+      Object.keys(req.body).forEach(function (key) {
+        if (key != "_id") {
+          jobpost[key] = req.body[key];
+        }
+      });
+      jobpost.save(function (err) {
+        if (err) {
+          res.status(400).send(err);
+          return;
+        }
+        res.status(200).send("Successfully updated jobposting.");
+      });
+    } catch (error) {
+      res.status(400).send("Error editing jobposting.");
+    }
+  } else {
+    res.status(400).send("Invalid usertype.");
+  }
+};
+
+/**
+ * functionality for deleting a jobposting user created
+ * @name deleteMyJobPostings
+ * @function
+ * @alias module:/controllers/jobcontroller
+ * @property {request} request - id
+ * @returns {string} response - success msg
+ */
+jobController.deleteMyJobPosting = async function (req, res) {
+  if (req.user.type == User.Type.EMPLOYER) {
+    let profile = await req.user.getProfile();
+    try {
+      let post = await JobPosting.findById(req.body._id);
+      if (
+        profile.organization._id.toString() != post.organization._id.toString()
+      ) {
+        res.status(400).send("User does not own this jobposting.");
+        return;
+      }
+      await post.remove();
+      res.status(200).send("Successfully deleted jobposting.");
+    } catch (error) {
+      res.status(400).send("Error deleting jobposting.");
+      return;
+    }
+  } else {
+    res.status(400).send("Invalid usertype.");
   }
 };
 

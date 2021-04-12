@@ -228,13 +228,85 @@ router.post(
 
 /**
  * Routing serving retrieving a job posting by id
- * @name POST /jobs/jobposting
+ * @name GET /jobs/jobposting
  * @function
  * @alias module:/routers/job
  * @property {string} id -  the job posting id
  * @returns {string} message - success message
  */
 router.get("/jobs/jobposting", job.getJobPosting);
+
+/**
+ * Routing serving retrieving an organization's job postings
+ * @name GET /jobPostings
+ * @function
+ * @alias module:/routers/job
+ * @property {string} user -  the user session
+ * @returns {string} array - job postings
+ */
+router.get("/jobPostings", validation.validateSession, job.viewJobPostings);
+
+/**
+ * Routing serving retrieving a job posting by id
+ * @name POST /jobPosting
+ * @function
+ * @alias module:/routers/job
+ * @property {string} id -  the job posting id
+ * @returns {string} message - success message
+ */
+router.get(
+  "/jobPosting",
+  validation.validateSession,
+  [check("_id", "Must send a viable ID").not().isEmpty()],
+  validation.validateInput,
+  job.getMyJobPosting
+);
+
+/**
+ * Routing serving retrieving a job posting by id
+ * @name PATCH /jobPosting
+ * @function
+ * @alias module:/routers/job
+ * @property {string} id -  the job posting id and edits
+ * @returns {string} message - success message
+ */
+router.patch(
+  "/jobPosting",
+  validation.validateSession,
+  [
+    check("_id", "Must send a viable course _id").not().isEmpty(),
+    check("jobTitle", "Must send a viable job title").exists(),
+    check("salary", "Must send a viable salary").exists(),
+    check("zipCode", "Must send a viable zipcode").exists(),
+    check("description", "Must send a viable description").exists(),
+    check("amountOfJobs", "Must send a viable amountOfJobs").exists(),
+    check("jobTimeline", "Must send a viable jobTimeline").exists(),
+    check("benefits", "Must send a viable benefits").exists(),
+    check("responsibilities", "Must send viable responsibilities")
+      .not()
+      .isEmpty(),
+    check("skills", "Must send viable skills").exists(),
+    check("courses", "Must send viable courses").exists(),
+  ],
+  validation.validateInput,
+  job.editMyJobPosting
+);
+
+/**
+ * Routing serving retrieving a job posting by id
+ * @name DELETE /jobPosting
+ * @function
+ * @alias module:/routers/job
+ * @property {string} id -  the job posting id
+ * @returns {string} message - success message
+ */
+router.delete(
+  "/jobPosting",
+  validation.validateSession,
+  [check("_id", "Must send a viable ID").not().isEmpty()],
+  validation.validateInput,
+  job.deleteMyJobPosting
+);
 
 /**
  * Routing serving retrieving a job posting by id
@@ -245,16 +317,29 @@ router.get("/jobs/jobposting", job.getJobPosting);
  * @returns {string} message - success message
  */
 router.post(
-  "/jobs/createjobposting",
+  "/jobPosting",
   validation.validateSession,
   [
     check("jobTitle", "Must send a viable job title").not().isEmpty(),
-    check("pay", "Must send a viable pay").optional({ nullable: true }),
-    check("code", "Must send a viable code").optional({ nullable: true }),
+    check("salary", "Must send a viable salary").optional({ nullable: true }),
+    check("zipCode", "Must send a viable zipcode").not().isEmpty(),
     check("description", "Must send a viable description").not().isEmpty(),
-    check("organization", "Must send a viable organization").not().isEmpty(),
-    check("qualifications", "Must send viable qualifications").not().isEmpty(),
+    check("amountOfJobs", "Must send a viable amountOfJobs").optional({
+      nullable: true,
+    }),
+    check("jobTimeline", "Must send a viable jobTimeline").optional({
+      nullable: true,
+    }),
+    check("benefits", "Must send a viable benefits").optional({
+      nullable: true,
+    }),
+    check("responsibilities", "Must send viable responsibilities").optional({
+      nullable: true,
+    }),
     check("skills", "Must send viable skills").not().isEmpty(),
+    check("courses", "Must send viable courses").optional({
+      nullable: true,
+    }),
   ],
   validation.validateInput,
   job.createJobPosting
