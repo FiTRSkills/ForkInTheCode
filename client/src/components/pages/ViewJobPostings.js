@@ -204,7 +204,7 @@ function ViewJobPostings({ changeCurrentPage, user, history }) {
             >
               <Box className={classes.header}>
                 <Typography variant="h5" component="h2">
-                  {jobPostingItem.name}
+                  {jobPostingItem.jobTitle}
                 </Typography>
                 <Box className={classes.buttonContainer}>
                   <Button
