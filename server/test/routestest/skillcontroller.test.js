@@ -86,31 +86,30 @@ describe("testing skill routes", () => {
   });
 
   it("GET /skills/search - get skills in zipcode", async () => {
+    let chicken = await Skill.findOneOrCreate("Chicken");
+    let pizza = await Skill.findOneOrCreate("Pizza");
+    let pep = await Skill.findOneOrCreate("Pepperoni");
     await request
-      .post("/jobs/createjobposting")
+      .post("/jobPosting")
       .set("Cookie", [employer_session_info])
       .send({
         jobTitle: "Software Engineer",
-        pay: "$60,000",
-        code: "1",
+        salary: "$60,000",
         zipCode: "12345",
         description: "This is a posting for a SE.",
-        qualifications: "Don't suck at coding.",
-        organization: "Microsoft",
-        skills: ["Chicken", "Pizza"],
+        responsibilities: "Don't suck at coding.",
+        skills: [chicken, pizza],
       });
     await request
-      .post("/jobs/createjobposting")
+      .post("/jobPosting")
       .set("Cookie", [employer_session_info])
       .send({
-        jobTitle: "Software Engineer2",
-        pay: "$60,000",
-        code: "1",
+        jobTitle: "Software Engineer",
+        salary: "$60,000",
         zipCode: "12345",
         description: "This is a posting for a SE.",
-        qualifications: "Don't suck at coding.",
-        organization: "Microsoft",
-        skills: ["Chicken", "Pepperoni"],
+        responsibilities: "Don't suck at coding.",
+        skills: [chicken, pep],
       });
     const res = await request.get("/skills/search?zipCode=12345");
     expect(res.statusCode).toEqual(200);

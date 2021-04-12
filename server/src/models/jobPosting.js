@@ -20,11 +20,11 @@ const JobPosting = new mongoose.Schema({
     type: String,
     default: "",
   },
-  pay: {
+  salary: {
     type: String,
     default: "",
   },
-  code: {
+  benefits: {
     type: String,
     default: "",
   },
@@ -32,7 +32,15 @@ const JobPosting = new mongoose.Schema({
     type: String,
     default: "",
   },
-  qualifications: {
+  amountOfJobs: {
+    type: String,
+    default: "",
+  },
+  jobTimeline: {
+    type: String,
+    default: "",
+  },
+  responsibilities: {
     type: String,
     default: "",
   },
@@ -94,10 +102,24 @@ JobPosting.methods.setOrganization = async function (organization) {
  * @returns {Promise<JobPosting>}
  */
 JobPosting.methods.addSkills = async function (skills) {
-  for (let skill of skills) {
-    let skillEntry = await Skill.findOneOrCreate(skill);
-    await this.skills.push(skillEntry);
-  }
+  let skillEntries = await Skill.find({ _id: { $in: skills } });
+  this.skills = this.skills.concat(skillEntries);
+  await this.save();
+  return this;
+};
+
+/**
+ * Removes a skill from the job posting by the given id.  This does not delete the skill from the system.
+ *
+ * @param id The id of the skill to remove from the job posting
+ * @returns {Promise<JobPosting>}
+ */
+JobPosting.methods.removeSkill = async function (id) {
+  // Handle both the auto-populated object and the non auto-populated one.
+  this.skills = this.skills.filter((skill) => {
+    if (skill._id) return !skill._id.equals(id);
+    return !skill.equals(id);
+  });
   await this.save();
   return this;
 };

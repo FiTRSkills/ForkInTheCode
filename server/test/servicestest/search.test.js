@@ -45,9 +45,9 @@ describe("Search service test", () => {
     let skills = await makeSkills();
     let jobs = await makeJobs();
 
-    await jobs[0].addSkills([skills[2].name]);
-    await jobs[1].addSkills([skills[2].name, skills[1].name]);
-    await jobs[2].addSkills([skills[2].name, skills[1].name, skills[0].name]);
+    await jobs[0].addSkills([skills[2]._id]);
+    await jobs[1].addSkills([skills[2]._id, skills[1]._id]);
+    await jobs[2].addSkills([skills[2]._id, skills[1]._id, skills[0]._id]);
 
     let result = await search.findSkillsByZip("12345");
 
