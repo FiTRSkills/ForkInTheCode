@@ -25,7 +25,7 @@ jobs:
           node-version: 14.x
       - run: npm ci --prefix server
       - run: npm ci --prefix client
-      - name: cypress run --spec "cypress/integration/FrontEndTests/*"
+      - name: npm run cy:run -- --headless --spec cypress/integration/FrontEndTests/*
         uses: cypress-io/github-action@v2
         with:
           record: true
@@ -41,7 +41,7 @@ jobs:
           mongodb-version: 4.4
       - name: Add admin user    
         run: echo 'db.createUser({user:"admin", pwd:"password", roles:[]});' | mongo data
-      - name: cypress run --spec "cypress/integration/End2EndTests/*"
+      - name: npm run cy:run -- --headless --spec cypress/integration/End2EndTests/*
         uses: cypress-io/github-action@v2
         with:
           record: true
