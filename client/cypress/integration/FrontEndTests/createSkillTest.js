@@ -14,7 +14,7 @@ describe("View Courses", () => {
     cy.get("body").should("not.contain", "Create Skill");
     cy.get("#skillInput").type(" engineering");
     cy.contains("Create Skill");
-    cy.get("body").should("not.contain", "Add Skill");
+    cy.get("body").should("contain", "Add Skill");
   });
 
   it("Create Skill SUCCESS", () => {
