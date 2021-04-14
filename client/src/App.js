@@ -15,6 +15,7 @@ import SkillDetails from "./components/pages/SkillDetails";
 import SkillSearch from "./components/pages/SkillSearch";
 import ViewCourses from "./components/pages/ViewCourses";
 import AddEditCourse from "./components/pages/AddEditCourse";
+import AddEditJobPosting from "./components/pages/AddEditJobPosting";
 
 function App() {
   return (
@@ -38,6 +39,10 @@ function App() {
           <Redirect exact from="/My Courses" to={"/Courses"} />
           <Route component={ViewCourses} path={"/Courses"} />
           <Route component={AddEditCourse} path={"/Course/:mode"} />
+          <Route
+            component={AddEditJobPosting}
+            path={"/JobPosting/:mode/:id?"}
+          />
         </Switch>
       </div>
     </Router>
