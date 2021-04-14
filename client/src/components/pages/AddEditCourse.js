@@ -64,11 +64,7 @@ function AddEditCourse(props) {
   useEffect(() => {
     async function asyncAuth() {
       let response = await checkAndUpdateAuth(props.user.type);
-      if (
-        response === undefined ||
-        response.length < 1 ||
-        response !== "EducatorProfile"
-      ) {
+      if (response !== "EducatorProfile") {
         props.history.push("/Login");
       } else {
         props.changeCurrentPage("Courses");
