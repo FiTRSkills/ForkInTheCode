@@ -111,7 +111,7 @@ function ViewJobPostings({ changeCurrentPage, user, history }) {
   useEffect(() => {
     async function asyncAuth() {
       let response = await checkAndUpdateAuth(user.type);
-      if (response === undefined || response !== "EmployerProfile") {
+      if (response !== "EmployerProfile") {
         history.push("/Login");
       } else {
         changeCurrentPage("Job Postings");
