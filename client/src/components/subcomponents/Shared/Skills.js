@@ -43,11 +43,17 @@ function Skills({
   const [loading, setLoading] = useState(false);
   const [isOpenCreateSkillDialog, setOpenCreateSkillDialog] = useState(false);
   const [shouldAllowCreate, setShouldAllowCreate] = useState(false);
+  const [valueToEnter, setValueToEnter] = useState("");
 
   useEffect(() => {
     fetchSkills();
     setCurrentSkill("");
   }, [editMode]);
+
+  useEffect(() => {
+    addSkill();
+    // eslint-disable-next-line
+  }, [valueToEnter]);
 
   function fetchSkills() {
     return axios
@@ -130,12 +136,11 @@ function Skills({
     }
   }
 
-  function handleSubmit(event) {
-    if (event.key === "Enter") {
-      addSkill();
-      event.preventDefault();
+  function handleSubmit(event,value) {
+    setCurrentSkill(value);
+    setValueToEnter(value);
+    event.preventDefault();
     }
-  }
 
   function handleCreateSKillDialog() {
     setOpenCreateSkillDialog(!isOpenCreateSkillDialog);
@@ -211,13 +216,13 @@ function Skills({
             options={allSkills.map((item) => item.name)}
             blurOnSelect={"mouse"}
             id="skillInput"
+            onChange = {handleSubmit}
             renderInput={(params) => (
               <TextField
                 {...params}
                 label="New Skill"
                 margin="normal"
                 variant="outlined"
-                onKeyDown={handleSubmit}
               />
             )}
           />
