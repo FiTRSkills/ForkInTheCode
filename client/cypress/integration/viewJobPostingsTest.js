@@ -112,7 +112,7 @@ describe("View Job Postings", () => {
   it("View Job Postings SUCCESS", () => {
     cy.route({
       method: "GET",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobpostings",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobPostings",
       status: 200,
       response: getJobPostingsSuccessResponse,
     }).as("getJobPostingsCall");
@@ -120,22 +120,18 @@ describe("View Job Postings", () => {
     cy.wait("@getJobPostingsCall").its("status").should("eq", 200);
     cy.contains("org1");
     cy.contains("$100,000");
-    cy.contains("3 Months");
-    cy.contains("Monday: 15:00 - 18:00");
-    cy.contains("skill1");
-    cy.contains("org1");
-    cy.contains("Python 101");
-    cy.contains("RIT");
-    cy.contains("6 Months");
-    cy.contains("Tuesday: 10:00 - 12:00");
+    cy.contains("description 1");
     cy.contains("skill2");
     cy.contains("org2");
+    cy.contains("$200,000");
+    cy.contains("description 2");
+    cy.contains("skill2");
   });
 
   it("Load job posting failure", () => {
     cy.route({
       method: "GET",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobpostings",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobPostings",
       status: 400,
       response: "Failed to load Job Postings",
     }).as("getJobPostingsCall");
@@ -147,7 +143,7 @@ describe("View Job Postings", () => {
   it.skip("Navigate to Add Job Postings SUCCESS", () => {
     cy.route({
       method: "GET",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobpostings",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobPostings",
       status: 200,
       response: getJobPostingsSuccessResponse,
     }).as("getJobPostingsCall");
@@ -160,7 +156,7 @@ describe("View Job Postings", () => {
   it.skip("Navigate to Edit Job Postings SUCCESS", () => {
     cy.route({
       method: "GET",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobpostings",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobPostings",
       status: 200,
       response: getJobPostingsSuccessResponse,
     }).as("getJobPostingsCall");
@@ -178,13 +174,13 @@ describe("View Job Postings", () => {
   it("Delete Job Postings CONFIRM SUCCESS", () => {
     cy.route({
       method: "GET",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobpostings",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobPostings",
       status: 200,
       response: getJobPostingsSuccessResponse,
     }).as("getJobPostingsCall");
     cy.route({
       method: "DELETE",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobposting",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobPosting",
       status: 200,
       response: "Successfully Deleted",
     }).as("deleteJobPostingCall");
@@ -192,7 +188,7 @@ describe("View Job Postings", () => {
     cy.wait("@getJobPostingsCall").its("status").should("eq", 200);
     cy.route({
       method: "GET",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobpostings",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobPostings",
       status: 200,
       response: [getJobPostingsSuccessResponse[1]],
     }).as("getJobPostingsCall");
@@ -205,37 +201,37 @@ describe("View Job Postings", () => {
   it("Delete Job Postings CANCEL SUCCESS", () => {
     cy.route({
       method: "GET",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobpostings",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobPostings",
       status: 200,
       response: getJobPostingsSuccessResponse,
     }).as("getJobPostingsCall");
     cy.route({
       method: "DELETE",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobposting",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobPosting",
       status: 200,
       response: "Successfully Deleted",
     }).as("deleteJobPostingCall");
-    cy.get("#MyJob Postings").click();
+    cy.get("#MyJobPostings").click();
     cy.wait("@getJobPostingsCall").its("status").should("eq", 200);
     cy.get("#DeleteJobPosting1").click();
     cy.get("#confirmationConfirm").click();
-    cy.contains("Java 101");
+    cy.contains("title1");
   });
 
   it("Delete Job Postings FAILURE", () => {
     cy.route({
       method: "GET",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobpostings",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobPostings",
       status: 200,
       response: getJobPostingsSuccessResponse,
     }).as("getJobPostingsCall");
     cy.route({
       method: "DELETE",
-      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobposting",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobPosting",
       status: 400,
       response: "An error has occurred while trying to delete a job posting.",
     }).as("deleteJobPostingCall");
-    cy.get("#MyJob Postings").click();
+    cy.get("#MyJobPostings").click();
     cy.wait("@getJobPostingsCall").its("status").should("eq", 200);
     cy.get("#DeleteJobPosting1").click();
     cy.get("#confirmationConfirm").click();

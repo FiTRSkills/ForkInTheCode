@@ -100,7 +100,7 @@ function NavBar(props) {
           key={item}
           component={Link}
           to={"/" + item}
-          id={item.replace(" ", "")}
+          id={item.split(" ").join("")}
         >
           {item}
         </Button>
