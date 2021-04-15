@@ -122,7 +122,7 @@ function ViewCourses({
   useEffect(() => {
     async function asyncAuth() {
       let response = await checkAndUpdateAuth(user.type);
-      if (response === undefined || response !== "EducatorProfile") {
+      if (response !== "EducatorProfile") {
         history.push("/Login");
       } else {
         changeCurrentPage("Courses");
