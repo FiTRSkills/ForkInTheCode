@@ -5,8 +5,6 @@ export const UPDATE_RESULTS = "@fitr-skills/app/update_results";
 export const SET_COURSE_TO_EDIT = "@fitr-skills/app/set_course_to_edit";
 export const SET_COURSE_SUCCESS_MESSAGE =
   "@fitr-skills/app/set_course_success_message";
-export const SET_JOBPOSTING_TO_EDIT =
-  "@fitr-skills/app/set_job_posting_to_edit";
 export const SET_JOBPOSTING_SUCCESS_MESSAGE =
   "@fitr-skills/app/set_job_posting_success_message";
 export const STORE_SKILLS = "@fitr-skills/app/store_skills";
