@@ -92,6 +92,7 @@ function AddEditJobPosting(props) {
           setResponsibilities(response.data.responsibilities);
           setBenefits(response.data.benefits);
           setJobTimeline(response.data.jobTimeline);
+          setAmountOfJobs(response.data.amountOfJobs);
           setSkills(response.data.skills);
           setCourses(response.data.courses);
         }
@@ -223,6 +224,7 @@ function AddEditJobPosting(props) {
                 responsibilities,
                 benefits,
                 description,
+                amountOfJobs,
                 zipCode,
                 amountOfJobs,
                 salary,
