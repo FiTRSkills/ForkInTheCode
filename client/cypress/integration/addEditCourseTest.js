@@ -67,7 +67,6 @@ describe("Add Edit Course", () => {
 
     cy.get("#skillInput").type("developer");
     cy.contains("developer").click();
-    cy.get("#addSkill").click();
     cy.get("#skillList").should("contain", "developer");
 
     cy.get("#submit").click();
@@ -103,7 +102,6 @@ describe("Add Edit Course", () => {
 
     cy.get("#skillInput").type("developer");
     cy.contains("developer").click();
-    cy.get("#addSkill").click();
     cy.get("#skillList").should("contain", "developer");
 
     cy.get("#submit").click();
@@ -143,7 +141,6 @@ describe("Add Edit Course", () => {
 
     cy.get("#skillInput").type("developer");
     cy.contains("developer").click();
-    cy.get("#addSkill").click();
     cy.get("#skillList").should("contain", "developer");
 
     cy.get("#submit").click();
@@ -179,7 +176,6 @@ describe("Add Edit Course", () => {
 
     cy.get("#skillInput").type("developer");
     cy.contains("developer").click();
-    cy.get("#addSkill").click();
     cy.get("#skillList").should("contain", "developer");
 
     cy.get("#submit").click();
