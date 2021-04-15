@@ -40,6 +40,7 @@ const notAuthLeftSide = ["Job Search", "Skill Search"];
 const notAuthRightSide = ["Log In", "Sign Up"];
 const jobSeekerRightSide = ["Profile"];
 const educatorRightSide = ["My Courses"];
+const employerRightSide = ["My Job Postings"];
 
 function NavBar(props) {
   const [navBarListLeft, editNavBarListLeft] = useState([]);
@@ -63,6 +64,9 @@ function NavBar(props) {
       }
       if (props.user.type === "EducatorProfile") {
         rightSide.push(...educatorRightSide);
+      }
+      if (props.user.type === "EmployerProfile") {
+        rightSide.push(...employerRightSide);
       }
       leftSide.push(...authLeftSide);
       rightSide.push(...authRightSide);
@@ -96,7 +100,7 @@ function NavBar(props) {
           key={item}
           component={Link}
           to={"/" + item}
-          id={item.replace(" ", "")}
+          id={item.split(" ").join("")}
         >
           {item}
         </Button>
