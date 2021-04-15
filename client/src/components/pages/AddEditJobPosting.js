@@ -73,22 +73,15 @@ function AddEditJobPosting(props) {
       }
     }
     asyncAuth();
-    console.log(mode);
     // eslint-disable-next-line
   }, []);
 
   const updateForEdit = () => {
     setLoading(true);
     axios
-      .get(
-        process.env.REACT_APP_SERVER_URL + "/jobPosting",
-        {
-          id: id,
-        },
-        {
-          withCredentials: true,
-        }
-      )
+      .get(process.env.REACT_APP_SERVER_URL + "/jobPosting?_id=" + id, {
+        withCredentials: true,
+      })
       .then((response) => {
         if (response.data) {
           setId(response.data._id);
@@ -106,8 +99,16 @@ function AddEditJobPosting(props) {
       })
       .catch((error) => {
         if (error.response) {
-          if (error.response.status === 400) {
-            setError(error.response.data);
+          if (error.response && error.response.status === 400) {
+            if (error.response.data.errors) {
+              let errorMessage = "";
+              error.response.data.errors.forEach((errorItem) => {
+                errorMessage += errorItem.msg + ". ";
+              });
+              setError(errorMessage);
+            } else {
+              setError(error.response.data);
+            }
           } else {
             setError("Failed to load Job Posting");
           }
@@ -177,6 +178,7 @@ function AddEditJobPosting(props) {
                 benefits,
                 description,
                 zipCode,
+                amountOfJobs,
                 salary,
                 courses,
               },
@@ -222,8 +224,9 @@ function AddEditJobPosting(props) {
                 benefits,
                 description,
                 zipCode,
+                amountOfJobs,
                 salary,
-                courses,
+                courses: [], // TODO: Add Courses
               },
               {
                 withCredentials: true,
@@ -231,9 +234,9 @@ function AddEditJobPosting(props) {
             )
             .then((response) => {
               if (response.status === 200) {
-                props.setJobPostingSuccessMessage(
+                /*props.setJobPostingSuccessMessage(
                   "Successfully Updated Job Posting"
-                );
+                );*/
                 props.history.push("/JobPostings");
               }
             })
