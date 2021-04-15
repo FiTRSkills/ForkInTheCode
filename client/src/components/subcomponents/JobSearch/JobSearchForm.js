@@ -62,12 +62,27 @@ function JobSearchForm(props) {
     // eslint-disable-next-line
   }, [props.sharedSkills]);
 
+  useEffect(() => {
+    if (props.location ) {
+      setZipCode(props.location);
+    }
+    // eslint-disable-next-line
+  }, [props.location]);
+  useEffect(() => {
+    if (props.location && zipCode) {
+      submit();
+    }
+    // eslint-disable-next-line
+  }, [zipCode]);
   function submit(event) {
     setLoading(true);
     props.apiCall(zipCode, skills).finally(() => {
       setLoading(false);
     });
-    event.preventDefault();
+    if (event){
+      event.preventDefault();
+    }
+
   }
 
   const classes = useStyles();
