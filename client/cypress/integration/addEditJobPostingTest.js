@@ -28,7 +28,6 @@ describe("Add Edit Job Posting", () => {
 
     cy.get("#skillInput").type("developer");
     cy.contains("developer").click();
-    cy.get("#addSkill").click();
     cy.get("#skillList").should("contain", "developer");
 
     cy.get("#submit").click();
@@ -66,7 +65,6 @@ describe("Add Edit Job Posting", () => {
 
     cy.get("#skillInput").type("developer");
     cy.contains("developer").click();
-    cy.get("#addSkill").click();
     cy.get("#skillList").should("contain", "developer");
 
     cy.get("#submit").click();
