@@ -40,7 +40,7 @@ function Profile(props) {
   useEffect(() => {
     async function asyncAuth() {
       let response = await checkAndUpdateAuth(props.user.type);
-      if (response === undefined || response.length < 1) {
+      if (response !== "JobSeekerProfile") {
         props.history.push("/Login");
       } else {
         props.changeCurrentPage("Profile");

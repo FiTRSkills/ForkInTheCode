@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import Container from "@material-ui/core/Container";
 import SkillSearchForm from "../subcomponents/SkillSearch/SkillSearchForm";
 import SkillsSearchResults from "../subcomponents/SkillSearch/SkillsSearchResults";
+import { checkAndUpdateAuth } from "../../services/AuthService";
 
 function SkillSearch(props) {
   const [skillsResults, setSkills] = useState([]);
@@ -11,7 +12,9 @@ function SkillSearch(props) {
 
   useEffect(() => {
     props.changeCurrentPage("Skill Search");
-  });
+    checkAndUpdateAuth(props.user.type);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Container component="main" maxWidth="lg">
@@ -28,7 +31,9 @@ function SkillSearch(props) {
 }
 
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    user: state.authentication,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
