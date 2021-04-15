@@ -12,6 +12,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
 import Skills from "../subcomponents/Shared/Skills";
 import CourseItem from "../subcomponents/Shared/CourseItem";
+import { checkAndUpdateAuth } from "../../services/AuthService";
 
 const useStyles = makeStyles((theme) => ({
   jobHeader: {
@@ -46,6 +47,7 @@ function JobPosting(props) {
    */
   useEffect(() => {
     props.changeCurrentPage("Job Post");
+    checkAndUpdateAuth(props.user.type);
     // eslint-disable-next-line
   }, []);
 
@@ -145,7 +147,9 @@ function JobPosting(props) {
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    user: state.authentication,
+  };
 }
 
 function mapDispatchToProps(dispatch) {

@@ -10,6 +10,7 @@ import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
 import CourseItem from "../subcomponents/Shared/CourseItem";
+import { checkAndUpdateAuth } from "../../services/AuthService";
 
 const useStyles = makeStyles((theme) => ({
   skillHeading: {
@@ -41,6 +42,7 @@ function SkillDetails(props) {
    */
   useEffect(() => {
     props.changeCurrentPage("Skill Details");
+    checkAndUpdateAuth(props.user.type);
     // eslint-disable-next-line
   }, []);
 
@@ -130,7 +132,9 @@ function SkillDetails(props) {
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    user: state.authentication,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
