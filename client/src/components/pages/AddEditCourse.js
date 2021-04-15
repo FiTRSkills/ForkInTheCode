@@ -53,7 +53,7 @@ function AddEditCourse(props) {
   const [requiredEquipment, setRequiredEquipment] = useState("");
   const [contact, setContact] = useState("");
   const [skills, setSkills] = useState([]);
-  const [error, setError] = useState(null);
+  const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
   const { mode } = useParams();
@@ -152,7 +152,7 @@ function AddEditCourse(props) {
    */
   function onSubmit(event) {
     if (skills.length === 0) {
-      setError("Skills are required");
+      setErrors(["Skills are required"]);
     } else {
       setLoading(true);
       switch (mode) {
@@ -185,16 +185,16 @@ function AddEditCourse(props) {
             .catch((error) => {
               if (error.response && error.response.status === 400) {
                 if (error.response.data.errors) {
-                  let errorMessage = "";
+                  let error_arr =[];
                   error.response.data.errors.forEach((errorItem) => {
-                    errorMessage += errorItem.msg + ". ";
+                    error_arr.push(errorItem.msg);
                   });
-                  setError(errorMessage);
+                  setErrors([...error_arr]);
                 } else {
-                  setError(error.response.data);
+                  setErrors([error.response.data]);
                 }
               } else {
-                setError("Failed to add course");
+                setErrors(["Failed to add course"]);
               }
               setLoading(false);
             });
@@ -228,18 +228,18 @@ function AddEditCourse(props) {
             })
             .catch((error) => {
               if (error.response && error.response.status === 400) {
-                if (error.response.data.errors) {
-                  let errorMessage = "";
-                  error.response.data.errors.forEach((errorItem) => {
-                    errorMessage += errorItem.msg + ". ";
-                  });
-                  setError(errorMessage);
+                  if (error.response.data.errors) {
+                    let error_arr =[];
+                    error.response.data.errors.forEach((errorItem) => {
+                      error_arr.push(errorItem.msg);
+                    });
+                    setErrors([...error_arr]);
+                  } else {
+                    setErrors([error.response.data]);
+                  }
                 } else {
-                  setError(error.response.data);
+                  setErrors(["Failed to update course"]);
                 }
-              } else {
-                setError("Failed to update course");
-              }
               setLoading(false);
             });
 
@@ -258,7 +258,10 @@ function AddEditCourse(props) {
   return (
     <Container className={classes.container}>
       <Box className={classes.subContainer}>
-        {error && <Alert severity="error">{error}</Alert>}
+        {errors.map(error =>(
+        <Alert severity="error" style={{ marginBottom:4}}>{error}</Alert>
+        ))
+        }
         <form onSubmit={onSubmit}>
           <Box className={classes.field}>
             <Typography variant={"h5"}>
