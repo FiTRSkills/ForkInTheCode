@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import {
-  changeCurrentPage,
-  setCourseToEdit,
-  setCourseSuccessMessage,
-} from "../../redux/actions";
+import { changeCurrentPage } from "../../redux/actions";
 import Container from "@material-ui/core/Container";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
@@ -72,33 +68,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ViewCourses({
-  changeCurrentPage,
-  user,
-  history,
-  setCourseToEdit,
-  setCourseSuccessMessage,
-  incomingSuccessMessage,
-}) {
+function ViewJobPostings({ changeCurrentPage, user, history }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
   const [showConfirmDialogue, setShowConfirmDialogue] = useState(false);
-  const [courses, setCourses] = useState([]);
-  const [courseToDeleteId, setCourseToDeleteId] = useState(null);
+  const [jobPostings, setJobPostings] = useState([]);
+  const [jobPostingToDeleteId, setJobPostingToDeleteId] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
   const classes = useStyles();
 
-  const getCourses = () => {
+  const getJobPostings = () => {
     setLoading(true);
     axios
-      .get(process.env.REACT_APP_SERVER_URL + "/courses", {
+      .get(process.env.REACT_APP_SERVER_URL + "/jobPostings", {
         withCredentials: true,
       })
       .then((response) => {
         if (response.data) {
-          setCourses(response.data);
+          setJobPostings(response.data);
         }
         setError(null);
       })
@@ -107,7 +96,7 @@ function ViewCourses({
           if (error.response.status === 400) {
             setError(error.response.data);
           } else {
-            setError("Failed to load Courses");
+            setError("Failed to load Job Postings");
           }
         }
       })
@@ -117,21 +106,16 @@ function ViewCourses({
   };
 
   /**
-   * Check for authenticated user, and if so change the nav title to Courses and getCourses, otherwise go to Login
+   * Check for authenticated user, and if so change the nav title to Job Postings and getJobPostings, otherwise go to Login
    */
   useEffect(() => {
     async function asyncAuth() {
       let response = await checkAndUpdateAuth(user.type);
-      if (response !== "EducatorProfile") {
+      if (response !== "EmployerProfile") {
         history.push("/Login");
       } else {
-        changeCurrentPage("Courses");
-        getCourses();
-        setSuccessMessage(incomingSuccessMessage);
-        if (incomingSuccessMessage !== "") {
-          setCourseSuccessMessage("");
-          clearSuccessMessageTimeout();
-        }
+        changeCurrentPage("Job Postings");
+        getJobPostings();
         setAuthenticated(true);
       }
     }
@@ -145,30 +129,32 @@ function ViewCourses({
     }, 5000);
   };
 
-  const confirmDelete = (courseItem) => {
-    setCourseToDeleteId(courseItem._id);
+  const confirmDelete = (jobPostingItem) => {
+    setJobPostingToDeleteId(jobPostingItem._id);
     setShowConfirmDialogue(true);
   };
 
   const submitDelete = () => {
     axios({
       method: "DELETE",
-      url: process.env.REACT_APP_SERVER_URL + "/courses/course",
+      url: process.env.REACT_APP_SERVER_URL + "/jobPosting",
       data: {
-        _id: courseToDeleteId,
+        _id: jobPostingToDeleteId,
       },
       withCredentials: true,
     })
       .then(() => {
-        setSuccessMessage("A course has been successfully deleted!");
+        setSuccessMessage("A job posting has been successfully deleted!");
         clearSuccessMessageTimeout();
-        getCourses();
+        getJobPostings();
       })
       .catch((error) => {
         if (error?.response?.message?.length > 0) {
           setError(error.response.data.message);
         } else {
-          setError("An error has occurred while trying to delete a course.");
+          setError(
+            "An error has occurred while trying to delete a job posting."
+          );
         }
         console.error(error);
       })
@@ -177,9 +163,8 @@ function ViewCourses({
       });
   };
 
-  const editCourse = (courseItem) => {
-    setCourseToEdit(courseItem);
-    history.push("/Course/Edit");
+  const editJobPosting = (jobPostingItem) => {
+    history.push("/JobPosting/Edit/" + jobPostingItem._id);
   };
 
   if (!authenticated) {
@@ -188,18 +173,18 @@ function ViewCourses({
 
   return (
     <Container className={classes.container}>
-      <Link className={classes.addButtonLink} to="/Course/Add">
+      <Link className={classes.addButtonLink} to="/JobPosting/Add">
         <Button
           className={classes.addButton}
-          id="addCourseButton"
+          id="addJobPostingButton"
           variant="contained"
           color="primary"
         >
-          Add Course
+          Add Job Posting
         </Button>
       </Link>
       <Typography className={classes.title} variant="h5" component="h1">
-        Manage Courses
+        Manage Job Postings
       </Typography>
       {error && (
         <Alert severity={"error"} id="error">
@@ -211,25 +196,25 @@ function ViewCourses({
         <CircularProgress />
       ) : (
         <Box>
-          {courses.map((courseItem) => (
+          {jobPostings.map((jobPostingItem) => (
             <Box
               className={classes.itemContainer}
-              id={"courseNumber" + courseItem._id}
-              key={courseItem._id}
+              id={"jobPostingNumber" + jobPostingItem._id}
+              key={jobPostingItem._id}
             >
               <Box className={classes.header}>
                 <Typography variant="h5" component="h2">
-                  {courseItem.name}
+                  {jobPostingItem.jobTitle}
                 </Typography>
                 <Box className={classes.buttonContainer}>
                   <Button
                     className={classes.button}
-                    name="DeleteCourse"
-                    id={"DeleteCourse" + courseItem._id}
+                    name="DeleteJobPosting"
+                    id={"DeleteJobPosting" + jobPostingItem._id}
                     variant="contained"
                     color="primary"
                     onClick={() => {
-                      confirmDelete(courseItem);
+                      confirmDelete(jobPostingItem);
                     }}
                   >
                     Delete
@@ -237,11 +222,11 @@ function ViewCourses({
                   <br />
                   <Button
                     className={classes.button}
-                    name="EditCourse"
-                    id={"EditCourse" + courseItem._id}
+                    name="EditJobPosting"
+                    id={"EditJobPosting" + jobPostingItem._id}
                     variant="contained"
                     onClick={() => {
-                      editCourse(courseItem);
+                      editJobPosting(jobPostingItem);
                     }}
                   >
                     Edit
@@ -252,44 +237,42 @@ function ViewCourses({
                 <Typography className={classes.item} component="div">
                   Organization:{" "}
                   <span className={classes.value}>
-                    {courseItem.organization.name}
+                    {jobPostingItem.organization.name}
+                  </span>
+                </Typography>
+              </Box>
+              {jobPostingItem.salary && (
+                <Box className={classes.body}>
+                  <Typography className={classes.item} component="div">
+                    Salary:{" "}
+                    <span className={classes.value}>
+                      {jobPostingItem.salary}
+                    </span>
+                  </Typography>
+                </Box>
+              )}
+              <Box className={classes.body}>
+                <Typography className={classes.item} component="div">
+                  Description:{" "}
+                  <span className={classes.value}>
+                    {jobPostingItem.description}
                   </span>
                 </Typography>
               </Box>
               <Box className={classes.body}>
                 <Typography className={classes.item} component="div">
-                  Location:{" "}
-                  <span className={classes.value}>{courseItem.location}</span>
-                </Typography>
-              </Box>
-              {courseItem.period && (
-                <Box className={classes.body}>
-                  <Typography className={classes.item} component="div">
-                    Period:{" "}
-                    <span className={classes.value}>{courseItem.period}</span>
-                  </Typography>
-                </Box>
-              )}
-              {courseItem.times && (
-                <Box className={classes.body}>
-                  <Typography className={classes.item} component="div">
-                    Times:{" "}
-                    <span className={classes.value}>{courseItem.times}</span>
-                  </Typography>
-                </Box>
-              )}
-              <Box className={classes.body}>
-                <Typography className={classes.item} component="div">
-                  Skills Will Be Achieved:{" "}
+                  Required Skills:{" "}
                   <span className={classes.value}>
-                    {courseItem.skills.map((skill) => skill.name).join(", ")}
+                    {jobPostingItem.skills
+                      .map((skill) => skill.name)
+                      .join(", ")}
                   </span>
                 </Typography>
               </Box>
             </Box>
           ))}
           <ConfirmationDialogue
-            title="Are you sure you would like to delete this Course?"
+            title="Are you sure you would like to delete this Job Posting?"
             open={showConfirmDialogue}
             onCancel={() => {
               setShowConfirmDialogue(false);
@@ -305,17 +288,13 @@ function ViewCourses({
 function mapStateToProps(state) {
   return {
     user: state.authentication,
-    incomingSuccessMessage: state.courses.successMessage,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     changeCurrentPage: (content) => dispatch(changeCurrentPage(content)),
-    setCourseToEdit: (content) => dispatch(setCourseToEdit(content)),
-    setCourseSuccessMessage: (content) =>
-      dispatch(setCourseSuccessMessage(content)),
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ViewCourses);
+export default connect(mapStateToProps, mapDispatchToProps)(ViewJobPostings);

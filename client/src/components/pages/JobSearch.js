@@ -6,11 +6,13 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import JobSearchForm from "../subcomponents/JobSearch/JobSearchForm";
 import Results from "../subcomponents/JobSearch/Results";
 import axios from "axios";
+import { checkAndUpdateAuth } from "../../services/AuthService";
 
 function JobSearch(props) {
   const [errorMessage, setErrorMessage] = useState("");
   useEffect(() => {
     props.changeCurrentPage("Job Search");
+    checkAndUpdateAuth(props.user.type);
     // eslint-disable-next-line
   }, []);
 
@@ -51,6 +53,7 @@ function JobSearch(props) {
 const mapStateToProps = (state) => {
   return {
     results: state.searchResults.results,
+    user: state.authentication,
   };
 };
 

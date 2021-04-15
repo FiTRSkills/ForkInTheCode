@@ -5,7 +5,10 @@ const mongoose = require("mongoose");
  * any given field.
  */
 const Skill = new mongoose.Schema({
-  name: String,
+  name: {
+    type: String,
+    unique: true,
+  },
   description: {
     type: String,
     default: "",

@@ -64,7 +64,6 @@ describe("Load skills profile", () => {
       .should("be.visible")
       .and("have.class", "MuiAutocomplete-option")
       .click();
-    cy.get("#addSkill").click();
     cy.wait("@addSkillCall");
     cy.wait("@profileCall");
     cy.get("#skillList").contains("skill1");
@@ -97,7 +96,6 @@ describe("Load skills profile", () => {
       .should("be.visible")
       .and("have.class", "MuiAutocomplete-option")
       .click();
-    cy.get("#addSkill").click();
     cy.wait("@addSkillCall");
     cy.contains("An error has occoured while trying to add a skill.");
   });

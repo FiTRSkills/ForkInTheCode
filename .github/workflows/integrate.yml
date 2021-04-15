@@ -9,10 +9,6 @@ on:
 jobs:
   client_ci:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [ 14.x ]
-        mongodb-version: [ 4.4 ]
     env:
       REACT_APP_SERVER_URL: "http://localhost:9000"
       REACT_APP_CLIENT_URL: "http://localhost:3000"
@@ -23,26 +19,37 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v2
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 14.x
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
-
+          node-version: 14.x
+      - run: npm ci --prefix server
+      - run: npm ci --prefix client
+      - name: cypress run FrontEndTests
+        uses: cypress-io/github-action@v2
+        with:
+          record: true
+          start: npm start
+          wait-on: "http://localhost:3000"
+          working-directory: client
+          spec: cypress/integration/FrontEndTests/*
+        env:
+          CYPRESS_RECORD_KEY: 2b71c803-ef27-425a-b947-72b0d0dfdf25
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.3.0
         with:
-          mongodb-version: ${{ matrix.mongodb-version }}
+          mongodb-version: 4.4
       - name: Add admin user    
-        run: echo 'db.createUser({user:"admin", pwd:"password", roles:[]});' | mongo data 
-      - run: npm ci --prefix server
-      - run: npm ci --prefix client
-      - name: cypress run
+        run: echo 'db.createUser({user:"admin", pwd:"password", roles:[]});' | mongo data
+      - name: cypress run End2EndTests
         uses: cypress-io/github-action@v2
         with:
           record: true
           start: npm start, npm run startserver
           wait-on: "http://localhost:3000, http://localhost:9000"
           working-directory: client
+          spec: cypress/integration/End2EndTests/*
         env:
           CYPRESS_RECORD_KEY: 2b71c803-ef27-425a-b947-72b0d0dfdf25
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
