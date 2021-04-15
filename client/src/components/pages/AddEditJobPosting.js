@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import {
   changeCurrentPage,
-  /*setJobPostingSuccessMessage,*/
+  setJobPostingSuccessMessage,
 } from "../../redux/actions";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -189,9 +189,9 @@ function AddEditJobPosting(props) {
             )
             .then((response) => {
               if (response.status === 200) {
-                /*props.setJobPostingSuccessMessage(
+                props.setJobPostingSuccessMessage(
                   "Successfully Created Job Posting"
-                );*/
+                );
                 props.history.push("/JobPostings");
               }
             })
@@ -236,9 +236,9 @@ function AddEditJobPosting(props) {
             )
             .then((response) => {
               if (response.status === 200) {
-                /*props.setJobPostingSuccessMessage(
+                props.setJobPostingSuccessMessage(
                   "Successfully Updated Job Posting"
-                );*/
+                );
                 props.history.push("/JobPostings");
               }
             })
@@ -302,6 +302,7 @@ function AddEditJobPosting(props) {
               fullWidth
               id="description"
               name="description"
+              required
               value={description}
               onChange={handleChange}
               multiline
@@ -316,6 +317,7 @@ function AddEditJobPosting(props) {
               fullWidth
               id="zipCode"
               name="zipCode"
+              required
               value={zipCode}
               onChange={handleChange}
             />
@@ -444,8 +446,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     changeCurrentPage: (content) => dispatch(changeCurrentPage(content)),
-    /*setJobPostingSuccessMessage: (content) =>
-      dispatch(setJobPostingSuccessMessage(content)),*/
+    setJobPostingSuccessMessage: (content) =>
+      dispatch(setJobPostingSuccessMessage(content)),
   };
 }
 
