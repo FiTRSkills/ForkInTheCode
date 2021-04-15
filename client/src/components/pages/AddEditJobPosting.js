@@ -226,7 +226,6 @@ function AddEditJobPosting(props) {
                 description,
                 amountOfJobs,
                 zipCode,
-                amountOfJobs,
                 salary,
                 courses: [], // TODO: Add Courses
               },
