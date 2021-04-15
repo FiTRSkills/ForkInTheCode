@@ -120,6 +120,7 @@ describe("Add Edit Job Posting", () => {
         cy.get("#responsibilities").should("have.value", "Many Java work");
         cy.get("#benefits").should("have.value", "Many Java benefits");
 
+        cy.get("#amountOfJobs").type("3");
         cy.get("#jobTimeline").should("have.value", "3 Months");
 
         cy.get("#skillList").should("contain", "saad");
@@ -154,6 +155,7 @@ describe("Add Edit Job Posting", () => {
                 salary: '2000',
                 responsibilities: 'Many Java work',
                 benefits: 'Many Java benefits',
+                amountOfJobs: '3',
                 jobTimeline: '3 Months',
                 skills: [
                     {
@@ -179,6 +181,7 @@ describe("Add Edit Job Posting", () => {
         cy.get("#responsibilities").should("have.value", "Many Java work");
         cy.get("#benefits").should("have.value", "Many Java benefits");
 
+        cy.get("#amountOfJobs").type("3");
         cy.get("#jobTimeline").should("have.value", "3 Months");
 
         cy.get("#skillList").should("contain", "saad");
