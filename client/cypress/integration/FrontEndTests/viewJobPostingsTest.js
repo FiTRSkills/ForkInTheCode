@@ -140,7 +140,7 @@ describe("View Job Postings", () => {
     cy.contains("Failed to load Job Postings");
   });
 
-  it.skip("Navigate to Add Job Postings SUCCESS", () => {
+  it("Navigate to Add Job Posting SUCCESS", () => {
     cy.route({
       method: "GET",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/jobPostings",
@@ -149,25 +149,30 @@ describe("View Job Postings", () => {
     }).as("getJobPostingsCall");
     cy.get("#MyJobPostings").click();
     cy.wait("@getJobPostingsCall").its("status").should("eq", 200);
-    cy.get("#addJobPostingsButton").click();
-    cy.contains("Add Job Postings");
+    cy.get("#addJobPostingButton").click();
+    cy.contains("Add Job Posting");
   });
 
-  it.skip("Navigate to Edit Job Postings SUCCESS", () => {
+  it("Navigate to Edit Job Postings SUCCESS", () => {
     cy.route({
       method: "GET",
       url: Cypress.env("REACT_APP_SERVER_URL") + "/jobPostings",
       status: 200,
       response: getJobPostingsSuccessResponse,
     }).as("getJobPostingsCall");
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobPosting?_id=1",
+      status: 200,
+      response: getJobPostingsSuccessResponse[0],
+    }).as("getJobPostingsCall");
     cy.get("#MyJobPostings").click();
     cy.wait("@getJobPostingsCall").its("status").should("eq", 200);
-    cy.get("#EditJobPostings1").click();
+    cy.get("#EditJobPosting1").click();
     cy.contains("Edit Job Posting");
-    cy.get("#title").should("have.value", "Java 101");
-    cy.get("#location").should("have.value", "Harvard");
-    cy.get("#period").should("have.value", "3 Months");
-    cy.get("#times").should("have.value", "Monday: 15:00 - 18:00");
+    cy.get("#jobTitle").should("have.value", "title1");
+    cy.get("#description").should("have.value", "description 1");
+    cy.get("#zipCode").should("have.value", "12345");
     cy.contains("skill1");
   });
 
