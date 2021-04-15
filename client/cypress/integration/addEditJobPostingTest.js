@@ -3,7 +3,7 @@ describe("Add Edit Job Posting", () => {
     cy.fakeLogin("EmployerProfile");
   });
 
-  it("Add job posting SUCCESS", () => {
+  it("Add Job Posting SUCCESS", () => {
     cy.InitializeSkills(true, "/JobPosting/Add");
     cy.route({
       method: "POST",
@@ -36,7 +36,7 @@ describe("Add Edit Job Posting", () => {
     cy.wait("@addJobPosting").its("status").should("eq", 200);
   });
 
-  it("Add Job Posting course FAILURE", () => {
+  it("Add Job Posting FAILURE", () => {
     cy.InitializeSkills(true, "/JobPosting/Add");
     cy.route({
       method: "POST",
