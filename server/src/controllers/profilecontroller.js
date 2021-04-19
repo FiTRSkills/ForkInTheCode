@@ -17,6 +17,7 @@ const profileController = {};
  * @returns {string} response - the user profile or error if not found
  */
 profileController.getProfile = async function (req, res) {
+  if (req.user.type == User.Type.JOBSEEKER) {
   let profile = await req.user.getProfile();
   data = {
     firstname: profile.name.first,
@@ -27,6 +28,9 @@ profileController.getProfile = async function (req, res) {
     skills: profile.skills,
   };
   res.status(200).send(data);
+}else{
+  res.status(400).send('Invalid usertype. Must be jobseeker.')
+}
 };
 
 /**
