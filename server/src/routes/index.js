@@ -283,8 +283,7 @@ router.patch(
     check("jobTimeline", "Must send a viable jobTimeline").exists(),
     check("benefits", "Must send a viable benefits").exists(),
     check("responsibilities", "Must send viable responsibilities")
-      .not()
-      .isEmpty(),
+      .exists(),
     check("skills", "Must send viable skills").exists(),
     check("courses", "Must send viable courses").exists(),
   ],
@@ -321,25 +320,9 @@ router.post(
   validation.validateSession,
   [
     check("jobTitle", "Must send a viable job title").not().isEmpty(),
-    check("salary", "Must send a viable salary").optional({ nullable: true }),
     check("zipCode", "Must send a viable zipcode").not().isEmpty(),
     check("description", "Must send a viable description").not().isEmpty(),
-    check("amountOfJobs", "Must send a viable amountOfJobs").optional({
-      nullable: true,
-    }),
-    check("jobTimeline", "Must send a viable jobTimeline").optional({
-      nullable: true,
-    }),
-    check("benefits", "Must send a viable benefits").optional({
-      nullable: true,
-    }),
-    check("responsibilities", "Must send viable responsibilities").optional({
-      nullable: true,
-    }),
     check("skills", "Must send viable skills").not().isEmpty(),
-    check("courses", "Must send viable courses").optional({
-      nullable: true,
-    }),
   ],
   validation.validateInput,
   job.createJobPosting
