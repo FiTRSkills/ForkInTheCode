@@ -56,7 +56,15 @@ courseController.addCourse = async function (req, res) {
 courseController.updateCourse = async function (req, res) {
 	if (req.user.type == User.Type.EDUCATOR) {
 		try {
+			let profile = await req.user.getProfile();
 			let course = await Course.findById(req.body._id);
+			if (
+		        profile.organization._id.toString() !=
+		        course.organization._id.toString()
+		      ) {
+		        res.status(400).send("User does not own this course.");
+		        return;
+		      }
 			// iterates through given information to add to course
 			Object.keys(req.body).forEach(function (key) {
 				if (key != "_id") {
@@ -89,6 +97,15 @@ courseController.updateCourse = async function (req, res) {
 courseController.deleteCourse = async function (req, res) {
 	if (req.user.type == User.Type.EDUCATOR) {
 		try {
+			let profile = await req.user.getProfile();
+			let course = await Course.findById(req.body._id);
+			if (
+		        profile.organization._id.toString() !=
+		        course.organization._id.toString()
+		      ) {
+		        res.status(400).send("User does not own this course.");
+		        return;
+		      }
 			await (await Course.findById(req.body._id)).remove();
 			res.status(200).send("Successfully deleted course.");
 		} catch (error) {
