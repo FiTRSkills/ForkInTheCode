@@ -46,6 +46,7 @@ describe("JobController Tests", () => {
 			.send({
 				jobTitle: "Software Engineer",
 				salary: "$60,000",
+				location: "Online",
 				benefits: "Healthcare",
 				amountOfJobs: "2",
 				zipCode: "12345",
@@ -108,6 +109,7 @@ describe("JobController Tests", () => {
 				jobTitle: "Software Engineer",
 				salary: "$60,000",
 				benefits: "Healthcare",
+				location: "Online",
 				amountOfJobs: "2",
 				zipCode: "12345",
 				description: "This is a posting for a SE.",
@@ -155,6 +157,7 @@ describe("JobController Tests", () => {
 			.send({
 				jobTitle: "Plumber",
 				salary: "$80,000",
+				location: "Online",
 				zipCode: "12346",
 				description: "Fix piping.",
 				responsibilities: "2 years experience.",
@@ -205,6 +208,7 @@ describe("JobController Tests", () => {
 			.send({
 				jobTitle: "Plumber",
 				salary: "$80,000",
+				location: "Online",
 				amountOfJobs: "2",
 				zipCode: "12345",
 				description: "Fix piping.",
@@ -294,6 +298,7 @@ describe("JobController Tests", () => {
 				jobTitle: "Plumber Two",
 				salary: "$75,000",
 				amountOfJobs: "1",
+				location: "Online",
 				jobTimeline: "",
 				benefits: "",
 				courses: [],
@@ -383,6 +388,7 @@ describe("JobController Tests", () => {
 				jobTitle: "Plumber Two",
 				salary: "$75,000",
 				amountOfJobs: "1",
+				location: "Online",
 				jobTimeline: "",
 				benefits: "",
 				courses: [],

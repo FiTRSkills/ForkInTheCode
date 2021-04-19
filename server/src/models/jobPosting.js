@@ -24,6 +24,10 @@ const JobPosting = new mongoose.Schema({
     type: String,
     default: "",
   },
+  location: {
+    type: String,
+    default: "",
+  },
   benefits: {
     type: String,
     default: "",

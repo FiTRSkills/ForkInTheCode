@@ -282,6 +282,7 @@ router.patch(
     check("amountOfJobs", "Must send a viable amountOfJobs").exists(),
     check("jobTimeline", "Must send a viable jobTimeline").exists(),
     check("benefits", "Must send a viable benefits").exists(),
+    check("location", "Must send a viable location").exists(),
     check("responsibilities", "Must send viable responsibilities")
       .exists(),
     check("skills", "Must send viable skills").exists(),
@@ -321,6 +322,7 @@ router.post(
   [
     check("jobTitle", "Must send a viable job title").not().isEmpty(),
     check("zipCode", "Must send a viable zipcode").not().isEmpty(),
+    check("location", "Must send a viable location").not().isEmpty(),
     check("description", "Must send a viable description").not().isEmpty(),
     check("skills", "Must send viable skills").not().isEmpty(),
   ],
