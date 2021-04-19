@@ -17,7 +17,7 @@ const profileController = {};
  * @returns {string} response - the user profile or error if not found
  */
 profileController.getProfile = async function (req, res) {
-  if (req.user.type == User.Type.JOBSEEKER) {
+  if (req.user.type == User.Type.JOB_SEEKER) {
   let profile = await req.user.getProfile();
   data = {
     firstname: profile.name.first,
