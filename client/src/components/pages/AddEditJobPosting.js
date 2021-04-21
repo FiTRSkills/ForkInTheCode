@@ -9,6 +9,7 @@ import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
+import Select from "@material-ui/core/Select";
 import Skills from "../subcomponents/Shared/Skills";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -49,6 +50,8 @@ function AddEditJobPosting(props) {
   const [benefits, setBenefits] = useState("");
   const [amountOfJobs, setAmountOfJobs] = useState("");
   const [jobTimeline, setJobTimeline] = useState("");
+  const [method, setMethod] = useState("");
+  const [location, setLocation] = useState("");
   const [skills, setSkills] = useState([]);
   const [courses, setCourses] = useState([]);
   const [error, setError] = useState(null);
@@ -93,6 +96,12 @@ function AddEditJobPosting(props) {
           setBenefits(response.data.benefits);
           setJobTimeline(response.data.jobTimeline);
           setAmountOfJobs(response.data.amountOfJobs);
+          if (response.data.location === "Online") {
+            setMethod("Online");
+          } else {
+            setMethod("In Person");
+          }
+          setLocation(response.data.location);
           setSkills(response.data.skills);
           setCourses(response.data.courses);
         }
@@ -151,6 +160,17 @@ function AddEditJobPosting(props) {
       case "jobTimeline":
         setJobTimeline(event.target.value);
         break;
+      case "method":
+        setMethod(event.target.value);
+        if (event.target.value === "Online") {
+          setLocation("Online");
+        } else {
+          setLocation("");
+        }
+        break;
+      case "location":
+        setLocation(event.target.value);
+        break;
       default:
         break;
     }
@@ -180,6 +200,7 @@ function AddEditJobPosting(props) {
                 description,
                 zipCode,
                 amountOfJobs,
+                location,
                 salary,
                 courses,
               },
@@ -225,6 +246,7 @@ function AddEditJobPosting(props) {
                 benefits,
                 description,
                 amountOfJobs,
+                location,
                 zipCode,
                 salary,
                 courses: [], // TODO: Add Courses
@@ -391,6 +413,39 @@ function AddEditJobPosting(props) {
               onChange={handleChange}
             />
           </Box>
+          <Box className={classes.field}>
+            <Typography>Method</Typography>
+            <Select
+              native
+              labelId="select-filled-label"
+              id="method"
+              name="method"
+              variant="outlined"
+              fullWidth
+              required
+              value={method}
+              onChange={handleChange}
+              className={classes.field}
+            >
+              <option value={"Online"}>Online</option>
+              <option value={"In Person"}>In Person</option>
+            </Select>
+          </Box>
+          {method === "In Person" && (
+            <Box className={classes.field}>
+              <Typography>Location</Typography>
+              <TextField
+                variant={"outlined"}
+                margin="normal"
+                fullWidth
+                id="location"
+                name="location"
+                required
+                value={location}
+                onChange={handleChange}
+              />
+            </Box>
+          )}
           <Box className={classes.field}>
             <Typography>Skills</Typography>
             <Skills
