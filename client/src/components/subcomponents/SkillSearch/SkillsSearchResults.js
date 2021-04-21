@@ -75,7 +75,7 @@ function SkillsSearchResults({
    * Whenever the user changes update the stored info on the skills the user already has
    */
   useEffect(() => {
-    if (user !== undefined && Object.keys(user).length > 0) {
+    if (user.type === "JobSeekerProfile") {
       setLoading(true);
       updateUsersSkills();
     }
@@ -189,7 +189,7 @@ function SkillsSearchResults({
           Location {location} needs the following skills.
         </Typography>
       )}
-      {user !== undefined && Object.keys(user).length > 0 && (
+      {user.type === "JobSeekerProfile" && (
         <Typography
           component="p"
           variant="subtitle1"
@@ -233,7 +233,7 @@ function SkillsSearchResults({
           ) : (
             <Box style={{ textAlign: "center" }}>No Results Found</Box>
           )}
-          {user !== undefined && Object.keys(user).length > 0 && (
+          {user.type === "JobSeekerProfile" ? (
             <Button
               onClick={addSkillsToProfile}
               className={classes.addSkillsButton}
@@ -244,8 +244,7 @@ function SkillsSearchResults({
             >
               Add Skills To Profile
             </Button>
-          )}
-          {(user === undefined || Object.keys(user).length === 0) && (
+          ) : (
             <Button
               onClick={addSkillsToJobSearch}
               className={classes.addSkillsButton}

@@ -35,7 +35,7 @@ function JobSearchForm(props) {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     function loadSkills() {
-      if (props.user !== undefined && props.user.type === "JobSeekerProfile") {
+      if (props.user.type === "JobSeekerProfile") {
         setLoading(true);
         axios
           .get(process.env.REACT_APP_SERVER_URL + "/Profile", {
