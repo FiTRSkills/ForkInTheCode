@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { changeCurrentPage } from "../../redux/actions";
+import {
+  changeCurrentPage,
+  setJobPostingSuccessMessage,
+} from "../../redux/actions";
 import Container from "@material-ui/core/Container";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
@@ -68,7 +71,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ViewJobPostings({ changeCurrentPage, user, history }) {
+function ViewJobPostings({
+  changeCurrentPage,
+  user,
+  history,
+  setJobPostingSuccessMessage,
+  incomingSuccessMessage,
+}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
@@ -116,6 +125,11 @@ function ViewJobPostings({ changeCurrentPage, user, history }) {
       } else {
         changeCurrentPage("Job Postings");
         getJobPostings();
+        setSuccessMessage(incomingSuccessMessage);
+        if (incomingSuccessMessage !== "") {
+          setJobPostingSuccessMessage("");
+          clearSuccessMessageTimeout();
+        }
         setAuthenticated(true);
       }
     }
@@ -288,12 +302,15 @@ function ViewJobPostings({ changeCurrentPage, user, history }) {
 function mapStateToProps(state) {
   return {
     user: state.authentication,
+    incomingSuccessMessage: state.jobPostings.successMessage,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     changeCurrentPage: (content) => dispatch(changeCurrentPage(content)),
+    setJobPostingSuccessMessage: (content) =>
+      dispatch(setJobPostingSuccessMessage(content)),
   };
 }
 
