@@ -30,7 +30,7 @@ function Courses({ courses }) {
     <Box className={classes.root}>
       {courses &&
         courses.map((course, index) => (
-          <Box key={index} className={classes.course}>
+          <Box key={index} className={classes.course} id={"course" + index}>
             <Typography variant={"h5"}>{course.name}</Typography>
             <Typography className={classes.item} component="div">
               Skills will be achieved:{" "}
