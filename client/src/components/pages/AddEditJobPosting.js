@@ -16,6 +16,7 @@ import axios from "axios";
 import Alert from "@material-ui/lab/Alert";
 import { useParams } from "react-router-dom";
 import { checkAndUpdateAuth } from "../../services/AuthService";
+import Courses from "../subcomponents/Shared/Courses";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -401,7 +402,12 @@ function AddEditJobPosting(props) {
               allowCreate
             />
           </Box>
-          {/* TODO: Add Courses */}
+          <Box className={classes.field}>
+            <Typography>
+              Courses - <em>Optional</em>
+              <Courses courses={courses} />
+            </Typography>
+          </Box>
           <Grid
             container
             direction={"row"}
