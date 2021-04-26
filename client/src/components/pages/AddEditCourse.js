@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
   buttonGroup: {
     marginTop: theme.spacing(4),
   },
+  errorMessage : {
+    marginBottom: 4
+  }
 }));
 
 function AddEditCourse(props) {
@@ -185,11 +188,11 @@ function AddEditCourse(props) {
             .catch((error) => {
               if (error.response && error.response.status === 400) {
                 if (error.response.data.errors) {
-                  let error_arr =[];
+                  let errorArr =[];
                   error.response.data.errors.forEach((errorItem) => {
-                    error_arr.push(errorItem.msg);
+                    errorArr.push(errorItem.msg);
                   });
-                  setErrors([...error_arr]);
+                  setErrors([...errorArr]);
                 } else {
                   setErrors([error.response.data]);
                 }
@@ -229,11 +232,11 @@ function AddEditCourse(props) {
             .catch((error) => {
               if (error.response && error.response.status === 400) {
                   if (error.response.data.errors) {
-                    let error_arr =[];
+                    let errorArr =[];
                     error.response.data.errors.forEach((errorItem) => {
-                      error_arr.push(errorItem.msg);
+                      errorArr.push(errorItem.msg);
                     });
-                    setErrors([...error_arr]);
+                    setErrors([...errorArr]);
                   } else {
                     setErrors([error.response.data]);
                   }
@@ -259,7 +262,7 @@ function AddEditCourse(props) {
     <Container className={classes.container}>
       <Box className={classes.subContainer}>
         {errors.map(error =>(
-        <Alert severity="error" style={{ marginBottom:4}}>{error}</Alert>
+        <Alert severity="error" className={classes.errorMessage}>{error}</Alert>
         ))
         }
         <form onSubmit={onSubmit}>
