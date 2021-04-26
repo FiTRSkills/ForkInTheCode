@@ -105,11 +105,11 @@ function AddEditJobPosting(props) {
         if (error.response) {
           if (error.response && error.response.status === 400) {
             if (error.response.data.errors) {
-              let error_arr =[];
+              let errorArr =[];
               error.response.data.errors.forEach((errorItem) => {
-                error_arr.push(errorItem.msg);
+                errorArr.push(errorItem.msg);
               });
-              setErrors([...error_arr]);
+              setErrors([...errorArr]);
             } else {
               setErrors([error.response.data]);
             }
