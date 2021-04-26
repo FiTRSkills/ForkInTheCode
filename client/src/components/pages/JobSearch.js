@@ -29,7 +29,7 @@ function JobSearch(props) {
         if (response.status === 200) {
           if (response.data.length === 0) {
             setErrorMessage("No Results");
-          }else{
+          } else {
             setErrorMessage("");
           }
           props.updateResults(response.data);

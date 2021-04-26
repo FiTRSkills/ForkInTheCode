@@ -68,6 +68,7 @@ function JobSearchForm(props) {
     }
     // eslint-disable-next-line
   }, [props.location]);
+
   useEffect(() => {
     if (props.location && zipCode) {
       submit();
