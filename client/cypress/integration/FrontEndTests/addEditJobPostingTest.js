@@ -187,6 +187,8 @@ describe("Add Edit Job Posting", () => {
     cy.get("#submit").click();
 
     cy.wait("@editJobPosting").its("status").should("eq", 400);
-    cy.contains("Must be a viable location. Must contain valid skills");
+    cy.contains("Must be a viable location");
+    cy.contains("Must contain valid skills");
+
   });
 });
