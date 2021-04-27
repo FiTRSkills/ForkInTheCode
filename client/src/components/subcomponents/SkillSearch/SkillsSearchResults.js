@@ -170,7 +170,7 @@ function SkillsSearchResults({
 
   const addSkillsToJobSearch = () => {
     storeSkills(skillsToAdd);
-    history.push("/JobSearch");
+    history.push({pathname:"/JobSearch", state:location});
   };
 
   const classes = useStyles();
@@ -254,7 +254,7 @@ function SkillsSearchResults({
               disabled={skillsToAdd.length < 1}
               id="addSkillsToJobSearchButton"
             >
-              Add Skills To Job Search
+              Search Jobs With Selected Skills
             </Button>
           )}
         </Box>
