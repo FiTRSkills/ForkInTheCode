@@ -37,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
   buttonGroup: {
     marginTop: theme.spacing(4),
   },
+  errorMessage : {
+    marginBottom: 4
+  }
 }));
 
 function AddEditJobPosting(props) {
@@ -51,7 +54,7 @@ function AddEditJobPosting(props) {
   const [jobTimeline, setJobTimeline] = useState("");
   const [skills, setSkills] = useState([]);
   const [courses, setCourses] = useState([]);
-  const [error, setError] = useState(null);
+  const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
   const { mode, id } = useParams();
@@ -96,22 +99,22 @@ function AddEditJobPosting(props) {
           setSkills(response.data.skills);
           setCourses(response.data.courses);
         }
-        setError(null);
+        setErrors([]);
       })
       .catch((error) => {
         if (error.response) {
           if (error.response && error.response.status === 400) {
             if (error.response.data.errors) {
-              let errorMessage = "";
+              let errorArr =[];
               error.response.data.errors.forEach((errorItem) => {
-                errorMessage += errorItem.msg + ". ";
+                errorArr.push(errorItem.msg);
               });
-              setError(errorMessage);
+              setErrors([...errorArr]);
             } else {
-              setError(error.response.data);
+              setErrors([error.response.data]);
             }
           } else {
-            setError("Failed to load Job Posting");
+            setErrors(["Failed to load Job Posting"]);
           }
         }
       })
@@ -163,7 +166,7 @@ function AddEditJobPosting(props) {
    */
   function onSubmit(event) {
     if (skills.length === 0) {
-      setError("Skills are required");
+      setErrors(["Skills are required"]);
     } else {
       setLoading(true);
       switch (mode) {
@@ -198,16 +201,16 @@ function AddEditJobPosting(props) {
             .catch((error) => {
               if (error.response && error.response.status === 400) {
                 if (error.response.data.errors) {
-                  let errorMessage = "";
+                  let errorArr =[];
                   error.response.data.errors.forEach((errorItem) => {
-                    errorMessage += errorItem.msg + ". ";
+                    errorArr.push(errorItem.msg);
                   });
-                  setError(errorMessage);
+                  setErrors([...errorArr]);
                 } else {
-                  setError(error.response.data);
+                  setErrors([error.response.data]);
                 }
               } else {
-                setError("Failed to add job posting");
+                setErrors(["Failed to add job posting"]);
               }
               setLoading(false);
             });
@@ -244,16 +247,16 @@ function AddEditJobPosting(props) {
             .catch((error) => {
               if (error.response && error.response.status === 400) {
                 if (error.response.data.errors) {
-                  let errorMessage = "";
+                  let errorArr =[];
                   error.response.data.errors.forEach((errorItem) => {
-                    errorMessage += errorItem.msg + ". ";
+                    errorArr.push(errorItem.msg);
                   });
-                  setError(errorMessage);
+                  setErrors([...errorArr]);
                 } else {
-                  setError(error.response.data);
+                  setErrors([error.response.data]);
                 }
-              } else {
-                setError("Failed to update job posting");
+              }  else {
+                setErrors(["Failed to update job posting"]);
               }
               setLoading(false);
             });
@@ -273,7 +276,10 @@ function AddEditJobPosting(props) {
   return (
     <Container className={classes.container}>
       <Box className={classes.subContainer}>
-        {error && <Alert severity="error">{error}</Alert>}
+        {errors.map(error =>(
+          <Alert severity="error" className={classes.errorMessage}>{error}</Alert>
+        ))
+        }
         <form onSubmit={onSubmit}>
           <Box className={classes.field}>
             <Typography variant={"h5"}>
