@@ -268,12 +268,9 @@ function AddEditJobPosting(props) {
   }
 
   function deleteCourse(courseId) {
-    let copyCourses = [...courses];
-    const index = copyCourses.findIndex((course) => course._id === courseId);
-    if (index > -1) {
-      copyCourses.splice(index, 1);
-      setCourses(copyCourses);
-    }
+    setCourses((courses) =>
+      courses.filter((course) => course._id !== courseId)
+    );
   }
 
   if (!authenticated) {
