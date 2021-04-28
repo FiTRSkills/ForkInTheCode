@@ -3,6 +3,7 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,6 +14,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#F6F6F6",
     marginBottom: theme.spacing(1),
     borderRadius: 6,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   item: {
     fontSize: "1.25rem",
@@ -23,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Courses({ courses }) {
+function CourseSelectionPreview({ courses, deleteCourse }) {
   const classes = useStyles();
 
   return (
@@ -31,20 +35,25 @@ function Courses({ courses }) {
       {courses &&
         courses.map((course, index) => (
           <Box key={index} className={classes.course} id={"course" + index}>
-            <Typography variant={"h5"}>{course.name}</Typography>
-            <Typography className={classes.item} component="div">
-              Skills will be achieved:{" "}
-              <span className={classes.value}>
-                {course.skills.map((skill) => skill.name).join(", ")}
-              </span>
-            </Typography>
+            <Box>
+              <Typography variant={"h5"}>{course.name}</Typography>
+              <Typography className={classes.item} component="div">
+                Skills will be achieved:{" "}
+                <span className={classes.value}>
+                  {course.skills.map((skill) => skill.name).join(", ")}
+                </span>
+              </Typography>
+            </Box>
+            <Button
+              id={"#deleteCourseSelection"}
+              onClick={() => deleteCourse(course._id)}
+            >
+              <CloseIcon />
+            </Button>
           </Box>
         ))}
-      <Button variant="outlined" color="primary" fullWidth id="addCourse">
-        Add Courses
-      </Button>
     </Box>
   );
 }
 
-export default Courses;
+export default CourseSelectionPreview;

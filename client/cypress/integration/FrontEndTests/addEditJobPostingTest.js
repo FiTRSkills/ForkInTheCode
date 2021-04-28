@@ -103,6 +103,7 @@ describe("Add Edit Job Posting", () => {
         ],
         courses: [
           {
+            _id: 1,
             name: "Java 101",
             skills: [
               { description: "Java", name: "Java", _id: "1" },
@@ -175,6 +176,7 @@ describe("Add Edit Job Posting", () => {
         ],
         courses: [
           {
+            _id: 1,
             name: "Java 101",
             skills: [
               { description: "Java", name: "Java", _id: "1" },

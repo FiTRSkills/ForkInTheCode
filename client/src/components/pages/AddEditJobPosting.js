@@ -16,7 +16,7 @@ import axios from "axios";
 import Alert from "@material-ui/lab/Alert";
 import { useParams } from "react-router-dom";
 import { checkAndUpdateAuth } from "../../services/AuthService";
-import Courses from "../subcomponents/Shared/Courses";
+import CourseSelectionPreview from "../subcomponents/Shared/CourseSelectionPreview";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -267,6 +267,15 @@ function AddEditJobPosting(props) {
     event.preventDefault();
   }
 
+  function deleteCourse(courseId) {
+    let copyCourses = [...courses];
+    const index = copyCourses.findIndex((course) => course._id === courseId);
+    if (index > -1) {
+      copyCourses.splice(index, 1);
+      setCourses(copyCourses);
+    }
+  }
+
   if (!authenticated) {
     return <Box />;
   }
@@ -405,7 +414,18 @@ function AddEditJobPosting(props) {
           <Box className={classes.field}>
             <Typography>
               Courses - <em>Optional</em>
-              <Courses courses={courses} />
+              <CourseSelectionPreview
+                courses={courses}
+                deleteCourse={deleteCourse}
+              />
+              <Button
+                variant="outlined"
+                color="primary"
+                fullWidth
+                id="addCourse"
+              >
+                Add Courses
+              </Button>
             </Typography>
           </Box>
           <Grid
