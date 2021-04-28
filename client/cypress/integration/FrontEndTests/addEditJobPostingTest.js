@@ -26,6 +26,9 @@ describe("Add Edit Job Posting", () => {
     cy.get("#amountOfJobs").type("3");
     cy.get("#jobTimeline").type("3 Months");
 
+    cy.get("#method").select("In Person");
+    cy.get("#location").type("45 Hazel Street, Rochester, NY");
+
     cy.get("#skillInput").type("developer");
     cy.contains("developer").click();
     cy.get("#skillList").should("contain", "developer");
@@ -94,6 +97,7 @@ describe("Add Edit Job Posting", () => {
         benefits: "Many Java benefits",
         amountOfJobs: "3",
         jobTimeline: "3 Months",
+        location: "location",
         skills: [
           {
             description: "desc",
@@ -120,6 +124,9 @@ describe("Add Edit Job Posting", () => {
 
     cy.get("#amountOfJobs").type("3");
     cy.get("#jobTimeline").should("have.value", "3 Months");
+
+    cy.get("#method").should("have.value", "In Person");
+    cy.get("#location").should("have.value", "location");
 
     cy.get("#skillList").should("contain", "saad");
 
@@ -155,6 +162,7 @@ describe("Add Edit Job Posting", () => {
         benefits: "Many Java benefits",
         amountOfJobs: "3",
         jobTimeline: "3 Months",
+        location: "location",
         skills: [
           {
             description: "desc",
@@ -182,11 +190,16 @@ describe("Add Edit Job Posting", () => {
     cy.get("#amountOfJobs").type("3");
     cy.get("#jobTimeline").should("have.value", "3 Months");
 
+    cy.get("#method").should("have.value", "In Person");
+    cy.get("#location").type("something so front end will allow submission");
+
     cy.get("#skillList").should("contain", "saad");
 
     cy.get("#submit").click();
 
     cy.wait("@editJobPosting").its("status").should("eq", 400);
-    cy.contains("Must be a viable location. Must contain valid skills");
+    cy.contains("Must be a viable location");
+    cy.contains("Must contain valid skills");
+
   });
 });

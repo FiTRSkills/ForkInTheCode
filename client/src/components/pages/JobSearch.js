@@ -29,6 +29,8 @@ function JobSearch(props) {
         if (response.status === 200) {
           if (response.data.length === 0) {
             setErrorMessage("No Results");
+          } else {
+            setErrorMessage("");
           }
           props.updateResults(response.data);
         } else {
@@ -44,7 +46,7 @@ function JobSearch(props) {
   return (
     <Container component="main" maxWidth="lg">
       <CssBaseline />
-      <JobSearchForm errorMessage={errorMessage} apiCall={search} />
+      <JobSearchForm errorMessage={errorMessage} apiCall={search} location={"state" in props.location? props.location.state: null}/>
       {props.results.length > 0 && <Results />}
     </Container>
   );

@@ -146,7 +146,8 @@ describe("Add Edit Course", () => {
     cy.get("#submit").click();
 
     cy.wait("@addCourse").its("status").should("eq", 400);
-    cy.contains("Must be a viable location. Must contain valid skills");
+    cy.contains("Must be a viable location");
+    cy.contains("Must contain valid skills");
   });
 
   it("Add IN PERSON course FAILURE", () => {
@@ -274,6 +275,8 @@ describe("Add Edit Course", () => {
     cy.get("#submit").click();
 
     cy.wait("@editCourse").its("status").should("eq", 400);
-    cy.contains("Must be a viable location. Must contain valid skills");
+    cy.contains("Must be a viable location");
+    cy.contains("Must contain valid skills");
+
   });
 });
