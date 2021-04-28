@@ -8,6 +8,7 @@ describe("View Job Postings", () => {
       responsibilities: "responsibilities 1",
       description: "description 1",
       benefits: "benefits",
+      location: "location",
       skills: [
         {
           description: "desc1",
@@ -59,6 +60,7 @@ describe("View Job Postings", () => {
       responsibilities: "responsibilities 2",
       description: "description 2",
       benefits: "benefits",
+      location: "Online",
       skills: [
         {
           description: "desc2",

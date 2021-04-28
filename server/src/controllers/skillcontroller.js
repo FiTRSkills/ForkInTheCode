@@ -67,11 +67,6 @@ skillController.getSkill = async function (req, res) {
     res.status(406).send("skill does not exist");
     return;
   }
-  // if the skill does not exst return error
-  if (!skill) {
-    res.status(406).send("skill does not exist");
-    return;
-  }
   // get courses associated with the skill
   let courses = await Course.findAllBySkill(skill._id);
   let skill_info = {
