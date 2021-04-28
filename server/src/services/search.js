@@ -1,5 +1,6 @@
 const Skill = require("../models/skill");
 const JobPosting = require("../models/jobPosting");
+const Course = require("../models/course");
 
 const search = {};
 
@@ -58,6 +59,35 @@ search.findSkillsByZip = async function (zipCode) {
         newRoot: "$_id",
       },
     },
+  ]).exec();
+};
+
+/**
+ * Finds all courses that teach the provided skill ordered by number of
+ * jobs recommending that course.
+ *
+ * @param skills The ID or list of IDs of the skills to search for
+ * @param partialName A partial search that should match the course name
+ * @returns {Promise<*>}
+ */
+search.findCoursesBySkills = async function (skills, partialName = "") {
+  const skillQuery = Array.isArray(skills)
+    ? { $elemMatch: { $in: skills } }
+    : skills;
+  return await Course.aggregate([
+    {
+      // Filter out the courses to only the ones we are interested in
+      $match: {
+        name: { $regex: partialName, $options: "i" },
+        skills: skillQuery,
+      },
+    },
+    // {
+    //   $lookup: {
+    //     from: JobPosting.collection.collectionName,
+    //     localField,
+    //   },
+    // },
   ]).exec();
 };
 
