@@ -37,7 +37,7 @@ describe("Job Search", () => {
             }]
         }).as("submitSearch");
     cy.get("#navBarTitle").should("contain", "Job Search");
-    cy.get("#zipcode").type("1234");
+    cy.get("#zipcode").type("12345");
     cy.get("#submit").click();
     cy.wait("@submitSearch").its("status").should("eq", 200);
     cy.contains("IT Admin");
@@ -46,6 +46,7 @@ describe("Job Search", () => {
     cy.contains("Apple");
   });
   it("0 Results returned - SUCCESS", () => {
+    cy.InitializeSkills();
     cy.server();
     cy.route({
       method: "POST",
@@ -54,10 +55,23 @@ describe("Job Search", () => {
       response: []
     }).as("submitSearch");
     cy.get("#navBarTitle").should("contain", "Job Search");
-    cy.get("#zipcode").type("1234");
+    cy.get("#zipcode").type("12345");
     cy.get("#submit").click();
     cy.wait("@submitSearch").its("status").should("eq", 200);
     cy.contains("No Results");
+  });
+  it("Job Results Not 5-letter zip Code - FAILURE", () => {
+    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
+    cy.get("#navBarTitle").should("contain", "Job Search");
+    cy.get("#zipcode").type("1234");
+    cy.get("#submit").click();
+    cy.contains("Must be a 5-digit zip code");
+  });
+  it("Attempt Job Search No Zipcode- FAILURE", () => {
+    cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
+    cy.get("#navBarTitle").should("contain", "Job Search");
+    cy.get("#submit").click();
+    cy.should("not.have.value", "results");
   });
   it("Job Results 401- FAILURE", () => {
     cy.server();
@@ -69,7 +83,7 @@ describe("Job Search", () => {
     }).as("submitSearch");
     cy.visit(Cypress.env("REACT_APP_CLIENT_URL") + "/JobSearch");
     cy.get("#navBarTitle").should("contain", "Job Search");
-    cy.get("#zipcode").type("1234");
+    cy.get("#zipcode").type("12345");
     cy.get("#submit").click();
     cy.wait("@submitSearch").its("status").should("eq", 401);
     cy.contains("Please Try Again");
@@ -135,7 +149,7 @@ describe("Job Search", () => {
     cy.fakeLogin();
     cy.get("#navBarTitle").should("contain", "Job Search");
     cy.wait("@getProfileSkills").its("status").should("eq", 200);
-    cy.get("#zipcode").type("1234");
+    cy.get("#zipcode").type("12345");
     cy.get("#submit").click();
     cy.wait("@submitSearch").its("status").should("eq", 200);
     cy.get("#results > a").click();
