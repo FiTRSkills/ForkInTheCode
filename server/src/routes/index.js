@@ -283,8 +283,7 @@ router.patch(
     check("jobTimeline", "Must send a viable jobTimeline").exists(),
     check("benefits", "Must send a viable benefits").exists(),
     check("location", "Must send a viable location").exists(),
-    check("responsibilities", "Must send viable responsibilities")
-      .exists(),
+    check("responsibilities", "Must send viable responsibilities").exists(),
     check("skills", "Must send viable skills").exists(),
     check("courses", "Must send viable courses").exists(),
   ],
@@ -524,6 +523,24 @@ router.delete(
   [check("_id", "Must send a viable course id").not().isEmpty()],
   validation.validateInput,
   course.deleteCourse
+);
+
+/**
+ * Routing serving finding a course
+ * @name GET /courses/search
+ * @function
+ * @alias module:/routers/course
+ * @returns {String} msg - success or failure
+ */
+router.get(
+  "/courses/search",
+  validation.validateSession,
+  [
+    check("skills", "Must send viable skills").not().isEmpty(),
+    check("searchValue", "Must send viable searchValue").not().isEmpty(),
+  ],
+  validation.validateInput,
+  course.searchCourses
 );
 
 module.exports = router;

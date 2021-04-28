@@ -265,6 +265,25 @@ describe("CourseController Tests", () => {
 		expect(body.length).toEqual(1);
 	});
 
+	it("POST /courses/search - success searching course", async () => {
+		let skillsearch = await Skill.findOneOrCreate("Avacado");
+		let skillsearch2 = await Skill.findOneOrCreate("Nuggets");
+		const res = await request
+			.get("/courses/search")
+			.set("Cookie", [session_info])
+			.send({
+				skills: [skillsearch, skillsearch2],
+				searchValue: "How to ",
+			});
+		expect(res.statusCode).toEqual(200);
+		let body = JSON.parse(res.text);
+		console.log(body);
+		expect(body[0].name).toEqual("How to Get Away with Murder 2");
+		expect(body[0].times).toEqual("12-13");
+		expect(body[0].skills.length).toEqual(2);
+		expect(body.length).toEqual(1);
+	});
+
 	it("DELETE /courses/course - success", async () => {
 		const res = await request
 			.delete("/courses/course")
