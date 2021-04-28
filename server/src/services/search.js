@@ -1,6 +1,7 @@
 const Skill = require("../models/skill");
 const JobPosting = require("../models/jobPosting");
 const Course = require("../models/course");
+const mongoose = require("mongoose");
 
 const search = {};
 
@@ -72,7 +73,15 @@ search.findSkillsByZip = async function (zipCode) {
  */
 search.findCoursesBySkills = async function (skills, partialName = "") {
   const skillQuery = Array.isArray(skills)
-    ? { $elemMatch: { $in: skills } }
+    ? {
+        $elemMatch: {
+          $in: skills.map(
+            (skill) =>
+              mongoose.Types.ObjectId(skill._id) ||
+              mongoose.Types.ObjectId(skill)
+          ),
+        },
+      }
     : skills;
   return await Course.aggregate([
     {

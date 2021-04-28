@@ -277,7 +277,6 @@ describe("CourseController Tests", () => {
 			});
 		expect(res.statusCode).toEqual(200);
 		let body = JSON.parse(res.text);
-		console.log(body);
 		expect(body[0].name).toEqual("How to Get Away with Murder 2");
 		expect(body[0].times).toEqual("12-13");
 		expect(body[0].skills.length).toEqual(2);
