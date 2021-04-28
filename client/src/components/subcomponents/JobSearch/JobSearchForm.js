@@ -63,7 +63,7 @@ function JobSearchForm(props) {
   }, [props.sharedSkills]);
 
   useEffect(() => {
-    if (props.location ) {
+    if (props.location) {
       setZipCode(props.location);
     }
     // eslint-disable-next-line
@@ -76,14 +76,18 @@ function JobSearchForm(props) {
     // eslint-disable-next-line
   }, [zipCode]);
   function submit(event) {
-    setLoading(true);
-    props.apiCall(zipCode, skills).finally(() => {
-      setLoading(false);
-    });
-    if (event){
+    // Validate that zip code is a 5-digit
+    if (zipCode.match("^\\d{5}$")) {
+      setLoading(true);
+      props.apiCall(zipCode, skills).finally(() => {
+        setLoading(false);
+      });
+    } else {
+      props.setErrorMessage("Must be a 5-digit zip code");
+    }
+    if (event) {
       event.preventDefault();
     }
-
   }
 
   const classes = useStyles();
