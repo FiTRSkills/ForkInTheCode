@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import Dialog from "@material-ui/core/Dialog";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
@@ -9,6 +10,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import axios from "axios";
 import Alert from "@material-ui/lab/Alert";
 import Skills from "../Shared/Skills";
+import CourseSelectionPreview from "../Shared/CourseSelectionPreview";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -37,7 +39,14 @@ const useStyles = makeStyles((theme) => ({
   closeButton: { position: "absolute", right: 0 },
 }));
 
-function AddCourseDialog({ open, closeDialog, skills, courses, setCourses }) {
+function AddCourseDialog({
+  open,
+  closeDialog,
+  skills,
+  courses,
+  setCourses,
+  user,
+}) {
   /**
    * Local state
    */
@@ -89,8 +98,14 @@ function AddCourseDialog({ open, closeDialog, skills, courses, setCourses }) {
       .finally(() => setLoading(false));
   }
 
+  function deleteCourse(courseId) {
+    setCourses((courses) =>
+      courses.filter((course) => course._id !== courseId)
+    );
+  }
+
   return (
-    <Dialog open={open}>
+    <Dialog open={open} fullWidth maxWidth="lg">
       <Button
         className={classes.closeButton}
         onClick={closeDialog}
@@ -107,11 +122,14 @@ function AddCourseDialog({ open, closeDialog, skills, courses, setCourses }) {
         {error && <Alert severity="error">{error}</Alert>}
         <Box className={classes.field}>
           <Typography>Skills in Job Posting:</Typography>
-          <Skills skills={skills} editMode={false} user={props.user.type} />
+          <Skills skills={skills} editMode={false} user={user.type} />
         </Box>
         <Box className={classes.field}>
           <Typography>Selected Courses:</Typography>
-          {/* TODO: Toni */}
+          <CourseSelectionPreview
+            courses={courses}
+            deleteCourse={deleteCourse}
+          />
         </Box>
         <form className={classes.form}>
           <Box className={classes.field}>
@@ -181,4 +199,14 @@ function AddCourseDialog({ open, closeDialog, skills, courses, setCourses }) {
   );
 }
 
-export default AddCourseDialog;
+function mapStateToProps(state) {
+  return {
+    user: state.authentication,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddCourseDialog);

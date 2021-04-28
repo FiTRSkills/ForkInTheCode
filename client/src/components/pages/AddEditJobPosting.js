@@ -17,6 +17,7 @@ import Alert from "@material-ui/lab/Alert";
 import { useParams } from "react-router-dom";
 import { checkAndUpdateAuth } from "../../services/AuthService";
 import CourseSelectionPreview from "../subcomponents/Shared/CourseSelectionPreview";
+import AddCourseDialog from "../subcomponents/JobPosting/AddCourseDialog";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -38,6 +39,31 @@ const useStyles = makeStyles((theme) => ({
   buttonGroup: {
     marginTop: theme.spacing(4),
   },
+  careerPopupOverlay: {
+    position: "fixed",
+    top: "0px",
+    left: "0px",
+    width: "100%",
+    height: "100%",
+    background: "rgba(0, 0, 0, 0.6)",
+    zIndex: "9",
+  },
+  careerPopupContent: {
+    borderColor: "black",
+    borderWidth: "2px",
+    borderStyle: "solid",
+    borderRadius: "15px",
+    background: "white",
+    width: "50%",
+    height: "75%",
+    margin: "0",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    zIndex: "10",
+    overflow: "auto",
+  },
 }));
 
 function AddEditJobPosting(props) {
@@ -55,6 +81,7 @@ function AddEditJobPosting(props) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
+  const [showAddCareerPopup, setShowAddCareerPopup] = useState(false);
   const { mode, id } = useParams();
 
   // Style hook
@@ -273,6 +300,10 @@ function AddEditJobPosting(props) {
     );
   }
 
+  function closeAddCareer() {
+    setShowAddCareerPopup(false);
+  }
+
   if (!authenticated) {
     return <Box />;
   }
@@ -420,6 +451,9 @@ function AddEditJobPosting(props) {
                 color="primary"
                 fullWidth
                 id="addCourse"
+                onClick={() => {
+                  setShowAddCareerPopup(true);
+                }}
               >
                 Add Courses
               </Button>
@@ -455,6 +489,13 @@ function AddEditJobPosting(props) {
           </Grid>
         </form>
       </Box>
+      <AddCourseDialog
+        open={showAddCareerPopup}
+        closeDialog={closeAddCareer}
+        skills={skills}
+        courses={courses}
+        setCourses={setCourses}
+      />
     </Container>
   );
 }
