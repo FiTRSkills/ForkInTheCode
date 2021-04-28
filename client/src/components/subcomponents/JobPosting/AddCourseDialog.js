@@ -89,6 +89,7 @@ function AddCourseDialog({
       .then((response) => {
         if (response.status === 200) {
           setResults(response.data);
+          setError("");
         }
       })
       .catch((error) => {
