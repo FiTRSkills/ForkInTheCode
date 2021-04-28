@@ -68,7 +68,7 @@ skillController.getSkill = async function (req, res) {
     return;
   }
   // get courses associated with the skill
-  let courses = await Course.findAllBySkill(skill._id);
+  let courses = await Search.findCoursesBySkills(skill._id);
   let skill_info = {
     skill: skill,
     courses: courses,
