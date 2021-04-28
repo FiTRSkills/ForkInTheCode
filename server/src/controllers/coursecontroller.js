@@ -59,12 +59,12 @@ courseController.updateCourse = async function (req, res) {
 			let profile = await req.user.getProfile();
 			let course = await Course.findById(req.body._id);
 			if (
-		        profile.organization._id.toString() !=
-		        course.organization._id.toString()
-		      ) {
-		        res.status(400).send("User does not own this course.");
-		        return;
-		      }
+				profile.organization._id.toString() !=
+				course.organization._id.toString()
+			) {
+				res.status(400).send("User does not own this course.");
+				return;
+			}
 			// iterates through given information to add to course
 			Object.keys(req.body).forEach(function (key) {
 				if (key != "_id") {
@@ -100,12 +100,12 @@ courseController.deleteCourse = async function (req, res) {
 			let profile = await req.user.getProfile();
 			let course = await Course.findById(req.body._id);
 			if (
-		        profile.organization._id.toString() !=
-		        course.organization._id.toString()
-		      ) {
-		        res.status(400).send("User does not own this course.");
-		        return;
-		      }
+				profile.organization._id.toString() !=
+				course.organization._id.toString()
+			) {
+				res.status(400).send("User does not own this course.");
+				return;
+			}
 			await (await Course.findById(req.body._id)).remove();
 			res.status(200).send("Successfully deleted course.");
 		} catch (error) {
@@ -138,6 +138,31 @@ courseController.viewCourses = async function (req, res) {
 		}
 	} else {
 		res.status(400).send("Invalid usertype.");
+	}
+};
+
+/**
+ * functionality for searching courses
+ * @name course/search
+ * @function
+ * @alias module:/controllers/coursecontroller
+ * @property {request} request - nothing
+ * @returns {string} response - list of courses
+ */
+courseController.searchCourses = async function (req, res) {
+	try {
+		let searchResults = await Course.find({
+			name: { $regex: req.body.searchValue, $options: "i" },
+			skills: req.body.skills,
+		});
+		if (searchResults == null) {
+			res.status(400).send("No results");
+			return;
+		}
+		res.status(200).send(searchResults);
+	} catch (e) {
+		console.log(e);
+		res.status(400).send("Unable to search for skills.");
 	}
 };
 
