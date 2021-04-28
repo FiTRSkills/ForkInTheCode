@@ -2,6 +2,7 @@ const { connectDB, disconnectDB } = require("../util");
 const JobPosting = require("../../src/models/jobPosting");
 const Organization = require("../../src/models/organization");
 const Skill = require("../../src/models/skill");
+const Course = require("../../src/models/course");
 
 describe("JobPosting Model Test", () => {
   beforeAll(connectDB);
@@ -11,6 +12,7 @@ describe("JobPosting Model Test", () => {
     await JobPosting.remove({});
     await Organization.remove({});
     await Skill.remove({});
+    await Course.remove({});
   });
 
   async function makeSkills() {
@@ -24,6 +26,19 @@ describe("JobPosting Model Test", () => {
       await skill.save();
     }
     return skills;
+  }
+
+  async function makeCourses() {
+    let courses = [
+      new Course({ name: "Course 1" }),
+      new Course({ name: "Course 2" }),
+      new Course({ name: "Course 3" }),
+    ];
+
+    for (let course of courses) {
+      await course.save();
+    }
+    return courses;
   }
 
   it("create job posting - with data", async () => {
@@ -222,5 +237,56 @@ describe("JobPosting Model Test", () => {
 
     expect(savedJobPosting.skills.length).toEqual(1);
     expect(savedJobPosting.skills[0]._id).toEqual(skills[1]._id);
+  });
+
+  it("add courses - single course", async () => {
+    let courses = await makeCourses();
+    let jobPosting = new JobPosting();
+    await jobPosting.addCourses(courses[0]._id.toString());
+
+    let savedJobPosting = await JobPosting.getJobPosting(jobPosting._id);
+    expect(savedJobPosting.courses.length).toEqual(1);
+    expect(savedJobPosting.courses[0]._id).toEqual(courses[0]._id);
+  });
+
+  it("add courses - multiple courses", async () => {
+    let courses = await makeCourses();
+    let jobPosting = new JobPosting();
+    await jobPosting.addCourses([
+      courses[0]._id.toString(),
+      courses[1]._id.toString(),
+    ]);
+
+    let savedJobPosting = await JobPosting.getJobPosting(jobPosting._id);
+    expect(savedJobPosting.courses.length).toEqual(2);
+    expect(savedJobPosting.courses[0]._id).toEqual(courses[0]._id);
+    expect(savedJobPosting.courses[1]._id).toEqual(courses[1]._id);
+  });
+
+  it("remove course - existing course", async () => {
+    let courses = await makeCourses();
+    let jobPosting = new JobPosting();
+    await jobPosting.addCourses([
+      courses[0]._id.toString(),
+      courses[1]._id.toString(),
+    ]);
+
+    let savedJobPosting = await JobPosting.findById(jobPosting._id).exec();
+    await savedJobPosting.removeCourse(courses[0]._id);
+
+    expect(savedJobPosting.courses.length).toEqual(1);
+    expect(savedJobPosting.courses[0]._id).toEqual(courses[1]._id);
+  });
+
+  it("remove course - non existent course", async () => {
+    let courses = await makeCourses();
+    let jobPosting = new JobPosting();
+    await jobPosting.addCourses([courses[1]._id.toString()]);
+
+    let savedJobPosting = await JobPosting.findById(jobPosting._id).exec();
+    await savedJobPosting.removeCourse(courses[0]._id);
+
+    expect(savedJobPosting.courses.length).toEqual(1);
+    expect(savedJobPosting.courses[0]._id).toEqual(courses[1]._id);
   });
 });
