@@ -51,6 +51,9 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     textAlign: "center",
+    position: "absolute",
+    left: 0,
+    right: 0,
   },
   value: {
     fontWeight: "normal",
@@ -65,6 +68,9 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonContainer: {
     height: 0,
+  },
+  titleContainer: {
+    paddingBottom: theme.spacing(3),
   },
 }));
 
@@ -173,19 +179,21 @@ function ViewJobPostings({ changeCurrentPage, user, history }) {
 
   return (
     <Container className={classes.container}>
-      <Link className={classes.addButtonLink} to="/JobPosting/Add">
-        <Button
-          className={classes.addButton}
-          id="addJobPostingButton"
-          variant="contained"
-          color="primary"
-        >
-          Add Job Posting
-        </Button>
-      </Link>
-      <Typography className={classes.title} variant="h5" component="h1">
-        Manage Job Postings
-      </Typography>
+      <Box className={classes.titleContainer}>
+        <Typography className={classes.title} variant="h5" component="h1">
+          Manage Job Postings
+        </Typography>
+        <Link className={classes.addButtonLink} to="/JobPosting/Add">
+          <Button
+            className={classes.addButton}
+            id="addJobPostingButton"
+            variant="contained"
+            color="primary"
+          >
+            Add Job Posting
+          </Button>
+        </Link>
+      </Box>
       {error && (
         <Alert severity={"error"} id="error">
           {error}
