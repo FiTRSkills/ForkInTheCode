@@ -129,12 +129,9 @@ function AddCourseDialog({
   }
 
   function addCourse(course) {
-    console.log(courses);
-    console.log(courses.find((tempCourse) => tempCourse._id === course._id));
     if (
-      courses !== undefined &&
-      (courses.find((tempCourse) => tempCourse._id === course._id) ===
-        undefined ||
+      courses &&
+      (courses.find((tempCourse) => tempCourse._id === course._id) ||
         courses.find((tempCourse) => tempCourse._id === course._id).length < 1)
     ) {
       if (courses.length > 0) {
