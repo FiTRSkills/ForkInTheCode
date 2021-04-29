@@ -24,6 +24,16 @@ const useStyles = makeStyles((theme) => ({
   field: {
     marginTop: theme.spacing(2),
   },
+  selectedCourses: {
+    marginTop: theme.spacing(2),
+    maxHeight: 300,
+    overflowY: "auto",
+  },
+  results: {
+    marginTop: theme.spacing(2),
+    maxHeight: "40%",
+    overflowY: "auto",
+  },
   submit: {
     marginTop: theme.spacing(4),
     padding: theme.spacing(2),
@@ -37,6 +47,20 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   closeButton: { position: "absolute", right: 0 },
+  itemContainer: {
+    backgroundColor: "#F6F6F6",
+    padding: 20,
+    borderRadius: 6,
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+  },
+  button: {
+    margin: 10,
+    float: "right",
+  },
+  buttonContainer: {
+    height: 0,
+  },
 }));
 
 function AddCourseDialog({
@@ -78,14 +102,13 @@ function AddCourseDialog({
   function searchCourses() {
     setLoading(true);
     axios
-      .post(
-        process.env.REACT_APP_SERVER_URL + "/courses/search",
-        {
-          skills: skills,
+      .get(process.env.REACT_APP_SERVER_URL + "/courses/search", {
+        params: {
+          skills: JSON.stringify(skills),
           searchValue: search,
         },
-        { withCredentials: true }
-      )
+        withCredentials: true,
+      })
       .then((response) => {
         if (response.status === 200) {
           setResults(response.data);
@@ -103,6 +126,14 @@ function AddCourseDialog({
     setCourses((courses) =>
       courses.filter((course) => course._id !== courseId)
     );
+  }
+
+  function addCourse(course) {
+    if (courses && courses.length > 0) {
+      setCourses([...courses, course]);
+    } else {
+      setCourses([course]);
+    }
   }
 
   return (
@@ -125,7 +156,7 @@ function AddCourseDialog({
           <Typography>Skills in Job Posting:</Typography>
           <Skills skills={skills} editMode={false} user={user.type} />
         </Box>
-        <Box className={classes.field}>
+        <Box className={classes.selectedCourses}>
           <Typography>Selected Courses:</Typography>
           <CourseSelectionPreview
             courses={courses}
@@ -160,41 +191,59 @@ function AddCourseDialog({
             {!loading ? "Search Courses" : "Processing..."}
           </Button>
         </form>
-        {results.map((courseInfo) => (
-          <Box
-            className={classes.itemContainer}
-            id={"courseId" + courseInfo._id}
-            key={courseInfo._id}
-          >
-            <Box className={classes.header}>
-              <Typography variant="h5" component="h2">
-                {courseInfo.name}
-              </Typography>
+        <Box className={classes.results}>
+          {results.map((courseInfo) => (
+            <Box
+              className={classes.itemContainer}
+              id={"courseId" + courseInfo._id}
+              key={courseInfo._id}
+            >
+              <Box className={classes.header}>
+                <Typography variant="h5" component="h2">
+                  {courseInfo.name}
+                </Typography>
+              </Box>
+              <Box className={classes.buttonContainer}>
+                <Button
+                  className={classes.button}
+                  name="AddCourse"
+                  id={"AddCourse" + courseInfo._id}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    addCourse(courseInfo);
+                  }}
+                >
+                  Add
+                </Button>
+              </Box>
+              <Box className={classes.body}>
+                <Typography className={classes.item} component="div">
+                  Organization:{" "}
+                  <span className={classes.value}>
+                    {courseInfo.organization.name}
+                  </span>
+                </Typography>
+              </Box>
+              <Box className={classes.body}>
+                <Typography className={classes.item} component="div">
+                  Description:{" "}
+                  <span className={classes.value}>
+                    {courseInfo.description}
+                  </span>
+                </Typography>
+              </Box>
+              <Box className={classes.body}>
+                <Typography className={classes.item} component="div">
+                  Skills to be Learned:{" "}
+                  <span className={classes.value}>
+                    {courseInfo.skills.map((skill) => skill.name).join(", ")}
+                  </span>
+                </Typography>
+              </Box>
             </Box>
-            <Box className={classes.body}>
-              <Typography className={classes.item} component="div">
-                Organization:{" "}
-                <span className={classes.value}>
-                  {courseInfo.organization.name}
-                </span>
-              </Typography>
-            </Box>
-            <Box className={classes.body}>
-              <Typography className={classes.item} component="div">
-                Description:{" "}
-                <span className={classes.value}>{courseInfo.description}</span>
-              </Typography>
-            </Box>
-            <Box className={classes.body}>
-              <Typography className={classes.item} component="div">
-                Skills to be Learned:{" "}
-                <span className={classes.value}>
-                  {courseInfo.skills.map((skill) => skill.name).join(", ")}
-                </span>
-              </Typography>
-            </Box>
-          </Box>
-        ))}
+          ))}
+        </Box>
       </Box>
     </Dialog>
   );

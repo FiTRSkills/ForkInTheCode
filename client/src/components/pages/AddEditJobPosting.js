@@ -280,7 +280,7 @@ function AddEditJobPosting(props) {
                 location,
                 zipCode,
                 salary,
-                courses: [], // TODO: Add Courses
+                courses,
               },
               {
                 withCredentials: true,
