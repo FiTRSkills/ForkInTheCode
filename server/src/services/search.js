@@ -83,7 +83,7 @@ search.findCoursesBySkills = async function (skills, partialName = "") {
         },
       }
     : skills;
-  return await Course.aggregate([
+  const results = await Course.aggregate([
     {
       // Filter out the courses to only the ones we are interested in
       $match: {
@@ -98,6 +98,11 @@ search.findCoursesBySkills = async function (skills, partialName = "") {
     //   },
     // },
   ]).exec();
+  for (let course of results) {
+    await Course.populate(course, "organization");
+    await Course.populate(course, "skills");
+  }
+  return results;
 };
 
 module.exports = search;
