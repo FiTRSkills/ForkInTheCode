@@ -105,6 +105,16 @@ describe("Add Edit Job Posting", () => {
             _id: "1",
           },
         ],
+        courses: [
+          {
+            _id: 1,
+            name: "Java 101",
+            skills: [
+              { description: "Java", name: "Java", _id: "1" },
+              { description: "Python", name: "Python", _id: "2" },
+            ],
+          },
+        ],
       },
     }).as("getJobPosting");
 
@@ -129,6 +139,8 @@ describe("Add Edit Job Posting", () => {
     cy.get("#location").should("have.value", "location");
 
     cy.get("#skillList").should("contain", "saad");
+    cy.get("#course0").should("contain", "Java 101");
+    cy.get("#course0").should("contain", "Java, Python");
 
     cy.get("#submit").click();
 
@@ -170,6 +182,16 @@ describe("Add Edit Job Posting", () => {
             _id: "1",
           },
         ],
+        courses: [
+          {
+            _id: 1,
+            name: "Java 101",
+            skills: [
+              { description: "Java", name: "Java", _id: "1" },
+              { description: "Python", name: "Python", _id: "2" },
+            ],
+          },
+        ],
       },
     }).as("getJobPosting");
 
@@ -194,6 +216,8 @@ describe("Add Edit Job Posting", () => {
     cy.get("#location").type("something so front end will allow submission");
 
     cy.get("#skillList").should("contain", "saad");
+    cy.get("#course0").should("contain", "Java 101");
+    cy.get("#course0").should("contain", "Java, Python");
 
     cy.get("#submit").click();
 

@@ -17,6 +17,7 @@ import axios from "axios";
 import Alert from "@material-ui/lab/Alert";
 import { useParams } from "react-router-dom";
 import { checkAndUpdateAuth } from "../../services/AuthService";
+import CourseSelectionPreview from "../subcomponents/Shared/CourseSelectionPreview";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -291,6 +292,12 @@ function AddEditJobPosting(props) {
     event.preventDefault();
   }
 
+  function deleteCourse(courseId) {
+    setCourses((courses) =>
+      courses.filter((course) => course._id !== courseId)
+    );
+  }
+
   if (!authenticated) {
     return <Box />;
   }
@@ -462,7 +469,23 @@ function AddEditJobPosting(props) {
               allowCreate
             />
           </Box>
-          {/* TODO: Add Courses */}
+          <Box className={classes.field}>
+            <Typography>
+              Courses - <em>Optional</em>
+              <CourseSelectionPreview
+                courses={courses}
+                deleteCourse={deleteCourse}
+              />
+              <Button
+                variant="outlined"
+                color="primary"
+                fullWidth
+                id="addCourse"
+              >
+                Add Courses
+              </Button>
+            </Typography>
+          </Box>
           <Grid
             container
             direction={"row"}
