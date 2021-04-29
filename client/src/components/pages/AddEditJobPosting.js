@@ -18,6 +18,7 @@ import Alert from "@material-ui/lab/Alert";
 import { useParams } from "react-router-dom";
 import { checkAndUpdateAuth } from "../../services/AuthService";
 import CourseSelectionPreview from "../subcomponents/Shared/CourseSelectionPreview";
+import AddCourseDialog from "../subcomponents/JobPosting/AddCourseDialog";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -39,9 +40,34 @@ const useStyles = makeStyles((theme) => ({
   buttonGroup: {
     marginTop: theme.spacing(4),
   },
-  errorMessage : {
-    marginBottom: 4
-  }
+  careerPopupOverlay: {
+    position: "fixed",
+    top: "0px",
+    left: "0px",
+    width: "100%",
+    height: "100%",
+    background: "rgba(0, 0, 0, 0.6)",
+    zIndex: "9",
+  },
+  careerPopupContent: {
+    borderColor: "black",
+    borderWidth: "2px",
+    borderStyle: "solid",
+    borderRadius: "15px",
+    background: "white",
+    width: "50%",
+    height: "75%",
+    margin: "0",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    zIndex: "10",
+    overflow: "auto",
+  },
+  errorMessage: {
+    marginBottom: 4,
+  },
 }));
 
 function AddEditJobPosting(props) {
@@ -61,6 +87,7 @@ function AddEditJobPosting(props) {
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
+  const [showAddCareerPopup, setShowAddCareerPopup] = useState(false);
   const { mode, id } = useParams();
 
   // Style hook
@@ -115,7 +142,7 @@ function AddEditJobPosting(props) {
         if (error.response) {
           if (error.response && error.response.status === 400) {
             if (error.response.data.errors) {
-              let errorArr =[];
+              let errorArr = [];
               error.response.data.errors.forEach((errorItem) => {
                 errorArr.push(errorItem.msg);
               });
@@ -223,7 +250,7 @@ function AddEditJobPosting(props) {
             .catch((error) => {
               if (error.response && error.response.status === 400) {
                 if (error.response.data.errors) {
-                  let errorArr =[];
+                  let errorArr = [];
                   error.response.data.errors.forEach((errorItem) => {
                     errorArr.push(errorItem.msg);
                   });
@@ -253,7 +280,7 @@ function AddEditJobPosting(props) {
                 location,
                 zipCode,
                 salary,
-                courses: [], // TODO: Add Courses
+                courses,
               },
               {
                 withCredentials: true,
@@ -270,7 +297,7 @@ function AddEditJobPosting(props) {
             .catch((error) => {
               if (error.response && error.response.status === 400) {
                 if (error.response.data.errors) {
-                  let errorArr =[];
+                  let errorArr = [];
                   error.response.data.errors.forEach((errorItem) => {
                     errorArr.push(errorItem.msg);
                   });
@@ -278,7 +305,7 @@ function AddEditJobPosting(props) {
                 } else {
                   setErrors([error.response.data]);
                 }
-              }  else {
+              } else {
                 setErrors(["Failed to update job posting"]);
               }
               setLoading(false);
@@ -298,6 +325,10 @@ function AddEditJobPosting(props) {
     );
   }
 
+  function closeAddCareer() {
+    setShowAddCareerPopup(false);
+  }
+
   if (!authenticated) {
     return <Box />;
   }
@@ -305,10 +336,11 @@ function AddEditJobPosting(props) {
   return (
     <Container className={classes.container}>
       <Box className={classes.subContainer}>
-        {errors.map(error =>(
-          <Alert severity="error" className={classes.errorMessage}>{error}</Alert>
-        ))
-        }
+        {errors.map((error) => (
+          <Alert severity="error" className={classes.errorMessage}>
+            {error}
+          </Alert>
+        ))}
         <form onSubmit={onSubmit}>
           <Box className={classes.field}>
             <Typography variant={"h5"}>
@@ -481,6 +513,9 @@ function AddEditJobPosting(props) {
                 color="primary"
                 fullWidth
                 id="addCourse"
+                onClick={() => {
+                  setShowAddCareerPopup(true);
+                }}
               >
                 Add Courses
               </Button>
@@ -516,6 +551,13 @@ function AddEditJobPosting(props) {
           </Grid>
         </form>
       </Box>
+      <AddCourseDialog
+        open={showAddCareerPopup}
+        closeDialog={closeAddCareer}
+        skills={skills}
+        courses={courses}
+        setCourses={setCourses}
+      />
     </Container>
   );
 }
