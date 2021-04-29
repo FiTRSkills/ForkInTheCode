@@ -153,8 +153,8 @@ courseController.viewCourses = async function (req, res) {
 courseController.searchCourses = async function (req, res) {
   try {
     let searchResults = await Search.findCoursesBySkills(
-      req.body.skills,
-      req.body.searchValue
+      req.query.skills,
+      req.query.searchValue
     );
     if (searchResults == null) {
       res.status(400).send("No results");
