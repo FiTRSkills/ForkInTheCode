@@ -1,3 +1,38 @@
+let courses = [
+  {
+    _id: "1",
+    name: "plz work",
+    description: "desc",
+    skills: [
+      {
+        description: "desc2",
+        _id: "2",
+        name: "skill2",
+        __v: 0,
+      },
+      {
+        description: "desc1",
+        _id: "1",
+        name: "skill1",
+        __v: 0,
+      },
+    ],
+    location: "loc",
+    contact: "cont",
+    period: "3 Months",
+    times: "times",
+    moneyCost: "cost",
+    timeCost: "start end",
+    requiredEquipment: "equ",
+    __v: 6,
+    organization: {
+      _id: "5fee29ecdce6092474318906",
+      name: "organization",
+      __v: 0,
+    },
+  },
+];
+
 describe("Add Edit Job Posting", () => {
   beforeEach(() => {
     cy.fakeLogin("EmployerProfile");
@@ -224,6 +259,112 @@ describe("Add Edit Job Posting", () => {
     cy.wait("@editJobPosting").its("status").should("eq", 400);
     cy.contains("Must be a viable location");
     cy.contains("Must contain valid skills");
+  });
 
+  it("Add Course SUCCESS", () => {
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/search**",
+      status: 200,
+      response: courses,
+    }).as("courseSearch");
+
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobPosting?_id=1",
+      status: 200,
+      response: {
+        _id: "1",
+        jobTitle: "Java",
+        description: "This is a Java job",
+        zipCode: "12345",
+        salary: "2000",
+        responsibilities: "Many Java work",
+        benefits: "Many Java benefits",
+        amountOfJobs: "3",
+        jobTimeline: "3 Months",
+        location: "location",
+        skills: [
+          {
+            description: "desc",
+            name: "saad",
+            _id: "1",
+          },
+        ],
+        courses: [],
+      },
+    }).as("getJobPosting");
+
+    cy.InitializeSkills(true, "/JobPosting/Edit/1");
+
+    cy.wait("@getJobPosting").its("status").should("eq", 200);
+
+    cy.get("#navBarTitle").should("contain", "Job Postings");
+
+    cy.get("#addCourse").click();
+
+    cy.get("#search").type("plz work");
+
+    cy.get("#searchCourses").click();
+
+    cy.wait("@courseSearch").its("status").should("eq", 200);
+
+    cy.get("#AddCourse1").click();
+
+    cy.get("#closeAddCourses").click();
+
+    cy.get("#course0").should("contain", "plz work");
+    cy.get("#course0").should("contain", "skill2, skill1");
+  });
+
+  it("Add Course FAILURE", () => {
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/courses/search**",
+      status: 400,
+      response: "Failed to search for courses.",
+    }).as("courseSearch");
+
+    cy.route({
+      method: "GET",
+      url: Cypress.env("REACT_APP_SERVER_URL") + "/jobPosting?_id=1",
+      status: 200,
+      response: {
+        _id: "1",
+        jobTitle: "Java",
+        description: "This is a Java job",
+        zipCode: "12345",
+        salary: "2000",
+        responsibilities: "Many Java work",
+        benefits: "Many Java benefits",
+        amountOfJobs: "3",
+        jobTimeline: "3 Months",
+        location: "location",
+        skills: [
+          {
+            description: "desc",
+            name: "saad",
+            _id: "1",
+          },
+        ],
+        courses: [],
+      },
+    }).as("getJobPosting");
+
+    cy.InitializeSkills(true, "/JobPosting/Edit/1");
+
+    cy.wait("@getJobPosting").its("status").should("eq", 200);
+
+    cy.get("#navBarTitle").should("contain", "Job Postings");
+
+    cy.get("#addCourse").click();
+
+    cy.get("#search").type("plz work");
+
+    cy.get("#searchCourses").click();
+
+    cy.wait("@courseSearch").its("status").should("eq", 400);
+
+    cy.contains("Failed to search for courses");
   });
 });
