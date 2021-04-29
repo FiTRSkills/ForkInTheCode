@@ -153,7 +153,7 @@ courseController.viewCourses = async function (req, res) {
 courseController.searchCourses = async function (req, res) {
   try {
     let searchResults = await Search.findCoursesBySkills(
-      req.query.skills,
+      JSON.parse(req.query.skills),
       req.query.searchValue
     );
     if (searchResults == null) {
