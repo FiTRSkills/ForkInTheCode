@@ -59,18 +59,6 @@ const Course = new mongoose.Schema({
 });
 
 /**
- * Finds all courses that teach the provided skill ordered by number of
- * jobs recommending that course.
- *
- * @param skill The ID of the skill to search for
- * @returns {Promise<*>}
- */
-Course.statics.findAllBySkill = async function (skill) {
-  return await this.find({ skills: skill }).exec();
-  // TODO order by job recommendations
-};
-
-/**
  * Sets the organization or creates a new one if the name is not found.
  *
  * @param name The name of the organization to match or create

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Organization = require("./organization");
 const Skill = require("./skill");
+const Course = require("./course");
 
 /**
  * Defines a job posting on the website created by an organization that is visible to
@@ -55,7 +56,13 @@ const JobPosting = new mongoose.Schema({
       autopopulate: true,
     },
   ],
-  //TODO: Add educational courses
+  courses: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: Course.modelName,
+      autopopulate: true,
+    },
+  ],
 });
 
 /**
@@ -99,14 +106,13 @@ JobPosting.methods.setOrganization = async function (organization) {
 };
 
 /**
- * Add multiple required skills to this job posting.  Each skill will be a single
- * string and if that skill is not found in the system, a new one will be created.
+ * Add multiple required skills to this job posting by their IDs.
  *
  * @param skills A list of object IDs corresponding to the skills that should be added.
  * @returns {Promise<JobPosting>}
  */
 JobPosting.methods.addSkills = async function (skills) {
-  let skillEntries = await Skill.find({ _id: { $in: skills } });
+  let skillEntries = await Skill.find({ _id: { $in: skills } }).exec();
   this.skills = this.skills.concat(skillEntries);
   await this.save();
   return this;
@@ -123,6 +129,35 @@ JobPosting.methods.removeSkill = async function (id) {
   this.skills = this.skills.filter((skill) => {
     if (skill._id) return !skill._id.equals(id);
     return !skill.equals(id);
+  });
+  await this.save();
+  return this;
+};
+
+/**
+ * Add multiple suggested courses to this job posting by their IDs.
+ *
+ * @param courses A list of object IDs corresponding to the courses that should be added.
+ * @returns {Promise<JobPosting>}
+ */
+JobPosting.methods.addCourses = async function (courses) {
+  let courseEntries = await Course.find({ _id: { $in: courses } }).exec();
+  this.courses = this.courses.concat(courseEntries);
+  await this.save();
+  return this;
+};
+
+/**
+ * Removes a course from the job posting by the given id.  This does not delete the course from the system.
+ *
+ * @param id The id of the course to remove from the job posting
+ * @returns {Promise<JobPosting>}
+ */
+JobPosting.methods.removeCourse = async function (id) {
+  // Handle both the auto-populated object and the non auto-populated one.
+  this.courses = this.courses.filter((course) => {
+    if (course._id) return !course._id.equals(id);
+    return !course.equals(id);
   });
   await this.save();
   return this;

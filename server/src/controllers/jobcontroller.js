@@ -36,6 +36,7 @@ jobController.getJobPosting = async function (req, res) {
     jobTimeline: jobPost.jobTimeline,
     organization: jobPost.organization,
     skills: jobPost.skills,
+    courses: jobPost.courses,
   };
   res.status(200).send(data);
 };
