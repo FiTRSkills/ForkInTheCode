@@ -91,12 +91,24 @@ search.findCoursesBySkills = async function (skills, partialName = "") {
         skills: skillQuery,
       },
     },
-    // {
-    //   $lookup: {
-    //     from: JobPosting.collection.collectionName,
-    //     localField,
-    //   },
-    // },
+    {
+      // Map all job postings that recommend this course as an array
+      $lookup: {
+        from: JobPosting.collection.collectionName,
+        localField: "_id",
+        foreignField: "courses",
+        as: "jobPostings",
+      },
+    },
+    {
+      // Convert the mapped array to a number we can use to sort
+      $addFields: {
+        jobPostings: { $size: "$jobPostings" },
+      },
+    },
+    {
+      $sort: { jobPostings: -1 },
+    },
   ]).exec();
   for (let course of results) {
     await Course.populate(course, "organization");

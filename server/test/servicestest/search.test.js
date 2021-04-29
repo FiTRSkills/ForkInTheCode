@@ -122,5 +122,21 @@ describe("Search service test", () => {
     expect(result[0]._id).toEqual(courses[2]._id);
   });
 
-  it("findCoursesBySkills - Order by popularity", async () => {});
+  it("findCoursesBySkills - Order by popularity", async () => {
+    let skills = await makeSkills();
+    let jobs = await makeJobs();
+    let courses = await makeCourses();
+
+    await courses[0].addSkills(skills[0]._id);
+    await courses[1].addSkills(skills[0]._id);
+    await jobs[0].addCourses(courses[1]._id);
+    await jobs[1].addCourses(courses[1]._id);
+    await jobs[2].addCourses(courses[0]._id);
+
+    let result = await search.findCoursesBySkills(skills[0]._id);
+
+    expect(result.length).toEqual(2);
+    expect(result[0]._id).toEqual(courses[1]._id);
+    expect(result[1]._id).toEqual(courses[0]._id);
+  });
 });
