@@ -163,7 +163,7 @@ courseController.searchCourses = async function (req, res) {
     res.status(200).send(searchResults);
   } catch (e) {
     console.log(e);
-    res.status(400).send("Unable to search for skills.");
+    res.status(400).send("Unable to search for courses.");
   }
 };
 
