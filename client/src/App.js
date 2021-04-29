@@ -17,6 +17,7 @@ import ViewCourses from "./components/pages/ViewCourses";
 import AddEditCourse from "./components/pages/AddEditCourse";
 import AddEditJobPosting from "./components/pages/AddEditJobPosting";
 import ViewJobPostings from "./components/pages/ViewJobPostings";
+import Page404 from "./components/pages/404";
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
             component={AddEditJobPosting}
             path={"/JobPosting/:mode/:id?"}
           />
+          <Route component={Page404} path="*" />
         </Switch>
       </div>
     </Router>

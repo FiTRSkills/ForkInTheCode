@@ -55,6 +55,9 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     textAlign: "center",
+    position: "absolute",
+    left: 0,
+    right: 0,
   },
   value: {
     fontWeight: "normal",
@@ -69,6 +72,9 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonContainer: {
     height: 0,
+  },
+  titleContainer: {
+    paddingBottom: theme.spacing(3),
   },
 }));
 
@@ -188,19 +194,21 @@ function ViewCourses({
 
   return (
     <Container className={classes.container}>
-      <Link className={classes.addButtonLink} to="/Course/Add">
-        <Button
-          className={classes.addButton}
-          id="addCourseButton"
-          variant="contained"
-          color="primary"
-        >
-          Add Course
-        </Button>
-      </Link>
-      <Typography className={classes.title} variant="h5" component="h1">
-        Manage Courses
-      </Typography>
+      <Box className={classes.titleContainer}>
+        <Typography className={classes.title} variant="h5" component="h1">
+          Manage Courses
+        </Typography>
+        <Link className={classes.addButtonLink} to="/Course/Add">
+          <Button
+            className={classes.addButton}
+            id="addCourseButton"
+            variant="contained"
+            color="primary"
+          >
+            Add Course
+          </Button>
+        </Link>
+      </Box>
       {error && (
         <Alert severity={"error"} id="error">
           {error}
