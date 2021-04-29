@@ -129,10 +129,15 @@ function AddCourseDialog({
   }
 
   function addCourse(course) {
-    if (courses && courses.length > 0) {
-      setCourses([...courses, course]);
-    } else {
-      setCourses([course]);
+    if (
+      courses &&
+      courses.find((tempCourse) => tempCourse._id === course._id).length < 1
+    ) {
+      if (courses.length > 0) {
+        setCourses([...courses, course]);
+      } else {
+        setCourses([course]);
+      }
     }
   }
 
