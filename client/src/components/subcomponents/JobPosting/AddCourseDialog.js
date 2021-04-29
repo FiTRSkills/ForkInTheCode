@@ -225,7 +225,7 @@ function AddCourseDialog({
               </Box>
               <Box className={classes.body}>
                 <Typography className={classes.item} component="div">
-                  Organization:{" "}
+                  <strong>Organization</strong>:{" "}
                   <span className={classes.value}>
                     {courseInfo.organization.name}
                   </span>
@@ -233,7 +233,7 @@ function AddCourseDialog({
               </Box>
               <Box className={classes.body}>
                 <Typography className={classes.item} component="div">
-                  Description:{" "}
+                  <strong>Description</strong>:{" "}
                   <span className={classes.value}>
                     {courseInfo.description}
                   </span>
@@ -241,7 +241,7 @@ function AddCourseDialog({
               </Box>
               <Box className={classes.body}>
                 <Typography className={classes.item} component="div">
-                  Skills to be Learned:{" "}
+                  <strong>Skills to be Learned</strong>:{" "}
                   <span className={classes.value}>
                     {courseInfo.skills.map((skill) => skill.name).join(", ")}
                   </span>
