@@ -99,7 +99,10 @@ function AddCourseDialog({
     }
   }
 
-  function searchCourses() {
+  function searchCourses(event) {
+    if (event) {
+      event.preventDefault();
+    }
     setLoading(true);
     axios
       .get(process.env.REACT_APP_SERVER_URL + "/courses/search", {
@@ -112,7 +115,11 @@ function AddCourseDialog({
       .then((response) => {
         if (response.status === 200) {
           setResults(response.data);
-          setError("");
+          if (response.data.length === 0) {
+            setError("No Results Found");
+          } else {
+            setError("");
+          }
         }
       })
       .catch((error) => {
@@ -170,7 +177,7 @@ function AddCourseDialog({
             deleteCourse={deleteCourse}
           />
         </Box>
-        <form className={classes.form}>
+        <form className={classes.form} onSubmit={searchCourses}>
           <Box className={classes.field}>
             <Typography>Course Search:</Typography>
             <TextField
