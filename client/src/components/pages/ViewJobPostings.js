@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { changeCurrentPage } from "../../redux/actions";
+import {
+  changeCurrentPage,
+  setJobPostingSuccessMessage,
+} from "../../redux/actions";
 import Container from "@material-ui/core/Container";
 import { Link } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
@@ -51,6 +54,9 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     textAlign: "center",
+    position: "absolute",
+    left: 0,
+    right: 0,
   },
   value: {
     fontWeight: "normal",
@@ -66,9 +72,18 @@ const useStyles = makeStyles((theme) => ({
   buttonContainer: {
     height: 0,
   },
+  titleContainer: {
+    paddingBottom: theme.spacing(3),
+  },
 }));
 
-function ViewJobPostings({ changeCurrentPage, user, history }) {
+function ViewJobPostings({
+  changeCurrentPage,
+  user,
+  history,
+  setJobPostingSuccessMessage,
+  incomingSuccessMessage,
+}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
@@ -116,6 +131,11 @@ function ViewJobPostings({ changeCurrentPage, user, history }) {
       } else {
         changeCurrentPage("Job Postings");
         getJobPostings();
+        setSuccessMessage(incomingSuccessMessage);
+        if (incomingSuccessMessage !== "") {
+          setJobPostingSuccessMessage("");
+          clearSuccessMessageTimeout();
+        }
         setAuthenticated(true);
       }
     }
@@ -173,19 +193,21 @@ function ViewJobPostings({ changeCurrentPage, user, history }) {
 
   return (
     <Container className={classes.container}>
-      <Link className={classes.addButtonLink} to="/JobPosting/Add">
-        <Button
-          className={classes.addButton}
-          id="addJobPostingButton"
-          variant="contained"
-          color="primary"
-        >
-          Add Job Posting
-        </Button>
-      </Link>
-      <Typography className={classes.title} variant="h5" component="h1">
-        Manage Job Postings
-      </Typography>
+      <Box className={classes.titleContainer}>
+        <Typography className={classes.title} variant="h5" component="h1">
+          Manage Job Postings
+        </Typography>
+        <Link className={classes.addButtonLink} to="/JobPosting/Add">
+          <Button
+            className={classes.addButton}
+            id="addJobPostingButton"
+            variant="contained"
+            color="primary"
+          >
+            Add Job Posting
+          </Button>
+        </Link>
+      </Box>
       {error && (
         <Alert severity={"error"} id="error">
           {error}
@@ -288,12 +310,15 @@ function ViewJobPostings({ changeCurrentPage, user, history }) {
 function mapStateToProps(state) {
   return {
     user: state.authentication,
+    incomingSuccessMessage: state.jobPostings.successMessage,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     changeCurrentPage: (content) => dispatch(changeCurrentPage(content)),
+    setJobPostingSuccessMessage: (content) =>
+      dispatch(setJobPostingSuccessMessage(content)),
   };
 }
 

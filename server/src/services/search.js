@@ -1,5 +1,7 @@
 const Skill = require("../models/skill");
 const JobPosting = require("../models/jobPosting");
+const Course = require("../models/course");
+const mongoose = require("mongoose");
 
 const search = {};
 
@@ -59,6 +61,60 @@ search.findSkillsByZip = async function (zipCode) {
       },
     },
   ]).exec();
+};
+
+/**
+ * Finds all courses that teach the provided skill ordered by number of
+ * jobs recommending that course.
+ *
+ * @param skills The ID or list of IDs of the skills to search for
+ * @param partialName A partial search that should match the course name
+ * @returns {Promise<*>}
+ */
+search.findCoursesBySkills = async function (skills, partialName = "") {
+  const skillQuery = Array.isArray(skills)
+    ? {
+        $elemMatch: {
+          $in: skills.map(
+            (skill) =>
+              mongoose.Types.ObjectId(skill._id) ||
+              mongoose.Types.ObjectId(skill)
+          ),
+        },
+      }
+    : skills;
+  const results = await Course.aggregate([
+    {
+      // Filter out the courses to only the ones we are interested in
+      $match: {
+        name: { $regex: partialName, $options: "i" },
+        skills: skillQuery,
+      },
+    },
+    {
+      // Map all job postings that recommend this course as an array
+      $lookup: {
+        from: JobPosting.collection.collectionName,
+        localField: "_id",
+        foreignField: "courses",
+        as: "jobPostings",
+      },
+    },
+    {
+      // Convert the mapped array to a number we can use to sort
+      $addFields: {
+        jobPostings: { $size: "$jobPostings" },
+      },
+    },
+    {
+      $sort: { jobPostings: -1 },
+    },
+  ]).exec();
+  for (let course of results) {
+    await Course.populate(course, "organization");
+    await Course.populate(course, "skills");
+  }
+  return results;
 };
 
 module.exports = search;

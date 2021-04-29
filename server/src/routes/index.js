@@ -282,9 +282,8 @@ router.patch(
     check("amountOfJobs", "Must send a viable amountOfJobs").exists(),
     check("jobTimeline", "Must send a viable jobTimeline").exists(),
     check("benefits", "Must send a viable benefits").exists(),
-    check("responsibilities", "Must send viable responsibilities")
-      .not()
-      .isEmpty(),
+    check("location", "Must send a viable location").exists(),
+    check("responsibilities", "Must send viable responsibilities").exists(),
     check("skills", "Must send viable skills").exists(),
     check("courses", "Must send viable courses").exists(),
   ],
@@ -321,25 +320,10 @@ router.post(
   validation.validateSession,
   [
     check("jobTitle", "Must send a viable job title").not().isEmpty(),
-    check("salary", "Must send a viable salary").optional({ nullable: true }),
     check("zipCode", "Must send a viable zipcode").not().isEmpty(),
+    check("location", "Must send a viable location").not().isEmpty(),
     check("description", "Must send a viable description").not().isEmpty(),
-    check("amountOfJobs", "Must send a viable amountOfJobs").optional({
-      nullable: true,
-    }),
-    check("jobTimeline", "Must send a viable jobTimeline").optional({
-      nullable: true,
-    }),
-    check("benefits", "Must send a viable benefits").optional({
-      nullable: true,
-    }),
-    check("responsibilities", "Must send viable responsibilities").optional({
-      nullable: true,
-    }),
     check("skills", "Must send viable skills").not().isEmpty(),
-    check("courses", "Must send viable courses").optional({
-      nullable: true,
-    }),
   ],
   validation.validateInput,
   job.createJobPosting
@@ -539,6 +523,24 @@ router.delete(
   [check("_id", "Must send a viable course id").not().isEmpty()],
   validation.validateInput,
   course.deleteCourse
+);
+
+/**
+ * Routing serving finding a course
+ * @name GET /courses/search
+ * @function
+ * @alias module:/routers/course
+ * @returns {String} msg - success or failure
+ */
+router.get(
+  "/courses/search",
+  validation.validateSession,
+  [
+    check("skills", "Must send viable skills").not().isEmpty(),
+    check("searchValue", "Must send viable searchValue").not().isEmpty(),
+  ],
+  validation.validateInput,
+  course.searchCourses
 );
 
 module.exports = router;

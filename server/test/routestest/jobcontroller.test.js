@@ -36,6 +36,38 @@ describe("JobController Tests", () => {
 		employer_session_info = loginres.header["set-cookie"];
 	});
 
+	it("PATCH /jobPosting - invalid usertype", async () => {
+		let skill = await Skill.findOneOrCreate("Coding");
+		const res = await request
+			.patch("/jobPosting")
+			.set("Cookie", [employer_session_info])
+			.send({
+				_id: "13412412424",
+				jobTitle: "Plumber Two",
+				salary: "$75,000",
+				amountOfJobs: "1",
+				location: "Online",
+				jobTimeline: "",
+				benefits: "",
+				courses: [],
+				zipCode: "12345",
+				description: "Fix piping.",
+				responsibilities: "2 years experience.",
+				skills: [skill],
+			});
+		expect(res.statusCode).toEqual(400);
+		expect(res.text).toEqual("Invalid usertype.");
+	});
+
+	it("DELETE /jobPosting - invalid usertype", async () => {
+		const res = await request
+			.delete("/jobPosting")
+			.set("Cookie", [employer_session_info])
+			.send({ _id: "12312412412" });
+		expect(res.statusCode).toEqual(400);
+		expect(res.text).toEqual("Invalid usertype.");
+	});
+
 	it("POST /jobPosting - create a job posting as not an employer", async () => {
 		let skill = await Skill.findOneOrCreate("Coding");
 		let skill2 = await Skill.findOneOrCreate("Communication");
@@ -46,6 +78,7 @@ describe("JobController Tests", () => {
 			.send({
 				jobTitle: "Software Engineer",
 				salary: "$60,000",
+				location: "Online",
 				benefits: "Healthcare",
 				amountOfJobs: "2",
 				zipCode: "12345",
@@ -108,6 +141,7 @@ describe("JobController Tests", () => {
 				jobTitle: "Software Engineer",
 				salary: "$60,000",
 				benefits: "Healthcare",
+				location: "Online",
 				amountOfJobs: "2",
 				zipCode: "12345",
 				description: "This is a posting for a SE.",
@@ -155,6 +189,7 @@ describe("JobController Tests", () => {
 			.send({
 				jobTitle: "Plumber",
 				salary: "$80,000",
+				location: "Online",
 				zipCode: "12346",
 				description: "Fix piping.",
 				responsibilities: "2 years experience.",
@@ -205,6 +240,7 @@ describe("JobController Tests", () => {
 			.send({
 				jobTitle: "Plumber",
 				salary: "$80,000",
+				location: "Online",
 				amountOfJobs: "2",
 				zipCode: "12345",
 				description: "Fix piping.",
@@ -294,6 +330,7 @@ describe("JobController Tests", () => {
 				jobTitle: "Plumber Two",
 				salary: "$75,000",
 				amountOfJobs: "1",
+				location: "Online",
 				jobTimeline: "",
 				benefits: "",
 				courses: [],
@@ -329,6 +366,15 @@ describe("JobController Tests", () => {
 			.send({ _id: job_posting_id });
 		expect(res.statusCode).toEqual(200);
 		expect(res.text).toEqual("Successfully deleted jobposting.");
+	});
+
+	it("DELETE /jobPosting - job posting DNE", async () => {
+		const res = await request
+			.delete("/jobPosting")
+			.set("Cookie", [employer_session_info])
+			.send({ _id: "12312412412412" });
+		expect(res.statusCode).toEqual(400);
+		expect(res.text).toEqual("Error deleting jobposting.");
 	});
 
 	it("GET /jobPosting - get a specific job posting 2", async () => {
@@ -383,6 +429,7 @@ describe("JobController Tests", () => {
 				jobTitle: "Plumber Two",
 				salary: "$75,000",
 				amountOfJobs: "1",
+				location: "Online",
 				jobTimeline: "",
 				benefits: "",
 				courses: [],

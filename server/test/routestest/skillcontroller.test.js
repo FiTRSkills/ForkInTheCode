@@ -95,6 +95,7 @@ describe("testing skill routes", () => {
       .send({
         jobTitle: "Software Engineer",
         salary: "$60,000",
+        location: "Online",
         zipCode: "12345",
         description: "This is a posting for a SE.",
         responsibilities: "Don't suck at coding.",
@@ -106,6 +107,7 @@ describe("testing skill routes", () => {
       .send({
         jobTitle: "Software Engineer",
         salary: "$60,000",
+        location: "Online",
         zipCode: "12345",
         description: "This is a posting for a SE.",
         responsibilities: "Don't suck at coding.",

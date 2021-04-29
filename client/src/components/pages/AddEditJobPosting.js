@@ -9,6 +9,7 @@ import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
+import Select from "@material-ui/core/Select";
 import Skills from "../subcomponents/Shared/Skills";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -16,6 +17,8 @@ import axios from "axios";
 import Alert from "@material-ui/lab/Alert";
 import { useParams } from "react-router-dom";
 import { checkAndUpdateAuth } from "../../services/AuthService";
+import CourseSelectionPreview from "../subcomponents/Shared/CourseSelectionPreview";
+import AddCourseDialog from "../subcomponents/JobPosting/AddCourseDialog";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -37,6 +40,34 @@ const useStyles = makeStyles((theme) => ({
   buttonGroup: {
     marginTop: theme.spacing(4),
   },
+  careerPopupOverlay: {
+    position: "fixed",
+    top: "0px",
+    left: "0px",
+    width: "100%",
+    height: "100%",
+    background: "rgba(0, 0, 0, 0.6)",
+    zIndex: "9",
+  },
+  careerPopupContent: {
+    borderColor: "black",
+    borderWidth: "2px",
+    borderStyle: "solid",
+    borderRadius: "15px",
+    background: "white",
+    width: "50%",
+    height: "75%",
+    margin: "0",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    zIndex: "10",
+    overflow: "auto",
+  },
+  errorMessage: {
+    marginBottom: 4,
+  },
 }));
 
 function AddEditJobPosting(props) {
@@ -49,11 +80,14 @@ function AddEditJobPosting(props) {
   const [benefits, setBenefits] = useState("");
   const [amountOfJobs, setAmountOfJobs] = useState("");
   const [jobTimeline, setJobTimeline] = useState("");
+  const [method, setMethod] = useState("");
+  const [location, setLocation] = useState("");
   const [skills, setSkills] = useState([]);
   const [courses, setCourses] = useState([]);
-  const [error, setError] = useState(null);
+  const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [authenticated, setAuthenticated] = useState(false);
+  const [showAddCareerPopup, setShowAddCareerPopup] = useState(false);
   const { mode, id } = useParams();
 
   // Style hook
@@ -93,25 +127,31 @@ function AddEditJobPosting(props) {
           setBenefits(response.data.benefits);
           setJobTimeline(response.data.jobTimeline);
           setAmountOfJobs(response.data.amountOfJobs);
+          if (response.data.location === "Online") {
+            setMethod("Online");
+          } else {
+            setMethod("In Person");
+          }
+          setLocation(response.data.location);
           setSkills(response.data.skills);
           setCourses(response.data.courses);
         }
-        setError(null);
+        setErrors([]);
       })
       .catch((error) => {
         if (error.response) {
           if (error.response && error.response.status === 400) {
             if (error.response.data.errors) {
-              let errorMessage = "";
+              let errorArr = [];
               error.response.data.errors.forEach((errorItem) => {
-                errorMessage += errorItem.msg + ". ";
+                errorArr.push(errorItem.msg);
               });
-              setError(errorMessage);
+              setErrors([...errorArr]);
             } else {
-              setError(error.response.data);
+              setErrors([error.response.data]);
             }
           } else {
-            setError("Failed to load Job Posting");
+            setErrors(["Failed to load Job Posting"]);
           }
         }
       })
@@ -151,6 +191,17 @@ function AddEditJobPosting(props) {
       case "jobTimeline":
         setJobTimeline(event.target.value);
         break;
+      case "method":
+        setMethod(event.target.value);
+        if (event.target.value === "Online") {
+          setLocation("Online");
+        } else {
+          setLocation("");
+        }
+        break;
+      case "location":
+        setLocation(event.target.value);
+        break;
       default:
         break;
     }
@@ -163,7 +214,7 @@ function AddEditJobPosting(props) {
    */
   function onSubmit(event) {
     if (skills.length === 0) {
-      setError("Skills are required");
+      setErrors(["Skills are required"]);
     } else {
       setLoading(true);
       switch (mode) {
@@ -180,6 +231,7 @@ function AddEditJobPosting(props) {
                 description,
                 zipCode,
                 amountOfJobs,
+                location,
                 salary,
                 courses,
               },
@@ -198,16 +250,16 @@ function AddEditJobPosting(props) {
             .catch((error) => {
               if (error.response && error.response.status === 400) {
                 if (error.response.data.errors) {
-                  let errorMessage = "";
+                  let errorArr = [];
                   error.response.data.errors.forEach((errorItem) => {
-                    errorMessage += errorItem.msg + ". ";
+                    errorArr.push(errorItem.msg);
                   });
-                  setError(errorMessage);
+                  setErrors([...errorArr]);
                 } else {
-                  setError(error.response.data);
+                  setErrors([error.response.data]);
                 }
               } else {
-                setError("Failed to add job posting");
+                setErrors(["Failed to add job posting"]);
               }
               setLoading(false);
             });
@@ -225,9 +277,10 @@ function AddEditJobPosting(props) {
                 benefits,
                 description,
                 amountOfJobs,
+                location,
                 zipCode,
                 salary,
-                courses: [], // TODO: Add Courses
+                courses,
               },
               {
                 withCredentials: true,
@@ -244,16 +297,16 @@ function AddEditJobPosting(props) {
             .catch((error) => {
               if (error.response && error.response.status === 400) {
                 if (error.response.data.errors) {
-                  let errorMessage = "";
+                  let errorArr = [];
                   error.response.data.errors.forEach((errorItem) => {
-                    errorMessage += errorItem.msg + ". ";
+                    errorArr.push(errorItem.msg);
                   });
-                  setError(errorMessage);
+                  setErrors([...errorArr]);
                 } else {
-                  setError(error.response.data);
+                  setErrors([error.response.data]);
                 }
               } else {
-                setError("Failed to update job posting");
+                setErrors(["Failed to update job posting"]);
               }
               setLoading(false);
             });
@@ -266,6 +319,16 @@ function AddEditJobPosting(props) {
     event.preventDefault();
   }
 
+  function deleteCourse(courseId) {
+    setCourses((courses) =>
+      courses.filter((course) => course._id !== courseId)
+    );
+  }
+
+  function closeAddCareer() {
+    setShowAddCareerPopup(false);
+  }
+
   if (!authenticated) {
     return <Box />;
   }
@@ -273,7 +336,11 @@ function AddEditJobPosting(props) {
   return (
     <Container className={classes.container}>
       <Box className={classes.subContainer}>
-        {error && <Alert severity="error">{error}</Alert>}
+        {errors.map((error) => (
+          <Alert severity="error" className={classes.errorMessage}>
+            {error}
+          </Alert>
+        ))}
         <form onSubmit={onSubmit}>
           <Box className={classes.field}>
             <Typography variant={"h5"}>
@@ -392,6 +459,39 @@ function AddEditJobPosting(props) {
             />
           </Box>
           <Box className={classes.field}>
+            <Typography>Method</Typography>
+            <Select
+              native
+              labelId="select-filled-label"
+              id="method"
+              name="method"
+              variant="outlined"
+              fullWidth
+              required
+              value={method}
+              onChange={handleChange}
+              className={classes.field}
+            >
+              <option value={"Online"}>Online</option>
+              <option value={"In Person"}>In Person</option>
+            </Select>
+          </Box>
+          {method === "In Person" && (
+            <Box className={classes.field}>
+              <Typography>Location</Typography>
+              <TextField
+                variant={"outlined"}
+                margin="normal"
+                fullWidth
+                id="location"
+                name="location"
+                required
+                value={location}
+                onChange={handleChange}
+              />
+            </Box>
+          )}
+          <Box className={classes.field}>
             <Typography>Skills</Typography>
             <Skills
               skills={skills}
@@ -401,7 +501,26 @@ function AddEditJobPosting(props) {
               allowCreate
             />
           </Box>
-          {/* TODO: Add Courses */}
+          <Box className={classes.field}>
+            <Typography>
+              Courses - <em>Optional</em>
+              <CourseSelectionPreview
+                courses={courses}
+                deleteCourse={deleteCourse}
+              />
+              <Button
+                variant="outlined"
+                color="primary"
+                fullWidth
+                id="addCourse"
+                onClick={() => {
+                  setShowAddCareerPopup(true);
+                }}
+              >
+                Add Courses
+              </Button>
+            </Typography>
+          </Box>
           <Grid
             container
             direction={"row"}
@@ -432,6 +551,13 @@ function AddEditJobPosting(props) {
           </Grid>
         </form>
       </Box>
+      <AddCourseDialog
+        open={showAddCareerPopup}
+        closeDialog={closeAddCareer}
+        skills={skills}
+        courses={courses}
+        setCourses={setCourses}
+      />
     </Container>
   );
 }
