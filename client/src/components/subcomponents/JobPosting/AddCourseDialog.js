@@ -125,6 +125,7 @@ function AddCourseDialog({
       .catch((error) => {
         setError("Failed to search for courses");
         console.log(error);
+        console.log("REMOVE");
       })
       .finally(() => setLoading(false));
   }
